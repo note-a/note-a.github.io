@@ -1,194 +1,107 @@
-<!DOCTYPE html>
-<html lang="ko">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SET IS THE WORLD</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
-</head>
-<body>
+/* CRT 윈도우 스타일 */
+.crt-window {
+  display: flex;
+  flex-direction: column;
+  border: 8px solid var(--green-dark) !important;
+  box-shadow: inset 0 0 0 2px var(--green), inset 0 0 0 4px var(--bg) !important;
+  padding: 0 !important;
+}
 
-  <div class="top-banner">&gt;&gt;&gt; FATAL_BREACH_DETECTED : SYSTEM KERNEL COMPROMISED. DO NOT DISCONNECT. TRACING... &lt;&lt;&lt;</div>
+.crt-header {
+  border-bottom: 2px solid var(--green);
+  padding: 12px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: rgba(57, 220, 0, 0.08);
+  font-size: 13px;
+  font-weight: bold;
+}
 
-  <div class="app-container">
+.crt-content {
+  display: flex;
+  gap: 0;
+  flex: 1;
+  padding: 20px;
+}
 
-    <div class="site-body-left-column">
-      <nav class="nav-links">
-        <a href="index.html" class="nav-file-title is-active">Project SET</a>
-        <a href="#" class="nav-file-title">SET Inclusion</a>
-        <a href="#" class="nav-file-title">Intro text</a>
-        <a href="#" class="nav-file-title">rule</a>
-        <a href="#" class="nav-file-title">reference</a>
-        <a href="#" class="nav-file-title">Portfolio</a>
-        <a href="#" class="nav-file-title">video archive</a>
-      </nav>
-      <div class="nav-terminal-log">Linux kernel 6.8.0-v2-generic
-[  0.000000] init_archiver:
-structure_of_photography
-[  0.015241] sensors: body
-(coerced), gaze(suspended)
-[  0.110293] measure_set
---target=WORLD
-[  WARN ] scale_contaminated
-already_part_of_world
-----------------------------------------
-root@system:~# merge_voices
-[ INFO ] port_1(AI): precise
-[ INFO ] port_2(HUMAN): wander
-[ LOG  ] interference
-words_transform_to_noise
-----------------------------------------
-root@system:~# █</div>
-    </div>
+.crt-left {
+  width: 40%;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  border-right: 2px solid var(--green);
+  padding-right: 20px;
+}
 
-    <div class="site-body-center">
-      <div class="markdown-rendered">
-        <h1>SET IS THE WORLD</h1>
+.crt-right {
+  width: 60%;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  padding-left: 20px;
+}
 
-        <div class="sys-alert">
-          <div class="sys-alert-header">
-            <span class="blink-warn">[!]</span>&nbsp;SYSTEM_CRITICAL_WARNING
-          </div>
-          <div class="sys-alert-body">
-            Error Code 404: Archive access denied.<br>
-            Forced viewing may result in data corruption.
-          </div>
-        </div>
+.crt-section {
+  border: 1px dashed var(--green);
+  padding: 12px;
+  background: rgba(57, 220, 0, 0.02);
+}
 
-        <!-- CRT 윈도우 스타일 대시보드 -->
-        <div class="m-monitor crt-window">
+.crt-section-title {
+  background: var(--green-dark);
+  color: #000;
+  padding: 4px 8px;
+  display: inline-block;
+  font-size: 12px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
 
-          <!-- CRT 헤더 -->
-          <div class="crt-header">
-            <span>SYS.KERNEL V.1.4.0</span>
-            <span>ARCHIVE_BBS_OVERRIDE</span>
-            <span><a href="https://hits.sh/publish.obsidian.md/note/" style="color:#39dc00;text-decoration:none;">
-              <img alt="Hits" src="https://hits.sh/publish.obsidian.md/note.svg?view=today-total&style=flat-square&color=266c0b&labelColor=763f16" style="height:16px;"/>
-            </a></span>
-          </div>
+.crt-section-body {
+  font-size: 12px;
+  line-height: 1.6;
+  color: var(--green);
+}
 
-          <!-- CRT 콘텐츠 (2단 레이아웃) -->
-          <div class="crt-content">
+.crt-row {
+  display: flex;
+  margin-bottom: 6px;
+  justify-content: space-between;
+}
 
-            <!-- 왼쪽 패널 -->
-            <div class="crt-left">
+.crt-row span:first-child {
+  opacity: 0.6;
+  width: 120px;
+}
 
-              <div class="crt-section">
-                <div class="crt-section-title">&gt;&gt; CORE_INSTRUCTIONS</div>
-                <div class="crt-section-body">
-                  <div class="crt-row"><span>BODY:</span><span style="color:#ffb000;">COERCED_STATE</span></div>
-                  <div class="crt-row"><span>GAZE:</span><span style="color:#ffb000;">SUSPENDED</span></div>
-                  <div class="crt-row"><span>PROCESS:</span><span style="color:#ffb000;">ARCHIVING_STRUCTURE</span></div>
-                  <div class="crt-row"><span>TARGET:</span><span style="color:#ffb000;">WORLD_ARCHIVE</span></div>
-                  <div class="crt-row"><span>METHOD:</span><span style="color:#ffb000;">HALT_REPRODUCTION</span></div>
-                </div>
-              </div>
+.crt-footer {
+  border-top: 2px dashed var(--green);
+  padding: 12px 20px;
+  display: flex;
+  justify-content: space-around;
+  background: rgba(57, 220, 0, 0.05);
+  font-size: 12px;
+}
 
-              <div class="crt-section">
-                <div class="crt-section-title">&gt;&gt; PERIMETER_LOG</div>
-                <div class="crt-section-body">
-                  "Measuring the perimeter of the set..."<br>
-                  "Analyzing spatial coordinates..."<br>
-                  "Boundary collision detected at sector 4."<br>
-                  <span style="color:#ffb000;font-weight:bold;">[WARN] SCALE_CONTAMINATED</span><br>
-                  <span style="opacity:0.6;">OOB_INTERFERENCE: 94.2%</span><br>
-                  <span style="opacity:0.6;">FRAME_RATE_DROP: 12.4%</span>
-                </div>
-              </div>
+.crt-footer-item {
+  color: var(--orange);
+  font-weight: bold;
+}
 
-              <div class="crt-section">
-                <div class="crt-section-title">&gt;&gt; MEMORY_DUMP_ANALYSIS</div>
-                <div class="crt-section-body">
-                  0x7F8A: Memory fragment retrieved.<br>
-                  0x7F8B: Re-routing sensory feedback loops... <span style="color:#ffb000;">SUCCESS</span><br>
-                  0x7F8C: Conceptual framework exceeding boundaries.<br>
-                  <span style="color:#ffb000;">[SYS_NOTE] The conceptual text defines the world.</span>
-                </div>
-              </div>
-
-            </div>
-
-            <!-- 오른쪽 패널 -->
-            <div class="crt-right">
-
-              <div class="crt-section">
-                <div class="crt-section-title">+ + CURRENT DIRECTORY + +</div>
-                <div class="crt-section-body" style="text-align:center;font-size:18px;font-weight:bold;margin:30px 0;">
-                  SET IS THE WORLD
-                </div>
-              </div>
-
-              <div class="crt-section">
-                <div class="crt-section-title">&gt;&gt; VOICE_ANALYSIS_THREAD</div>
-                <div class="crt-section-body">
-                  <div style="margin-bottom:12px;">PORT_01_AI: <span style="color:#ffb000;">SYSTEMATIC / INDIFFERENT</span></div>
-                  <div style="margin-bottom:12px;">PORT_02_HUMAN: <span style="color:#ffb000;">WANDERING / AFFECTIVE</span></div>
-                  <div style="background:rgba(57,220,0,0.1);padding:8px;border-left:2px solid #39dc00;">
-                    Overlap produces interference. Words disappear, merge, transform.
-                  </div>
-                </div>
-              </div>
-
-              <div class="crt-section">
-                <div class="crt-section-title">&gt;&gt; FINAL_RENDER</div>
-                <div class="crt-section-body">
-                  <span style="color:#ffb000;">FINAL_RENDER:</span> Textual superimposition = image of words. Vision + Language = Incomplete.<br><br>
-                  <strong>FAILURE_TO_CLOSE</strong> 〈Set〉 measures the world through vision; its overlapping texts measure through language. Both remain incomplete — and that incompleteness, that failure to close, is precisely the world as I understand it.
-                </div>
-              </div>
-
-            </div>
-
-          </div>
-
-          <!-- CRT 하단 정보 -->
-          <div class="crt-footer">
-            <div class="crt-footer-item">&gt;&gt; SYSTEM_STATUS: INCOMPLETE</div>
-            <div class="crt-footer-item">&gt;&gt; ERROR_CODE: failure_to_close</div>
-            <div class="crt-footer-item">&gt;&gt; world_remains_open</div>
-          </div>
-
-        </div>
-
-        <div class="m-loading-wrap">
-          <div class="load-txt">LOADING...</div>
-          <div class="m-loading-bar"></div>
-        </div>
-
-      </div>
-    </div>
-
-    <div class="site-body-right-column">
-      <div class="sys-mini-res">
-        <div class="sys-m-title">&gt;&gt; SYSTEM_LOAD</div>
-        <div class="sys-w-row"><span class="sys-w-label">CPU</span><div class="sys-w-bar"><div class="sys-w-fill" style="width:78%;"></div></div></div>
-        <div class="sys-w-row"><span class="sys-w-label">MEM</span><div class="sys-w-bar"><div class="sys-w-fill" style="width:42%;"></div></div></div>
-        <div class="sys-w-row"><span class="sys-w-label">NET</span><div class="sys-w-bar"><div class="sys-w-fill" style="width:95%;background:#ffb000;"></div></div></div>
-      </div>
-
-      <div class="sys-eq-wrap">
-        <div class="sys-m-title">&gt;&gt; AUDIO_SYNC</div>
-        <div class="sys-eq-bars">
-          <div class="eq-bar eq-1"></div>
-          <div class="eq-bar eq-2"></div>
-          <div class="eq-bar eq-3"></div>
-          <div class="eq-bar eq-4"></div>
-          <div class="eq-bar eq-5"></div>
-        </div>
-      </div>
-
-      <div class="sys-contact-wrap">
-        <div class="sys-m-title">&gt;&gt; CONNECTION</div>
-        <div class="sys-c-row"><span class="sys-c-label">email</span> <a href="mailto:noteofficial@naver.com" class="sys-c-link">noteofficial@naver.com</a></div>
-        <div class="sys-c-row"><span class="sys-c-label">insta</span> <span class="sys-c-link">saintnoted</span></div>
-        <div class="sys-c-row"><span class="sys-c-label">tell</span> <span class="sys-c-link">010-9793-5522</span></div>
-      </div>
-    </div>
-
-  </div>
-
-</body>
-</html>
+@media (max-width: 768px) {
+  .m-monitor [style*="grid-template-columns:1fr 1fr"],
+  [style*="grid-template-columns: 1fr 1fr"] {
+    display: block !important;
+  }
+  .crt-content {
+    flex-direction: column;
+    gap: 20px;
+  }
+  .crt-left, .crt-right {
+    width: 100%;
+    border-right: none;
+    padding-right: 0;
+    padding-left: 0;
+  }
+}
