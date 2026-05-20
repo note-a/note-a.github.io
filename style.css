@@ -121,7 +121,7 @@ a:visited { color: var(--green); }
   display: flex;
   align-items: flex-start;
   width: 100%;
-  max-width: 560px;    /* 2/3 크기로 줄임 */
+  max-width: 600px;    /* 600px로 조정 */
   margin: 0 auto;      /* 화면 가운데 정렬 */
   padding-top: 32px;   /* 상단 배너 높이 확보 */
   min-height: 100vh;
@@ -130,8 +130,8 @@ a:visited { color: var(--green); }
 
 /* ── 왼쪽 사이드바 ── */
 .site-body-left-column {
-  width: 130px;        /* 비율 조정 */
-  min-width: 130px;
+  width: 140px;        /* 600px 비율 조정 */
+  min-width: 140px;
   flex-shrink: 0;
   border-right: 2px solid var(--green);
   padding: 14px 6px;   /* padding 줄임 */
@@ -174,7 +174,7 @@ a:visited { color: var(--green); }
 
 /* ── 메인 콘텐츠 ── */
 .site-body-center {
-  flex: 0 0 310px;     /* 비율 조정 */
+  flex: 0 0 335px;     /* 600px 비율 조정 */
   padding: 16px 14px;  /* padding 줄임 */
   overflow-x: hidden;
   overflow-y: auto;
@@ -200,8 +200,8 @@ a:visited { color: var(--green); }
 
 /* ── 오른쪽 패널 (푸터 내용) ── */
 .site-body-right-column {
-  width: 105px;        /* 비율 조정 */
-  min-width: 105px;
+  width: 113px;        /* 600px 비율 조정 */
+  min-width: 113px;
   flex-shrink: 0;
   padding: 8px 4px;
   position: sticky;
