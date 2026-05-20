@@ -147,7 +147,7 @@ a:visited { color: var(--green); }
 
 .nav-file-title {
   display: block;
-  font-size: 14px;     /* 2배 확대 */
+  font-size: 15px;     /* +1px */
   color: var(--green);
   padding: 6px 10px;
   text-decoration: none;
@@ -161,7 +161,7 @@ a:visited { color: var(--green); }
 }
 
 .nav-terminal-log {
-  font-size: 10px;     /* 2배 확대 */
+  font-size: 11px;     /* +1px */
   color: var(--green);
   opacity: 0.7;
   padding: 12px 10px;
@@ -453,7 +453,7 @@ a:visited { color: var(--green); }
 }
 
 .sys-m-title {
-  font-size: 12px;
+  font-size: 13px;     /* +1px */
   color: var(--orange);
   margin-bottom: 10px;
   font-family: var(--font);
@@ -495,7 +495,7 @@ a:visited { color: var(--green); }
 
 /* 연락처 */
 .sys-contact-wrap { flex-shrink: 0; }
-.sys-c-row { display: flex; align-items: center; margin-bottom: 8px; font-size: 11px; color: var(--green); }
+.sys-c-row { display: flex; align-items: center; margin-bottom: 8px; font-size: 12px; color: var(--green); /* +1px */ }
 .sys-c-label { width: 42px; color: var(--green); opacity: 0.8; }
 .sys-c-link { color: var(--green); text-decoration: none; }
 
