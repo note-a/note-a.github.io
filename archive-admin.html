@@ -1130,10 +1130,12 @@ REQUIRE LOGIN: No (Public access enabled)
 
           slides.push({ id: `slide_${i + 1}`, title, category, author, year, text });
         }
-        portfolioEditData.project = { ...portfolioEditData.project, slides };
+        if (!portfolioEditData.project) portfolioEditData.project = {};
+        portfolioEditData.project.slides = slides;
       } else if (subsection === 'inclusion' || subsection === 'intro' || subsection === 'video') {
         const text = document.querySelector(`.portfolio-text-${subsection}`)?.value || '';
-        portfolioEditData[subsection] = { ...portfolioEditData[subsection], text };
+        if (!portfolioEditData[subsection]) portfolioEditData[subsection] = {};
+        portfolioEditData[subsection].text = text;
       } else if (subsection === 'rule' || subsection === 'reference') {
         const items = [];
         const inputs = document.querySelectorAll(`[class*="item-title-${subsection}"]`);
@@ -1147,7 +1149,8 @@ REQUIRE LOGIN: No (Public access enabled)
 
           if (title) items.push({ id: title.toUpperCase().replace(/\\s+/g, '_'), title, author, year, category, status, preview });
         });
-        portfolioEditData[subsection] = { ...portfolioEditData[subsection], items };
+        if (!portfolioEditData[subsection]) portfolioEditData[subsection] = {};
+        portfolioEditData[subsection].items = items;
       } else if (subsection === 'archive') {
         const photos = [];
         const titleInputs = document.querySelectorAll('[class*="photo-title-"]');
@@ -1161,7 +1164,8 @@ REQUIRE LOGIN: No (Public access enabled)
 
           if (id || title) photos.push({ id, title, filename, keywords, description });
         });
-        portfolioEditData.archive = { ...portfolioEditData.archive, photos };
+        if (!portfolioEditData.archive) portfolioEditData.archive = {};
+        portfolioEditData.archive.photos = photos;
       }
 
       // Save to localStorage
