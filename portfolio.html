@@ -1172,6 +1172,22 @@ html, body { background: #000; color: #39dc00; font-family: 'Courier New', monos
       }
     }
 
+    // Auto-reload admin contents every 1 second and refresh UI
+    setInterval(() => {
+      loadAdminContentsFromStorage();
+
+      // Refresh current section display
+      const isMobile = window.innerWidth <= 768;
+      const activeSection = document.querySelector('[data-section].active')?.getAttribute('data-section') ||
+                           document.querySelector('.mobile-menu-item.active')?.getAttribute('data-section') || 'project';
+
+      if (isMobile) {
+        loadContentToMobile(activeSection);
+      } else {
+        loadContent(activeSection);
+      }
+    }, 1000);
+
     // Detect layout on initial load
     window.addEventListener('load', detectAndSwitchLayout);
 
@@ -2704,6 +2720,21 @@ ${preview}
         console.error('Error loading mobile content:', error);
       }
     }
+
+    // Listen for storage changes from other tabs
+    window.addEventListener('storage', function(e) {
+      if (e.key === 'adminContents' || e.key === 'archiveData') {
+        console.log('Storage changed, reloading...');
+        loadAdminContentsFromStorage();
+        // Reload current section
+        const activeMenuItem = document.querySelector('[data-section].active') || document.querySelector('.mobile-menu-item.active');
+        if (activeMenuItem) {
+          const section = activeMenuItem.getAttribute('data-section') || 'project';
+          loadContent(section);
+          loadContentToMobile(section);
+        }
+      }
+    });
 
     // Initialize on page load
     document.addEventListener('DOMContentLoaded', function() {
