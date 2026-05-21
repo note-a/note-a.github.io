@@ -252,7 +252,7 @@ root@system:~# █</div>
   </div>
 
   <script>
-    function typeWriter(elementId, text, speed = 50) {
+    function typeWriter(elementId, text, speed = 50, callback) {
       const element = document.getElementById(elementId);
       const cursor = document.getElementById('cursor');
       let index = 0;
@@ -268,37 +268,44 @@ root@system:~# █</div>
           setTimeout(type, speed);
         } else {
           if (cursor) cursor.style.animation = 'blink 0.7s infinite';
+          if (callback) callback();
         }
       }
       type();
     }
 
     document.addEventListener('DOMContentLoaded', function() {
-      const text = `Instructions, coerced body, suspended gaze. Archiving the structure of photography by halting reproduction.
+      const mainText = `Instructions, coerced body, suspended gaze. Archiving the structure of photography by halting reproduction.
 
 Set is the world. I'm measuring the perimeter of the set.
-But the scale I hold is already contaminated by the world itself.
+But the scale I hold is already contaminated by the world itself.`;
 
-1. When theory touches perception
-The conceptual text defines the world through language; the working note experiences it through the body. Their intersection produces a moment where philosophy becomes physical, and language begins to see.
+      const hackingText = `
 
-2. Inside and outside collapse
-The conceptual text measures the outline of the world; the working note walks inside that outline. When they overlap, inclusion and exclusion blur — the boundary of the "set" starts to breathe.
+root@system:~# ./scan --recursive
+[ INFO ] protocol_initialized
+[ WARN ] structure_detected: photography
+[ WARN ] scale_contaminated: world_influence
+[ INFO ] port_1(AI): analyzing_boundaries
+[ INFO ] port_2(HUMAN): measuring_contamination
+[ LOG  ] interference: visibility_collapse
+[ LOG  ] superimposition: language_meets_vision
+[ FAIL ] system_status: INCOMPLETENESS_CONFIRMED
+[ EXIT ] world_remains_undefined
+root@system:~# ./archive --structure
+[ WARN ] reproduction_halted
+[ INFO ] body_coerced: perception_suspended
+[ INFO ] gaze_suspended: archive_complete
+[ LOG  ] contamination_level: 100%
+[ FAIL ] boundary_closure: FAILED
+[ EXIT ] set_remains_open.
+root@system:~# `;
 
-3. Human and non-human voices
-The conceptual text speaks like the AI — precise, systematic, indifferent. The working note responds as the human — wandering, hesitant, affective. Together they perform a conversation: command and response, translation and deviation.
-
-4. Noise as a method
-Overlap produces interference. Words disappear, merge, or transform. What cannot be fully read becomes the essence of the work itself — the uncertainty of the world, visualized through language.
-
-In the end,
-this textual superimposition becomes another image: an image made of words, a photograph written in two voices.
-
-〈Set〉 measures the world through vision;
-its overlapping texts measure the world through language.
-Both remain incomplete — and that incompleteness,
-that failure to close, is precisely the world as I understand it.`;
-      typeWriter('terminal-text', text, 25);
+      typeWriter('terminal-text', mainText, 25, function() {
+        setTimeout(function() {
+          typeWriter('terminal-text', hackingText, 3);
+        }, 500);
+      });
     });
   </script>
 </body>
