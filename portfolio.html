@@ -1600,31 +1600,34 @@ REQUIRE LOGIN: No (Public access enabled)
     function loadAdminContentsFromStorage() {
       try {
         const adminContents = JSON.parse(localStorage.getItem('adminContents') || '{}');
+        console.log('Loading admin contents from storage:', adminContents);
 
-        // Merge admin contents with default contents
-        if (adminContents.project) {
-          contents.project = { ...contents.project, ...adminContents.project };
+        // Direct property assignment for each section
+        if (adminContents.project && adminContents.project.slides) {
+          contents.project.slides = adminContents.project.slides;
         }
-        if (adminContents.inclusion) {
-          contents.inclusion = { ...contents.inclusion, ...adminContents.inclusion };
+        if (adminContents.inclusion && adminContents.inclusion.text) {
+          contents.inclusion.text = adminContents.inclusion.text;
         }
-        if (adminContents.intro) {
-          contents.intro = { ...contents.intro, ...adminContents.intro };
+        if (adminContents.intro && adminContents.intro.text) {
+          contents.intro.text = adminContents.intro.text;
         }
-        if (adminContents.rule) {
-          contents.rule = { ...contents.rule, ...adminContents.rule };
+        if (adminContents.rule && adminContents.rule.items) {
+          contents.rule.items = adminContents.rule.items;
         }
-        if (adminContents.reference) {
-          contents.reference = { ...contents.reference, ...adminContents.reference };
+        if (adminContents.reference && adminContents.reference.items) {
+          contents.reference.items = adminContents.reference.items;
         }
-        if (adminContents.video) {
-          contents.video = { ...contents.video, ...adminContents.video };
+        if (adminContents.video && adminContents.video.text) {
+          contents.video.text = adminContents.video.text;
         }
-        if (adminContents.archive) {
-          contents.archive = { ...contents.archive, ...adminContents.archive };
+        if (adminContents.archive && adminContents.archive.photos) {
+          contents.archive.photos = adminContents.archive.photos;
         }
+
+        console.log('Admin contents loaded successfully');
       } catch (e) {
-        console.log('No admin contents in storage or error loading');
+        console.log('No admin contents in storage or error loading:', e);
       }
     }
 
