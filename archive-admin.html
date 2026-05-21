@@ -582,6 +582,7 @@ html, body { background: #000; color: #39dc00; font-family: 'Courier New', monos
 
     // Load content
     function loadContent(section) {
+      console.log('loadContent called with section:', section);
       const terminalContent = document.getElementById('terminalContent');
       const portfolioEditSection = document.getElementById('portfolio-edit-section');
       const terminalSection = document.querySelector('.terminal-section');
@@ -599,6 +600,7 @@ html, body { background: #000; color: #39dc00; font-family: 'Courier New', monos
       if (portfolioEditSection) portfolioEditSection.style.display = 'none';
 
       const content = archiveData[section];
+      console.log('Content:', content);
 
       if (content) {
         // Check if mobile
@@ -667,7 +669,11 @@ html, body { background: #000; color: #39dc00; font-family: 'Courier New', monos
         setupNewPostModal(section);
 
         // Setup list item click handlers
-        setTimeout(() => setupListItemClickHandlers(section), 50);
+        console.log('Setting up list item click handlers for section:', section);
+        setTimeout(() => {
+          console.log('List items count:', document.querySelectorAll('.list-item').length);
+          setupListItemClickHandlers(section);
+        }, 50);
       }
     }
 
@@ -716,6 +722,8 @@ html, body { background: #000; color: #39dc00; font-family: 'Courier New', monos
         };
 
         archiveData[currentSection].items.push(newItem);
+        console.log('New item added:', currentSection, newItem);
+        console.log('archiveData[' + currentSection + '].items:', archiveData[currentSection].items);
         saveArchiveData();
 
         modal.classList.remove('active');
@@ -737,6 +745,11 @@ html, body { background: #000; color: #39dc00; font-family: 'Courier New', monos
 
       listItems.forEach((item, idx) => {
         item.addEventListener('click', () => {
+          if (!archiveData[section] || !archiveData[section].items[idx]) {
+            console.error('Item not found:', section, idx);
+            return;
+          }
+
           const selectedItem = archiveData[section].items[idx];
           const detailHTML = `[${selectedItem.id}]
 Category: ${selectedItem.category}
@@ -753,7 +766,9 @@ ${selectedItem.preview}
 [EDIT] [DELETE] [BACK]`;
 
           const contentText = document.getElementById('contentText');
-          contentText.textContent = detailHTML;
+          if (contentText) {
+            contentText.textContent = detailHTML;
+          }
 
           const terminalContent = document.querySelector('.terminal-content');
           if (terminalContent) {
