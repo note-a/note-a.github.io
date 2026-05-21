@@ -1031,8 +1031,8 @@ REQUIRE LOGIN: No (Public access enabled)
           }
         } else {
           // Regular text format
-          const contentText = document.getElementById('contentText');
-          contentText.textContent = content.text;
+          const textHTML = `<pre class="terminal-content-text" id="contentText">${content.text}</pre>`;
+          terminalContent.innerHTML = textHTML;
         }
       }
     }
