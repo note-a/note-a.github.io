@@ -1195,7 +1195,13 @@ REQUIRE LOGIN: No (Public access enabled)
         resetBtn.addEventListener('click', resetPortfolioChanges);
       }
 
+      // Load portfolio-edit and set active state
       loadContent('portfolio-edit');
+      const portfolioEditItem = document.querySelector('[data-section="portfolio-edit"]');
+      if (portfolioEditItem) {
+        document.querySelectorAll('.menu-item').forEach(m => m.classList.remove('active'));
+        portfolioEditItem.classList.add('active');
+      }
     });
   </script>
 </body>
