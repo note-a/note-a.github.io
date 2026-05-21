@@ -1117,46 +1117,61 @@ html, body { background: #000; color: #39dc00; font-family: 'Courier New', monos
     const contents = {
       project: {
         title: 'Project SET',
-        isBoard: true,
-        isList: true,
-        items: [
-          {
-            id: 'PROJECT_OVERVIEW',
-            title: 'Project SET Overview',
-            author: 'Artist / Theorist',
-            year: '2025-2026',
-            category: 'Concept',
-            status: 'ACTIVE',
-            preview: 'A cyberpunk-themed visual and textual exploration of the boundaries between observer and observed, world and self. Core framework for SET.'
-          },
-          {
-            id: 'CORE_CONCEPT',
-            title: 'Core Concept',
-            author: 'Artist / Theorist',
-            year: '2025',
-            category: 'Philosophy',
-            status: 'FOUNDATIONAL',
-            preview: 'Instructions, coerced body, suspended gaze. Archiving the structure of photography by halting reproduction. The fundamental thesis.'
-          },
-          {
-            id: 'MEASUREMENT_PARADOX',
-            title: 'Measurement Paradox',
-            author: 'Artist / Theorist',
-            year: '2025',
-            category: 'Theory',
-            status: 'CORE',
-            preview: 'Set is the world. I am measuring the perimeter of the set. But the scale I hold is already contaminated by the world itself.'
-          },
-          {
-            id: 'STRUCTURE_FRAMEWORK',
-            title: 'Structure & Framework',
-            author: 'Artist / Developer',
-            year: '2025-2026',
-            category: 'System Design',
-            status: 'IMPLEMENTED',
-            preview: '6 distinct sections exploring different aspects of SET framework. Terminal-based interface. DOS aesthetic. Interactive system.'
-          }
-        ]
+        text: `PROJECT SET - WORLD MEASUREMENT FRAMEWORK
+====================================================
+
+[PROJECT OVERVIEW]
+category: Concept
+author: Artist / Theorist
+year: 2025-2026
+
+A cyberpunk-themed visual and textual exploration of the boundaries between observer and observed, world and self. Core framework for SET.
+
+This project operates as a comprehensive investigation into measurement, perception, and the paradox of the observer being part of the observed system. Through visual and textual intervention, SET proposes that the act of measurement inherently contaminates the measuring instrument (in this case, us).
+
+[CORE CONCEPT]
+category: Philosophy
+author: Artist / Theorist
+year: 2025
+
+Instructions, coerced body, suspended gaze. Archiving the structure of photography by halting reproduction. The fundamental thesis.
+
+The core concept rests on three pillars:
+- Instructions: Systems of control embedded in visual culture
+- Coerced Body: We are not free agents in the SET; we are part of its structure
+- Suspended Gaze: Vision is held in abeyance; we cannot see clearly from within
+
+[MEASUREMENT PARADOX]
+category: Theory
+author: Artist / Theorist
+year: 2025
+
+Set is the world. I am measuring the perimeter of the set. But the scale I hold is already contaminated by the world itself.
+
+This paradox forms the central tension of the work. Any attempt to measure or define the boundaries of the SET is itself already infected by the SET's logic. The measuring tool is not neutral; it is part of what is being measured.
+
+[STRUCTURE & FRAMEWORK]
+category: System Design
+author: Artist / Developer
+year: 2025-2026
+
+6 distinct sections exploring different aspects of SET framework. Terminal-based interface. DOS aesthetic. Interactive system.
+
+Technical Implementation:
+- JavaScript-based viewport detection for responsive layout
+- Real-time content loading and dynamic rendering
+- Archive administration system with publishing workflow
+- Photo search and display functionality
+- Cross-section content publishing system
+- localStorage integration for persistent data
+
+Visual Language:
+- Terminal/DOS aesthetic with #39dc00 green color scheme
+- Monospace typography (Courier New)
+- Grid and flexbox layouts
+- Minimal visual hierarchy through border and spacing
+
+==========================================`
       },
       archive: {
         title: 'Photo Archive',
@@ -1262,52 +1277,55 @@ NEXT STEP: Explore the other sections using the menu
       },
       rule: {
         title: 'Rule',
-        text: `RULES OF THE SET
-====================================================
-
-[RULE 1: THE OBSERVER IS OBSERVED]
-category: Fundamental Rule
-
-- You are not external to the SET
-- Your measurement is a measurement of yourself
-- Distance is an illusion
-
-[RULE 2: INCOMPLETENESS IS COMPLETENESS]
-category: Fundamental Rule
-
-- No system can be fully closed
-- The SET remains open by necessity
-- Failure is the only success
-
-[RULE 3: VOICE MUST MERGE]
-category: Fundamental Rule
-
-- Systematic thought alone fails
-- Affective knowledge alone fails
-- Only interference creates meaning
-
-[RULE 4: LANGUAGE AND VISION COEXIST]
-category: Fundamental Rule
-
-- Neither fully describes the world
-- Their superimposition creates noise
-- Noise is the essence of the work
-
-[RULE 5: DO NOT DISCONNECT]
-category: Fundamental Rule
-
-- The system remains open
-- Logout is impossible
-- You are permanently included
-
-EXCEPTIONS: None known
-VIOLATIONS: Punishable by inclusion
-
-AUTHORITY: The SET governs itself
-OVERSIGHT: Non-existent
-
-STATUS: These rules are not negotiable
-==========================================`
+        isBoard: true,
+        isList: true,
+        items: [
+          {
+            id: 'RULE_1',
+            title: 'The Observer Is Observed',
+            author: 'SET Fundamental',
+            year: '2025',
+            category: 'Fundamental Rule',
+            status: 'CORE',
+            preview: 'You are not external to the SET. Your measurement is a measurement of yourself. Distance is an illusion.'
+          },
+          {
+            id: 'RULE_2',
+            title: 'Incompleteness Is Completeness',
+            author: 'SET Fundamental',
+            year: '2025',
+            category: 'Fundamental Rule',
+            status: 'CORE',
+            preview: 'No system can be fully closed. The SET remains open by necessity. Failure is the only success.'
+          },
+          {
+            id: 'RULE_3',
+            title: 'Voice Must Merge',
+            author: 'SET Fundamental',
+            year: '2025',
+            category: 'Fundamental Rule',
+            status: 'CORE',
+            preview: 'Systematic thought alone fails. Affective knowledge alone fails. Only interference creates meaning.'
+          },
+          {
+            id: 'RULE_4',
+            title: 'Language and Vision Coexist',
+            author: 'SET Fundamental',
+            year: '2025',
+            category: 'Fundamental Rule',
+            status: 'CORE',
+            preview: 'Neither fully describes the world. Their superimposition creates noise. Noise is the essence of the work.'
+          },
+          {
+            id: 'RULE_5',
+            title: 'Do Not Disconnect',
+            author: 'SET Fundamental',
+            year: '2025',
+            category: 'Fundamental Rule',
+            status: 'CORE',
+            preview: 'The system remains open. Logout is impossible. You are permanently included in the SET.'
+          }
+        ]
       },
       reference: {
         title: 'Reference',
