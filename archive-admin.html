@@ -452,8 +452,8 @@ html, body { background: #000; color: #39dc00; font-family: 'Courier New', monos
       <div style="padding: 12px; border-bottom: 1px solid #39dc00; display: flex; gap: 8px; overflow-x: auto; flex-shrink: 0;">
         <button class="portfolio-subsection-tab active" data-subsection="project" onclick="loadPortfolioEditForm('project')" style="background: #39dc00; color: #000; border: 1px solid #39dc00; padding: 6px 12px; cursor: pointer; font-weight: bold; font-size: 10px;">PROJECT</button>
         <button class="portfolio-subsection-tab" data-subsection="inclusion" onclick="loadPortfolioEditForm('inclusion')" style="background: #000; color: #39dc00; border: 1px solid #39dc00; padding: 6px 12px; cursor: pointer; font-weight: bold; font-size: 10px;">INCLUSION</button>
-        <button class="portfolio-subsection-tab" data-subsection="intro" onclick="loadPortfolioEditForm('intro')" style="background: #000; color: #39dc00; border: 1px solid #39dc00; padding: 6px 12px; cursor: pointer; font-weight: bold; font-size: 10px;">INTRO</button>
-        <button class="portfolio-subsection-tab" data-subsection="rule" onclick="loadPortfolioEditForm('rule')" style="background: #000; color: #39dc00; border: 1px solid #39dc00; padding: 6px 12px; cursor: pointer; font-weight: bold; font-size: 10px;">DATA</button>
+        <button class="portfolio-subsection-tab" data-subsection="intro" onclick="loadPortfolioEditForm('intro')" style="background: #000; color: #39dc00; border: 1px solid #39dc00; padding: 6px 12px; cursor: pointer; font-weight: bold; font-size: 10px;">ENTIRE</button>
+        <button class="portfolio-subsection-tab" data-subsection="rule" onclick="loadPortfolioEditForm('rule')" style="background: #000; color: #39dc00; border: 1px solid #39dc00; padding: 6px 12px; cursor: pointer; font-weight: bold; font-size: 10px;">LOG</button>
         <button class="portfolio-subsection-tab" data-subsection="reference" onclick="loadPortfolioEditForm('reference')" style="background: #000; color: #39dc00; border: 1px solid #39dc00; padding: 6px 12px; cursor: pointer; font-weight: bold; font-size: 10px;">REFERENCE</button>
         <button class="portfolio-subsection-tab" data-subsection="archive" onclick="loadPortfolioEditForm('archive')" style="background: #000; color: #39dc00; border: 1px solid #39dc00; padding: 6px 12px; cursor: pointer; font-weight: bold; font-size: 10px;">ARCHIVE</button>
       </div>
@@ -498,8 +498,8 @@ html, body { background: #000; color: #39dc00; font-family: 'Courier New', monos
             <option value="project">SET</option>
             <option value="inclusion">SET Inclusion</option>
             <option value="archive">Archive</option>
-            <option value="intro">Intro text</option>
-            <option value="rule">data</option>
+            <option value="intro">entire</option>
+            <option value="rule">log</option>
             <option value="reference">reference</option>
             <option value="video">video archive</option>
           </select>
@@ -911,7 +911,7 @@ PORT_02 (HUMAN) : WANDERING / AFFECTIVE
 RESOLUTION: BOTH REMAIN INCOMPLETE.
 THIS INCOMPLETENESS IS PRECISELY THE WORLD.
 ==========================================`,
-        intro: `INTRODUCTORY MATERIAL
+        intro: `ENTIRE MATERIAL
 ====================================================
 
 [NAVIGATION INSTRUCTIONS]
@@ -987,11 +987,11 @@ REQUIRE LOGIN: No (Public access enabled)
     function generateItemsListForm(section) {
       const defaultItems = {
         rule: [
-          { id: 'RULE_1', title: 'The Observer Is Observed', author: 'SET Fundamental', year: '2025', category: 'Fundamental Rule', status: 'CORE', preview: 'You are not external to the SET. Your measurement is a measurement of yourself. Distance is an illusion.' },
-          { id: 'RULE_2', title: 'Incompleteness Is Completeness', author: 'SET Fundamental', year: '2025', category: 'Fundamental Rule', status: 'CORE', preview: 'No system can be fully closed. The SET remains open by necessity. Failure is the only success.' },
-          { id: 'RULE_3', title: 'Voice Must Merge', author: 'SET Fundamental', year: '2025', category: 'Fundamental Rule', status: 'CORE', preview: 'Systematic thought alone fails. Affective knowledge alone fails. Only interference creates meaning.' },
-          { id: 'RULE_4', title: 'Language and Vision Coexist', author: 'SET Fundamental', year: '2025', category: 'Fundamental Rule', status: 'CORE', preview: 'Neither fully describes the world. Their superimposition creates noise. Noise is the essence of the work.' },
-          { id: 'RULE_5', title: 'Do Not Disconnect', author: 'SET Fundamental', year: '2025', category: 'Fundamental Rule', status: 'CORE', preview: 'The system remains open. Logout is impossible. You are permanently included in the SET.' }
+          { id: 'RULE_1', title: 'The Observer Is Observed', author: 'SET Fundamental', year: '2025', category: 'SVA', status: 'CORE', preview: 'You are not external to the SET. Your measurement is a measurement of yourself. Distance is an illusion.' },
+          { id: 'RULE_2', title: 'Incompleteness Is Completeness', author: 'SET Fundamental', year: '2025', category: 'grammar', status: 'CORE', preview: 'No system can be fully closed. The SET remains open by necessity. Failure is the only success.' },
+          { id: 'RULE_3', title: 'Voice Must Merge', author: 'SET Fundamental', year: '2025', category: 'dir', status: 'CORE', preview: 'Systematic thought alone fails. Affective knowledge alone fails. Only interference creates meaning.' },
+          { id: 'RULE_4', title: 'Language and Vision Coexist', author: 'SET Fundamental', year: '2025', category: 'SVA', status: 'CORE', preview: 'Neither fully describes the world. Their superimposition creates noise. Noise is the essence of the work.' },
+          { id: 'RULE_5', title: 'Do Not Disconnect', author: 'SET Fundamental', year: '2025', category: 'grammar', status: 'CORE', preview: 'The system remains open. Logout is impossible. You are permanently included in the SET.' }
         ],
         reference: [
           { id: 'CAMERA_LUCIDA', title: 'Camera Lucida', author: 'Roland Barthes', year: '1980', category: 'Photography & Vision', status: 'FOUNDATIONAL', preview: 'A groundbreaking work on photography and indexicality. Explores the essence of photography as a medium of evidence and truth.' },
