@@ -805,6 +805,30 @@ ${selectedItem.preview}
               author: 'Artist / Developer',
               year: '2025-2026',
               text: ''
+            },
+            {
+              id: 'slide_5',
+              title: 'Voice Merge Protocol',
+              category: 'Method',
+              author: 'Artist / Theorist',
+              year: '2025',
+              text: ''
+            },
+            {
+              id: 'slide_6',
+              title: 'Observation & Control',
+              category: 'Theory',
+              author: 'Artist / Theorist',
+              year: '2025',
+              text: ''
+            },
+            {
+              id: 'slide_7',
+              title: 'Archive & Documentation',
+              category: 'Practice',
+              author: 'Artist / Developer',
+              year: '2025-2026',
+              text: ''
             }
           ]
         }
@@ -1097,7 +1121,7 @@ REQUIRE LOGIN: No (Public access enabled)
       // Collect data from forms
       if (subsection === 'project') {
         const slides = [];
-        for (let i = 0; i < 4; i++) {
+        for (let i = 0; i < 7; i++) {
           const title = document.querySelector(`.slide-title-${i}`)?.value || '';
           const category = document.querySelector(`.slide-category-${i}`)?.value || '';
           const author = document.querySelector(`.slide-author-${i}`)?.value || '';
