@@ -631,44 +631,46 @@ html, body { background: #000; color: #39dc00; font-family: 'Courier New', monos
     const contents = {
       project: {
         title: 'Project SET',
-        text: `PROJECT SET - OVERVIEW
-====================================================
-
-[PROJECT_SET_OVERVIEW]
-category: Concept, status: ACTIVE
-
-A cyberpunk-themed visual and textual exploration of the boundaries
-between observer and observed, world and self. Core framework for SET.
-
----
-
-[CORE_CONCEPT]
-category: Philosophy, status: FOUNDATIONAL
-
-Instructions, coerced body, suspended gaze. Archiving the structure
-of photography by halting reproduction. The fundamental thesis.
-
----
-
-[MEASUREMENT_PARADOX]
-category: Theory, status: CORE
-
-Set is the world. I am measuring the perimeter of the set.
-But the scale I hold is already contaminated by the world itself.
-
----
-
-[STRUCTURE_FRAMEWORK]
-category: System Design, status: IMPLEMENTED
-
-6 distinct sections exploring different aspects of SET framework.
-Terminal-based interface. DOS aesthetic. Interactive system.
-
----
-
-STATUS: ACTIVE
-LAST UPDATE: 2026-05-21
-==========================================`
+        isBoard: true,
+        isList: true,
+        items: [
+          {
+            id: 'PROJECT_OVERVIEW',
+            title: 'Project SET Overview',
+            author: 'Artist / Theorist',
+            year: '2025-2026',
+            category: 'Concept',
+            status: 'ACTIVE',
+            preview: 'A cyberpunk-themed visual and textual exploration of the boundaries between observer and observed, world and self. Core framework for SET.'
+          },
+          {
+            id: 'CORE_CONCEPT',
+            title: 'Core Concept',
+            author: 'Artist / Theorist',
+            year: '2025',
+            category: 'Philosophy',
+            status: 'FOUNDATIONAL',
+            preview: 'Instructions, coerced body, suspended gaze. Archiving the structure of photography by halting reproduction. The fundamental thesis.'
+          },
+          {
+            id: 'MEASUREMENT_PARADOX',
+            title: 'Measurement Paradox',
+            author: 'Artist / Theorist',
+            year: '2025',
+            category: 'Theory',
+            status: 'CORE',
+            preview: 'Set is the world. I am measuring the perimeter of the set. But the scale I hold is already contaminated by the world itself.'
+          },
+          {
+            id: 'STRUCTURE_FRAMEWORK',
+            title: 'Structure & Framework',
+            author: 'Artist / Developer',
+            year: '2025-2026',
+            category: 'System Design',
+            status: 'IMPLEMENTED',
+            preview: '6 distinct sections exploring different aspects of SET framework. Terminal-based interface. DOS aesthetic. Interactive system.'
+          }
+        ]
       },
       inclusion: {
         title: 'SET Inclusion',
@@ -965,42 +967,68 @@ REQUIRE LOGIN: No (Public access enabled)
 
       if (content) {
         if (content.isBoard) {
-          // Board format
-          const boardHTML = `
-            <div class="board-header">
-              <span>BOARD: ${content.title.toUpperCase()} (${content.items.length} posts)</span>
-              <button class="new-post-btn" id="newPostBtn">[NEW POST]</button>
-            </div>
-            <div class="board-container">
-              ${content.items.map((item, idx) => `
-                <div class="board-item" data-index="${idx}">
-                  <div class="board-item-header">
-                    <div class="board-item-title">[${item.id || item.title.toUpperCase().replace(/\\s+/g, '_')} - ${item.status || 'REFERENCE'}]</div>
+          // Check if it's a list format
+          if (content.isList) {
+            // List format
+            const listHTML = `
+              <div class="board-header">
+                <span>CONTENTS LIST: ${content.title.toUpperCase()} (${content.items.length} items)</span>
+              </div>
+              <div class="list-container">
+                ${content.items.map((item, idx) => `
+                  <div class="list-item" data-index="${idx}" style="cursor: pointer; padding: 8px 12px; border-bottom: 1px solid #39dc00; transition: background 0.2s;">
+                    <div style="color: #39dc00; font-weight: bold; font-size: 11px;">
+                      [${item.id || item.title.toUpperCase().replace(/\\s+/g, '_')}]
+                    </div>
+                    <div style="color: #39dc00; opacity: 0.7; font-size: 9px; margin-top: 2px;">
+                      category: ${item.category} | status: ${item.status || 'ACTIVE'}
+                    </div>
                   </div>
-                  <div class="board-item-info">
-                    <div class="board-item-from">From: ${item.author}</div>
-                    <div class="board-item-meta-row">Year: ${item.year}</div>
-                    <div class="board-item-meta-row">Category: ${item.category}</div>
-                  </div>
-                  <div class="board-item-message">
-                    <div class="board-item-label">Description:</div>
-                    <div class="board-item-preview">${item.preview}</div>
-                  </div>
-                  <div class="board-item-actions">
-                    <span class="board-item-action">[read_more]</span>
-                    <span class="board-item-action">[close]</span>
-                  </div>
-                </div>
-              `).join('')}
-            </div>
-          `;
-          terminalContent.innerHTML = boardHTML;
+                `).join('')}
+              </div>
+            `;
+            terminalContent.innerHTML = listHTML;
 
-          // Setup new post button
-          setupNewPostModal(section);
+            // Setup list item click handlers
+            setupListItemClickHandlers();
+          } else {
+            // Board format
+            const boardHTML = `
+              <div class="board-header">
+                <span>BOARD: ${content.title.toUpperCase()} (${content.items.length} posts)</span>
+                <button class="new-post-btn" id="newPostBtn">[NEW POST]</button>
+              </div>
+              <div class="board-container">
+                ${content.items.map((item, idx) => `
+                  <div class="board-item" data-index="${idx}">
+                    <div class="board-item-header">
+                      <div class="board-item-title">[${item.id || item.title.toUpperCase().replace(/\\s+/g, '_')} - ${item.status || 'REFERENCE'}]</div>
+                    </div>
+                    <div class="board-item-info">
+                      <div class="board-item-from">From: ${item.author}</div>
+                      <div class="board-item-meta-row">Year: ${item.year}</div>
+                      <div class="board-item-meta-row">Category: ${item.category}</div>
+                    </div>
+                    <div class="board-item-message">
+                      <div class="board-item-label">Description:</div>
+                      <div class="board-item-preview">${item.preview}</div>
+                    </div>
+                    <div class="board-item-actions">
+                      <span class="board-item-action">[read_more]</span>
+                      <span class="board-item-action">[close]</span>
+                    </div>
+                  </div>
+                `).join('')}
+              </div>
+            `;
+            terminalContent.innerHTML = boardHTML;
 
-          // Position items randomly after a brief delay to ensure DOM is ready
-          setTimeout(() => positionBoardItems(), 50);
+            // Setup new post button
+            setupNewPostModal(section);
+
+            // Position items randomly after a brief delay to ensure DOM is ready
+            setTimeout(() => positionBoardItems(), 50);
+          }
         } else {
           // Regular text format
           const contentText = document.getElementById('contentText');
@@ -1136,6 +1164,67 @@ REQUIRE LOGIN: No (Public access enabled)
           draggedItem.style.transition = 'all 0.3s ease 0ms';
           draggedItem = null;
         }
+      });
+    }
+
+    // Setup list item click handlers
+    function setupListItemClickHandlers() {
+      const listItems = document.querySelectorAll('.list-item');
+
+      listItems.forEach((item, idx) => {
+        item.addEventListener('click', () => {
+          // Get current section content
+          const terminalContent = document.querySelector('.terminal-content');
+          const currentContent = terminalContent.innerHTML;
+
+          // Find the data array for current section
+          let currentSection = null;
+          const menuItems = document.querySelectorAll('.menu-item.active');
+          if (menuItems.length > 0) {
+            currentSection = menuItems[0].getAttribute('data-section');
+          }
+
+          if (currentSection && contents[currentSection] && contents[currentSection].items) {
+            const selectedItem = contents[currentSection].items[idx];
+            const detailText = `[${selectedItem.id || selectedItem.title.toUpperCase().replace(/\\s+/g, '_')}]
+Category: ${selectedItem.category}
+Status: ${selectedItem.status}
+Author: ${selectedItem.author}
+Year: ${selectedItem.year}
+
+====================================================
+
+${selectedItem.preview}
+
+====================================================
+
+[BACK]`;
+
+            const contentText = document.getElementById('contentText');
+            contentText.textContent = detailText;
+
+            // Scroll to top
+            const terminalContent = document.querySelector('.terminal-content');
+            if (terminalContent) {
+              terminalContent.scrollTop = 0;
+            }
+
+            // Add back button functionality
+            setTimeout(() => {
+              const backBtn = document.querySelectorAll('.board-item-action, .list-item');
+              // Setup a simple back by reloading the list
+            }, 100);
+          }
+        });
+
+        // Hover effect
+        item.addEventListener('mouseover', () => {
+          item.style.background = 'rgba(57, 220, 0, 0.1)';
+        });
+
+        item.addEventListener('mouseout', () => {
+          item.style.background = 'transparent';
+        });
       });
     }
 
