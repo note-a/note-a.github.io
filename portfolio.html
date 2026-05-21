@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SET IS THE WORLD - PORTFOLIO</title>
+  <title>SET IS THE WORLD - ARCHIVE ADMIN</title>
   <style>
 * { margin: 0; padding: 0; box-sizing: border-box; }
 html, body { background: #000; color: #39dc00; font-family: 'Courier New', monospace; height: 100%; overflow: hidden; }
@@ -207,40 +207,7 @@ html, body { background: #000; color: #39dc00; font-family: 'Courier New', monos
   background: #ff9900;
 }
 
-/* ===== HAMBURGER MENU (MOBILE) ===== */
-.hamburger-btn {
-  display: none;
-  position: fixed;
-  top: 40px;
-  right: 16px;
-  z-index: 1000;
-  background: #39dc00;
-  border: 2px solid #39dc00;
-  color: #000;
-  width: 40px;
-  height: 40px;
-  cursor: pointer;
-  font-size: 24px;
-  padding: 0;
-  align-items: center;
-  justify-content: center;
-}
-
-.hamburger-btn:hover {
-  background: #ff9900;
-  border-color: #ff9900;
-}
-
 /* ===== BOARD STYLE ===== */
-.board-container {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  padding: 0;
-  overflow: hidden;
-  min-height: 400px;
-}
-
 .board-header {
   display: flex;
   justify-content: space-between;
@@ -374,580 +341,63 @@ html, body { background: #000; color: #39dc00; font-family: 'Courier New', monos
   color: #000;
 }
 
-.board-item {
-  position: absolute;
-  border: 2px solid #39dc00;
-  background: #000;
+.list-container {
   padding: 0;
-  color: #39dc00;
-  font-size: 9px;
-  cursor: pointer;
-  box-shadow: 0 0 15px rgba(57, 220, 0, 0.2);
-  width: 240px;
-  opacity: 1;
-  display: flex;
-  flex-direction: column;
 }
 
-.board-item:hover {
-  box-shadow: 0 0 25px rgba(57, 220, 0, 0.5);
-  transform: scale(1.02);
-}
-
-.board-item-header {
-  background: linear-gradient(180deg, #50ff00 0%, #39dc00 100%);
-  color: #000;
-  padding: 6px 8px;
-  font-weight: bold;
-  font-size: 9px;
-  flex-shrink: 0;
-  border-bottom: 3px solid #1a6600;
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.3),
-              0 4px 6px rgba(0, 0, 0, 0.4);
-  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.2);
-}
-
-.board-item-title {
-  word-wrap: break-word;
-  letter-spacing: 0.5px;
-}
-
-.board-item-info {
-  padding: 6px 8px;
-  border-bottom: 1px solid #39dc00;
-  flex-shrink: 0;
-  font-size: 9px;
-}
-
-.board-item-from {
-  color: #39dc00;
-  font-weight: bold;
-  margin-bottom: 2px;
-}
-
-.board-item-meta-row {
-  color: #39dc00;
-  opacity: 0.8;
-  font-size: 9px;
-  margin-bottom: 1px;
-}
-
-.board-item-message {
-  padding: 6px 8px;
-  flex: 1;
-  border-bottom: 1px solid #39dc00;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  min-height: 0;
-}
-
-.board-item-label {
-  font-weight: bold;
-  color: #39dc00;
-  font-size: 8px;
-  margin-bottom: 3px;
-  text-transform: uppercase;
-}
-
-.board-item-preview {
-  font-size: 9px;
-  line-height: 1.3;
-  opacity: 0.8;
-  word-wrap: break-word;
-  overflow: hidden;
-  flex: 1;
-}
-
-.board-item-actions {
-  padding: 4px 8px;
-  display: flex;
-  gap: 6px;
-  flex-shrink: 0;
-  justify-content: flex-start;
-}
-
-.board-item-action {
-  color: #39dc00;
-  cursor: pointer;
-  font-size: 8px;
-  font-weight: bold;
-  text-transform: uppercase;
-  padding: 2px 4px;
-  border: 1px solid #39dc00;
-  transition: all 0.2s;
-}
-
-.board-item-action:hover {
-  background: #39dc00;
-  color: #000;
-}
-
-/* ===== DETAIL VIEW STYLE ===== */
-.detail-view {
-  padding: 0;
-  overflow: hidden;
-}
-
-.detail-header {
-  border: 2px solid #39dc00;
-  border-bottom: none;
-  background: #000;
-  padding: 8px 12px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  color: #39dc00;
-  font-size: 11px;
-  font-weight: bold;
-}
-
-.detail-time {
-  color: #39dc00;
-  font-size: 9px;
-  margin-bottom: 8px;
-}
-
-.detail-content {
-  border: 2px solid #39dc00;
-  background: #000;
-  color: #39dc00;
-  padding: 12px;
-  overflow-y: auto;
-  flex: 1;
-  font-size: 10px;
-  line-height: 1.6;
-  font-family: 'Courier New', monospace;
-}
-
-.detail-info-table {
-  margin-bottom: 12px;
-  border: 1px dashed #39dc00;
-  width: 100%;
-}
-
-.detail-info-row {
-  display: flex;
-  border-bottom: 1px dashed #39dc00;
-}
-
-.detail-info-row:last-child {
-  border-bottom: none;
-}
-
-.detail-info-label {
-  width: 120px;
-  padding: 4px 8px;
-  border-right: 1px dashed #39dc00;
-  font-weight: bold;
-  color: #39dc00;
-}
-
-.detail-info-value {
-  flex: 1;
-  padding: 4px 8px;
-  color: #39dc00;
-}
-
-.detail-divider {
-  height: 1px;
-  background: repeating-linear-gradient(90deg, #39dc00 0px, #39dc00 2px, transparent 2px, transparent 4px);
-  margin: 12px 0;
-}
-
-.detail-preview {
-  background: rgba(57, 220, 0, 0.05);
-  border: 1px solid #39dc00;
-  padding: 8px;
-  margin: 8px 0;
-  white-space: pre-wrap;
-  word-wrap: break-word;
-}
-
-.detail-footer {
-  border: 2px solid #39dc00;
-  border-top: none;
-  background: #000;
-  padding: 6px 12px;
-  color: #39dc00;
-  font-size: 9px;
-  display: flex;
-  justify-content: space-between;
-}
-
-/* ===== PHOTO ARCHIVE STYLES ===== */
-.archive-search-bar {
-  display: flex;
-  gap: 6px;
-  padding: 8px 0;
-  border-bottom: 1px solid #39dc00;
-  margin-bottom: 8px;
-}
-
-.archive-search-input {
-  flex: 1;
-  background: #000;
-  border: 1px solid #39dc00;
-  color: #39dc00;
-  padding: 6px 8px;
-  font-family: 'Courier New', monospace;
-  font-size: 10px;
-  outline: none;
-}
-
-.archive-search-input:focus {
-  box-shadow: 0 0 10px rgba(57, 220, 0, 0.5);
-}
-
-.archive-search-btn {
-  background: #39dc00;
-  color: #000;
-  border: 1px solid #39dc00;
-  padding: 6px 12px;
-  font-size: 10px;
-  font-weight: bold;
-  cursor: pointer;
-  transition: all 0.2s;
-}
-
-.archive-search-btn:hover {
-  background: #ff9900;
-  border-color: #ff9900;
-}
-
-.photo-gallery {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-  gap: 10px;
-  overflow-y: auto;
-  max-height: calc(100% - 50px);
-}
-
-.photo-item {
-  border: 2px solid #39dc00;
-  background: #000;
-  cursor: pointer;
-  transition: all 0.2s;
-  display: flex;
-  flex-direction: column;
-  min-height: 150px;
-}
-
-.photo-item:hover {
-  box-shadow: 0 0 15px rgba(57, 220, 0, 0.5);
-  background: rgba(57, 220, 0, 0.1);
-}
-
-.photo-item-image {
-  flex: 1;
-  background: #111;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-bottom: 1px solid #39dc00;
-  color: #39dc00;
-  font-size: 11px;
-  overflow: hidden;
-}
-
-.photo-item-image img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.photo-item-info {
-  padding: 6px 8px;
-  font-size: 9px;
-}
-
-.photo-item-title {
-  font-weight: bold;
-  color: #39dc00;
-  margin-bottom: 2px;
-}
-
-.photo-item-keywords {
-  color: #39dc00;
-  opacity: 0.7;
-  font-size: 8px;
-  word-break: break-word;
-}
-
-.no-results {
-  padding: 20px;
-  text-align: center;
-  color: #39dc00;
-  font-size: 11px;
-}
-
-/* Photo Detail Modal */
-.photo-detail-modal {
-  display: none;
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.9);
-  z-index: 3000;
-  align-items: center;
-  justify-content: center;
-}
-
-.photo-detail-modal.active {
-  display: flex;
-}
-
-.photo-detail-content {
-  background: #000;
-  border: 2px solid #39dc00;
-  padding: 0;
-  max-width: 600px;
-  width: 90%;
-  max-height: 80vh;
-  display: flex;
-  flex-direction: column;
-  box-shadow: 0 0 30px rgba(57, 220, 0, 0.3);
-}
-
-.photo-detail-header {
-  background: #39dc00;
-  color: #000;
-  padding: 8px 12px;
-  font-weight: bold;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-size: 11px;
-}
-
-.photo-detail-close {
-  cursor: pointer;
-  font-weight: bold;
-  font-size: 16px;
-}
-
-.photo-detail-image-container {
-  background: #111;
-  padding: 20px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  max-height: 400px;
-  overflow: hidden;
-}
-
-.photo-detail-image-container img {
-  max-width: 100%;
-  max-height: 100%;
-  object-fit: contain;
-}
-
-.photo-detail-info {
-  padding: 12px;
-  border-top: 1px solid #39dc00;
-  overflow-y: auto;
-  color: #39dc00;
-  font-size: 10px;
-}
-
-.photo-detail-title {
-  font-weight: bold;
-  font-size: 12px;
-  margin-bottom: 8px;
-}
-
-.photo-detail-description {
-  line-height: 1.5;
-  margin-bottom: 8px;
-}
-
-.photo-detail-keywords {
-  border-top: 1px dashed #39dc00;
-  padding-top: 8px;
-  font-size: 9px;
-}
-
-.photo-detail-keywords-label {
-  font-weight: bold;
-  margin-bottom: 4px;
-}
-
-.photo-detail-keywords-list {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 4px;
-}
-
-.photo-keyword-tag {
-  background: rgba(57, 220, 0, 0.2);
-  border: 1px solid #39dc00;
-  padding: 2px 6px;
-  font-size: 8px;
-}
-
-/* ===== MOBILE LAYOUT STYLES ===== */
-#mobile-layout {
-  display: none;
-  width: 100%;
-  height: 100vh;
-  flex-direction: column;
-  background: #000;
-}
-
-.mobile-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background: #39dc00;
-  color: #000;
-  padding: 10px 12px;
-  font-weight: bold;
-  font-size: 13px;
-  height: auto;
-  border-bottom: 2px solid #39dc00;
-}
-
-.mobile-header-left {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.mobile-menu-toggle {
-  background: #39dc00;
-  color: #000;
-  border: none;
-  width: 32px;
-  height: 32px;
-  font-size: 18px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.mobile-header-title {
-  font-size: 12px;
-  font-weight: bold;
-}
-
-.mobile-terminal {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  border: none;
-  background: #000;
-  overflow: hidden;
-  min-height: 0;
-}
-
-.mobile-terminal-titlebar {
-  background: #39dc00;
-  color: #000;
-  padding: 6px 10px;
-  font-weight: bold;
-  font-size: 12px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  border-bottom: 1px solid #39dc00;
-}
-
-.mobile-terminal-content {
-  flex: 1;
-  padding: 12px;
-  overflow-y: auto;
-  background: #000;
-  color: #39dc00;
-  font-size: 11px;
-  line-height: 1.6;
-  min-height: 0;
-}
-
-.mobile-terminal-statusbar {
-  padding: 8px 12px;
-  border-top: 1px solid #39dc00;
-  background: #000;
-  color: #39dc00;
-  font-size: 10px;
-  display: flex;
-  justify-content: space-between;
-}
-
-.mobile-menu-drawer {
-  display: none;
-  position: fixed;
-  left: 0;
-  top: 32px;
-  width: 100%;
-  height: calc(100vh - 32px);
-  background: rgba(0, 0, 0, 0.8);
-  z-index: 1000;
-}
-
-.mobile-menu-drawer.active {
-  display: block;
-}
-
-.mobile-menu-list {
-  position: absolute;
-  left: 0;
-  top: 0;
-  width: 220px;
-  height: 100%;
-  background: #000;
-  border-right: 2px solid #39dc00;
-  display: flex;
-  flex-direction: column;
-  overflow-y: auto;
-}
-
-.mobile-menu-item {
-  padding: 12px;
-  border-bottom: 1px solid #39dc00;
-  cursor: pointer;
-  color: #39dc00;
-  font-size: 11px;
-  background: #000;
-  text-align: center;
-  font-weight: bold;
-  transition: all 0.1s;
-}
-
-.mobile-menu-item:hover {
-  background: #39dc00;
-  color: #000;
-}
-
-.mobile-menu-item.active {
-  background: #39dc00;
-  color: #000;
-}
-
-/* ===== DESKTOP LAYOUT STYLES (default) ===== */
-#desktop-layout {
-  display: flex;
-  width: 100%;
-  height: calc(100vh - 32px);
-  margin-top: 32px;
+@media (max-width: 768px) {
+  .portfolio-container {
+    gap: 0;
+    padding: 0;
+    align-items: flex-start;
+    justify-content: flex-start;
+  }
+
+  .portfolio-window {
+    width: 100%;
+    max-width: 100%;
+    height: calc(100vh - 32px);
+    gap: 0;
+  }
+
+  .menu-section {
+    position: fixed;
+    left: -240px;
+    top: 32px;
+    width: 240px;
+    height: calc(100vh - 32px);
+    z-index: 500;
+    transition: left 0.3s ease;
+  }
+
+  .menu-section.mobile-active {
+    left: 0;
+  }
+
+  .terminal-section {
+    width: 100%;
+  }
+
+  .terminal-content {
+    font-size: 11px;
+  }
+
+  .menu-item {
+    padding: 10px;
+    font-size: 11px;
+  }
 }
   </style>
 </head>
 <body>
-  <div class="top-banner">&gt;&gt;&gt; FATAL_BREACH_DETECTED : SYSTEM KERNEL COMPROMISED. DO NOT DISCONNECT. TRACING... &lt;&lt;&lt;</div>
+  <div class="top-banner">&gt;&gt;&gt; ARCHIVE ADMIN - HIDDEN WORKSPACE &lt;&lt;&lt;</div>
 
-  <!-- DESKTOP LAYOUT -->
-  <div id="desktop-layout">
-    <button class="hamburger-btn" id="hamburgerBtn">☰</button>
-
-    <div class="portfolio-container">
-      <div class="portfolio-window">
+  <div class="portfolio-container">
+    <div class="portfolio-window">
       <!-- LEFT: MENU SECTION -->
       <div class="menu-section" id="menuSection">
       <div class="menu-titlebar">
-        Project SET
+        ARCHIVE ADMIN
         <div class="menu-icons">
           <div class="menu-icon">_</div>
           <div class="menu-icon">□</div>
@@ -956,25 +406,22 @@ html, body { background: #000; color: #39dc00; font-family: 'Courier New', monos
       </div>
 
       <div class="menu-list">
-        <div class="menu-item active" data-section="project">SET</div>
-        <div class="menu-item" data-section="inclusion">SET Inclusion</div>
-        <div class="menu-item" data-section="archive">Archive</div>
-        <div class="menu-item" data-section="intro">Intro text</div>
-        <div class="menu-item" data-section="rule">rule</div>
-        <div class="menu-item" data-section="reference">reference</div>
-        <div class="menu-item" data-section="video">video archive</div>
+        <div class="menu-item active" data-section="portfolio-edit">포트폴리오 편집</div>
+        <div class="menu-item" data-section="drafts">작업중</div>
+        <div class="menu-item" data-section="completed">완성</div>
+        <div class="menu-item" data-section="archived">보관함</div>
       </div>
 
       <div class="menu-statusbar">
-        <span>7 Files</span>
-        <span>SELECT FILE</span>
+        <span>ADMIN MODE</span>
+        <span>HIDDEN</span>
       </div>
     </div>
 
     <!-- RIGHT: TERMINAL SECTION -->
     <div class="terminal-section">
       <div class="terminal-titlebar">
-        TERMINAL CONTENT VIEWER
+        ARCHIVE WORKSPACE
         <div class="terminal-icons">
           <div class="terminal-icon">_</div>
           <div class="terminal-icon">□</div>
@@ -987,68 +434,28 @@ html, body { background: #000; color: #39dc00; font-family: 'Courier New', monos
       </div>
 
       <div class="terminal-statusbar">
-        <span>STATUS: LOADED</span>
-        <span>SIZE: DYNAMIC</span>
+        <span>STATUS: ADMIN</span>
+        <span>MODE: WRITE</span>
       </div>
       </div>
     </div>
-  </div>
-  </div>
-  <!-- END DESKTOP LAYOUT -->
 
-  <!-- MOBILE LAYOUT -->
-  <div id="mobile-layout">
-    <div class="mobile-header">
-      <div class="mobile-header-left">
-        <button class="mobile-menu-toggle" id="mobileMenuToggle">☰</button>
-        <div class="mobile-header-title" id="mobileTitle">SET</div>
+    <!-- PORTFOLIO EDIT SECTION -->
+    <div id="portfolio-edit-section" style="display: none; flex: 1; overflow: hidden; display: flex; flex-direction: column; border: 2px solid #39dc00; background: #000; margin-left: 12px;">
+      <div style="background: #39dc00; color: #000; padding: 6px 10px; font-weight: bold; font-size: 12px;">PORTFOLIO EDIT</div>
+      <div style="padding: 12px; border-bottom: 1px solid #39dc00; display: flex; gap: 8px; overflow-x: auto; flex-shrink: 0;">
+        <button class="portfolio-subsection-tab active" data-subsection="project" onclick="loadPortfolioEditForm('project')" style="background: #39dc00; color: #000; border: 1px solid #39dc00; padding: 6px 12px; cursor: pointer; font-weight: bold; font-size: 10px;">PROJECT</button>
+        <button class="portfolio-subsection-tab" data-subsection="inclusion" onclick="loadPortfolioEditForm('inclusion')" style="background: #000; color: #39dc00; border: 1px solid #39dc00; padding: 6px 12px; cursor: pointer; font-weight: bold; font-size: 10px;">INCLUSION</button>
+        <button class="portfolio-subsection-tab" data-subsection="intro" onclick="loadPortfolioEditForm('intro')" style="background: #000; color: #39dc00; border: 1px solid #39dc00; padding: 6px 12px; cursor: pointer; font-weight: bold; font-size: 10px;">INTRO</button>
+        <button class="portfolio-subsection-tab" data-subsection="rule" onclick="loadPortfolioEditForm('rule')" style="background: #000; color: #39dc00; border: 1px solid #39dc00; padding: 6px 12px; cursor: pointer; font-weight: bold; font-size: 10px;">RULE</button>
+        <button class="portfolio-subsection-tab" data-subsection="reference" onclick="loadPortfolioEditForm('reference')" style="background: #000; color: #39dc00; border: 1px solid #39dc00; padding: 6px 12px; cursor: pointer; font-weight: bold; font-size: 10px;">REFERENCE</button>
+        <button class="portfolio-subsection-tab" data-subsection="video" onclick="loadPortfolioEditForm('video')" style="background: #000; color: #39dc00; border: 1px solid #39dc00; padding: 6px 12px; cursor: pointer; font-weight: bold; font-size: 10px;">VIDEO</button>
+        <button class="portfolio-subsection-tab" data-subsection="archive" onclick="loadPortfolioEditForm('archive')" style="background: #000; color: #39dc00; border: 1px solid #39dc00; padding: 6px 12px; cursor: pointer; font-weight: bold; font-size: 10px;">ARCHIVE</button>
       </div>
-    </div>
-
-    <div class="mobile-menu-drawer" id="mobileMenuDrawer">
-      <div class="mobile-menu-list" id="mobileMenuList">
-        <div class="mobile-menu-item active" data-section="project">SET</div>
-        <div class="mobile-menu-item" data-section="inclusion">SET Inclusion</div>
-        <div class="mobile-menu-item" data-section="archive">Archive</div>
-        <div class="mobile-menu-item" data-section="intro">Intro text</div>
-        <div class="mobile-menu-item" data-section="rule">rule</div>
-        <div class="mobile-menu-item" data-section="reference">reference</div>
-        <div class="mobile-menu-item" data-section="video">video archive</div>
-      </div>
-    </div>
-
-    <div class="mobile-terminal">
-      <div class="mobile-terminal-titlebar">
-        TERMINAL VIEWER
-      </div>
-      <div class="mobile-terminal-content" id="mobileTerminalContent">
-        <pre id="mobileContentText"></pre>
-      </div>
-      <div class="mobile-terminal-statusbar">
-        <span>STATUS: LOADED</span>
-        <span>SIZE: DYNAMIC</span>
-      </div>
-    </div>
-  </div>
-  <!-- END MOBILE LAYOUT -->
-
-  <!-- Photo Detail Modal -->
-  <div class="photo-detail-modal" id="photoDetailModal">
-    <div class="photo-detail-content">
-      <div class="photo-detail-header">
-        <span id="photoDetailTitle">PHOTO DETAIL</span>
-        <span class="photo-detail-close" id="photoDetailClose">✕</span>
-      </div>
-      <div class="photo-detail-image-container" id="photoDetailImageContainer">
-        <img id="photoDetailImage" src="" alt="Photo">
-      </div>
-      <div class="photo-detail-info" id="photoDetailInfo">
-        <div class="photo-detail-title" id="photoDetailName"></div>
-        <div class="photo-detail-description" id="photoDetailDesc"></div>
-        <div class="photo-detail-keywords">
-          <div class="photo-detail-keywords-label">측정 키워드</div>
-          <div class="photo-detail-keywords-list" id="photoDetailKeywords"></div>
-        </div>
+      <div id="portfolio-edit-content" style="flex: 1; overflow-y: auto; padding: 12px; background: #000; color: #39dc00; font-size: 11px;"></div>
+      <div style="padding: 12px; border-top: 1px solid #39dc00; display: flex; gap: 8px; flex-shrink: 0; background: #000;">
+        <button id="portfolio-save-btn" style="background: #39dc00; color: #000; border: 1px solid #39dc00; padding: 8px 16px; cursor: pointer; font-weight: bold; font-size: 10px;">SAVE</button>
+        <button id="portfolio-reset-btn" style="background: #ff3333; color: #000; border: 1px solid #ff3333; padding: 8px 16px; cursor: pointer; font-weight: bold; font-size: 10px;">RESET</button>
       </div>
     </div>
   </div>
@@ -1056,11 +463,11 @@ html, body { background: #000; color: #39dc00; font-family: 'Courier New', monos
   <!-- Write Post Modal -->
   <div class="modal-overlay" id="writeModal">
     <div class="modal-content">
-      <div class="modal-title">NEW POST - WRITE MESSAGE</div>
+      <div class="modal-title">NEW ARCHIVE POST - ADMIN</div>
       <form id="postForm">
         <div class="form-group">
           <label for="postTitle">Title / ID</label>
-          <input type="text" id="postTitle" required placeholder="e.g., MY_WORK_TITLE">
+          <input type="text" id="postTitle" required placeholder="e.g., MY_DRAFT_TITLE">
         </div>
         <div class="form-group">
           <label for="postAuthor">Author / From</label>
@@ -1072,155 +479,374 @@ html, body { background: #000; color: #39dc00; font-family: 'Courier New', monos
         </div>
         <div class="form-group">
           <label for="postCategory">Category</label>
-          <input type="text" id="postCategory" placeholder="e.g., Philosophy & Theory">
+          <input type="text" id="postCategory" placeholder="e.g., Draft">
         </div>
         <div class="form-group">
           <label for="postStatus">Status</label>
-          <input type="text" id="postStatus" placeholder="e.g., PUBLISHED">
+          <input type="text" id="postStatus" placeholder="DRAFT / COMPLETED">
         </div>
         <div class="form-group">
-          <label for="postPreview">Description / Preview</label>
-          <textarea id="postPreview" required placeholder="Write your post content here..."></textarea>
+          <label for="postSection">발행할 섹션</label>
+          <select id="postSection" style="background: #000; border: 1px solid #39dc00; color: #39dc00; padding: 6px 8px; font-family: 'Courier New', monospace; font-size: 10px; outline: none;">
+            <option value="">-- 섹션 선택 --</option>
+            <option value="project">SET</option>
+            <option value="inclusion">SET Inclusion</option>
+            <option value="archive">Archive</option>
+            <option value="intro">Intro text</option>
+            <option value="rule">rule</option>
+            <option value="reference">reference</option>
+            <option value="video">video archive</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="postPreview">Description / Content</label>
+          <textarea id="postPreview" required placeholder="Write your draft content here..."></textarea>
         </div>
         <div class="modal-buttons">
           <button type="button" class="modal-btn cancel" id="cancelBtn">CANCEL</button>
-          <button type="submit" class="modal-btn">POST</button>
+          <button type="submit" class="modal-btn">SAVE</button>
         </div>
       </form>
     </div>
   </div>
 
   <script>
-    // ===== VIEWPORT DETECTION AND LAYOUT SWITCHING =====
-    function detectAndSwitchLayout() {
-      const isMobile = window.innerWidth <= 768;
-      const desktopLayout = document.getElementById('desktop-layout');
-      const mobileLayout = document.getElementById('mobile-layout');
+    // Archive storage
+    const archiveData = {
+      drafts: {
+        title: '작업중',
+        items: []
+      },
+      completed: {
+        title: '완성',
+        items: []
+      },
+      archived: {
+        title: '보관함',
+        items: []
+      }
+    };
 
-      if (isMobile) {
-        desktopLayout.style.display = 'none';
-        mobileLayout.style.display = 'flex';
-      } else {
-        desktopLayout.style.display = 'flex';
-        mobileLayout.style.display = 'none';
+    // Load data from localStorage
+    function loadArchiveData() {
+      const saved = localStorage.getItem('archiveData');
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        archiveData.drafts.items = parsed.drafts || [];
+        archiveData.completed.items = parsed.completed || [];
+        archiveData.archived.items = parsed.archived || [];
       }
     }
 
-    // Detect layout on initial load
-    window.addEventListener('load', detectAndSwitchLayout);
+    // Save data to localStorage
+    function saveArchiveData() {
+      localStorage.setItem('archiveData', JSON.stringify({
+        drafts: archiveData.drafts.items,
+        completed: archiveData.completed.items,
+        archived: archiveData.archived.items
+      }));
+    }
 
-    // Re-detect on window resize
-    window.addEventListener('resize', detectAndSwitchLayout);
+    // Initialize
+    loadArchiveData();
 
-    // ===== SLIDESHOW VARIABLES =====
-    let currentSlideIndex = 0;
-    let currentSlides = [];
+    // Portfolio data storage
+    let portfolioEditData = {};
 
-    // ===== CONTENT DATA AND FUNCTIONS =====
-    // Content data for all sections
-    const contents = {
-      project: {
-        title: 'Project SET',
-        isSlideshow: true,
-        slides: [
-          {
-            id: 'slide_1',
-            title: 'Project SET Overview',
-            category: 'Concept',
-            author: 'Artist / Theorist',
-            year: '2025-2026',
-            text: `A cyberpunk-themed visual and textual exploration of the boundaries between observer and observed, world and self. Core framework for SET.
+    // Load portfolio data from storage
+    function loadPortfolioData() {
+      const saved = localStorage.getItem('adminContents');
+      if (saved) {
+        portfolioEditData = JSON.parse(saved);
+      }
+    }
 
-This project operates as a comprehensive investigation into measurement, perception, and the paradox of the observer being part of the observed system. Through visual and textual intervention, SET proposes that the act of measurement inherently contaminates the measuring instrument (in this case, us).
+    // Load content
+    function loadContent(section) {
+      const terminalContent = document.getElementById('terminalContent');
+      const portfolioEditSection = document.getElementById('portfolio-edit-section');
+      const terminalSection = document.querySelector('.terminal-section');
 
-STATUS: ACTIVE
-FRAMEWORK: 6 distinct sections exploring different aspects of SET
-INTERFACE: Terminal-based with DOS aesthetic`
-          },
-          {
-            id: 'slide_2',
-            title: 'Core Concept',
-            category: 'Philosophy',
-            author: 'Artist / Theorist',
-            year: '2025',
-            text: `Instructions, coerced body, suspended gaze. Archiving the structure of photography by halting reproduction. The fundamental thesis.
+      if (section === 'portfolio-edit') {
+        // Show portfolio edit UI
+        if (terminalSection) terminalSection.style.display = 'none';
+        if (portfolioEditSection) portfolioEditSection.style.display = 'flex';
+        loadPortfolioEditForm('project');
+        return;
+      }
 
-The core concept rests on three pillars:
-- Instructions: Systems of control embedded in visual culture
-- Coerced Body: We are not free agents in the SET; we are part of its structure
-- Suspended Gaze: Vision is held in abeyance; we cannot see clearly from within
+      // Hide portfolio edit UI
+      if (terminalSection) terminalSection.style.display = 'flex';
+      if (portfolioEditSection) portfolioEditSection.style.display = 'none';
 
-METHODOLOGY: Textual and visual exploration through interference and superimposition`
-          },
-          {
-            id: 'slide_3',
-            title: 'Measurement Paradox',
-            category: 'Theory',
-            author: 'Artist / Theorist',
-            year: '2025',
-            text: `Set is the world. I am measuring the perimeter of the set. But the scale I hold is already contaminated by the world itself.
+      const content = archiveData[section];
 
-This paradox forms the central tension of the work. Any attempt to measure or define the boundaries of the SET is itself already infected by the SET's logic. The measuring tool is not neutral; it is part of what is being measured.
+      if (content) {
+        // List format
+        const listHTML = `
+          <div style="display: flex; flex-direction: column; height: 100%; padding: 0; margin: -12px;">
+            <div style="padding: 8px 0; border-bottom: 1px solid #39dc00; background: #000; color: #39dc00; font-size: 9px; flex-shrink: 0; display: flex;">
+              <div style="flex: 1; padding: 0 12px; font-weight: bold; border-right: 1px solid #39dc00;">ID</div>
+              <div style="width: 150px; padding: 0 12px; font-weight: bold; border-right: 1px solid #39dc00;">CATEGORY</div>
+              <div style="width: 100px; padding: 0 12px; font-weight: bold;">STATUS</div>
+            </div>
+            <div style="flex: 1; overflow-y: auto; background: #000; min-height: 0;">
+              ${content.items.map((item, idx) => `
+                <div class="list-item" data-index="${idx}" style="cursor: pointer; display: flex; border-bottom: 1px dashed #39dc00; transition: background 0.2s; padding: 0;">
+                  <div style="flex: 1; padding: 6px 12px; color: #39dc00; font-size: 9px; border-right: 1px solid #39dc00; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                    ${item.id || item.title.toUpperCase().replace(/\\s+/g, '_')}
+                  </div>
+                  <div style="width: 150px; padding: 6px 12px; color: #39dc00; font-size: 9px; border-right: 1px solid #39dc00; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                    ${item.category}
+                  </div>
+                  <div style="width: 100px; padding: 6px 12px; color: #39dc00; font-size: 9px;">
+                    ${item.status || 'DRAFT'}
+                  </div>
+                </div>
+              `).join('')}
+            </div>
+            <div style="padding: 8px 12px; border-top: 1px solid #39dc00; background: #000; color: #39dc00; font-size: 9px; display: flex; justify-content: space-between;">
+              <span>TOTAL: ${content.items.length}</span>
+              <button class="new-post-btn" id="newPostBtn" style="font-size: 9px; padding: 2px 6px;">[NEW]</button>
+            </div>
+          </div>
+        `;
+        terminalContent.innerHTML = listHTML;
 
-OBSERVATION: The observer is observed
-IMPLICATION: Distance is an illusion
-RESOLUTION: The incompleteness is precisely the world`
-          },
-          {
-            id: 'slide_4',
-            title: 'Structure & Framework',
-            category: 'System Design',
-            author: 'Artist / Developer',
-            year: '2025-2026',
-            text: `6 distinct sections exploring different aspects of SET framework. Terminal-based interface. DOS aesthetic. Interactive system.
+        // Setup new post button
+        setupNewPostModal(section);
 
-TECHNICAL IMPLEMENTATION:
-- JavaScript-based viewport detection for responsive layout
-- Real-time content loading and dynamic rendering
-- Archive administration system with publishing workflow
-- Photo search and display functionality
-- Cross-section content publishing system
-- localStorage integration for persistent data
+        // Setup list item click handlers
+        setTimeout(() => setupListItemClickHandlers(section), 50);
+      }
+    }
 
-VISUAL LANGUAGE:
-- Terminal/DOS aesthetic with #39dc00 green color scheme
-- Monospace typography (Courier New)
-- Grid and flexbox layouts
-- Minimal visual hierarchy through border and spacing
-- Responsive mobile/desktop layout separation`
+    // Setup new post modal
+    function setupNewPostModal(section) {
+      const modal = document.getElementById('writeModal');
+      const newPostBtn = document.getElementById('newPostBtn');
+      const cancelBtn = document.getElementById('cancelBtn');
+      const postForm = document.getElementById('postForm');
+
+      if (!newPostBtn) return;
+
+      newPostBtn.addEventListener('click', () => {
+        modal.classList.add('active');
+        document.getElementById('postTitle').focus();
+      });
+
+      cancelBtn.addEventListener('click', () => {
+        modal.classList.remove('active');
+        postForm.reset();
+      });
+
+      modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+          modal.classList.remove('active');
+          postForm.reset();
+        }
+      });
+
+      postForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+
+        // Get currently active section dynamically
+        const activeMenu = document.querySelector('.menu-item.active');
+        const currentSection = activeMenu ? activeMenu.getAttribute('data-section') : section;
+
+        const newItem = {
+          id: document.getElementById('postTitle').value.toUpperCase().replace(/\\s+/g, '_'),
+          title: document.getElementById('postTitle').value,
+          author: document.getElementById('postAuthor').value,
+          year: document.getElementById('postYear').value || new Date().getFullYear(),
+          category: document.getElementById('postCategory').value || 'Draft',
+          status: document.getElementById('postStatus').value || 'DRAFT',
+          preview: document.getElementById('postPreview').value,
+          publishedSection: document.getElementById('postSection').value || null
+        };
+
+        archiveData[currentSection].items.push(newItem);
+        saveArchiveData();
+
+        modal.classList.remove('active');
+        postForm.reset();
+        loadContent(currentSection);
+      });
+
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && modal.classList.contains('active')) {
+          modal.classList.remove('active');
+          postForm.reset();
+        }
+      });
+    }
+
+    // Setup list item click handlers
+    function setupListItemClickHandlers(section) {
+      const listItems = document.querySelectorAll('.list-item');
+
+      listItems.forEach((item, idx) => {
+        item.addEventListener('click', () => {
+          const selectedItem = archiveData[section].items[idx];
+          const detailHTML = `[${selectedItem.id}]
+Category: ${selectedItem.category}
+Status: ${selectedItem.status}
+Author: ${selectedItem.author}
+Year: ${selectedItem.year}
+
+====================================================
+
+${selectedItem.preview}
+
+====================================================
+
+[EDIT] [DELETE] [BACK]`;
+
+          const contentText = document.getElementById('contentText');
+          contentText.textContent = detailHTML;
+
+          const terminalContent = document.querySelector('.terminal-content');
+          if (terminalContent) {
+            terminalContent.scrollTop = 0;
           }
-        ]
-      },
-      archive: {
-        title: 'Photo Archive',
-        isArchivePhotos: true,
-        photos: [
-          {
-            id: 'CRASH_001',
-            title: 'CRASH',
-            filename: 'crash.svg',
-            keywords: ['crash', 'wall', 'structure', 'damage', 'decay'],
-            description: 'Measuring the boundaries of collapse. Surface documentation.'
-          },
-          {
-            id: 'FLOATING_002',
-            title: 'FLOATING',
-            filename: 'floating.svg',
-            keywords: ['floating', 'movement', 'displacement', 'object', 'space'],
-            description: 'Object suspended in transit. Scale and distance measurement.'
-          },
-          {
-            id: 'SHADOW_003',
-            title: 'SHADOW',
-            filename: 'shadow.svg',
-            keywords: ['shadow', 'light', 'perception', 'depth', 'detail'],
-            description: 'Close observation of material. Yellow measurement study.'
-          }
-        ]
-      },
-      inclusion: {
-        title: 'SET Inclusion',
-        text: `SET INCLUSION - PARTICIPATION FRAMEWORK
+        });
+
+        item.addEventListener('mouseover', () => {
+          item.style.background = 'rgba(57, 220, 0, 0.1)';
+        });
+
+        item.addEventListener('mouseout', () => {
+          item.style.background = 'transparent';
+        });
+      });
+    }
+
+    // Portfolio Edit Functions
+    function loadPortfolioEditForm(subsection) {
+      const portfolioEditContent = document.getElementById('portfolio-edit-content');
+      loadPortfolioData();
+
+      let formHTML = '';
+
+      if (subsection === 'project') {
+        formHTML = generateProjectSlidesForm();
+      } else if (subsection === 'inclusion' || subsection === 'intro' || subsection === 'video') {
+        formHTML = generateTextForm(subsection);
+      } else if (subsection === 'rule' || subsection === 'reference') {
+        formHTML = generateItemsListForm(subsection);
+      } else if (subsection === 'archive') {
+        formHTML = generateArchivePhotosForm();
+      }
+
+      portfolioEditContent.innerHTML = formHTML;
+
+      // Setup subsection tab clicks
+      const tabs = document.querySelectorAll('.portfolio-subsection-tab');
+      tabs.forEach(tab => {
+        tab.classList.remove('active');
+        if (tab.getAttribute('data-subsection') === subsection) {
+          tab.classList.add('active');
+          tab.style.background = '#39dc00';
+          tab.style.color = '#000';
+        } else {
+          tab.style.background = '#000';
+          tab.style.color = '#39dc00';
+        }
+
+        tab.removeEventListener('click', onSubsectionTabClick);
+        tab.addEventListener('click', onSubsectionTabClick);
+      });
+    }
+
+    function onSubsectionTabClick(e) {
+      const subsection = e.target.getAttribute('data-subsection');
+      loadPortfolioEditForm(subsection);
+    }
+
+    function generateProjectSlidesForm() {
+      // Get slides from portfolio data or use defaults
+      const defaultData = {
+        project: {
+          slides: [
+            {
+              id: 'slide_1',
+              title: 'Project SET Overview',
+              category: 'Concept',
+              author: 'Artist / Theorist',
+              year: '2025-2026',
+              text: ''
+            },
+            {
+              id: 'slide_2',
+              title: 'Core Concept',
+              category: 'Philosophy',
+              author: 'Artist / Theorist',
+              year: '2025',
+              text: ''
+            },
+            {
+              id: 'slide_3',
+              title: 'Measurement Paradox',
+              category: 'Theory',
+              author: 'Artist / Theorist',
+              year: '2025',
+              text: ''
+            },
+            {
+              id: 'slide_4',
+              title: 'Structure & Framework',
+              category: 'System Design',
+              author: 'Artist / Developer',
+              year: '2025-2026',
+              text: ''
+            }
+          ]
+        }
+      };
+
+      const slides = portfolioEditData.project?.slides || defaultData.project.slides;
+
+      let html = '<div style="display: flex; flex-direction: column; gap: 20px;">';
+
+      slides.forEach((slide, idx) => {
+        html += `
+          <div style="border: 1px dashed #39dc00; padding: 12px; margin-bottom: 12px;">
+            <div style="font-weight: bold; margin-bottom: 8px; font-size: 12px;">SLIDE ${idx + 1} / ${slides.length}</div>
+            <div style="display: flex; flex-direction: column; gap: 8px;">
+              <div>
+                <label style="display: block; font-size: 9px; margin-bottom: 4px;">TITLE</label>
+                <input type="text" class="slide-title-${idx}" value="${slide.title}" style="width: 100%; background: #000; border: 1px solid #39dc00; color: #39dc00; padding: 6px; font-family: monospace; font-size: 10px; outline: none; box-sizing: border-box;">
+              </div>
+              <div style="display: flex; gap: 8px;">
+                <div style="flex: 1;">
+                  <label style="display: block; font-size: 9px; margin-bottom: 4px;">CATEGORY</label>
+                  <input type="text" class="slide-category-${idx}" value="${slide.category}" style="width: 100%; background: #000; border: 1px solid #39dc00; color: #39dc00; padding: 6px; font-family: monospace; font-size: 10px; outline: none; box-sizing: border-box;">
+                </div>
+                <div style="flex: 1;">
+                  <label style="display: block; font-size: 9px; margin-bottom: 4px;">AUTHOR</label>
+                  <input type="text" class="slide-author-${idx}" value="${slide.author}" style="width: 100%; background: #000; border: 1px solid #39dc00; color: #39dc00; padding: 6px; font-family: monospace; font-size: 10px; outline: none; box-sizing: border-box;">
+                </div>
+                <div style="flex: 1;">
+                  <label style="display: block; font-size: 9px; margin-bottom: 4px;">YEAR</label>
+                  <input type="text" class="slide-year-${idx}" value="${slide.year}" style="width: 100%; background: #000; border: 1px solid #39dc00; color: #39dc00; padding: 6px; font-family: monospace; font-size: 10px; outline: none; box-sizing: border-box;">
+                </div>
+              </div>
+              <div>
+                <label style="display: block; font-size: 9px; margin-bottom: 4px;">CONTENT TEXT</label>
+                <textarea class="slide-text-${idx}" style="width: 100%; height: 150px; background: #000; border: 1px solid #39dc00; color: #39dc00; padding: 6px; font-family: monospace; font-size: 10px; outline: none; box-sizing: border-box; resize: vertical;">${slide.text}</textarea>
+              </div>
+            </div>
+          </div>
+        `;
+      });
+
+      html += '</div>';
+      return html;
+    }
+
+    function generateTextForm(section) {
+      const defaultTexts = {
+        inclusion: `SET INCLUSION - PARTICIPATION FRAMEWORK
 ====================================================
 
 [WHAT IS INCLUSION?]
@@ -1254,11 +880,8 @@ PORT_02 (HUMAN) : WANDERING / AFFECTIVE
 
 RESOLUTION: BOTH REMAIN INCOMPLETE.
 THIS INCOMPLETENESS IS PRECISELY THE WORLD.
-==========================================`
-      },
-      intro: {
-        title: 'Intro Text',
-        text: `INTRODUCTORY MATERIAL
+==========================================`,
+        intro: `INTRODUCTORY MATERIAL
 ====================================================
 
 [NAVIGATION INSTRUCTIONS]
@@ -1291,169 +914,27 @@ category: Definitions
 - World Remains Open: Do not disconnect
 
 NEXT STEP: Explore the other sections using the menu
-==========================================`
-      },
-      rule: {
-        title: 'Rule',
-        isBoard: true,
-        isList: true,
-        items: [
-          {
-            id: 'RULE_1',
-            title: 'The Observer Is Observed',
-            author: 'SET Fundamental',
-            year: '2025',
-            category: 'Fundamental Rule',
-            status: 'CORE',
-            preview: 'You are not external to the SET. Your measurement is a measurement of yourself. Distance is an illusion.'
-          },
-          {
-            id: 'RULE_2',
-            title: 'Incompleteness Is Completeness',
-            author: 'SET Fundamental',
-            year: '2025',
-            category: 'Fundamental Rule',
-            status: 'CORE',
-            preview: 'No system can be fully closed. The SET remains open by necessity. Failure is the only success.'
-          },
-          {
-            id: 'RULE_3',
-            title: 'Voice Must Merge',
-            author: 'SET Fundamental',
-            year: '2025',
-            category: 'Fundamental Rule',
-            status: 'CORE',
-            preview: 'Systematic thought alone fails. Affective knowledge alone fails. Only interference creates meaning.'
-          },
-          {
-            id: 'RULE_4',
-            title: 'Language and Vision Coexist',
-            author: 'SET Fundamental',
-            year: '2025',
-            category: 'Fundamental Rule',
-            status: 'CORE',
-            preview: 'Neither fully describes the world. Their superimposition creates noise. Noise is the essence of the work.'
-          },
-          {
-            id: 'RULE_5',
-            title: 'Do Not Disconnect',
-            author: 'SET Fundamental',
-            year: '2025',
-            category: 'Fundamental Rule',
-            status: 'CORE',
-            preview: 'The system remains open. Logout is impossible. You are permanently included in the SET.'
-          }
-        ]
-      },
-      reference: {
-        title: 'Reference',
-        isBoard: true,
-        items: [
-          {
-            id: 'CAMERA_LUCIDA',
-            title: 'Camera Lucida',
-            author: 'Roland Barthes',
-            year: '1980',
-            category: 'Photography & Vision',
-            status: 'FOUNDATIONAL',
-            preview: 'A groundbreaking work on photography and indexicality. Explores the essence of photography as a medium of evidence and truth.'
-          },
-          {
-            title: 'On Photography',
-            author: 'Susan Sontag',
-            year: '1977',
-            category: 'Photography & Vision',
-            preview: 'Essays exploring photography as experience and metaphor. Investigates how images shape consciousness and perception.'
-          },
-          {
-            title: 'Towards a Philosophy of Photography',
-            author: 'Vilém Flusser',
-            year: '1983',
-            category: 'Photography & Vision',
-            preview: 'Technical images and apparatus. Examines photography as a form of technical mediation between humans and world.'
-          },
-          {
-            title: 'General System Theory',
-            author: 'Ludwig von Bertalanffy',
-            year: '1968',
-            category: 'Systems & Measurement',
-            preview: 'Foundational text on systems thinking. Provides framework for understanding complex wholes and their properties.'
-          },
-          {
-            title: 'Steps to an Ecology of Mind',
-            author: 'Gregory Bateson',
-            year: '1972',
-            category: 'Systems & Measurement',
-            preview: 'Integration of ideas across disciplines. Explores patterns and relationships in living systems.'
-          },
-          {
-            title: 'A Thousand Plateaus',
-            author: 'Gilles Deleuze & Félix Guattari',
-            year: '1987',
-            category: 'Philosophy & Theory',
-            preview: 'Rhizomatic thinking beyond hierarchy. Challenges linear and arborescent modes of organization.'
-          },
-          {
-            title: 'Gödel, Escher, Bach',
-            author: 'Douglas Hofstadter',
-            year: '1979',
-            category: 'Systems & Measurement',
-            preview: 'Dialogues on consciousness and self-reference. Explores strange loops and tangled hierarchies in art and thought.'
-          },
-          {
-            title: 'The Order of Things',
-            author: 'Michel Foucault',
-            year: '1966',
-            category: 'Philosophy of Self',
-            preview: 'Archaeology of knowledge and systems of classification. Examines how different eras organize understanding.'
-          }
-        ]
-      },
-      video: {
-        title: 'Video Archive',
-        text: `VIDEO ARCHIVE - MOVING IMAGE WORKS
+==========================================`,
+        video: `VIDEO ARCHIVE - DOCUMENTATION SYSTEM
 ====================================================
 
-[PERIMETER (12:34)]
-category: Documentary
+[WHAT IS VIDEO?]
+category: Medium
 
-4K Resolution archive of boundary conditions.
-Systematic visual exploration of spatial measurement and perimeter definition.
+Video as measurement tool. Recording halts time.
+Documentation of the SET's visual progression.
 
-[VOICE MERGE PROTOCOL (08:45)]
-category: Audio-Visual
-
-Two-voice composition exploring real-time interaction between systematic and affective approaches.
-Merges dialogue and image.
-
-[SCALE CONTAMINATED (15:20)]
-category: Experimental
-
-Documentation of measurement failure from multiple perspectives.
-Visual investigation of scale contamination and observer paradox.
-
-[WORLD REMAINS OPEN (UNTITLED)]
-category: Feature
-
-Feature-length exploration of SET boundaries.
-Est. 45 minutes. Target completion: Q3 2026
-
-[INCOMPLETENESS STUDY]
-category: Short Form
-
-Experimental narrative exploration.
-Short form work (5-7 minutes) investigating incompleteness as fundamental principle.
-Est. completion: Q2 2026
-
-[ARCHIVE PRESERVATION SYSTEM]
-category: Documentation
+[ARCHIVE CONTENTS]
+category: Index
 
 All video works preserved in /ARCHIVE/MEDIA/VIDEO/SET_WORLD/
 
 PLAYBACK SYSTEM:
 Use media player integrated with terminal interface.
 
-DISTRIBUTION:
+[DISTRIBUTION]
+category: Access
+
 - Internal archive access
 - Limited external screenings
 - Festival submissions planned
@@ -1461,629 +942,223 @@ DISTRIBUTION:
 STATUS: Archive accessible
 REQUIRE LOGIN: No (Public access enabled)
 ==========================================`
-      }
-    };
+      };
 
-    // Get published posts from archive-admin
-    function getPublishedPosts(section) {
-      try {
-        const archiveData = JSON.parse(localStorage.getItem('archiveData') || '{}');
-        const completed = archiveData.completed || { items: [] };
+      const text = portfolioEditData[section]?.text || defaultTexts[section];
 
-        // Filter items that are published to this section
-        return completed.items.filter(item => item.publishedSection === section) || [];
-      } catch (e) {
-        return [];
-      }
-    }
-
-    // Load admin-edited contents from localStorage
-    function loadAdminContentsFromStorage() {
-      try {
-        const adminContents = JSON.parse(localStorage.getItem('adminContents') || '{}');
-
-        // Merge admin contents with default contents
-        if (adminContents.project) {
-          contents.project = { ...contents.project, ...adminContents.project };
-        }
-        if (adminContents.inclusion) {
-          contents.inclusion = { ...contents.inclusion, ...adminContents.inclusion };
-        }
-        if (adminContents.intro) {
-          contents.intro = { ...contents.intro, ...adminContents.intro };
-        }
-        if (adminContents.rule) {
-          contents.rule = { ...contents.rule, ...adminContents.rule };
-        }
-        if (adminContents.reference) {
-          contents.reference = { ...contents.reference, ...adminContents.reference };
-        }
-        if (adminContents.video) {
-          contents.video = { ...contents.video, ...adminContents.video };
-        }
-        if (adminContents.archive) {
-          contents.archive = { ...contents.archive, ...adminContents.archive };
-        }
-      } catch (e) {
-        console.log('No admin contents in storage or error loading');
-      }
-    }
-
-    // Initialize content display
-    function loadContent(section) {
-      const content = contents[section];
-      const terminalContent = document.getElementById('terminalContent');
-
-      // Get published posts from archive-admin
-      const publishedPosts = getPublishedPosts(section);
-
-      if (content) {
-        if (content.isSlideshow) {
-          // Slideshow format
-          loadSlideshow(content);
-        } else if (content.isArchivePhotos) {
-          // Archive Photos format with search
-          const archiveHTML = `
-            <div style="display: flex; flex-direction: column; height: 100%; padding: 0; margin: -12px;">
-              <div class="archive-search-bar" style="margin: 12px 12px 0 12px;">
-                <input type="text" class="archive-search-input" id="archiveSearchInput" placeholder="Search by keyword: crash, floating, shadow...">
-                <button class="archive-search-btn" id="archiveSearchBtn">SEARCH</button>
-              </div>
-              <div class="photo-gallery" id="photoGallery" style="margin: 12px;"></div>
-            </div>
-          `;
-          terminalContent.innerHTML = archiveHTML;
-
-          // Don't display photos initially - wait for search
-          const gallery = document.getElementById('photoGallery');
-          gallery.innerHTML = '<div class="no-results">검색 키워드를 입력하세요: crash, floating, shadow</div>';
-
-          // Setup search functionality
-          setupPhotoSearch(content.photos);
-        } else if (content.isBoard) {
-          // Check if it's a list format
-          if (content.isList) {
-            // Combine default items with published posts
-            const allItems = [...content.items, ...publishedPosts];
-
-            // List format with table style - no header or footer
-            const listHTML = `
-              <div style="display: flex; flex-direction: column; height: 100%; padding: 0; margin: -12px;">
-                <div style="padding: 8px 0; border-bottom: 1px solid #39dc00; background: #000; color: #39dc00; font-size: 9px; flex-shrink: 0; display: flex;">
-                  <div style="flex: 1; padding: 0 12px; font-weight: bold; border-right: 1px solid #39dc00;">ID</div>
-                  <div style="width: 150px; padding: 0 12px; font-weight: bold; border-right: 1px solid #39dc00;">CATEGORY</div>
-                  <div style="width: 100px; padding: 0 12px; font-weight: bold;">STATUS</div>
-                </div>
-                <div style="flex: 1; overflow-y: auto; background: #000; min-height: 0;">
-                  ${allItems.map((item, idx) => `
-                    <div class="list-item" data-index="${idx}" style="cursor: pointer; display: flex; border-bottom: 1px dashed #39dc00; transition: background 0.2s; padding: 0;">
-                      <div style="flex: 1; padding: 6px 12px; color: #39dc00; font-size: 9px; border-right: 1px solid #39dc00; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
-                        ${item.id || item.title.toUpperCase().replace(/\\s+/g, '_')}
-                      </div>
-                      <div style="width: 150px; padding: 6px 12px; color: #39dc00; font-size: 9px; border-right: 1px solid #39dc00; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
-                        ${item.category}
-                      </div>
-                      <div style="width: 100px; padding: 6px 12px; color: #39dc00; font-size: 9px;">
-                        ${item.status || 'ACTIVE'}
-                      </div>
-                    </div>
-                  `).join('')}
-                </div>
-              </div>
-            `;
-            terminalContent.innerHTML = listHTML;
-
-            // Setup list item click handlers
-            setupListItemClickHandlers();
-          } else {
-            // Board format
-            // Combine default items with published posts
-            const allBoardItems = [...content.items, ...publishedPosts];
-
-            const boardHTML = `
-              <div class="board-header">
-                <span>BOARD: ${content.title.toUpperCase()} (${allBoardItems.length} posts)</span>
-                <button class="new-post-btn" id="newPostBtn">[NEW POST]</button>
-              </div>
-              <div class="board-container">
-                ${allBoardItems.map((item, idx) => `
-                  <div class="board-item" data-index="${idx}">
-                    <div class="board-item-header">
-                      <div class="board-item-title">[${item.id || item.title.toUpperCase().replace(/\\s+/g, '_')} - ${item.status || 'REFERENCE'}]</div>
-                    </div>
-                    <div class="board-item-info">
-                      <div class="board-item-from">From: ${item.author}</div>
-                      <div class="board-item-meta-row">Year: ${item.year}</div>
-                      <div class="board-item-meta-row">Category: ${item.category}</div>
-                    </div>
-                    <div class="board-item-message">
-                      <div class="board-item-label">Description:</div>
-                      <div class="board-item-preview">${item.preview}</div>
-                    </div>
-                    <div class="board-item-actions">
-                      <span class="board-item-action">[read_more]</span>
-                      <span class="board-item-action">[close]</span>
-                    </div>
-                  </div>
-                `).join('')}
-              </div>
-            `;
-            terminalContent.innerHTML = boardHTML;
-
-            // Setup new post button
-            setupNewPostModal(section);
-
-            // Position items randomly after a brief delay to ensure DOM is ready
-            setTimeout(() => positionBoardItems(), 50);
-          }
-        } else {
-          // Regular text format
-          let textHTML = `<pre class="terminal-content-text" id="contentText">${content.text}</pre>`;
-
-          // Add published posts if any
-          if (publishedPosts.length > 0) {
-            textHTML += `
-              <div style="margin-top: 20px; padding-top: 15px; border-top: 1px solid #39dc00; color: #39dc00; font-size: 11px;">
-                <div style="font-weight: bold; margin-bottom: 10px;">최근 게시물:</div>
-                <div style="display: flex; flex-direction: column; gap: 8px;">
-                  ${publishedPosts.map(item => `
-                    <div style="border: 1px solid #39dc00; padding: 8px; font-size: 9px;">
-                      <div style="font-weight: bold;">${item.title}</div>
-                      <div style="opacity: 0.8; font-size: 8px;">By ${item.author} (${item.year})</div>
-                      <div style="margin-top: 4px;">${item.preview.substring(0, 100)}...</div>
-                    </div>
-                  `).join('')}
-                </div>
-              </div>
-            `;
-          }
-
-          terminalContent.innerHTML = textHTML;
-        }
-      }
-    }
-
-    // Position board items in aligned grid
-    function positionBoardItems() {
-      const boardItems = document.querySelectorAll('.board-item');
-      const container = document.querySelector('.board-container');
-
-      if (!container) return;
-
-      const containerWidth = container.offsetWidth;
-      const containerHeight = container.offsetHeight;
-      const itemWidth = 240;
-      const itemHeight = 140;
-      const padding = 15; // Space between items
-      const columns = 3;
-
-      // Calculate grid dimensions
-      const gridX = 20; // Left margin
-      const gridY = 20; // Top margin
-      const totalItemWidth = itemWidth + padding;
-      const totalItemHeight = itemHeight + padding;
-
-      // Indices of cards that should be irregular (only 1-2 cards)
-      const irregularIndices = [3, 5];
-
-      boardItems.forEach((item, index) => {
-        // Calculate row and column
-        const col = index % columns;
-        const row = Math.floor(index / columns);
-
-        // Calculate base position
-        const baseX = gridX + col * totalItemWidth;
-        const baseY = gridY + row * totalItemHeight;
-
-        let x = baseX;
-        let y = baseY;
-
-        // Apply irregular placement only to specific card indices
-        if (irregularIndices.includes(index)) {
-          const offsetX = (Math.random() - 0.5) * 30; // -15 to +15 (larger range)
-          const offsetY = (Math.random() - 0.5) * 20; // -10 to +10 (larger range)
-          x = baseX + offsetX;
-          y = baseY + offsetY;
-
-          // Add slight negative margin for overlap effect
-          item.style.marginLeft = '-12px';
-          item.style.marginTop = '-8px';
-        }
-
-        // Apply styles with animation
-        const randomScale = 0.97 + Math.random() * 0.06;
-        const randomDelay = index * 30;
-
-        item.style.left = x + 'px';
-        item.style.top = y + 'px';
-        item.style.transform = `scale(${randomScale})`;
-        item.style.transition = `all 0.3s ease ${randomDelay}ms`;
-        item.style.opacity = '0';
-
-        // Trigger animation
-        setTimeout(() => {
-          item.style.opacity = '1';
-        }, 10);
-      });
-
-      // Enable dragging for board items
-      enableBoardDragging();
-
-      // Enable card click for viewing details
-      setupBoardItemClickHandlers();
-    }
-
-    // Enable dragging functionality for board items
-    function enableBoardDragging() {
-      const boardItems = document.querySelectorAll('.board-item');
-      let draggedItem = null;
-      let offsetX = 0;
-      let offsetY = 0;
-
-      boardItems.forEach(item => {
-        item.style.cursor = 'grab';
-
-        item.addEventListener('mousedown', (e) => {
-          draggedItem = item;
-          draggedItem.style.cursor = 'grabbing';
-          draggedItem.style.zIndex = '1000';
-
-          // Remove transition for smooth dragging
-          draggedItem.style.transition = 'none';
-
-          const rect = item.getBoundingClientRect();
-          const container = document.querySelector('.board-container');
-          const containerRect = container.getBoundingClientRect();
-
-          offsetX = e.clientX - rect.left;
-          offsetY = e.clientY - rect.top;
-
-          e.preventDefault();
-        });
-      });
-
-      document.addEventListener('mousemove', (e) => {
-        if (!draggedItem) return;
-
-        const container = document.querySelector('.board-container');
-        const containerRect = container.getBoundingClientRect();
-
-        let newX = e.clientX - containerRect.left - offsetX;
-        let newY = e.clientY - containerRect.top - offsetY;
-
-        // Constrain within container
-        newX = Math.max(0, Math.min(newX, containerRect.width - draggedItem.offsetWidth));
-        newY = Math.max(0, Math.min(newY, containerRect.height - draggedItem.offsetHeight));
-
-        // Use requestAnimationFrame for smooth animation
-        requestAnimationFrame(() => {
-          draggedItem.style.left = newX + 'px';
-          draggedItem.style.top = newY + 'px';
-        });
-      });
-
-      document.addEventListener('mouseup', () => {
-        if (draggedItem) {
-          draggedItem.style.cursor = 'grab';
-          draggedItem.style.zIndex = 'auto';
-          // Restore transition for smooth deceleration
-          draggedItem.style.transition = 'all 0.3s ease 0ms';
-          draggedItem = null;
-        }
-      });
-    }
-
-    // Setup list item click handlers
-    function setupListItemClickHandlers() {
-      const listItems = document.querySelectorAll('.list-item');
-
-      listItems.forEach((item, idx) => {
-        item.addEventListener('click', () => {
-          // Find the data array for current section
-          let currentSection = null;
-          const menuItems = document.querySelectorAll('.menu-item.active');
-          if (menuItems.length > 0) {
-            currentSection = menuItems[0].getAttribute('data-section');
-          }
-
-          if (currentSection && contents[currentSection] && contents[currentSection].items) {
-            const selectedItem = contents[currentSection].items[idx];
-            const now = new Date();
-            const timeStr = now.toLocaleString('en-US', {
-              weekday: 'short',
-              year: 'numeric',
-              month: 'short',
-              day: '2-digit',
-              hour: '2-digit',
-              minute: '2-digit',
-              second: '2-digit',
-              hour12: true,
-              timeZoneName: 'short'
-            });
-
-            const detailHTML = `
-              <div class="detail-view">
-                <div class="detail-header">
-                  <span>${currentSection.toUpperCase()}</span>
-                  <span style="color: #39dc00;">${timeStr}</span>
-                </div>
-                <div class="detail-content">
-                  <div class="detail-time">[${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}:${now.getSeconds().toString().padStart(2, '0')} - SYSTEM LOG ENTRY]</div>
-
-                  <div class="detail-info-table">
-                    <div class="detail-info-row">
-                      <div class="detail-info-label">ID</div>
-                      <div class="detail-info-value">${selectedItem.id || selectedItem.title.toUpperCase().replace(/\\s+/g, '_')}</div>
-                    </div>
-                    <div class="detail-info-row">
-                      <div class="detail-info-label">TITLE</div>
-                      <div class="detail-info-value">${selectedItem.title}</div>
-                    </div>
-                    <div class="detail-info-row">
-                      <div class="detail-info-label">AUTHOR</div>
-                      <div class="detail-info-value">${selectedItem.author}</div>
-                    </div>
-                    <div class="detail-info-row">
-                      <div class="detail-info-label">YEAR</div>
-                      <div class="detail-info-value">${selectedItem.year}</div>
-                    </div>
-                    <div class="detail-info-row">
-                      <div class="detail-info-label">CATEGORY</div>
-                      <div class="detail-info-value">${selectedItem.category}</div>
-                    </div>
-                    <div class="detail-info-row">
-                      <div class="detail-info-label">STATUS</div>
-                      <div class="detail-info-value">${selectedItem.status}</div>
-                    </div>
-                  </div>
-
-                  <div class="detail-divider"></div>
-
-                  <div style="margin: 12px 0; color: #39dc00; font-weight: bold;">[CONTENT]</div>
-                  <div class="detail-preview">${selectedItem.preview}</div>
-
-                  <div class="detail-divider"></div>
-
-                  <div style="text-align: center; margin-top: 12px;">
-                    <span style="color: #39dc00; cursor: pointer;" id="backToList">[RETURN TO LIST]</span>
-                  </div>
-                </div>
-                <div class="detail-footer">
-                  <span>STATUS: LOADED | ENTRY TYPE: REFERENCE</span>
-                  <span>SIZE: ${selectedItem.preview.length} BYTES</span>
-                </div>
-              </div>
-            `;
-
-            const terminalContent = document.querySelector('.terminal-content');
-            terminalContent.innerHTML = detailHTML;
-
-            // Setup back button
-            const backBtn = document.getElementById('backToList');
-            if (backBtn) {
-              backBtn.addEventListener('click', () => {
-                loadContent(currentSection);
-              });
-            }
-
-            // Scroll to top
-            if (terminalContent) {
-              terminalContent.scrollTop = 0;
-            }
-          }
-        });
-
-        // Hover effect
-        item.addEventListener('mouseover', () => {
-          item.style.background = 'rgba(0, 255, 255, 0.1)';
-        });
-
-        item.addEventListener('mouseout', () => {
-          item.style.background = 'transparent';
-        });
-      });
-    }
-
-    // Setup board item click handlers
-    function setupBoardItemClickHandlers() {
-      const boardItems = document.querySelectorAll('.board-item');
-
-      boardItems.forEach((item, idx) => {
-        const readMoreBtn = item.querySelector('.board-item-action');
-        const closeBtn = item.querySelectorAll('.board-item-action')[1];
-
-        if (readMoreBtn) {
-          readMoreBtn.addEventListener('click', (e) => {
-            e.stopPropagation();
-            const title = item.querySelector('.board-item-title').textContent;
-            const author = item.querySelector('.board-item-from').textContent;
-            const meta = item.querySelectorAll('.board-item-meta-row');
-            const preview = item.querySelector('.board-item-preview').textContent;
-
-            const detailText = `${title}
-
-${author}
-${meta[0]?.textContent || ''}
-${meta[1]?.textContent || ''}
-
-========================================
-
-${preview}
-
-========================================`;
-
-            const contentText = document.getElementById('contentText');
-            contentText.textContent = detailText;
-
-            // Scroll to top
-            const terminalContent = document.querySelector('.terminal-content');
-            if (terminalContent) {
-              terminalContent.scrollTop = 0;
-            }
-          });
-        }
-
-        if (closeBtn) {
-          closeBtn.addEventListener('click', (e) => {
-            e.stopPropagation();
-            // Just prevent default, the board stays visible
-          });
-        }
-      });
-    }
-
-    // Load slideshow - full screen format
-    function loadSlideshow(content) {
-      currentSlides = content.slides;
-      currentSlideIndex = 0;
-
-      const terminalContent = document.getElementById('terminalContent');
-      const slideshowHTML = `
-        <div class="slideshow-container" style="display: flex; flex-direction: column; height: 100%; padding: 0; margin: -12px;">
-          <div class="slideshow-content" style="flex: 1; overflow-y: auto; padding: 12px; background: #000; display: flex; flex-direction: column; min-height: 0;">
-            <div class="slide-header" style="margin-bottom: 20px; border-bottom: 1px dashed #39dc00; padding-bottom: 12px;">
-              <div class="slide-title" style="font-size: 16px; font-weight: bold; color: #39dc00; margin-bottom: 8px;"></div>
-              <div class="slide-meta" style="font-size: 10px; color: #39dc00; opacity: 0.7;"></div>
-            </div>
-            <div class="slide-text" style="flex: 1; overflow-y: auto;"></div>
-          </div>
-          <div class="slideshow-controls" style="display: flex; justify-content: space-between; align-items: center; padding: 12px; border-top: 1px solid #39dc00; background: #000; flex-shrink: 0;">
-            <button class="slide-prev" style="background: #39dc00; color: #000; border: 1px solid #39dc00; padding: 6px 12px; cursor: pointer; font-weight: bold; font-size: 10px; transition: all 0.2s; font-family: 'Courier New', monospace;">← PREV</button>
-            <span class="slide-counter" style="color: #39dc00; font-size: 10px; font-weight: bold; font-family: 'Courier New', monospace;">1/4</span>
-            <button class="slide-next" style="background: #39dc00; color: #000; border: 1px solid #39dc00; padding: 6px 12px; cursor: pointer; font-weight: bold; font-size: 10px; transition: all 0.2s; font-family: 'Courier New', monospace;">NEXT →</button>
-          </div>
+      return `
+        <div style="display: flex; flex-direction: column; gap: 8px;">
+          <label style="display: block; font-size: 10px; font-weight: bold;">EDIT ${section.toUpperCase()}</label>
+          <textarea class="portfolio-text-${section}" style="width: 100%; height: 400px; background: #000; border: 1px solid #39dc00; color: #39dc00; padding: 8px; font-family: monospace; font-size: 10px; outline: none; box-sizing: border-box; resize: vertical;">${text}</textarea>
         </div>
       `;
-
-      terminalContent.innerHTML = slideshowHTML;
-      displaySlide(0);
-      setupSlideshowControls();
     }
 
-    // Display specific slide
-    function displaySlide(slideIndex) {
-      const slide = currentSlides[slideIndex];
-      document.querySelector('.slide-title').textContent = slide.title;
-      document.querySelector('.slide-meta').textContent = `${slide.category} | ${slide.author} | ${slide.year}`;
-      document.querySelector('.slide-text').innerHTML = `<pre style="white-space: pre-wrap; word-wrap: break-word; margin: 0; color: #39dc00; font-family: 'Courier New', monospace; font-size: 12px; line-height: 1.6;">${slide.text}</pre>`;
-      document.querySelector('.slide-counter').textContent = `${slideIndex + 1}/${currentSlides.length}`;
+    function generateItemsListForm(section) {
+      const defaultItems = {
+        rule: [
+          { id: 'RULE_1', title: 'The Observer Is Observed', author: 'SET Fundamental', year: '2025', category: 'Fundamental Rule', status: 'CORE', preview: 'You are not external to the SET. Your measurement is a measurement of yourself. Distance is an illusion.' },
+          { id: 'RULE_2', title: 'Incompleteness Is Completeness', author: 'SET Fundamental', year: '2025', category: 'Fundamental Rule', status: 'CORE', preview: 'No system can be fully closed. The SET remains open by necessity. Failure is the only success.' },
+          { id: 'RULE_3', title: 'Voice Must Merge', author: 'SET Fundamental', year: '2025', category: 'Fundamental Rule', status: 'CORE', preview: 'Systematic thought alone fails. Affective knowledge alone fails. Only interference creates meaning.' },
+          { id: 'RULE_4', title: 'Language and Vision Coexist', author: 'SET Fundamental', year: '2025', category: 'Fundamental Rule', status: 'CORE', preview: 'Neither fully describes the world. Their superimposition creates noise. Noise is the essence of the work.' },
+          { id: 'RULE_5', title: 'Do Not Disconnect', author: 'SET Fundamental', year: '2025', category: 'Fundamental Rule', status: 'CORE', preview: 'The system remains open. Logout is impossible. You are permanently included in the SET.' }
+        ],
+        reference: [
+          { id: 'CAMERA_LUCIDA', title: 'Camera Lucida', author: 'Roland Barthes', year: '1980', category: 'Photography & Vision', status: 'FOUNDATIONAL', preview: 'A groundbreaking work on photography and indexicality. Explores the essence of photography as a medium of evidence and truth.' },
+          { id: 'ON_PHOTOGRAPHY', title: 'On Photography', author: 'Susan Sontag', year: '1977', category: 'Photography & Vision', status: 'FOUNDATIONAL', preview: 'Essays exploring photography as experience and metaphor. Investigates how images shape consciousness and perception.' },
+          { id: 'PHILOSOPHY_PHOTO', title: 'Towards a Philosophy of Photography', author: 'Vilém Flusser', year: '1983', category: 'Photography & Vision', status: 'FOUNDATIONAL', preview: 'Philosophical inquiry into the nature of photographic images and their role in human perception and culture.' },
+          { id: 'DISCIPLINE_PUNISH', title: 'Discipline and Punish', author: 'Michel Foucault', year: '1975', category: 'Theory', status: 'FOUNDATIONAL', preview: 'Explores systems of observation and control. The concept of panopticon relates directly to the observer paradox in SET.' },
+          { id: 'ORDERS_DISCOURSE', title: 'The Order of Discourse', author: 'Michel Foucault', year: '1971', category: 'Language & Power', status: 'FOUNDATIONAL', preview: 'Examines how language systems structure reality and restrict meaning. Critical for understanding voice merge protocols.' },
+          { id: 'SIGN_IMAGE', title: 'Sign and Image', author: 'Charles Sanders Peirce', year: '1931', category: 'Semiotics', status: 'FOUNDATIONAL', preview: 'Foundational work on semiotics. The index, icon, and symbol framework applies to visual measurement systems.' },
+          { id: 'WOMAN_SPECTACLE', title: 'Ways of Seeing', author: 'John Berger', year: '1972', category: 'Visual Culture', status: 'FOUNDATIONAL', preview: 'Examines vision and visual perception in modern culture. Directly relevant to suspended gaze concepts.' },
+          { id: 'IMAGE_KNOWLEDGE', title: 'The Image', author: 'Jean-Luc Nancy', year: '2005', category: 'Philosophy of Image', status: 'CONTEMPORARY', preview: 'Contemporary philosophical reflection on image, meaning, and presence in the age of reproduction.' }
+        ]
+      };
+
+      const items = portfolioEditData[section]?.items || defaultItems[section];
+
+      let html = '<div style="display: flex; flex-direction: column; gap: 16px;">';
+
+      items.forEach((item, idx) => {
+        html += `
+          <div style="border: 1px dashed #39dc00; padding: 12px; margin-bottom: 8px;">
+            <div style="font-weight: bold; margin-bottom: 8px; font-size: 12px;">ITEM ${idx + 1}</div>
+            <div style="display: flex; flex-direction: column; gap: 8px;">
+              <div>
+                <label style="display: block; font-size: 9px; margin-bottom: 4px;">TITLE</label>
+                <input type="text" class="item-title-${section}-${idx}" value="${item.title || ''}" style="width: 100%; background: #000; border: 1px solid #39dc00; color: #39dc00; padding: 6px; font-family: monospace; font-size: 10px; outline: none; box-sizing: border-box;">
+              </div>
+              <div style="display: flex; gap: 8px;">
+                <div style="flex: 1;">
+                  <label style="display: block; font-size: 9px; margin-bottom: 4px;">AUTHOR</label>
+                  <input type="text" class="item-author-${section}-${idx}" value="${item.author || ''}" style="width: 100%; background: #000; border: 1px solid #39dc00; color: #39dc00; padding: 6px; font-family: monospace; font-size: 10px; outline: none; box-sizing: border-box;">
+                </div>
+                <div style="flex: 0.5;">
+                  <label style="display: block; font-size: 9px; margin-bottom: 4px;">YEAR</label>
+                  <input type="text" class="item-year-${section}-${idx}" value="${item.year || ''}" style="width: 100%; background: #000; border: 1px solid #39dc00; color: #39dc00; padding: 6px; font-family: monospace; font-size: 10px; outline: none; box-sizing: border-box;">
+                </div>
+              </div>
+              <div style="display: flex; gap: 8px;">
+                <div style="flex: 1;">
+                  <label style="display: block; font-size: 9px; margin-bottom: 4px;">CATEGORY</label>
+                  <input type="text" class="item-category-${section}-${idx}" value="${item.category || ''}" style="width: 100%; background: #000; border: 1px solid #39dc00; color: #39dc00; padding: 6px; font-family: monospace; font-size: 10px; outline: none; box-sizing: border-box;">
+                </div>
+                <div style="flex: 0.5;">
+                  <label style="display: block; font-size: 9px; margin-bottom: 4px;">STATUS</label>
+                  <input type="text" class="item-status-${section}-${idx}" value="${item.status || ''}" style="width: 100%; background: #000; border: 1px solid #39dc00; color: #39dc00; padding: 6px; font-family: monospace; font-size: 10px; outline: none; box-sizing: border-box;">
+                </div>
+              </div>
+              <div>
+                <label style="display: block; font-size: 9px; margin-bottom: 4px;">PREVIEW / DESCRIPTION</label>
+                <textarea class="item-preview-${section}-${idx}" style="width: 100%; height: 100px; background: #000; border: 1px solid #39dc00; color: #39dc00; padding: 6px; font-family: monospace; font-size: 10px; outline: none; box-sizing: border-box; resize: vertical;">${item.preview || ''}</textarea>
+              </div>
+            </div>
+          </div>
+        `;
+      });
+
+      html += '</div>';
+      return html;
     }
 
-    // Setup slideshow navigation
-    function setupSlideshowControls() {
-      const prevBtn = document.querySelector('.slide-prev');
-      const nextBtn = document.querySelector('.slide-next');
-
-      prevBtn.addEventListener('click', () => {
-        currentSlideIndex = (currentSlideIndex - 1 + currentSlides.length) % currentSlides.length;
-        displaySlide(currentSlideIndex);
-      });
-
-      prevBtn.addEventListener('mouseover', () => {
-        prevBtn.style.background = '#ff9900';
-        prevBtn.style.borderColor = '#ff9900';
-      });
-
-      prevBtn.addEventListener('mouseout', () => {
-        prevBtn.style.background = '#39dc00';
-        prevBtn.style.borderColor = '#39dc00';
-      });
-
-      nextBtn.addEventListener('click', () => {
-        currentSlideIndex = (currentSlideIndex + 1) % currentSlides.length;
-        displaySlide(currentSlideIndex);
-      });
-
-      nextBtn.addEventListener('mouseover', () => {
-        nextBtn.style.background = '#ff9900';
-        nextBtn.style.borderColor = '#ff9900';
-      });
-
-      nextBtn.addEventListener('mouseout', () => {
-        nextBtn.style.background = '#39dc00';
-        nextBtn.style.borderColor = '#39dc00';
-      });
-    }
-
-    // Setup new post modal
-    function setupNewPostModal(section) {
-      const modal = document.getElementById('writeModal');
-      const newPostBtn = document.getElementById('newPostBtn');
-      const cancelBtn = document.getElementById('cancelBtn');
-      const postForm = document.getElementById('postForm');
-
-      if (!newPostBtn) return;
-
-      // Open modal
-      newPostBtn.addEventListener('click', () => {
-        modal.classList.add('active');
-        document.getElementById('postTitle').focus();
-      });
-
-      // Close modal
-      cancelBtn.addEventListener('click', () => {
-        modal.classList.remove('active');
-        postForm.reset();
-      });
-
-      // Close on overlay click
-      modal.addEventListener('click', (e) => {
-        if (e.target === modal) {
-          modal.classList.remove('active');
-          postForm.reset();
+    function generateArchivePhotosForm() {
+      const defaultPhotos = [
+        {
+          id: 'CRASH_001',
+          title: 'CRASH',
+          filename: 'crash.svg',
+          keywords: ['crash', 'wall', 'structure', 'damage', 'decay'],
+          description: 'Measuring the boundaries of collapse. Surface documentation.'
+        },
+        {
+          id: 'FLOATING_002',
+          title: 'FLOATING',
+          filename: 'floating.svg',
+          keywords: ['floating', 'movement', 'displacement', 'object', 'space'],
+          description: 'Object suspended in transit. Scale and distance measurement.'
+        },
+        {
+          id: 'SHADOW_003',
+          title: 'SHADOW',
+          filename: 'shadow.svg',
+          keywords: ['shadow', 'light', 'perception', 'depth', 'detail'],
+          description: 'Close observation of material. Yellow measurement study.'
         }
+      ];
+      const photos = portfolioEditData.archive?.photos || defaultPhotos;
+
+      let html = '<div style="display: flex; flex-direction: column; gap: 16px;">';
+
+      photos.forEach((photo, idx) => {
+        html += `
+          <div style="border: 1px dashed #39dc00; padding: 12px; margin-bottom: 8px;">
+            <div style="font-weight: bold; margin-bottom: 8px; font-size: 12px;">PHOTO ${idx + 1}</div>
+            <div style="display: flex; flex-direction: column; gap: 8px;">
+              <div>
+                <label style="display: block; font-size: 9px; margin-bottom: 4px;">ID</label>
+                <input type="text" class="photo-id-${idx}" value="${photo.id || ''}" style="width: 100%; background: #000; border: 1px solid #39dc00; color: #39dc00; padding: 6px; font-family: monospace; font-size: 10px; outline: none; box-sizing: border-box;">
+              </div>
+              <div>
+                <label style="display: block; font-size: 9px; margin-bottom: 4px;">TITLE</label>
+                <input type="text" class="photo-title-${idx}" value="${photo.title || ''}" style="width: 100%; background: #000; border: 1px solid #39dc00; color: #39dc00; padding: 6px; font-family: monospace; font-size: 10px; outline: none; box-sizing: border-box;">
+              </div>
+              <div>
+                <label style="display: block; font-size: 9px; margin-bottom: 4px;">FILENAME</label>
+                <input type="text" class="photo-filename-${idx}" value="${photo.filename || ''}" style="width: 100%; background: #000; border: 1px solid #39dc00; color: #39dc00; padding: 6px; font-family: monospace; font-size: 10px; outline: none; box-sizing: border-box;">
+              </div>
+              <div>
+                <label style="display: block; font-size: 9px; margin-bottom: 4px;">KEYWORDS (쉼표로 구분)</label>
+                <input type="text" class="photo-keywords-${idx}" value="${(photo.keywords || []).join(', ')}" style="width: 100%; background: #000; border: 1px solid #39dc00; color: #39dc00; padding: 6px; font-family: monospace; font-size: 10px; outline: none; box-sizing: border-box;">
+              </div>
+              <div>
+                <label style="display: block; font-size: 9px; margin-bottom: 4px;">DESCRIPTION</label>
+                <textarea class="photo-description-${idx}" style="width: 100%; height: 80px; background: #000; border: 1px solid #39dc00; color: #39dc00; padding: 6px; font-family: monospace; font-size: 10px; outline: none; box-sizing: border-box; resize: vertical;">${photo.description || ''}</textarea>
+              </div>
+            </div>
+          </div>
+        `;
       });
 
-      // Submit form
-      postForm.addEventListener('submit', (e) => {
-        e.preventDefault();
-
-        // Get form values
-        const newItem = {
-          id: document.getElementById('postTitle').value.toUpperCase().replace(/\\s+/g, '_'),
-          title: document.getElementById('postTitle').value,
-          author: document.getElementById('postAuthor').value,
-          year: document.getElementById('postYear').value || new Date().getFullYear(),
-          category: document.getElementById('postCategory').value || 'Uncategorized',
-          status: document.getElementById('postStatus').value || 'PUBLISHED',
-          preview: document.getElementById('postPreview').value
-        };
-
-        // Add to contents array
-        if (contents[section].items) {
-          contents[section].items.push(newItem);
-
-          // Reload content
-          modal.classList.remove('active');
-          postForm.reset();
-          loadContent(section);
-        }
-      });
-
-      // Close on ESC key
-      document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape' && modal.classList.contains('active')) {
-          modal.classList.remove('active');
-          postForm.reset();
-        }
-      });
+      html += '</div>';
+      return html;
     }
 
-    // Menu item click handler
+    function savePortfolioChanges() {
+      const tabs = document.querySelectorAll('.portfolio-subsection-tab.active');
+      const activeTab = tabs.length > 0 ? tabs[0] : null;
+      const subsection = activeTab ? activeTab.getAttribute('data-subsection') : 'project';
+
+      // Collect data from forms
+      if (subsection === 'project') {
+        const slides = [];
+        for (let i = 0; i < 4; i++) {
+          const title = document.querySelector(`.slide-title-${i}`)?.value || '';
+          const category = document.querySelector(`.slide-category-${i}`)?.value || '';
+          const author = document.querySelector(`.slide-author-${i}`)?.value || '';
+          const year = document.querySelector(`.slide-year-${i}`)?.value || '';
+          const text = document.querySelector(`.slide-text-${i}`)?.value || '';
+
+          slides.push({ id: `slide_${i + 1}`, title, category, author, year, text });
+        }
+        portfolioEditData.project = { ...portfolioEditData.project, slides };
+      } else if (subsection === 'inclusion' || subsection === 'intro' || subsection === 'video') {
+        const text = document.querySelector(`.portfolio-text-${subsection}`)?.value || '';
+        portfolioEditData[subsection] = { ...portfolioEditData[subsection], text };
+      } else if (subsection === 'rule' || subsection === 'reference') {
+        const items = [];
+        const inputs = document.querySelectorAll(`[class*="item-title-${subsection}"]`);
+        inputs.forEach((input, idx) => {
+          const title = document.querySelector(`.item-title-${subsection}-${idx}`)?.value || '';
+          const author = document.querySelector(`.item-author-${subsection}-${idx}`)?.value || '';
+          const year = document.querySelector(`.item-year-${subsection}-${idx}`)?.value || '';
+          const category = document.querySelector(`.item-category-${subsection}-${idx}`)?.value || '';
+          const status = document.querySelector(`.item-status-${subsection}-${idx}`)?.value || '';
+          const preview = document.querySelector(`.item-preview-${subsection}-${idx}`)?.value || '';
+
+          if (title) items.push({ id: title.toUpperCase().replace(/\\s+/g, '_'), title, author, year, category, status, preview });
+        });
+        portfolioEditData[subsection] = { ...portfolioEditData[subsection], items };
+      } else if (subsection === 'archive') {
+        const photos = [];
+        const titleInputs = document.querySelectorAll('[class*="photo-title-"]');
+        titleInputs.forEach((input, idx) => {
+          const id = document.querySelector(`.photo-id-${idx}`)?.value || '';
+          const title = document.querySelector(`.photo-title-${idx}`)?.value || '';
+          const filename = document.querySelector(`.photo-filename-${idx}`)?.value || '';
+          const keywordsStr = document.querySelector(`.photo-keywords-${idx}`)?.value || '';
+          const keywords = keywordsStr.split(',').map(k => k.trim()).filter(k => k);
+          const description = document.querySelector(`.photo-description-${idx}`)?.value || '';
+
+          if (id || title) photos.push({ id, title, filename, keywords, description });
+        });
+        portfolioEditData.archive = { ...portfolioEditData.archive, photos };
+      }
+
+      // Save to localStorage
+      localStorage.setItem('adminContents', JSON.stringify(portfolioEditData));
+      alert('포트폴리오 변경사항이 저장되었습니다!');
+    }
+
+    function resetPortfolioChanges() {
+      if (confirm('모든 변경사항을 초기화하시겠습니까? 이 작업은 되돌릴 수 없습니다.')) {
+        localStorage.removeItem('adminContents');
+        portfolioEditData = {};
+        alert('초기화되었습니다. 포트폴리오를 새로고침하세요.');
+      }
+    }
+
+    // Setup menu items
     function setupMenuItems() {
       const menuItems = document.querySelectorAll('.menu-item');
 
       menuItems.forEach(item => {
         item.addEventListener('click', function() {
-          // Update active state
           menuItems.forEach(m => m.classList.remove('active'));
           this.classList.add('active');
 
-          // Load content
           const section = this.getAttribute('data-section');
           loadContent(section);
 
-          // Close menu on mobile
           const menuSection = document.getElementById('menuSection');
           if (window.innerWidth <= 768) {
             menuSection.classList.remove('mobile-active');
@@ -2092,317 +1167,40 @@ ${preview}
       });
     }
 
-    // Hamburger menu toggle
-    function setupHamburger() {
-      const hamburgerBtn = document.getElementById('hamburgerBtn');
-      const menuSection = document.getElementById('menuSection');
+    // Setup close button
+    function setupCloseButton() {
       const closeBtn = document.querySelector('.close-btn');
-
-      hamburgerBtn.addEventListener('click', function() {
-        menuSection.classList.toggle('mobile-active');
-      });
-
-      // X button to return to menu
       if (closeBtn) {
-        closeBtn.addEventListener('click', function() {
-          // Navigate to menu page
-          window.location.href = 'menu.html';
+        closeBtn.addEventListener('click', () => {
+          window.location.href = 'index.html';
         });
       }
-
-      // Close menu on outside click
-      document.addEventListener('click', function(e) {
-        if (window.innerWidth <= 768) {
-          if (!menuSection.contains(e.target) && !hamburgerBtn.contains(e.target)) {
-            menuSection.classList.remove('mobile-active');
-          }
-        }
-      });
-
-      // Close menu on ESC key
-      document.addEventListener('keydown', function(e) {
-        if (e.key === 'Escape') {
-          menuSection.classList.remove('mobile-active');
-        }
-      });
     }
 
-    // Display photo gallery
-    function displayPhotoGallery(photos, filtered) {
-      const gallery = document.getElementById('photoGallery');
-
-      if (filtered.length === 0) {
-        gallery.innerHTML = '<div class="no-results">No photos found matching your search.</div>';
-        return;
-      }
-
-      const galleryHTML = filtered.map(photo => `
-        <div class="photo-item" data-photo-id="${photo.id}">
-          <div class="photo-item-image">
-            <img src="images/${photo.filename}" alt="${photo.title}" onerror="this.style.display='none'; this.parentElement.textContent='[IMAGE]';">
-          </div>
-          <div class="photo-item-info">
-            <div class="photo-item-title">${photo.title}</div>
-            <div class="photo-item-keywords">${photo.keywords.join(' • ')}</div>
-          </div>
-        </div>
-      `).join('');
-
-      gallery.innerHTML = galleryHTML;
-
-      // Setup click handlers for photos
-      document.querySelectorAll('.photo-item').forEach(item => {
-        item.addEventListener('click', () => {
-          const photoId = item.getAttribute('data-photo-id');
-          const photo = photos.find(p => p.id === photoId);
-          if (photo) {
-            showPhotoDetail(photo);
-          }
-        });
-      });
-    }
-
-    // Setup photo search
-    function setupPhotoSearch(allPhotos) {
-      const searchInput = document.getElementById('archiveSearchInput');
-      const searchBtn = document.getElementById('archiveSearchBtn');
-      const gallery = document.getElementById('photoGallery');
-
-      if (!searchInput || !searchBtn) return;
-
-      // Display random photos initially
-      function displayRandomPhotos() {
-        // Shuffle array and show random photo
-        const shuffled = [...allPhotos].sort(() => Math.random() - 0.5);
-        displayPhotoGallery(allPhotos, shuffled.slice(0, Math.ceil(Math.random() * allPhotos.length)));
-      }
-
-      function performSearch() {
-        const query = searchInput.value.toLowerCase().trim();
-
-        if (!query) {
-          // No search term - show random photos
-          displayRandomPhotos();
-          return;
-        }
-
-        // Search in keywords and title
-        const filtered = allPhotos.filter(photo => {
-          const keywordMatch = photo.keywords.some(kw =>
-            kw.toLowerCase().includes(query)
-          );
-          const titleMatch = photo.title.toLowerCase().includes(query);
-          const descMatch = photo.description.toLowerCase().includes(query);
-
-          return keywordMatch || titleMatch || descMatch;
-        });
-
-        displayPhotoGallery(allPhotos, filtered);
-      }
-
-      searchBtn.addEventListener('click', performSearch);
-      searchInput.addEventListener('keypress', (e) => {
-        if (e.key === 'Enter') {
-          performSearch();
-        }
-      });
-
-      // When user types - clear results and show message
-      searchInput.addEventListener('input', (e) => {
-        if (e.target.value.trim() === '') {
-          // If input is cleared, show random photos again
-          displayRandomPhotos();
-        } else {
-          // While typing, show hint message
-          gallery.innerHTML = '<div class="no-results">검색하고 엔터를 누르세요</div>';
-        }
-      });
-
-      // Show random photos on initial load
-      displayRandomPhotos();
-    }
-
-    // Show photo detail modal
-    function showPhotoDetail(photo) {
-      const modal = document.getElementById('photoDetailModal');
-      const title = document.getElementById('photoDetailTitle');
-      const image = document.getElementById('photoDetailImage');
-      const name = document.getElementById('photoDetailName');
-      const desc = document.getElementById('photoDetailDesc');
-      const keywords = document.getElementById('photoDetailKeywords');
-      const closeBtn = document.getElementById('photoDetailClose');
-
-      if (!modal) return;
-
-      title.textContent = `PHOTO: ${photo.id}`;
-      image.src = `images/${photo.filename}`;
-      image.alt = photo.title;
-      name.textContent = photo.title;
-      desc.textContent = photo.description;
-
-      keywords.innerHTML = photo.keywords.map(kw =>
-        `<span class="photo-keyword-tag">${kw}</span>`
-      ).join('');
-
-      modal.classList.add('active');
-
-      // Close button handler
-      if (closeBtn) {
-        closeBtn.onclick = () => {
-          modal.classList.remove('active');
-        };
-      }
-
-      // Close on background click
-      modal.addEventListener('click', (e) => {
-        if (e.target === modal) {
-          modal.classList.remove('active');
-        }
-      });
-    }
-
-    // Setup mobile layout
-    function setupMobileLayout() {
-      const mobileMenuToggle = document.getElementById('mobileMenuToggle');
-      const mobileMenuDrawer = document.getElementById('mobileMenuDrawer');
-      const mobileMenuList = document.getElementById('mobileMenuList');
-      const mobileTitle = document.getElementById('mobileTitle');
-
-      // Toggle menu drawer
-      mobileMenuToggle.addEventListener('click', (e) => {
-        e.stopPropagation();
-        mobileMenuDrawer.classList.toggle('active');
-      });
-
-      // Mobile menu item click handling with event delegation
-      mobileMenuList.addEventListener('click', (e) => {
-        const item = e.target.closest('.mobile-menu-item');
-        if (!item) return;
-
-        const section = item.getAttribute('data-section');
-
-        // Update active state
-        const mobileMenuItems = mobileMenuList.querySelectorAll('.mobile-menu-item');
-        mobileMenuItems.forEach(m => m.classList.remove('active'));
-        item.classList.add('active');
-
-        // Update title
-        mobileTitle.textContent = item.textContent;
-
-        // Load content to mobile terminal
-        loadContentToMobile(section);
-
-        // Close menu drawer
-        mobileMenuDrawer.classList.remove('active');
-      });
-
-      // Close menu when clicking outside
-      document.addEventListener('click', (e) => {
-        if (window.innerWidth <= 768) {
-          if (!mobileMenuDrawer.contains(e.target) && !mobileMenuToggle.contains(e.target)) {
-            mobileMenuDrawer.classList.remove('active');
-          }
-        }
-      });
-    }
-
-    // Load content to mobile terminal
-    function loadContentToMobile(section) {
-      const content = contents[section];
-      const mobileContent = document.getElementById('mobileContentText');
-
-      if (!content) {
-        mobileContent.textContent = 'Section not found';
-        return;
-      }
-
-      if (content.isArchivePhotos) {
-        // For archive section, show search interface
-        mobileContent.innerHTML = `
-          <div style="display: flex; gap: 8px; margin-bottom: 12px;">
-            <input type="text" id="mobileArchiveSearch" placeholder="search: crash, floating, shadow"
-              style="flex: 1; background: #000; border: 1px solid #39dc00; color: #39dc00; padding: 6px; font-size: 10px; font-family: monospace;">
-          </div>
-          <div id="mobilePhotoGallery" style="display: grid; grid-template-columns: 1fr; gap: 8px; max-height: calc(100% - 50px); overflow-y: auto;">
-            <div style="padding: 20px; text-align: center; color: #39dc00; font-size: 11px;">검색 키워드를 입력하세요: crash, floating, shadow</div>
-          </div>
-        `;
-
-        // Setup mobile photo search
-        setTimeout(() => {
-          const searchInput = document.getElementById('mobileArchiveSearch');
-          if (searchInput) {
-            searchInput.addEventListener('input', (e) => {
-              const query = e.target.value.toLowerCase().trim();
-              const filtered = query ? content.photos.filter(p =>
-                p.keywords.some(k => k.toLowerCase().includes(query)) ||
-                p.title.toLowerCase().includes(query)
-              ) : [];
-
-              const gallery = document.getElementById('mobilePhotoGallery');
-              if (filtered.length === 0) {
-                gallery.innerHTML = `<div style="padding: 20px; text-align: center; color: #39dc00; font-size: 11px;">${query ? 'No results found' : '검색 키워드를 입력하세요: crash, floating, shadow'}</div>`;
-              } else {
-                gallery.innerHTML = filtered.map(p => `
-                  <div style="border: 1px solid #39dc00; padding: 8px; cursor: pointer; font-size: 10px;">
-                    <strong>${p.title}</strong><br>
-                    ${p.keywords.join(' • ')}
-                  </div>
-                `).join('');
-              }
-            });
-            searchInput.focus();
-          }
-        }, 0);
-      } else if (content.text) {
-        // Text format
-        mobileContent.textContent = content.text;
-      } else if (content.items) {
-        // List/Board format
-        const allItems = [...(content.items || [])];
-        const publishedItems = getPublishedPosts(section);
-        allItems.push(...publishedItems);
-
-        let output = `${content.title} (${allItems.length} items)\n\n`;
-        allItems.forEach((item, idx) => {
-          output += `[${idx + 1}] ${item.title || item.id}\nAuthor: ${item.author}\nYear: ${item.year}\n\n`;
-        });
-
-        mobileContent.textContent = output;
-      }
-    }
-
-    // Initialize on page load
+    // Initialize
     document.addEventListener('DOMContentLoaded', function() {
-      // Load admin-edited contents from localStorage
-      loadAdminContentsFromStorage();
-
-      // Initial viewport detection
-      detectAndSwitchLayout();
-
-      // Setup desktop layout
+      loadPortfolioData();
       setupMenuItems();
-      setupHamburger();
+      setupCloseButton();
 
-      // Setup mobile layout
-      setupMobileLayout();
+      // Setup portfolio edit buttons
+      const saveBtn = document.getElementById('portfolio-save-btn');
+      const resetBtn = document.getElementById('portfolio-reset-btn');
 
-      // Check URL parameters for section to load
-      const urlParams = new URLSearchParams(window.location.search);
-      const sectionParam = urlParams.get('section');
+      if (saveBtn) {
+        saveBtn.addEventListener('click', savePortfolioChanges);
+      }
 
-      if (sectionParam) {
-        // Load section from URL parameter
-        const menuItem = document.querySelector(`[data-section="${sectionParam}"]`);
-        if (menuItem) {
-          menuItem.click();
-        }
-      } else {
-        // Load initial content
-        loadContent('project');
-        if (window.innerWidth <= 768) {
-          loadContentToMobile('project');
-        }
+      if (resetBtn) {
+        resetBtn.addEventListener('click', resetPortfolioChanges);
+      }
+
+      // Load portfolio-edit and set active state
+      loadContent('portfolio-edit');
+      const portfolioEditItem = document.querySelector('[data-section="portfolio-edit"]');
+      if (portfolioEditItem) {
+        document.querySelectorAll('.menu-item').forEach(m => m.classList.remove('active'));
+        portfolioEditItem.classList.add('active');
       }
     });
   </script>
