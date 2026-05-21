@@ -1382,6 +1382,8 @@ THIS INCOMPLETENESS IS PRECISELY THE WORLD.
       },
       intro: {
         title: 'Intro Text',
+        isFigmaBoard: true,
+        figmaUrl: 'https://www.figma.com/board/S1HsBejKWRbZPxZ3fSMaDG/제목-없음?node-id=221-109&t=WrDMGwGZBp0nmFrV-0',
         text: `INTRODUCTORY MATERIAL
 ====================================================
 
@@ -1767,6 +1769,19 @@ REQUIRE LOGIN: No (Public access enabled)
             // Position items randomly after a brief delay to ensure DOM is ready
             setTimeout(() => positionBoardItems(), 50);
           }
+        } else if (content.isFigmaBoard) {
+          // Figma board format with embedded iframe
+          const figmaHTML = `
+            <div style="display: flex; flex-direction: column; height: 100%; padding: 0; margin: -12px; background: #000;">
+              <div style="padding: 12px; border-bottom: 1px solid #39dc00; background: #000; color: #39dc00; font-size: 11px; font-weight: bold;">
+                DESIGN BOARD - FIGMA
+              </div>
+              <div style="flex: 1; padding: 12px; overflow: hidden; background: #000;">
+                <iframe style="width: 100%; height: 100%; border: 1px solid #39dc00; background: #000;" src="https://www.figma.com/embed?embed_host=share&url=https://www.figma.com/board/S1HsBejKWRbZPxZ3fSMaDG/제목-없음" allowfullscreen></iframe>
+              </div>
+            </div>
+          `;
+          terminalContent.innerHTML = figmaHTML;
         } else {
           // Regular text format
           let textHTML = `<pre class="terminal-content-text" id="contentText">${content.text}</pre>`;
@@ -2653,6 +2668,18 @@ ${preview}
         html += '</div>';
         mobileContent.innerHTML = html;
 
+      } else if (content.isFigmaBoard) {
+        // Figma board format
+        mobileContent.innerHTML = `
+          <div style="display: flex; flex-direction: column; height: 100%; gap: 0;">
+            <div style="padding: 12px; border-bottom: 1px solid #39dc00; background: #000; color: #39dc00; font-size: 11px; font-weight: bold;">
+              DESIGN BOARD - FIGMA
+            </div>
+            <div style="flex: 1; padding: 12px; overflow: hidden; background: #000;">
+              <iframe style="width: 100%; height: 100%; border: 1px solid #39dc00; background: #000;" src="https://www.figma.com/embed?embed_host=share&url=https://www.figma.com/board/S1HsBejKWRbZPxZ3fSMaDG/제목-없음" allowfullscreen></iframe>
+            </div>
+          </div>
+        `;
       } else if (content.text) {
         // Text format
         mobileContent.textContent = content.text;
@@ -2663,30 +2690,57 @@ ${preview}
         const publishedItems = getPublishedPosts(section);
         allItems.push(...publishedItems);
 
+        // Use card format for reference section, list format for others
+        const isCardFormat = section === 'reference';
+
         let html = `
           <div style="padding: 0; border-top: 1px solid #39dc00;">
             <div style="padding: 12px; border-bottom: 1px solid #39dc00; background: #000; font-weight: bold; color: #39dc00; font-size: 11px;">
               ${content.title.toUpperCase()} (${allItems.length} items)
             </div>
-            <div style="padding: 0;">
+            <div style="padding: ${isCardFormat ? '8px' : '0'}; ${isCardFormat ? 'display: grid; grid-template-columns: 1fr 1fr; gap: 8px;' : ''}">
         `;
 
         allItems.forEach((item, idx) => {
           const itemId = item.id || item.title.toUpperCase().replace(/\s+/g, '_');
           const category = item.category || 'UNCATEGORIZED';
           const status = item.status || 'ACTIVE';
+          const author = item.author || 'ANONYMOUS';
+          const year = item.year || 'N/A';
+          const preview = item.preview || '';
 
-          html += `
-            <div style="cursor: pointer; display: block; border-bottom: 1px dashed #39dc00; padding: 8px; transition: background 0.2s; background: #000;" class="mobile-list-item" data-index="${idx}">
-              <div style="color: #39dc00; font-size: 9px; margin-bottom: 4px; font-weight: bold; word-break: break-all;">
-                ${itemId}
+          if (isCardFormat) {
+            // Board format for reference (matching desktop)
+            html += `
+              <div style="cursor: pointer; border: 1px solid #39dc00; margin-bottom: 12px; background: #000; transition: all 0.2s;" class="mobile-list-item mobile-board-item" data-index="${idx}">
+                <div style="background: linear-gradient(180deg, #50ff00 0%, #39dc00 100%); color: #000; padding: 8px; font-weight: bold; font-size: 9px; border-bottom: 2px solid #1a6600;">
+                  [${itemId} - ${status}]
+                </div>
+                <div style="padding: 8px; border-bottom: 1px solid #39dc00; background: #000; color: #39dc00; font-size: 8px;">
+                  <div style="color: #39dc00; font-weight: bold; margin-bottom: 3px;">From: ${author}</div>
+                  <div style="color: #888; margin-bottom: 2px;">Year: ${year}</div>
+                  <div style="color: #888;">Category: ${category}</div>
+                </div>
+                <div style="padding: 8px; border-bottom: 1px solid #39dc00; background: #000; color: #39dc00; min-height: 60px; font-size: 8px; line-height: 1.4; white-space: pre-wrap; word-wrap: break-word; overflow: hidden;">
+                  <div style="font-weight: bold; margin-bottom: 4px; color: #888;">Description:</div>
+                  <div style="color: #39dc00;">${preview || '(no description)'}</div>
+                </div>
               </div>
-              <div style="color: #39dc00; font-size: 8px; display: flex; justify-content: space-between; gap: 8px;">
-                <span>${category}</span>
-                <span>${status}</span>
+            `;
+          } else {
+            // List format for rule and others
+            html += `
+              <div style="cursor: pointer; display: block; border-bottom: 1px dashed #39dc00; padding: 8px; transition: background 0.2s; background: #000;" class="mobile-list-item" data-index="${idx}">
+                <div style="color: #39dc00; font-size: 9px; margin-bottom: 4px; font-weight: bold; word-break: break-all;">
+                  ${itemId}
+                </div>
+                <div style="color: #39dc00; font-size: 8px; display: flex; justify-content: space-between; gap: 8px;">
+                  <span>${category}</span>
+                  <span>${status}</span>
+                </div>
               </div>
-            </div>
-          `;
+            `;
+          }
         });
 
         html += `
