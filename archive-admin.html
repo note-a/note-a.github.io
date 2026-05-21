@@ -303,7 +303,8 @@ html, body { background: #000; color: #39dc00; font-family: 'Courier New', monos
 
 .form-group textarea {
   resize: vertical;
-  min-height: 60px;
+  min-height: 200px;
+  max-height: 600px;
 }
 
 .modal-buttons {
@@ -530,6 +531,14 @@ html, body { background: #000; color: #39dc00; font-family: 'Courier New', monos
       archived: {
         title: '보관함',
         items: []
+      },
+      rule: {
+        title: 'log',
+        items: []
+      },
+      reference: {
+        title: 'reference',
+        items: []
       }
     };
 
@@ -541,6 +550,8 @@ html, body { background: #000; color: #39dc00; font-family: 'Courier New', monos
         archiveData.drafts.items = parsed.drafts || [];
         archiveData.completed.items = parsed.completed || [];
         archiveData.archived.items = parsed.archived || [];
+        archiveData.rule.items = parsed.rule || [];
+        archiveData.reference.items = parsed.reference || [];
       }
     }
 
@@ -549,7 +560,9 @@ html, body { background: #000; color: #39dc00; font-family: 'Courier New', monos
       localStorage.setItem('archiveData', JSON.stringify({
         drafts: archiveData.drafts.items,
         completed: archiveData.completed.items,
-        archived: archiveData.archived.items
+        archived: archiveData.archived.items,
+        rule: archiveData.rule.items,
+        reference: archiveData.reference.items
       }));
     }
 
@@ -588,35 +601,66 @@ html, body { background: #000; color: #39dc00; font-family: 'Courier New', monos
       const content = archiveData[section];
 
       if (content) {
+        // Check if mobile
+        const isMobile = window.innerWidth <= 768;
+
         // List format
-        const listHTML = `
-          <div style="display: flex; flex-direction: column; height: 100%; padding: 0; margin: -12px;">
-            <div style="padding: 8px 0; border-bottom: 1px solid #39dc00; background: #000; color: #39dc00; font-size: 9px; flex-shrink: 0; display: flex;">
-              <div style="flex: 1; padding: 0 12px; font-weight: bold; border-right: 1px solid #39dc00;">ID</div>
-              <div style="width: 150px; padding: 0 12px; font-weight: bold; border-right: 1px solid #39dc00;">CATEGORY</div>
-              <div style="width: 100px; padding: 0 12px; font-weight: bold;">STATUS</div>
+        let listHTML;
+        if (isMobile) {
+          // Mobile format - simpler list
+          listHTML = `
+            <div style="display: flex; flex-direction: column; height: 100%; padding: 0; margin: -12px;">
+              <div style="flex: 1; overflow-y: auto; background: #000; min-height: 0; padding: 8px;">
+                ${content.items.length === 0 ?
+                  '<div style="padding: 20px; text-align: center; color: #39dc00; font-size: 11px;">No posts yet</div>' :
+                  content.items.map((item, idx) => `
+                    <div class="list-item" data-index="${idx}" style="cursor: pointer; border: 1px solid #39dc00; padding: 8px; margin-bottom: 8px; background: #000;">
+                      <div style="color: #39dc00; font-size: 10px; font-weight: bold; margin-bottom: 4px;">${item.title || item.id}</div>
+                      <div style="color: #888; font-size: 9px;">
+                        <span>${item.category || 'N/A'}</span> • <span>${item.status || 'DRAFT'}</span>
+                      </div>
+                      <div style="color: #666; font-size: 8px; margin-top: 4px;">${item.author || ''} (${item.year || ''})</div>
+                    </div>
+                  `).join('')
+                }
+              </div>
+              <div style="padding: 8px 12px; border-top: 1px solid #39dc00; background: #000; color: #39dc00; font-size: 9px; display: flex; justify-content: space-between; flex-shrink: 0;">
+                <span>TOTAL: ${content.items.length}</span>
+                <button class="new-post-btn" id="newPostBtn" style="font-size: 9px; padding: 2px 6px;">[NEW]</button>
+              </div>
             </div>
-            <div style="flex: 1; overflow-y: auto; background: #000; min-height: 0;">
-              ${content.items.map((item, idx) => `
-                <div class="list-item" data-index="${idx}" style="cursor: pointer; display: flex; border-bottom: 1px dashed #39dc00; transition: background 0.2s; padding: 0;">
-                  <div style="flex: 1; padding: 6px 12px; color: #39dc00; font-size: 9px; border-right: 1px solid #39dc00; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
-                    ${item.id || item.title.toUpperCase().replace(/\\s+/g, '_')}
+          `;
+        } else {
+          // Desktop format - table
+          listHTML = `
+            <div style="display: flex; flex-direction: column; height: 100%; padding: 0; margin: -12px;">
+              <div style="padding: 8px 0; border-bottom: 1px solid #39dc00; background: #000; color: #39dc00; font-size: 9px; flex-shrink: 0; display: flex;">
+                <div style="flex: 1; padding: 0 12px; font-weight: bold; border-right: 1px solid #39dc00;">ID</div>
+                <div style="width: 150px; padding: 0 12px; font-weight: bold; border-right: 1px solid #39dc00;">CATEGORY</div>
+                <div style="width: 100px; padding: 0 12px; font-weight: bold;">STATUS</div>
+              </div>
+              <div style="flex: 1; overflow-y: auto; background: #000; min-height: 0;">
+                ${content.items.map((item, idx) => `
+                  <div class="list-item" data-index="${idx}" style="cursor: pointer; display: flex; border-bottom: 1px dashed #39dc00; transition: background 0.2s; padding: 0;">
+                    <div style="flex: 1; padding: 6px 12px; color: #39dc00; font-size: 9px; border-right: 1px solid #39dc00; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                      ${item.id || item.title.toUpperCase().replace(/\\s+/g, '_')}
+                    </div>
+                    <div style="width: 150px; padding: 6px 12px; color: #39dc00; font-size: 9px; border-right: 1px solid #39dc00; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                      ${item.category}
+                    </div>
+                    <div style="width: 100px; padding: 6px 12px; color: #39dc00; font-size: 9px;">
+                      ${item.status || 'DRAFT'}
+                    </div>
                   </div>
-                  <div style="width: 150px; padding: 6px 12px; color: #39dc00; font-size: 9px; border-right: 1px solid #39dc00; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
-                    ${item.category}
-                  </div>
-                  <div style="width: 100px; padding: 6px 12px; color: #39dc00; font-size: 9px;">
-                    ${item.status || 'DRAFT'}
-                  </div>
-                </div>
-              `).join('')}
+                `).join('')}
+              </div>
+              <div style="padding: 8px 12px; border-top: 1px solid #39dc00; background: #000; color: #39dc00; font-size: 9px; display: flex; justify-content: space-between;">
+                <span>TOTAL: ${content.items.length}</span>
+                <button class="new-post-btn" id="newPostBtn" style="font-size: 9px; padding: 2px 6px;">[NEW]</button>
+              </div>
             </div>
-            <div style="padding: 8px 12px; border-top: 1px solid #39dc00; background: #000; color: #39dc00; font-size: 9px; display: flex; justify-content: space-between;">
-              <span>TOTAL: ${content.items.length}</span>
-              <button class="new-post-btn" id="newPostBtn" style="font-size: 9px; padding: 2px 6px;">[NEW]</button>
-            </div>
-          </div>
-        `;
+          `;
+        }
         terminalContent.innerHTML = listHTML;
 
         // Setup new post button
