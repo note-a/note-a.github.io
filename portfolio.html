@@ -1162,6 +1162,14 @@ html, body { background: #000; color: #39dc00; font-family: 'Courier New', monos
       if (isMobile) {
         desktopLayout.style.display = 'none';
         mobileLayout.style.display = 'flex';
+        // Load mobile content for current section
+        const activeMenuItem = document.querySelector('.mobile-menu-item.active');
+        if (activeMenuItem) {
+          const section = activeMenuItem.getAttribute('data-section') || 'project';
+          loadContentToMobile(section);
+        } else {
+          loadContentToMobile('project');
+        }
       } else {
         desktopLayout.style.display = 'flex';
         mobileLayout.style.display = 'none';
@@ -2474,6 +2482,11 @@ ${preview}
       const content = contents[section];
       const mobileContent = document.getElementById('mobileContentText');
 
+      if (!mobileContent) {
+        console.error('Mobile content element not found');
+        return;
+      }
+
       if (!content) {
         mobileContent.textContent = 'Section not found';
         return;
@@ -2592,9 +2605,7 @@ ${preview}
       } else {
         // Load initial content
         loadContent('project');
-        if (window.innerWidth <= 768) {
-          loadContentToMobile('project');
-        }
+        // Mobile content is loaded by detectAndSwitchLayout
       }
     });
   </script>
