@@ -897,7 +897,8 @@ html, body { background: #000; color: #39dc00; font-family: 'Courier New', monos
 #mobileContentText {
   word-wrap: break-word;
   overflow-wrap: break-word;
-  white-space: pre-wrap;
+  white-space: normal;
+  display: block;
 }
 
 .mobile-terminal-statusbar {
@@ -2496,10 +2497,6 @@ ${preview}
           return;
         }
 
-        // Clear previous content
-        mobileContent.innerHTML = '';
-        mobileContent.textContent = '';
-
       if (content.isArchivePhotos) {
         // For archive section, show search interface and big brother image initially
         mobileContent.style.whiteSpace = 'normal';
@@ -2564,38 +2561,44 @@ ${preview}
         }, 0);
       } else if (content.isSlideshow) {
         // Slideshow format - show all slides as list
-        mobileContent.style.whiteSpace = 'pre-wrap';
+        mobileContent.innerHTML = '';
         const slides = content.slides || [];
-        let output = `${content.title} (${slides.length} slides)\n\n`;
+        let html = `<div style="padding: 12px;"><strong>${content.title} (${slides.length} slides)</strong><br><br>`;
 
         slides.forEach((slide, idx) => {
-          output += `────────────────────────────────────\n`;
-          output += `[SLIDE ${idx + 1}] ${slide.title}\n`;
-          output += `Category: ${slide.category} | Author: ${slide.author} | Year: ${slide.year}\n`;
-          output += `────────────────────────────────────\n`;
-          output += `${slide.text}\n\n`;
+          html += `<div style="border: 1px solid #39dc00; padding: 8px; margin-bottom: 8px;">
+            <div style="color: #39dc00; font-weight: bold; margin-bottom: 4px;">[SLIDE ${idx + 1}] ${slide.title}</div>
+            <div style="color: #888; font-size: 11px; margin-bottom: 6px;">
+              ${slide.category} | ${slide.author} | ${slide.year}
+            </div>
+            <div style="font-size: 11px; line-height: 1.6; white-space: pre-wrap; word-wrap: break-word;">${slide.text}</div>
+          </div>`;
         });
+        html += '</div>';
+        mobileContent.innerHTML = html;
 
-        mobileContent.textContent = output;
       } else if (content.text) {
         // Text format
-        mobileContent.style.whiteSpace = 'pre-wrap';
         mobileContent.textContent = content.text;
       } else if (content.items) {
         // List/Board format
-        mobileContent.style.whiteSpace = 'pre-wrap';
+        mobileContent.innerHTML = '';
         const allItems = [...(content.items || [])];
         const publishedItems = getPublishedPosts(section);
         allItems.push(...publishedItems);
 
-        let output = `${content.title} (${allItems.length} items)\n\n`;
+        let html = `<div style="padding: 12px;"><strong>${content.title} (${allItems.length} items)</strong><br><br>`;
         allItems.forEach((item, idx) => {
-          output += `[${idx + 1}] ${item.title || item.id}\n`;
-          output += `Author: ${item.author} | Year: ${item.year} | Status: ${item.status || 'ACTIVE'}\n`;
-          output += `${item.preview || ''}\n\n`;
+          html += `<div style="border: 1px solid #39dc00; padding: 8px; margin-bottom: 8px;">
+            <div style="color: #39dc00; font-weight: bold; margin-bottom: 4px;">[${idx + 1}] ${item.title || item.id}</div>
+            <div style="color: #888; font-size: 11px; margin-bottom: 6px;">
+              ${item.author} | ${item.year} | ${item.status || 'ACTIVE'}
+            </div>
+            <div style="font-size: 11px; line-height: 1.6; white-space: pre-wrap; word-wrap: break-word;">${item.preview || ''}</div>
+          </div>`;
         });
-
-        mobileContent.textContent = output;
+        html += '</div>';
+        mobileContent.innerHTML = html;
       }
       } catch (error) {
         console.error('Error loading mobile content:', error);
