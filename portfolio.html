@@ -1627,25 +1627,31 @@ REQUIRE LOGIN: No (Public access enabled)
         }
 
         // Also load archiveData (game posts from admin)
-        const archiveData = JSON.parse(localStorage.getItem('archiveData') || '{}');
+        const archiveDataStr = localStorage.getItem('archiveData');
+        console.log('Raw archiveData from localStorage:', archiveDataStr);
+
+        const archiveData = JSON.parse(archiveDataStr || '{}');
+        console.log('Parsed archiveData:', archiveData);
 
         // Merge rule section items from archiveData
-        if (archiveData.rule && Array.isArray(archiveData.rule)) {
-          contents.rule.items = [...(contents.rule.items || []), ...archiveData.rule];
-        } else if (archiveData.rule && archiveData.rule.items) {
-          contents.rule.items = [...(contents.rule.items || []), ...archiveData.rule.items];
+        if (archiveData.rule) {
+          const ruleItems = Array.isArray(archiveData.rule) ? archiveData.rule : (archiveData.rule.items || []);
+          console.log('Rule items from archiveData:', ruleItems);
+          contents.rule.items = [...(contents.rule.items || []), ...ruleItems];
+          console.log('Updated contents.rule.items:', contents.rule.items);
         }
 
         // Merge reference section items from archiveData
-        if (archiveData.reference && Array.isArray(archiveData.reference)) {
-          contents.reference.items = [...(contents.reference.items || []), ...archiveData.reference];
-        } else if (archiveData.reference && archiveData.reference.items) {
-          contents.reference.items = [...(contents.reference.items || []), ...archiveData.reference.items];
+        if (archiveData.reference) {
+          const refItems = Array.isArray(archiveData.reference) ? archiveData.reference : (archiveData.reference.items || []);
+          console.log('Reference items from archiveData:', refItems);
+          contents.reference.items = [...(contents.reference.items || []), ...refItems];
+          console.log('Updated contents.reference.items:', contents.reference.items);
         }
 
         console.log('Admin contents loaded successfully');
       } catch (e) {
-        console.log('No admin contents in storage or error loading:', e);
+        console.log('Error loading admin contents:', e);
       }
     }
 
