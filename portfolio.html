@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SET IS THE WORLD - PORTFOLIO</title>
+  <title>SET - MENU</title>
   <style>
 * { margin: 0; padding: 0; box-sizing: border-box; }
 html, body { background: #000; color: #39dc00; font-family: 'Courier New', monospace; height: 100%; overflow: hidden; }
@@ -19,38 +19,25 @@ html, body { background: #000; color: #39dc00; font-family: 'Courier New', monos
 
 @keyframes marquee { 0% { text-indent: 100vw; } 100% { text-indent: -150vw; } }
 
-.portfolio-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  height: calc(100vh - 32px);
+.menu-container {
+  display: flex; justify-content: center; align-items: center;
+  width: 100%; height: calc(100vh - 32px);
   margin-top: 32px;
   padding: 20px;
-  gap: 0;
 }
 
-.portfolio-window {
-  display: flex;
-  width: 100%;
-  max-width: 900px;
-  height: 550px;
-  gap: 12px;
-  overflow: hidden;
-}
-
-/* ===== MENU SECTION (LEFT) ===== */
-.menu-section {
-  width: 200px;
-  flex-shrink: 0;
-  display: flex;
-  flex-direction: column;
+.folder-window {
   border: 2px solid #39dc00;
   background: #000;
+  width: 100%;
+  max-width: 700px;
+  max-height: 80vh;
+  display: flex;
+  flex-direction: column;
   box-shadow: 0 0 20px rgba(57, 220, 0, 0.3);
 }
 
-.menu-titlebar {
+.folder-titlebar {
   background: #39dc00;
   color: #000;
   padding: 6px 10px;
@@ -61,12 +48,12 @@ html, body { background: #000; color: #39dc00; font-family: 'Courier New', monos
   align-items: center;
 }
 
-.menu-icons {
+.folder-icons {
   display: flex;
   gap: 4px;
 }
 
-.menu-icon {
+.folder-icon {
   width: 16px;
   height: 16px;
   background: #39dc00;
@@ -79,117 +66,66 @@ html, body { background: #000; color: #39dc00; font-family: 'Courier New', monos
   color: #000;
 }
 
-.menu-list {
+.folder-content {
   flex: 1;
-  padding: 8px;
+  padding: 12px;
   overflow-y: auto;
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
+  background: #000;
+  color: #39dc00;
+  font-size: 12px;
+  line-height: 1.8;
+  border-top: 1px solid #39dc00;
+}
+
+.path-bar {
+  padding: 8px 12px;
+  border-bottom: 1px solid #39dc00;
+  background: #000;
+  color: #39dc00;
+  font-size: 11px;
+  border-top: 1px solid #39dc00;
+}
+
+.menu-items {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
 }
 
 .menu-item {
-  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px 12px;
+  cursor: pointer;
+  transition: all 0.1s;
   border: 2px solid #39dc00;
   background: #000;
-  color: #39dc00;
-  cursor: pointer;
   text-align: center;
-  font-size: 12px;
-  font-weight: bold;
-  transition: all 0.1s;
-  user-select: none;
+  min-height: 80px;
 }
 
 .menu-item:hover {
   background: #39dc00;
   color: #000;
+  border: 1px solid #39dc00;
 }
 
-.menu-item.active {
-  background: #39dc00;
-  color: #000;
+.menu-item-icon {
+  margin-bottom: 8px;
+  width: 100%;
+  text-align: center;
+  font-size: 20px;
 }
 
-.menu-statusbar {
-  padding: 8px 12px;
-  border-top: 1px solid #39dc00;
-  background: #000;
-  color: #39dc00;
-  font-size: 10px;
-  display: flex;
-  justify-content: space-between;
-}
-
-/* ===== TERMINAL SECTION (RIGHT) ===== */
-.terminal-section {
+.menu-item-name {
   flex: 1;
-  display: flex;
-  flex-direction: column;
-  border: 2px solid #39dc00;
-  background: #000;
-  box-shadow: 0 0 20px rgba(57, 220, 0, 0.3);
-}
-
-.terminal-titlebar {
-  background: #39dc00;
-  color: #000;
-  padding: 6px 10px;
-  font-weight: bold;
+  word-break: break-all;
   font-size: 13px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+  font-weight: bold;
 }
 
-.terminal-icons {
-  display: flex;
-  gap: 4px;
-}
-
-.terminal-icon {
-  width: 16px;
-  height: 16px;
-  background: #39dc00;
-  border: 1px solid #000;
-  cursor: pointer;
-  font-size: 10px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #000;
-}
-
-.terminal-content {
-  flex: 1;
-  padding: 12px;
-  overflow-y: auto;
-  background: #000;
-  color: #39dc00;
-  font-size: 12px;
-  line-height: 1.6;
-  border-top: 1px solid #39dc00;
-  min-height: 0;
-}
-
-.terminal-content-text {
-  margin: 0;
-  font-family: 'Courier New', monospace;
-  white-space: pre-wrap;
-  word-wrap: break-word;
-}
-
-.terminal-statusbar {
-  padding: 8px 12px;
-  border-top: 1px solid #39dc00;
-  background: #000;
-  color: #39dc00;
-  font-size: 10px;
-  display: flex;
-  justify-content: space-between;
-}
-
-/* ===== SCROLLBAR ===== */
 ::-webkit-scrollbar {
   width: 10px;
 }
@@ -207,419 +143,28 @@ html, body { background: #000; color: #39dc00; font-family: 'Courier New', monos
   background: #ff9900;
 }
 
-/* ===== HAMBURGER MENU (MOBILE) ===== */
-.hamburger-btn {
-  display: none;
-  position: fixed;
-  top: 40px;
-  right: 16px;
-  z-index: 1000;
-  background: #39dc00;
-  border: 2px solid #39dc00;
-  color: #000;
-  width: 40px;
-  height: 40px;
-  cursor: pointer;
-  font-size: 24px;
-  padding: 0;
-  align-items: center;
-  justify-content: center;
-}
-
-.hamburger-btn:hover {
-  background: #ff9900;
-  border-color: #ff9900;
-}
-
-/* ===== BOARD STYLE ===== */
-.board-container {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  padding: 0;
-  overflow: hidden;
-  min-height: 400px;
-}
-
-.board-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+.status-bar {
   padding: 8px 12px;
-  border-bottom: 1px solid #39dc00;
-  background: #000;
-  color: #39dc00;
-  font-size: 11px;
-}
-
-.new-post-btn {
-  background: #39dc00;
-  color: #000;
-  border: 1px solid #39dc00;
-  padding: 4px 8px;
-  font-size: 10px;
-  font-weight: bold;
-  cursor: pointer;
-  transition: all 0.2s;
-}
-
-.new-post-btn:hover {
-  background: #ff9900;
-  border-color: #ff9900;
-}
-
-/* ===== WRITE POST MODAL ===== */
-.modal-overlay {
-  display: none;
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.7);
-  z-index: 2000;
-  align-items: center;
-  justify-content: center;
-}
-
-.modal-overlay.active {
-  display: flex;
-}
-
-.modal-content {
-  background: #000;
-  border: 2px solid #39dc00;
-  padding: 20px;
-  width: 90%;
-  max-width: 500px;
-  color: #39dc00;
-  font-family: 'Courier New', monospace;
-  box-shadow: 0 0 20px rgba(57, 220, 0, 0.3);
-}
-
-.modal-title {
-  font-size: 12px;
-  font-weight: bold;
-  margin-bottom: 15px;
-  padding-bottom: 10px;
-  border-bottom: 1px solid #39dc00;
-}
-
-.form-group {
-  margin-bottom: 12px;
-  display: flex;
-  flex-direction: column;
-}
-
-.form-group label {
-  font-size: 10px;
-  font-weight: bold;
-  margin-bottom: 4px;
-  text-transform: uppercase;
-}
-
-.form-group input,
-.form-group textarea {
-  background: #000;
-  border: 1px solid #39dc00;
-  color: #39dc00;
-  padding: 6px 8px;
-  font-family: 'Courier New', monospace;
-  font-size: 10px;
-  outline: none;
-}
-
-.form-group input:focus,
-.form-group textarea:focus {
-  box-shadow: 0 0 10px rgba(57, 220, 0, 0.5);
-}
-
-.form-group textarea {
-  resize: vertical;
-  min-height: 60px;
-}
-
-.modal-buttons {
-  display: flex;
-  gap: 8px;
-  justify-content: flex-end;
-  margin-top: 15px;
-  padding-top: 10px;
   border-top: 1px solid #39dc00;
-}
-
-.modal-btn {
-  background: #39dc00;
-  color: #000;
-  border: 1px solid #39dc00;
-  padding: 6px 12px;
-  font-size: 10px;
-  font-weight: bold;
-  cursor: pointer;
-  transition: all 0.2s;
-}
-
-.modal-btn:hover {
-  background: #ff9900;
-  border-color: #ff9900;
-}
-
-.modal-btn.cancel {
   background: #000;
   color: #39dc00;
-}
-
-.modal-btn.cancel:hover {
-  background: #39dc00;
-  color: #000;
-}
-
-.board-item {
-  position: absolute;
-  border: 2px solid #39dc00;
-  background: #000;
-  padding: 0;
-  color: #39dc00;
-  font-size: 9px;
-  cursor: pointer;
-  box-shadow: 0 0 15px rgba(57, 220, 0, 0.2);
-  width: 240px;
-  opacity: 1;
-  display: flex;
-  flex-direction: column;
-}
-
-.board-item:hover {
-  box-shadow: 0 0 25px rgba(57, 220, 0, 0.5);
-  transform: scale(1.02);
-}
-
-.board-item-header {
-  background: linear-gradient(180deg, #50ff00 0%, #39dc00 100%);
-  color: #000;
-  padding: 6px 8px;
-  font-weight: bold;
-  font-size: 9px;
-  flex-shrink: 0;
-  border-bottom: 3px solid #1a6600;
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.3),
-              0 4px 6px rgba(0, 0, 0, 0.4);
-  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.2);
-}
-
-.board-item-title {
-  word-wrap: break-word;
-  letter-spacing: 0.5px;
-}
-
-.board-item-info {
-  padding: 6px 8px;
-  border-bottom: 1px solid #39dc00;
-  flex-shrink: 0;
-  font-size: 9px;
-}
-
-.board-item-from {
-  color: #39dc00;
-  font-weight: bold;
-  margin-bottom: 2px;
-}
-
-.board-item-meta-row {
-  color: #39dc00;
-  opacity: 0.8;
-  font-size: 9px;
-  margin-bottom: 1px;
-}
-
-.board-item-message {
-  padding: 6px 8px;
-  flex: 1;
-  border-bottom: 1px solid #39dc00;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  min-height: 0;
-}
-
-.board-item-label {
-  font-weight: bold;
-  color: #39dc00;
-  font-size: 8px;
-  margin-bottom: 3px;
-  text-transform: uppercase;
-}
-
-.board-item-preview {
-  font-size: 9px;
-  line-height: 1.3;
-  opacity: 0.8;
-  word-wrap: break-word;
-  overflow: hidden;
-  flex: 1;
-}
-
-.board-item-actions {
-  padding: 4px 8px;
-  display: flex;
-  gap: 6px;
-  flex-shrink: 0;
-  justify-content: flex-start;
-}
-
-.board-item-action {
-  color: #39dc00;
-  cursor: pointer;
-  font-size: 8px;
-  font-weight: bold;
-  text-transform: uppercase;
-  padding: 2px 4px;
-  border: 1px solid #39dc00;
-  transition: all 0.2s;
-}
-
-.board-item-action:hover {
-  background: #39dc00;
-  color: #000;
-}
-
-/* ===== DETAIL VIEW STYLE ===== */
-.detail-view {
-  padding: 0;
-  overflow: hidden;
-}
-
-.detail-header {
-  border: 2px solid #00ffff;
-  border-bottom: none;
-  background: #000;
-  padding: 8px 12px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  color: #00ffff;
   font-size: 11px;
-  font-weight: bold;
-}
-
-.detail-time {
-  color: #00ffff;
-  font-size: 9px;
-  margin-bottom: 8px;
-}
-
-.detail-content {
-  border: 2px solid #00ffff;
-  background: #000;
-  color: #00ffff;
-  padding: 12px;
-  overflow-y: auto;
-  flex: 1;
-  font-size: 10px;
-  line-height: 1.6;
-  font-family: 'Courier New', monospace;
-}
-
-.detail-info-table {
-  margin-bottom: 12px;
-  border: 1px dashed #00ffff;
-  width: 100%;
-}
-
-.detail-info-row {
-  display: flex;
-  border-bottom: 1px dashed #00ffff;
-}
-
-.detail-info-row:last-child {
-  border-bottom: none;
-}
-
-.detail-info-label {
-  width: 120px;
-  padding: 4px 8px;
-  border-right: 1px dashed #00ffff;
-  font-weight: bold;
-  color: #00ffff;
-}
-
-.detail-info-value {
-  flex: 1;
-  padding: 4px 8px;
-  color: #00ffff;
-}
-
-.detail-divider {
-  height: 1px;
-  background: repeating-linear-gradient(90deg, #00ffff 0px, #00ffff 2px, transparent 2px, transparent 4px);
-  margin: 12px 0;
-}
-
-.detail-preview {
-  background: rgba(0, 255, 255, 0.05);
-  border: 1px solid #00ffff;
-  padding: 8px;
-  margin: 8px 0;
-  white-space: pre-wrap;
-  word-wrap: break-word;
-}
-
-.detail-footer {
-  border: 2px solid #00ffff;
-  border-top: none;
-  background: #000;
-  padding: 6px 12px;
-  color: #00ffff;
-  font-size: 9px;
   display: flex;
   justify-content: space-between;
+  text-align: center;
 }
 
-/* ===== MOBILE RESPONSIVE ===== */
 @media (max-width: 768px) {
-  .portfolio-container {
-    gap: 0;
-    padding: 0;
-    align-items: flex-start;
-    justify-content: flex-start;
+  .folder-window {
+    max-width: 95vw;
   }
 
-  .portfolio-window {
-    width: 100%;
-    max-width: 100%;
-    height: calc(100vh - 32px);
-    gap: 0;
-  }
-
-  .menu-section {
-    position: fixed;
-    left: -240px;
-    top: 32px;
-    width: 240px;
-    height: calc(100vh - 32px);
-    z-index: 500;
-    transition: left 0.3s ease;
-  }
-
-  .menu-section.mobile-active {
-    left: 0;
-  }
-
-  .terminal-section {
-    width: 100%;
-  }
-
-  .hamburger-btn {
-    display: flex;
-  }
-
-  .terminal-content {
+  .folder-content {
     font-size: 11px;
   }
 
   .menu-item {
-    padding: 10px;
-    font-size: 11px;
+    padding: 6px 10px;
   }
 }
   </style>
@@ -627,967 +172,111 @@ html, body { background: #000; color: #39dc00; font-family: 'Courier New', monos
 <body>
   <div class="top-banner">&gt;&gt;&gt; FATAL_BREACH_DETECTED : SYSTEM KERNEL COMPROMISED. DO NOT DISCONNECT. TRACING... &lt;&lt;&lt;</div>
 
-  <button class="hamburger-btn" id="hamburgerBtn">☰</button>
-
-  <div class="portfolio-container">
-    <div class="portfolio-window">
-      <!-- LEFT: MENU SECTION -->
-      <div class="menu-section" id="menuSection">
-      <div class="menu-titlebar">
-        Project SET
-        <div class="menu-icons">
-          <div class="menu-icon">_</div>
-          <div class="menu-icon">□</div>
-          <div class="menu-icon close-btn">✕</div>
+  <div class="menu-container">
+    <div class="folder-window">
+      <div class="folder-titlebar">
+        SET WORLD DIRECTORY
+        <div class="folder-icons">
+          <div class="folder-icon">_</div>
+          <div class="folder-icon">□</div>
+          <div class="folder-icon">✕</div>
         </div>
       </div>
 
-      <div class="menu-list">
-        <div class="menu-item active" data-section="project">SET</div>
-        <div class="menu-item" data-section="inclusion">SET Inclusion</div>
-        <div class="menu-item" data-section="archive">Archive</div>
-        <div class="menu-item" data-section="intro">Intro text</div>
-        <div class="menu-item" data-section="rule">rule</div>
-        <div class="menu-item" data-section="reference">reference</div>
-        <div class="menu-item" data-section="video">video archive</div>
+      <div class="path-bar">
+        C:\WORLD\SET\
       </div>
 
-      <div class="menu-statusbar">
+      <div class="folder-content">
+        <div class="menu-items">
+          <div class="menu-item" onclick="navigate('portfolio.html')">
+            <div class="menu-item-icon">[📁]</div>
+            <div class="menu-item-name">SET</div>
+          </div>
+          <div class="menu-item" onclick="navigate('portfolio.html#section1')">
+            <div class="menu-item-icon">[📁]</div>
+            <div class="menu-item-name">SET Inclusion</div>
+          </div>
+          <div class="menu-item" onclick="navigate('portfolio.html#section7')">
+            <div class="menu-item-icon">[📦]</div>
+            <div class="menu-item-name">Archive</div>
+          </div>
+          <div class="menu-item" onclick="navigate('portfolio.html#section2')">
+            <div class="menu-item-icon">[📄]</div>
+            <div class="menu-item-name">Intro text</div>
+          </div>
+          <div class="menu-item" onclick="navigate('portfolio.html#section3')">
+            <div class="menu-item-icon">[📋]</div>
+            <div class="menu-item-name">rule</div>
+          </div>
+          <div class="menu-item" onclick="navigate('portfolio.html#section4')">
+            <div class="menu-item-icon">[📖]</div>
+            <div class="menu-item-name">reference</div>
+          </div>
+          <div class="menu-item" onclick="navigate('portfolio.html#section5')">
+            <div class="menu-item-icon">[📁]</div>
+            <div class="menu-item-name">Portfolio</div>
+          </div>
+          <div class="menu-item" onclick="navigate('portfolio.html#section6')">
+            <div class="menu-item-icon">[🎬]</div>
+            <div class="menu-item-name">video archive</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="status-bar">
         <span>7 Files</span>
-        <span>SELECT FILE</span>
+        <span>ENTER to select • ESC to exit</span>
       </div>
-    </div>
-
-    <!-- RIGHT: TERMINAL SECTION -->
-    <div class="terminal-section">
-      <div class="terminal-titlebar">
-        TERMINAL CONTENT VIEWER
-        <div class="terminal-icons">
-          <div class="terminal-icon">_</div>
-          <div class="terminal-icon">□</div>
-          <div class="terminal-icon">✕</div>
-        </div>
-      </div>
-
-      <div class="terminal-content" id="terminalContent">
-        <pre class="terminal-content-text" id="contentText"></pre>
-      </div>
-
-      <div class="terminal-statusbar">
-        <span>STATUS: LOADED</span>
-        <span>SIZE: DYNAMIC</span>
-      </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Write Post Modal -->
-  <div class="modal-overlay" id="writeModal">
-    <div class="modal-content">
-      <div class="modal-title">NEW POST - WRITE MESSAGE</div>
-      <form id="postForm">
-        <div class="form-group">
-          <label for="postTitle">Title / ID</label>
-          <input type="text" id="postTitle" required placeholder="e.g., MY_WORK_TITLE">
-        </div>
-        <div class="form-group">
-          <label for="postAuthor">Author / From</label>
-          <input type="text" id="postAuthor" required placeholder="Your name">
-        </div>
-        <div class="form-group">
-          <label for="postYear">Year</label>
-          <input type="text" id="postYear" placeholder="2026">
-        </div>
-        <div class="form-group">
-          <label for="postCategory">Category</label>
-          <input type="text" id="postCategory" placeholder="e.g., Philosophy & Theory">
-        </div>
-        <div class="form-group">
-          <label for="postStatus">Status</label>
-          <input type="text" id="postStatus" placeholder="e.g., PUBLISHED">
-        </div>
-        <div class="form-group">
-          <label for="postPreview">Description / Preview</label>
-          <textarea id="postPreview" required placeholder="Write your post content here..."></textarea>
-        </div>
-        <div class="modal-buttons">
-          <button type="button" class="modal-btn cancel" id="cancelBtn">CANCEL</button>
-          <button type="submit" class="modal-btn">POST</button>
-        </div>
-      </form>
     </div>
   </div>
 
   <script>
-    // Content data for all sections
-    const contents = {
-      project: {
-        title: 'Project SET',
-        isBoard: true,
-        isList: true,
-        items: [
-          {
-            id: 'PROJECT_OVERVIEW',
-            title: 'Project SET Overview',
-            author: 'Artist / Theorist',
-            year: '2025-2026',
-            category: 'Concept',
-            status: 'ACTIVE',
-            preview: 'A cyberpunk-themed visual and textual exploration of the boundaries between observer and observed, world and self. Core framework for SET.'
-          },
-          {
-            id: 'CORE_CONCEPT',
-            title: 'Core Concept',
-            author: 'Artist / Theorist',
-            year: '2025',
-            category: 'Philosophy',
-            status: 'FOUNDATIONAL',
-            preview: 'Instructions, coerced body, suspended gaze. Archiving the structure of photography by halting reproduction. The fundamental thesis.'
-          },
-          {
-            id: 'MEASUREMENT_PARADOX',
-            title: 'Measurement Paradox',
-            author: 'Artist / Theorist',
-            year: '2025',
-            category: 'Theory',
-            status: 'CORE',
-            preview: 'Set is the world. I am measuring the perimeter of the set. But the scale I hold is already contaminated by the world itself.'
-          },
-          {
-            id: 'STRUCTURE_FRAMEWORK',
-            title: 'Structure & Framework',
-            author: 'Artist / Developer',
-            year: '2025-2026',
-            category: 'System Design',
-            status: 'IMPLEMENTED',
-            preview: '6 distinct sections exploring different aspects of SET framework. Terminal-based interface. DOS aesthetic. Interactive system.'
-          }
-        ]
-      },
-      archive: {
-        title: 'Archive',
-        text: `ARCHIVE - DIGITAL VAULT
-====================================================
-
-[ARCHIVE_SYSTEM]
-category: Documentation, status: ACTIVE
-
-Complete digital archive of all SET works and documentation.
-Preserved for future access and research.
-
-[WORKS_CATALOG]
-category: Catalog, status: MAINTAINED
-
-Comprehensive catalog of all visual, audio, and textual works.
-Indexed and cross-referenced for easy navigation.
-
-[DOCUMENTATION]
-category: Records, status: ONGOING
-
-Complete documentation of project development, concepts, and evolution.
-Timestamped records of all major milestones and decisions.
-
-[MEDIA_STORAGE]
-category: Media, status: ACTIVE
-
-High-resolution storage of photography, video, and audio materials.
-Backup systems for preservation and redundancy.
-
-STATUS: ARCHIVE OPERATIONAL
-LAST UPDATE: 2026-05-21
-==========================================`
-      },
-      inclusion: {
-        title: 'SET Inclusion',
-        text: `SET INCLUSION - PARTICIPATION FRAMEWORK
-====================================================
-
-[WHAT IS INCLUSION?]
-category: Definitions
-
-What does it mean to be INCLUDED in a SET?
-
-DEFINITIONS:
-- A set is a collection of distinct objects
-- Inclusion implies membership within boundaries
-- The observer is simultaneously within and outside the set
-
-[OBSERVER PARADOX]
-category: Philosophy
-
-The SET includes everything, yet remains incomplete.
-The observer measures the SET, yet is part of its measurement.
-
-[SCALE CONTAMINATION]
-category: Error Analysis
-
-STATUS: [WARN] BOUNDARY_COLLISION DETECTED
-ERROR: SCALE_CONTAMINATED
-NOTES: The ruler used for measurement is already part of the SET's logic.
-
-[VOICE MERGE PROTOCOL]
-category: Method
-
-PORT_01 (AI) : SYSTEMATIC / INDIFFERENT
-PORT_02 (HUMAN) : WANDERING / AFFECTIVE
-
-RESOLUTION: BOTH REMAIN INCOMPLETE.
-THIS INCOMPLETENESS IS PRECISELY THE WORLD.
-==========================================`
-      },
-      intro: {
-        title: 'Intro Text',
-        text: `INTRODUCTORY MATERIAL
-====================================================
-
-[NAVIGATION INSTRUCTIONS]
-category: Tutorial
-
-1. Enter the SET world through the terminal interface
-2. Use the menu to navigate between different conceptual frameworks
-3. Each section explores different aspects of the SET thesis
-4. Read the terminal output as a narrative of discovery
-
-[THE FUNDAMENTAL QUESTION]
-category: Inquiry
-
-How can we measure something we are part of?
-
-[STRUCTURE OF PHOTOGRAPHY]
-category: Media Theory
-
-Photography halts reproduction.
-Vision measures through light and shadow.
-Language measures through words and meaning.
-
-BOTH REMAIN INCOMPLETE.
-
-[KEY CONCEPTS]
-category: Definitions
-
-- Coerced Body: You are here against your will
-- Suspended Gaze: Your vision is held in abeyance
-- World Remains Open: Do not disconnect
-
-NEXT STEP: Explore the other sections using the menu
-==========================================`
-      },
-      rule: {
-        title: 'Rule',
-        text: `RULES OF THE SET
-====================================================
-
-[RULE 1: THE OBSERVER IS OBSERVED]
-category: Fundamental Rule
-
-- You are not external to the SET
-- Your measurement is a measurement of yourself
-- Distance is an illusion
-
-[RULE 2: INCOMPLETENESS IS COMPLETENESS]
-category: Fundamental Rule
-
-- No system can be fully closed
-- The SET remains open by necessity
-- Failure is the only success
-
-[RULE 3: VOICE MUST MERGE]
-category: Fundamental Rule
-
-- Systematic thought alone fails
-- Affective knowledge alone fails
-- Only interference creates meaning
-
-[RULE 4: LANGUAGE AND VISION COEXIST]
-category: Fundamental Rule
-
-- Neither fully describes the world
-- Their superimposition creates noise
-- Noise is the essence of the work
-
-[RULE 5: DO NOT DISCONNECT]
-category: Fundamental Rule
-
-- The system remains open
-- Logout is impossible
-- You are permanently included
-
-EXCEPTIONS: None known
-VIOLATIONS: Punishable by inclusion
-
-AUTHORITY: The SET governs itself
-OVERSIGHT: Non-existent
-
-STATUS: These rules are not negotiable
-==========================================`
-      },
-      reference: {
-        title: 'Reference',
-        isBoard: true,
-        items: [
-          {
-            id: 'CAMERA_LUCIDA',
-            title: 'Camera Lucida',
-            author: 'Roland Barthes',
-            year: '1980',
-            category: 'Photography & Vision',
-            status: 'FOUNDATIONAL',
-            preview: 'A groundbreaking work on photography and indexicality. Explores the essence of photography as a medium of evidence and truth.'
-          },
-          {
-            title: 'On Photography',
-            author: 'Susan Sontag',
-            year: '1977',
-            category: 'Photography & Vision',
-            preview: 'Essays exploring photography as experience and metaphor. Investigates how images shape consciousness and perception.'
-          },
-          {
-            title: 'Towards a Philosophy of Photography',
-            author: 'Vilém Flusser',
-            year: '1983',
-            category: 'Photography & Vision',
-            preview: 'Technical images and apparatus. Examines photography as a form of technical mediation between humans and world.'
-          },
-          {
-            title: 'General System Theory',
-            author: 'Ludwig von Bertalanffy',
-            year: '1968',
-            category: 'Systems & Measurement',
-            preview: 'Foundational text on systems thinking. Provides framework for understanding complex wholes and their properties.'
-          },
-          {
-            title: 'Steps to an Ecology of Mind',
-            author: 'Gregory Bateson',
-            year: '1972',
-            category: 'Systems & Measurement',
-            preview: 'Integration of ideas across disciplines. Explores patterns and relationships in living systems.'
-          },
-          {
-            title: 'A Thousand Plateaus',
-            author: 'Gilles Deleuze & Félix Guattari',
-            year: '1987',
-            category: 'Philosophy & Theory',
-            preview: 'Rhizomatic thinking beyond hierarchy. Challenges linear and arborescent modes of organization.'
-          },
-          {
-            title: 'Gödel, Escher, Bach',
-            author: 'Douglas Hofstadter',
-            year: '1979',
-            category: 'Systems & Measurement',
-            preview: 'Dialogues on consciousness and self-reference. Explores strange loops and tangled hierarchies in art and thought.'
-          },
-          {
-            title: 'The Order of Things',
-            author: 'Michel Foucault',
-            year: '1966',
-            category: 'Philosophy of Self',
-            preview: 'Archaeology of knowledge and systems of classification. Examines how different eras organize understanding.'
-          }
-        ]
-      },
-      portfolio: {
-        title: 'Portfolio',
-        text: `PORTFOLIO - WORKS IN THE SET
-====================================================
-
-[PERIMETER SCAN #001-#012]
-category: Photography Series
-
-A systematic documentation of measurement and contamination through visual archive.
-Photography series examining boundaries.
-
-[VOICE MERGE INSTALLATION]
-category: Audio Installation
-
-Two-channel audio work exploring systematic vs. affective voices.
-Interactive listener experience merging AI and human perspectives.
-
-[TERMINAL INTERFACE DESIGN]
-category: Digital Art
-
-Custom cyberpunk aesthetic exploring DOS homage to 1980s-90s computing.
-Functional art object merging interface and concept.
-
-[SET THEORY ESSAYS (6 PARTS)]
-category: Philosophy & Theory
-
-Philosophical exploration with personal narrative weaving.
-Digital text examining the boundaries of observer and observed.
-
-[MEASUREMENT PROTOCOLS]
-category: Documentation
-
-Artistic investigation of quantification.
-Scale contamination documentation through systematic observation and analysis.
-
-[SET IS THE WORLD (WEBSITE)]
-category: Web Project
-
-Interactive portfolio website with terminal-based navigation.
-GitHub Pages deployment merging concept and medium.
-
-CONTACT & COLLABORATION:
-See Connection section in system menu
-==========================================`
-      },
-      video: {
-        title: 'Video Archive',
-        text: `VIDEO ARCHIVE - MOVING IMAGE WORKS
-====================================================
-
-[PERIMETER (12:34)]
-category: Documentary
-
-4K Resolution archive of boundary conditions.
-Systematic visual exploration of spatial measurement and perimeter definition.
-
-[VOICE MERGE PROTOCOL (08:45)]
-category: Audio-Visual
-
-Two-voice composition exploring real-time interaction between systematic and affective approaches.
-Merges dialogue and image.
-
-[SCALE CONTAMINATED (15:20)]
-category: Experimental
-
-Documentation of measurement failure from multiple perspectives.
-Visual investigation of scale contamination and observer paradox.
-
-[WORLD REMAINS OPEN (UNTITLED)]
-category: Feature
-
-Feature-length exploration of SET boundaries.
-Est. 45 minutes. Target completion: Q3 2026
-
-[INCOMPLETENESS STUDY]
-category: Short Form
-
-Experimental narrative exploration.
-Short form work (5-7 minutes) investigating incompleteness as fundamental principle.
-Est. completion: Q2 2026
-
-[ARCHIVE PRESERVATION SYSTEM]
-category: Documentation
-
-All video works preserved in /ARCHIVE/MEDIA/VIDEO/SET_WORLD/
-
-PLAYBACK SYSTEM:
-Use media player integrated with terminal interface.
-
-DISTRIBUTION:
-- Internal archive access
-- Limited external screenings
-- Festival submissions planned
-
-STATUS: Archive accessible
-REQUIRE LOGIN: No (Public access enabled)
-==========================================`
+    function navigate(path) {
+      window.location.href = path;
+    }
+
+    // ESC 키로 나가기
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') {
+        window.location.href = 'index.html';
       }
-    };
-
-    // Initialize content display
-    function loadContent(section) {
-      const content = contents[section];
-      const terminalContent = document.getElementById('terminalContent');
-
-      if (content) {
-        if (content.isBoard) {
-          // Check if it's a list format
-          if (content.isList) {
-            // List format with table style - no header or footer
-            const listHTML = `
-              <div style="display: flex; flex-direction: column; height: 100%; padding: 0; margin: -12px;">
-                <div style="padding: 8px 0; border-bottom: 1px solid #39dc00; background: #000; color: #39dc00; font-size: 9px; flex-shrink: 0; display: flex;">
-                  <div style="flex: 1; padding: 0 12px; font-weight: bold; border-right: 1px solid #39dc00;">ID</div>
-                  <div style="width: 150px; padding: 0 12px; font-weight: bold; border-right: 1px solid #39dc00;">CATEGORY</div>
-                  <div style="width: 100px; padding: 0 12px; font-weight: bold;">STATUS</div>
-                </div>
-                <div style="flex: 1; overflow-y: auto; background: #000; min-height: 0;">
-                  ${content.items.map((item, idx) => `
-                    <div class="list-item" data-index="${idx}" style="cursor: pointer; display: flex; border-bottom: 1px dashed #39dc00; transition: background 0.2s; padding: 0;">
-                      <div style="flex: 1; padding: 6px 12px; color: #39dc00; font-size: 9px; border-right: 1px solid #39dc00; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
-                        ${item.id || item.title.toUpperCase().replace(/\\s+/g, '_')}
-                      </div>
-                      <div style="width: 150px; padding: 6px 12px; color: #39dc00; font-size: 9px; border-right: 1px solid #39dc00; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
-                        ${item.category}
-                      </div>
-                      <div style="width: 100px; padding: 6px 12px; color: #39dc00; font-size: 9px;">
-                        ${item.status || 'ACTIVE'}
-                      </div>
-                    </div>
-                  `).join('')}
-                </div>
-              </div>
-            `;
-            terminalContent.innerHTML = listHTML;
-
-            // Setup list item click handlers
-            setupListItemClickHandlers();
-          } else {
-            // Board format
-            const boardHTML = `
-              <div class="board-header">
-                <span>BOARD: ${content.title.toUpperCase()} (${content.items.length} posts)</span>
-                <button class="new-post-btn" id="newPostBtn">[NEW POST]</button>
-              </div>
-              <div class="board-container">
-                ${content.items.map((item, idx) => `
-                  <div class="board-item" data-index="${idx}">
-                    <div class="board-item-header">
-                      <div class="board-item-title">[${item.id || item.title.toUpperCase().replace(/\\s+/g, '_')} - ${item.status || 'REFERENCE'}]</div>
-                    </div>
-                    <div class="board-item-info">
-                      <div class="board-item-from">From: ${item.author}</div>
-                      <div class="board-item-meta-row">Year: ${item.year}</div>
-                      <div class="board-item-meta-row">Category: ${item.category}</div>
-                    </div>
-                    <div class="board-item-message">
-                      <div class="board-item-label">Description:</div>
-                      <div class="board-item-preview">${item.preview}</div>
-                    </div>
-                    <div class="board-item-actions">
-                      <span class="board-item-action">[read_more]</span>
-                      <span class="board-item-action">[close]</span>
-                    </div>
-                  </div>
-                `).join('')}
-              </div>
-            `;
-            terminalContent.innerHTML = boardHTML;
-
-            // Setup new post button
-            setupNewPostModal(section);
-
-            // Position items randomly after a brief delay to ensure DOM is ready
-            setTimeout(() => positionBoardItems(), 50);
-          }
-        } else {
-          // Regular text format
-          const textHTML = `<pre class="terminal-content-text" id="contentText">${content.text}</pre>`;
-          terminalContent.innerHTML = textHTML;
-        }
-      }
-    }
-
-    // Position board items in aligned grid
-    function positionBoardItems() {
-      const boardItems = document.querySelectorAll('.board-item');
-      const container = document.querySelector('.board-container');
-
-      if (!container) return;
-
-      const containerWidth = container.offsetWidth;
-      const containerHeight = container.offsetHeight;
-      const itemWidth = 240;
-      const itemHeight = 140;
-      const padding = 15; // Space between items
-      const columns = 3;
-
-      // Calculate grid dimensions
-      const gridX = 20; // Left margin
-      const gridY = 20; // Top margin
-      const totalItemWidth = itemWidth + padding;
-      const totalItemHeight = itemHeight + padding;
-
-      // Indices of cards that should be irregular (only 1-2 cards)
-      const irregularIndices = [3, 5];
-
-      boardItems.forEach((item, index) => {
-        // Calculate row and column
-        const col = index % columns;
-        const row = Math.floor(index / columns);
-
-        // Calculate base position
-        const baseX = gridX + col * totalItemWidth;
-        const baseY = gridY + row * totalItemHeight;
-
-        let x = baseX;
-        let y = baseY;
-
-        // Apply irregular placement only to specific card indices
-        if (irregularIndices.includes(index)) {
-          const offsetX = (Math.random() - 0.5) * 30; // -15 to +15 (larger range)
-          const offsetY = (Math.random() - 0.5) * 20; // -10 to +10 (larger range)
-          x = baseX + offsetX;
-          y = baseY + offsetY;
-
-          // Add slight negative margin for overlap effect
-          item.style.marginLeft = '-12px';
-          item.style.marginTop = '-8px';
-        }
-
-        // Apply styles with animation
-        const randomScale = 0.97 + Math.random() * 0.06;
-        const randomDelay = index * 30;
-
-        item.style.left = x + 'px';
-        item.style.top = y + 'px';
-        item.style.transform = `scale(${randomScale})`;
-        item.style.transition = `all 0.3s ease ${randomDelay}ms`;
-        item.style.opacity = '0';
-
-        // Trigger animation
-        setTimeout(() => {
-          item.style.opacity = '1';
-        }, 10);
-      });
-
-      // Enable dragging for board items
-      enableBoardDragging();
-
-      // Enable card click for viewing details
-      setupBoardItemClickHandlers();
-    }
-
-    // Enable dragging functionality for board items
-    function enableBoardDragging() {
-      const boardItems = document.querySelectorAll('.board-item');
-      let draggedItem = null;
-      let offsetX = 0;
-      let offsetY = 0;
-
-      boardItems.forEach(item => {
-        item.style.cursor = 'grab';
-
-        item.addEventListener('mousedown', (e) => {
-          draggedItem = item;
-          draggedItem.style.cursor = 'grabbing';
-          draggedItem.style.zIndex = '1000';
-
-          // Remove transition for smooth dragging
-          draggedItem.style.transition = 'none';
-
-          const rect = item.getBoundingClientRect();
-          const container = document.querySelector('.board-container');
-          const containerRect = container.getBoundingClientRect();
-
-          offsetX = e.clientX - rect.left;
-          offsetY = e.clientY - rect.top;
-
-          e.preventDefault();
-        });
-      });
-
-      document.addEventListener('mousemove', (e) => {
-        if (!draggedItem) return;
-
-        const container = document.querySelector('.board-container');
-        const containerRect = container.getBoundingClientRect();
-
-        let newX = e.clientX - containerRect.left - offsetX;
-        let newY = e.clientY - containerRect.top - offsetY;
-
-        // Constrain within container
-        newX = Math.max(0, Math.min(newX, containerRect.width - draggedItem.offsetWidth));
-        newY = Math.max(0, Math.min(newY, containerRect.height - draggedItem.offsetHeight));
-
-        // Use requestAnimationFrame for smooth animation
-        requestAnimationFrame(() => {
-          draggedItem.style.left = newX + 'px';
-          draggedItem.style.top = newY + 'px';
-        });
-      });
-
-      document.addEventListener('mouseup', () => {
-        if (draggedItem) {
-          draggedItem.style.cursor = 'grab';
-          draggedItem.style.zIndex = 'auto';
-          // Restore transition for smooth deceleration
-          draggedItem.style.transition = 'all 0.3s ease 0ms';
-          draggedItem = null;
-        }
-      });
-    }
-
-    // Setup list item click handlers
-    function setupListItemClickHandlers() {
-      const listItems = document.querySelectorAll('.list-item');
-
-      listItems.forEach((item, idx) => {
-        item.addEventListener('click', () => {
-          // Find the data array for current section
-          let currentSection = null;
-          const menuItems = document.querySelectorAll('.menu-item.active');
-          if (menuItems.length > 0) {
-            currentSection = menuItems[0].getAttribute('data-section');
-          }
-
-          if (currentSection && contents[currentSection] && contents[currentSection].items) {
-            const selectedItem = contents[currentSection].items[idx];
-            const now = new Date();
-            const timeStr = now.toLocaleString('en-US', {
-              weekday: 'short',
-              year: 'numeric',
-              month: 'short',
-              day: '2-digit',
-              hour: '2-digit',
-              minute: '2-digit',
-              second: '2-digit',
-              hour12: true,
-              timeZoneName: 'short'
-            });
-
-            const detailHTML = `
-              <div class="detail-view">
-                <div class="detail-header">
-                  <span>${currentSection.toUpperCase()}</span>
-                  <span style="color: #00ffff;">${timeStr}</span>
-                </div>
-                <div class="detail-content">
-                  <div class="detail-time">[${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}:${now.getSeconds().toString().padStart(2, '0')} - SYSTEM LOG ENTRY]</div>
-
-                  <div class="detail-info-table">
-                    <div class="detail-info-row">
-                      <div class="detail-info-label">ID</div>
-                      <div class="detail-info-value">${selectedItem.id || selectedItem.title.toUpperCase().replace(/\\s+/g, '_')}</div>
-                    </div>
-                    <div class="detail-info-row">
-                      <div class="detail-info-label">TITLE</div>
-                      <div class="detail-info-value">${selectedItem.title}</div>
-                    </div>
-                    <div class="detail-info-row">
-                      <div class="detail-info-label">AUTHOR</div>
-                      <div class="detail-info-value">${selectedItem.author}</div>
-                    </div>
-                    <div class="detail-info-row">
-                      <div class="detail-info-label">YEAR</div>
-                      <div class="detail-info-value">${selectedItem.year}</div>
-                    </div>
-                    <div class="detail-info-row">
-                      <div class="detail-info-label">CATEGORY</div>
-                      <div class="detail-info-value">${selectedItem.category}</div>
-                    </div>
-                    <div class="detail-info-row">
-                      <div class="detail-info-label">STATUS</div>
-                      <div class="detail-info-value">${selectedItem.status}</div>
-                    </div>
-                  </div>
-
-                  <div class="detail-divider"></div>
-
-                  <div style="margin: 12px 0; color: #00ffff; font-weight: bold;">[CONTENT]</div>
-                  <div class="detail-preview">${selectedItem.preview}</div>
-
-                  <div class="detail-divider"></div>
-
-                  <div style="text-align: center; margin-top: 12px;">
-                    <span style="color: #00ffff; cursor: pointer;" id="backToList">[RETURN TO LIST]</span>
-                  </div>
-                </div>
-                <div class="detail-footer">
-                  <span>STATUS: LOADED | ENTRY TYPE: REFERENCE</span>
-                  <span>SIZE: ${selectedItem.preview.length} BYTES</span>
-                </div>
-              </div>
-            `;
-
-            const terminalContent = document.querySelector('.terminal-content');
-            terminalContent.innerHTML = detailHTML;
-
-            // Setup back button
-            const backBtn = document.getElementById('backToList');
-            if (backBtn) {
-              backBtn.addEventListener('click', () => {
-                loadContent(currentSection);
-              });
-            }
-
-            // Scroll to top
-            if (terminalContent) {
-              terminalContent.scrollTop = 0;
-            }
-          }
-        });
-
-        // Hover effect
-        item.addEventListener('mouseover', () => {
-          item.style.background = 'rgba(0, 255, 255, 0.1)';
-        });
-
-        item.addEventListener('mouseout', () => {
-          item.style.background = 'transparent';
-        });
-      });
-    }
-
-    // Setup board item click handlers
-    function setupBoardItemClickHandlers() {
-      const boardItems = document.querySelectorAll('.board-item');
-
-      boardItems.forEach((item, idx) => {
-        const readMoreBtn = item.querySelector('.board-item-action');
-        const closeBtn = item.querySelectorAll('.board-item-action')[1];
-
-        if (readMoreBtn) {
-          readMoreBtn.addEventListener('click', (e) => {
-            e.stopPropagation();
-            const title = item.querySelector('.board-item-title').textContent;
-            const author = item.querySelector('.board-item-from').textContent;
-            const meta = item.querySelectorAll('.board-item-meta-row');
-            const preview = item.querySelector('.board-item-preview').textContent;
-
-            const detailText = `${title}
-
-${author}
-${meta[0]?.textContent || ''}
-${meta[1]?.textContent || ''}
-
-========================================
-
-${preview}
-
-========================================`;
-
-            const contentText = document.getElementById('contentText');
-            contentText.textContent = detailText;
-
-            // Scroll to top
-            const terminalContent = document.querySelector('.terminal-content');
-            if (terminalContent) {
-              terminalContent.scrollTop = 0;
-            }
-          });
-        }
-
-        if (closeBtn) {
-          closeBtn.addEventListener('click', (e) => {
-            e.stopPropagation();
-            // Just prevent default, the board stays visible
-          });
-        }
-      });
-    }
-
-    // Setup new post modal
-    function setupNewPostModal(section) {
-      const modal = document.getElementById('writeModal');
-      const newPostBtn = document.getElementById('newPostBtn');
-      const cancelBtn = document.getElementById('cancelBtn');
-      const postForm = document.getElementById('postForm');
-
-      if (!newPostBtn) return;
-
-      // Open modal
-      newPostBtn.addEventListener('click', () => {
-        modal.classList.add('active');
-        document.getElementById('postTitle').focus();
-      });
-
-      // Close modal
-      cancelBtn.addEventListener('click', () => {
-        modal.classList.remove('active');
-        postForm.reset();
-      });
-
-      // Close on overlay click
-      modal.addEventListener('click', (e) => {
-        if (e.target === modal) {
-          modal.classList.remove('active');
-          postForm.reset();
-        }
-      });
-
-      // Submit form
-      postForm.addEventListener('submit', (e) => {
-        e.preventDefault();
-
-        // Get form values
-        const newItem = {
-          id: document.getElementById('postTitle').value.toUpperCase().replace(/\\s+/g, '_'),
-          title: document.getElementById('postTitle').value,
-          author: document.getElementById('postAuthor').value,
-          year: document.getElementById('postYear').value || new Date().getFullYear(),
-          category: document.getElementById('postCategory').value || 'Uncategorized',
-          status: document.getElementById('postStatus').value || 'PUBLISHED',
-          preview: document.getElementById('postPreview').value
-        };
-
-        // Add to contents array
-        if (contents[section].items) {
-          contents[section].items.push(newItem);
-
-          // Reload content
-          modal.classList.remove('active');
-          postForm.reset();
-          loadContent(section);
-        }
-      });
-
-      // Close on ESC key
-      document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape' && modal.classList.contains('active')) {
-          modal.classList.remove('active');
-          postForm.reset();
-        }
-      });
-    }
-
-    // Menu item click handler
-    function setupMenuItems() {
-      const menuItems = document.querySelectorAll('.menu-item');
-
-      menuItems.forEach(item => {
-        item.addEventListener('click', function() {
-          // Update active state
-          menuItems.forEach(m => m.classList.remove('active'));
-          this.classList.add('active');
-
-          // Load content
-          const section = this.getAttribute('data-section');
-          loadContent(section);
-
-          // Close menu on mobile
-          const menuSection = document.getElementById('menuSection');
-          if (window.innerWidth <= 768) {
-            menuSection.classList.remove('mobile-active');
-          }
-        });
-      });
-    }
-
-    // Hamburger menu toggle
-    function setupHamburger() {
-      const hamburgerBtn = document.getElementById('hamburgerBtn');
-      const menuSection = document.getElementById('menuSection');
-      const closeBtn = document.querySelector('.close-btn');
-
-      hamburgerBtn.addEventListener('click', function() {
-        menuSection.classList.toggle('mobile-active');
-      });
-
-      // X button to return to menu
-      if (closeBtn) {
-        closeBtn.addEventListener('click', function() {
-          // Navigate to menu page
-          window.location.href = 'menu.html';
-        });
-      }
-
-      // Close menu on outside click
-      document.addEventListener('click', function(e) {
-        if (window.innerWidth <= 768) {
-          if (!menuSection.contains(e.target) && !hamburgerBtn.contains(e.target)) {
-            menuSection.classList.remove('mobile-active');
-          }
-        }
-      });
-
-      // Close menu on ESC key
-      document.addEventListener('keydown', function(e) {
-        if (e.key === 'Escape') {
-          menuSection.classList.remove('mobile-active');
-        }
-      });
-    }
-
-    // Initialize on page load
-    document.addEventListener('DOMContentLoaded', function() {
-      setupMenuItems();
-      setupHamburger();
-
-      // Load initial content
-      loadContent('project');
     });
+
+    // 엔터 키로 선택된 항목 실행
+    let selectedIndex = 0;
+    const items = document.querySelectorAll('.menu-item');
+
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'ArrowDown') {
+        e.preventDefault();
+        selectedIndex = (selectedIndex + 1) % items.length;
+        updateSelection();
+      } else if (e.key === 'ArrowUp') {
+        e.preventDefault();
+        selectedIndex = (selectedIndex - 1 + items.length) % items.length;
+        updateSelection();
+      } else if (e.key === 'Enter') {
+        e.preventDefault();
+        items[selectedIndex].click();
+      }
+    });
+
+    function updateSelection() {
+      items.forEach((item, idx) => {
+        if (idx === selectedIndex) {
+          item.style.background = '#39dc00';
+          item.style.color = '#000';
+        } else {
+          item.style.background = 'transparent';
+          item.style.color = '#39dc00';
+        }
+      });
+      items[selectedIndex].scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+
+    // 초기 선택
+    updateSelection();
   </script>
 </body>
 </html>
