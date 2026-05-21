@@ -634,29 +634,37 @@ html, body { background: #000; color: #39dc00; font-family: 'Courier New', monos
         text: `PROJECT SET - OVERVIEW
 ====================================================
 
-[PROJECT SET OVERVIEW]
-category: Concept
+[PROJECT_SET_OVERVIEW]
+category: Concept, status: ACTIVE
 
-A cyberpunk-themed visual and textual exploration of the boundaries between observer and observed, world and self.
+A cyberpunk-themed visual and textual exploration of the boundaries
+between observer and observed, world and self. Core framework for SET.
 
-[CORE CONCEPT]
-category: Philosophy
+---
 
-Instructions, coerced body, suspended gaze. Archiving the structure of photography by halting reproduction.
+[CORE_CONCEPT]
+category: Philosophy, status: FOUNDATIONAL
 
-[MEASUREMENT PARADOX]
-category: Theory
+Instructions, coerced body, suspended gaze. Archiving the structure
+of photography by halting reproduction. The fundamental thesis.
 
-Set is the world. I'm measuring the perimeter of the set.
+---
+
+[MEASUREMENT_PARADOX]
+category: Theory, status: CORE
+
+Set is the world. I am measuring the perimeter of the set.
 But the scale I hold is already contaminated by the world itself.
 
-[STRUCTURE & FRAMEWORK]
-category: System Design
+---
 
-- 6 distinct sections exploring different aspects of the SET framework
-- Terminal-based interface for navigation
-- DOS aesthetic as metaphorical framework
-- Interactive content loading system
+[STRUCTURE_FRAMEWORK]
+category: System Design, status: IMPLEMENTED
+
+6 distinct sections exploring different aspects of SET framework.
+Terminal-based interface. DOS aesthetic. Interactive system.
+
+---
 
 STATUS: ACTIVE
 LAST UPDATE: 2026-05-21
@@ -1066,6 +1074,9 @@ REQUIRE LOGIN: No (Public access enabled)
 
       // Enable dragging for board items
       enableBoardDragging();
+
+      // Enable card click for viewing details
+      setupBoardItemClickHandlers();
     }
 
     // Enable dragging functionality for board items
@@ -1124,6 +1135,54 @@ REQUIRE LOGIN: No (Public access enabled)
           // Restore transition for smooth deceleration
           draggedItem.style.transition = 'all 0.3s ease 0ms';
           draggedItem = null;
+        }
+      });
+    }
+
+    // Setup board item click handlers
+    function setupBoardItemClickHandlers() {
+      const boardItems = document.querySelectorAll('.board-item');
+
+      boardItems.forEach((item, idx) => {
+        const readMoreBtn = item.querySelector('.board-item-action');
+        const closeBtn = item.querySelectorAll('.board-item-action')[1];
+
+        if (readMoreBtn) {
+          readMoreBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const title = item.querySelector('.board-item-title').textContent;
+            const author = item.querySelector('.board-item-from').textContent;
+            const meta = item.querySelectorAll('.board-item-meta-row');
+            const preview = item.querySelector('.board-item-preview').textContent;
+
+            const detailText = `${title}
+
+${author}
+${meta[0]?.textContent || ''}
+${meta[1]?.textContent || ''}
+
+========================================
+
+${preview}
+
+========================================`;
+
+            const contentText = document.getElementById('contentText');
+            contentText.textContent = detailText;
+
+            // Scroll to top
+            const terminalContent = document.querySelector('.terminal-content');
+            if (terminalContent) {
+              terminalContent.scrollTop = 0;
+            }
+          });
+        }
+
+        if (closeBtn) {
+          closeBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            // Just prevent default, the board stays visible
+          });
         }
       });
     }
