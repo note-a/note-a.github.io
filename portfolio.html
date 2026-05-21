@@ -1477,6 +1477,38 @@ REQUIRE LOGIN: No (Public access enabled)
       }
     }
 
+    // Load admin-edited contents from localStorage
+    function loadAdminContentsFromStorage() {
+      try {
+        const adminContents = JSON.parse(localStorage.getItem('adminContents') || '{}');
+
+        // Merge admin contents with default contents
+        if (adminContents.project) {
+          contents.project = { ...contents.project, ...adminContents.project };
+        }
+        if (adminContents.inclusion) {
+          contents.inclusion = { ...contents.inclusion, ...adminContents.inclusion };
+        }
+        if (adminContents.intro) {
+          contents.intro = { ...contents.intro, ...adminContents.intro };
+        }
+        if (adminContents.rule) {
+          contents.rule = { ...contents.rule, ...adminContents.rule };
+        }
+        if (adminContents.reference) {
+          contents.reference = { ...contents.reference, ...adminContents.reference };
+        }
+        if (adminContents.video) {
+          contents.video = { ...contents.video, ...adminContents.video };
+        }
+        if (adminContents.archive) {
+          contents.archive = { ...contents.archive, ...adminContents.archive };
+        }
+      } catch (e) {
+        console.log('No admin contents in storage or error loading');
+      }
+    }
+
     // Initialize content display
     function loadContent(section) {
       const content = contents[section];
@@ -2138,12 +2170,19 @@ ${preview}
 
       if (!searchInput || !searchBtn) return;
 
+      // Display random photos initially
+      function displayRandomPhotos() {
+        // Shuffle array and show random photo
+        const shuffled = [...allPhotos].sort(() => Math.random() - 0.5);
+        displayPhotoGallery(allPhotos, shuffled.slice(0, Math.ceil(Math.random() * allPhotos.length)));
+      }
+
       function performSearch() {
         const query = searchInput.value.toLowerCase().trim();
 
         if (!query) {
-          // No search term - show empty message
-          gallery.innerHTML = '<div class="no-results">검색 키워드를 입력하세요: crash, floating, shadow</div>';
+          // No search term - show random photos
+          displayRandomPhotos();
           return;
         }
 
@@ -2168,8 +2207,19 @@ ${preview}
         }
       });
 
-      // Real-time search as user types
-      searchInput.addEventListener('input', performSearch);
+      // When user types - clear results and show message
+      searchInput.addEventListener('input', (e) => {
+        if (e.target.value.trim() === '') {
+          // If input is cleared, show random photos again
+          displayRandomPhotos();
+        } else {
+          // While typing, show hint message
+          gallery.innerHTML = '<div class="no-results">검색하고 엔터를 누르세요</div>';
+        }
+      });
+
+      // Show random photos on initial load
+      displayRandomPhotos();
     }
 
     // Show photo detail modal
@@ -2324,6 +2374,9 @@ ${preview}
 
     // Initialize on page load
     document.addEventListener('DOMContentLoaded', function() {
+      // Load admin-edited contents from localStorage
+      loadAdminContentsFromStorage();
+
       // Initial viewport detection
       detectAndSwitchLayout();
 
