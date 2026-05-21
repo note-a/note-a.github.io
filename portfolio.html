@@ -892,17 +892,12 @@ html, body { background: #000; color: #39dc00; font-family: 'Courier New', monos
   line-height: 1.8;
   min-height: 0;
   -webkit-font-smoothing: antialiased;
-  word-wrap: break-word;
-  overflow-wrap: break-word;
-  word-break: break-word;
-  max-width: 100%;
-  white-space: pre-wrap;
 }
 
 #mobileContentText {
-  white-space: pre-wrap;
   word-wrap: break-word;
   overflow-wrap: break-word;
+  white-space: pre-wrap;
 }
 
 .mobile-terminal-statusbar {
@@ -1311,6 +1306,13 @@ VISUAL LANGUAGE:
         title: 'Photo Archive',
         isArchivePhotos: true,
         photos: [
+          {
+            id: 'BIG_BROTHER_000',
+            title: 'BIG BROTHER',
+            filename: 'https://raw.githubusercontent.com/note-a/note-a.github.io/refs/heads/main/big-brother.jpg',
+            keywords: ['big brother', 'observation', 'control', 'surveillance'],
+            description: 'Main archive entry. Observational documentation system.'
+          },
           {
             id: 'CRASH_001',
             title: 'CRASH',
@@ -2479,21 +2481,27 @@ ${preview}
 
     // Load content to mobile terminal
     function loadContentToMobile(section) {
-      const content = contents[section];
-      const mobileContent = document.getElementById('mobileContentText');
+      try {
+        const content = contents[section];
+        const mobileContent = document.getElementById('mobileContentText');
 
-      if (!mobileContent) {
-        console.error('Mobile content element not found');
-        return;
-      }
+        if (!mobileContent) {
+          console.error('Mobile content element not found - mobileContentText');
+          return;
+        }
 
-      if (!content) {
-        mobileContent.textContent = 'Section not found';
-        return;
-      }
+        if (!content) {
+          console.error('Content not found for section:', section);
+          mobileContent.textContent = 'Section not found: ' + section;
+          return;
+        }
+
+        // Clear previous content
+        mobileContent.innerHTML = '';
+        mobileContent.textContent = '';
 
       if (content.isArchivePhotos) {
-        // For archive section, show search interface and all photos
+        // For archive section, show search interface and photo images
         mobileContent.style.whiteSpace = 'normal';
         mobileContent.innerHTML = `
           <div style="display: flex; flex-direction: column; height: 100%; gap: 0;">
@@ -2501,22 +2509,27 @@ ${preview}
               <input type="text" id="mobileArchiveSearch" placeholder="search: crash, floating, shadow"
                 style="flex: 1; background: #000; border: 1px solid #39dc00; color: #39dc00; padding: 6px; font-size: 10px; font-family: monospace;">
             </div>
-            <div id="mobilePhotoGallery" style="display: grid; grid-template-columns: 1fr; gap: 8px; overflow-y: auto; flex: 1;">
+            <div id="mobilePhotoGallery" style="display: flex; flex-direction: column; gap: 12px; overflow-y: auto; flex: 1;">
             </div>
           </div>
         `;
 
-        // Function to render photos
+        // Function to render photos with images
         const renderPhotos = (photos) => {
           const gallery = document.getElementById('mobilePhotoGallery');
           if (photos.length === 0) {
             gallery.innerHTML = `<div style="padding: 20px; text-align: center; color: #39dc00; font-size: 11px;">No results found</div>`;
           } else {
             gallery.innerHTML = photos.map(p => `
-              <div style="border: 1px solid #39dc00; padding: 8px; cursor: pointer; font-size: 10px;">
-                <strong>${p.title}</strong><br>
-                <span style="color: #39dc00; font-size: 9px;">${p.keywords.join(' • ')}</span><br>
-                <span style="color: #888; font-size: 9px; margin-top: 4px; display: block;">${p.description}</span>
+              <div style="border: 1px solid #39dc00; overflow: hidden; background: #111;">
+                <div style="width: 100%; height: 200px; background: #000; display: flex; align-items: center; justify-content: center; overflow: hidden;">
+                  <img src="${p.filename}" style="max-width: 100%; max-height: 100%; object-fit: cover;" alt="${p.title}" onerror="this.style.display='none'">
+                </div>
+                <div style="padding: 8px; background: #000; border-top: 1px solid #39dc00;">
+                  <div style="color: #39dc00; font-size: 11px; font-weight: bold; margin-bottom: 4px;">${p.title}</div>
+                  <div style="color: #39dc00; font-size: 9px; margin-bottom: 4px;">${p.keywords.join(' • ')}</div>
+                  <div style="color: #888; font-size: 9px;">${p.description}</div>
+                </div>
               </div>
             `).join('');
           }
@@ -2547,6 +2560,7 @@ ${preview}
         }, 0);
       } else if (content.isSlideshow) {
         // Slideshow format - show all slides as list
+        mobileContent.style.whiteSpace = 'pre-wrap';
         const slides = content.slides || [];
         let output = `${content.title} (${slides.length} slides)\n\n`;
 
@@ -2561,19 +2575,26 @@ ${preview}
         mobileContent.textContent = output;
       } else if (content.text) {
         // Text format
+        mobileContent.style.whiteSpace = 'pre-wrap';
         mobileContent.textContent = content.text;
       } else if (content.items) {
         // List/Board format
+        mobileContent.style.whiteSpace = 'pre-wrap';
         const allItems = [...(content.items || [])];
         const publishedItems = getPublishedPosts(section);
         allItems.push(...publishedItems);
 
         let output = `${content.title} (${allItems.length} items)\n\n`;
         allItems.forEach((item, idx) => {
-          output += `[${idx + 1}] ${item.title || item.id}\nAuthor: ${item.author}\nYear: ${item.year}\n\n`;
+          output += `[${idx + 1}] ${item.title || item.id}\n`;
+          output += `Author: ${item.author} | Year: ${item.year} | Status: ${item.status || 'ACTIVE'}\n`;
+          output += `${item.preview || ''}\n\n`;
         });
 
         mobileContent.textContent = output;
+      }
+      } catch (error) {
+        console.error('Error loading mobile content:', error);
       }
     }
 
@@ -2582,15 +2603,13 @@ ${preview}
       // Load admin-edited contents from localStorage
       loadAdminContentsFromStorage();
 
-      // Initial viewport detection
-      detectAndSwitchLayout();
-
-      // Setup desktop layout
+      // Setup all layouts first
       setupMenuItems();
       setupHamburger();
-
-      // Setup mobile layout
       setupMobileLayout();
+
+      // Then detect and apply layout (which loads content)
+      detectAndSwitchLayout();
 
       // Check URL parameters for section to load
       const urlParams = new URLSearchParams(window.location.search);
