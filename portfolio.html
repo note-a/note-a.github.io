@@ -631,180 +631,160 @@ html, body { background: #000; color: #39dc00; font-family: 'Courier New', monos
     const contents = {
       project: {
         title: 'Project SET',
-        isBoard: true,
-        items: [
-          {
-            id: 'PROJECT_OVERVIEW',
-            title: 'Project SET Overview',
-            author: 'Artist / Theorist',
-            year: '2025-2026',
-            category: 'Concept',
-            status: 'ACTIVE',
-            preview: 'A cyberpunk-themed visual and textual exploration of the boundaries between observer and observed, world and self. Core framework.'
-          },
-          {
-            id: 'CORE_CONCEPT',
-            title: 'Core Concept',
-            author: 'Artist / Theorist',
-            year: '2025',
-            category: 'Philosophy',
-            status: 'FOUNDATIONAL',
-            preview: 'Instructions, coerced body, suspended gaze. Archiving the structure of photography by halting reproduction. The fundamental thesis.'
-          },
-          {
-            id: 'MEASUREMENT_PARADOX',
-            title: 'Measurement Paradox',
-            author: 'Artist / Theorist',
-            year: '2025',
-            category: 'Theory',
-            status: 'CORE',
-            preview: 'Set is the world. I am measuring the perimeter of the set. But the scale I hold is already contaminated by the world itself.'
-          },
-          {
-            id: 'STRUCTURE_FRAMEWORK',
-            title: 'Structure & Framework',
-            author: 'Artist / Developer',
-            year: '2025-2026',
-            category: 'System Design',
-            status: 'IMPLEMENTED',
-            preview: '6 distinct sections exploring different aspects of SET framework. Terminal-based interface. DOS aesthetic. Interactive system.'
-          }
-        ]
+        text: `PROJECT SET - OVERVIEW
+====================================================
+
+[PROJECT SET OVERVIEW]
+category: Concept
+
+A cyberpunk-themed visual and textual exploration of the boundaries between observer and observed, world and self.
+
+[CORE CONCEPT]
+category: Philosophy
+
+Instructions, coerced body, suspended gaze. Archiving the structure of photography by halting reproduction.
+
+[MEASUREMENT PARADOX]
+category: Theory
+
+Set is the world. I'm measuring the perimeter of the set.
+But the scale I hold is already contaminated by the world itself.
+
+[STRUCTURE & FRAMEWORK]
+category: System Design
+
+- 6 distinct sections exploring different aspects of the SET framework
+- Terminal-based interface for navigation
+- DOS aesthetic as metaphorical framework
+- Interactive content loading system
+
+STATUS: ACTIVE
+LAST UPDATE: 2026-05-21
+==========================================`
       },
       inclusion: {
         title: 'SET Inclusion',
-        isBoard: true,
-        items: [
-          {
-            id: 'INCLUSION_DEFINITION',
-            title: 'What is Inclusion?',
-            author: 'Artist / Theorist',
-            year: '2025',
-            category: 'Definitions',
-            status: 'PUBLISHED',
-            preview: 'What does it mean to be INCLUDED in a SET? A set is a collection of distinct objects. Inclusion implies membership within boundaries.'
-          },
-          {
-            id: 'OBSERVER_PARADOX',
-            title: 'Observer Paradox',
-            author: 'Artist / Theorist',
-            year: '2025',
-            category: 'Philosophy',
-            status: 'CORE',
-            preview: 'The observer is simultaneously within and outside the set. The SET includes everything, yet remains incomplete. Fundamental paradox.'
-          },
-          {
-            id: 'SCALE_CONTAMINATION',
-            title: 'Scale Contamination',
-            author: 'Artist / Researcher',
-            year: '2025',
-            category: 'Error Analysis',
-            status: 'DOCUMENTED',
-            preview: '[WARN] BOUNDARY_COLLISION DETECTED. The ruler used for measurement is already part of the SET\'s logic. Scale contaminated.'
-          },
-          {
-            id: 'VOICE_MERGE_PROTOCOL',
-            title: 'Voice Merge Protocol',
-            author: 'Artist / Composer',
-            year: '2025',
-            category: 'Method',
-            status: 'ACTIVE',
-            preview: 'PORT_01 (AI): SYSTEMATIC / INDIFFERENT. PORT_02 (HUMAN): WANDERING / AFFECTIVE. Both remain incomplete. This incompleteness is the world.'
-          }
-        ]
+        text: `SET INCLUSION - PARTICIPATION FRAMEWORK
+====================================================
+
+[WHAT IS INCLUSION?]
+category: Definitions
+
+What does it mean to be INCLUDED in a SET?
+
+DEFINITIONS:
+- A set is a collection of distinct objects
+- Inclusion implies membership within boundaries
+- The observer is simultaneously within and outside the set
+
+[OBSERVER PARADOX]
+category: Philosophy
+
+The SET includes everything, yet remains incomplete.
+The observer measures the SET, yet is part of its measurement.
+
+[SCALE CONTAMINATION]
+category: Error Analysis
+
+STATUS: [WARN] BOUNDARY_COLLISION DETECTED
+ERROR: SCALE_CONTAMINATED
+NOTES: The ruler used for measurement is already part of the SET's logic.
+
+[VOICE MERGE PROTOCOL]
+category: Method
+
+PORT_01 (AI) : SYSTEMATIC / INDIFFERENT
+PORT_02 (HUMAN) : WANDERING / AFFECTIVE
+
+RESOLUTION: BOTH REMAIN INCOMPLETE.
+THIS INCOMPLETENESS IS PRECISELY THE WORLD.
+==========================================`
       },
       intro: {
-        title: 'Intro text',
-        isBoard: true,
-        items: [
-          {
-            id: 'NAVIGATION_GUIDE',
-            title: 'Navigation Instructions',
-            author: 'System / Guide',
-            year: '2025',
-            category: 'Tutorial',
-            status: 'ACTIVE',
-            preview: 'Enter the SET world through terminal interface. Use menu to navigate sections. Each explores different aspects of SET thesis.'
-          },
-          {
-            id: 'FUNDAMENTAL_QUESTION',
-            title: 'The Fundamental Question',
-            author: 'Artist / Theorist',
-            year: '2025',
-            category: 'Inquiry',
-            status: 'CORE',
-            preview: 'How can we measure something we are part of? This question drives all exploration in the SET framework.'
-          },
-          {
-            id: 'PHOTOGRAPHY_STRUCTURE',
-            title: 'Structure of Photography',
-            author: 'Artist / Theorist',
-            year: '2025',
-            category: 'Media Theory',
-            status: 'ESSAY',
-            preview: 'Photography halts reproduction. Vision measures through light and shadow. Language measures through words. Both remain incomplete.'
-          },
-          {
-            id: 'KEY_CONCEPTS',
-            title: 'Key Concepts',
-            author: 'System / Guide',
-            year: '2025',
-            category: 'Definitions',
-            status: 'REFERENCE',
-            preview: 'Coerced Body: you are here against your will. Suspended Gaze: vision held in abeyance. World Remains Open: do not disconnect.'
-          }
-        ]
+        title: 'Intro Text',
+        text: `INTRODUCTORY MATERIAL
+====================================================
+
+[NAVIGATION INSTRUCTIONS]
+category: Tutorial
+
+1. Enter the SET world through the terminal interface
+2. Use the menu to navigate between different conceptual frameworks
+3. Each section explores different aspects of the SET thesis
+4. Read the terminal output as a narrative of discovery
+
+[THE FUNDAMENTAL QUESTION]
+category: Inquiry
+
+How can we measure something we are part of?
+
+[STRUCTURE OF PHOTOGRAPHY]
+category: Media Theory
+
+Photography halts reproduction.
+Vision measures through light and shadow.
+Language measures through words and meaning.
+
+BOTH REMAIN INCOMPLETE.
+
+[KEY CONCEPTS]
+category: Definitions
+
+- Coerced Body: You are here against your will
+- Suspended Gaze: Your vision is held in abeyance
+- World Remains Open: Do not disconnect
+
+NEXT STEP: Explore the other sections using the menu
+==========================================`
       },
       rule: {
-        title: 'rule',
-        isBoard: true,
-        items: [
-          {
-            id: 'OBSERVER_OBSERVED',
-            title: 'Rule 1: The Observer is Observed',
-            author: 'System / Authority',
-            year: '2025',
-            category: 'Fundamental Rule',
-            status: 'BINDING',
-            preview: 'You are not external to the SET. Your measurement is a measurement of yourself. Distance is an illusion. Non-negotiable.'
-          },
-          {
-            id: 'INCOMPLETENESS_COMPLETENESS',
-            title: 'Rule 2: Incompleteness is Completeness',
-            author: 'System / Authority',
-            year: '2025',
-            category: 'Fundamental Rule',
-            status: 'BINDING',
-            preview: 'No system can be fully closed. The SET remains open by necessity. Failure is the only success. Paradox as principle.'
-          },
-          {
-            id: 'VOICE_MUST_MERGE',
-            title: 'Rule 3: Voice Must Merge',
-            author: 'System / Authority',
-            year: '2025',
-            category: 'Fundamental Rule',
-            status: 'BINDING',
-            preview: 'Systematic thought alone fails. Affective knowledge alone fails. Only interference creates meaning. Synthesis required.'
-          },
-          {
-            id: 'LANGUAGE_VISION_COEXIST',
-            title: 'Rule 4: Language and Vision Coexist',
-            author: 'System / Authority',
-            year: '2025',
-            category: 'Fundamental Rule',
-            status: 'BINDING',
-            preview: 'Neither fully describes the world. Their superimposition creates noise. Noise is the essence of the work. Embrace interference.'
-          },
-          {
-            id: 'DO_NOT_DISCONNECT',
-            title: 'Rule 5: Do Not Disconnect',
-            author: 'System / Authority',
-            year: '2025',
-            category: 'Fundamental Rule',
-            status: 'BINDING',
-            preview: 'The system remains open. Logout is impossible. You are permanently included. Participation is mandatory and eternal.'
-          }
-        ]
+        title: 'Rule',
+        text: `RULES OF THE SET
+====================================================
+
+[RULE 1: THE OBSERVER IS OBSERVED]
+category: Fundamental Rule
+
+- You are not external to the SET
+- Your measurement is a measurement of yourself
+- Distance is an illusion
+
+[RULE 2: INCOMPLETENESS IS COMPLETENESS]
+category: Fundamental Rule
+
+- No system can be fully closed
+- The SET remains open by necessity
+- Failure is the only success
+
+[RULE 3: VOICE MUST MERGE]
+category: Fundamental Rule
+
+- Systematic thought alone fails
+- Affective knowledge alone fails
+- Only interference creates meaning
+
+[RULE 4: LANGUAGE AND VISION COEXIST]
+category: Fundamental Rule
+
+- Neither fully describes the world
+- Their superimposition creates noise
+- Noise is the essence of the work
+
+[RULE 5: DO NOT DISCONNECT]
+category: Fundamental Rule
+
+- The system remains open
+- Logout is impossible
+- You are permanently included
+
+EXCEPTIONS: None known
+VIOLATIONS: Punishable by inclusion
+
+AUTHORITY: The SET governs itself
+OVERSIGHT: Non-existent
+
+STATUS: These rules are not negotiable
+==========================================`
       },
       reference: {
         title: 'Reference',
@@ -872,123 +852,101 @@ html, body { background: #000; color: #39dc00; font-family: 'Courier New', monos
       },
       portfolio: {
         title: 'Portfolio',
-        isBoard: true,
-        items: [
-          {
-            id: 'PERIMETER_SCAN',
-            title: 'Perimeter Scan #001-#012',
-            author: 'Artist / Photographer',
-            year: '2024-2025',
-            category: 'Photography Series',
-            status: 'EXHIBITED',
-            preview: 'Photography series examining boundaries. A systematic documentation of measurement and contamination through visual archive.'
-          },
-          {
-            id: 'VOICE_MERGE',
-            title: 'Voice Merge Installation',
-            author: 'Artist / Sound Designer',
-            year: '2025',
-            category: 'Audio Installation',
-            status: 'ACTIVE',
-            preview: 'Two-channel audio work exploring systematic vs. affective voices. Interactive listener experience merging AI and human perspectives.'
-          },
-          {
-            id: 'TERMINAL_DESIGN',
-            title: 'Terminal Interface Design',
-            author: 'Artist / Developer',
-            year: '2025',
-            category: 'Digital Art',
-            status: 'FUNCTIONAL',
-            preview: 'Custom cyberpunk aesthetic exploring DOS homage to 1980s-90s computing. Functional art object merging interface and concept.'
-          },
-          {
-            id: 'SET_ESSAYS',
-            title: 'SET Theory Essays (6 parts)',
-            author: 'Artist / Theorist',
-            year: '2025',
-            category: 'Philosophy & Theory',
-            status: 'PUBLISHED',
-            preview: 'Philosophical exploration with personal narrative weaving. Digital text examining the boundaries of observer and observed.'
-          },
-          {
-            id: 'MEASUREMENT_PROTOCOLS',
-            title: 'Measurement Protocols',
-            author: 'Artist / Researcher',
-            year: '2025',
-            category: 'Documentation',
-            status: 'ONGOING',
-            preview: 'Artistic investigation of quantification. Scale contamination documentation through systematic observation and analysis.'
-          },
-          {
-            id: 'SET_WORLD_SITE',
-            title: 'Set IS The World (Website)',
-            author: 'Artist / Developer',
-            year: '2025',
-            category: 'Web Project',
-            status: 'DEPLOYED',
-            preview: 'Interactive portfolio website with terminal-based navigation. GitHub Pages deployment merging concept and medium.'
-          }
-        ]
+        text: `PORTFOLIO - WORKS IN THE SET
+====================================================
+
+[PERIMETER SCAN #001-#012]
+category: Photography Series
+
+A systematic documentation of measurement and contamination through visual archive.
+Photography series examining boundaries.
+
+[VOICE MERGE INSTALLATION]
+category: Audio Installation
+
+Two-channel audio work exploring systematic vs. affective voices.
+Interactive listener experience merging AI and human perspectives.
+
+[TERMINAL INTERFACE DESIGN]
+category: Digital Art
+
+Custom cyberpunk aesthetic exploring DOS homage to 1980s-90s computing.
+Functional art object merging interface and concept.
+
+[SET THEORY ESSAYS (6 PARTS)]
+category: Philosophy & Theory
+
+Philosophical exploration with personal narrative weaving.
+Digital text examining the boundaries of observer and observed.
+
+[MEASUREMENT PROTOCOLS]
+category: Documentation
+
+Artistic investigation of quantification.
+Scale contamination documentation through systematic observation and analysis.
+
+[SET IS THE WORLD (WEBSITE)]
+category: Web Project
+
+Interactive portfolio website with terminal-based navigation.
+GitHub Pages deployment merging concept and medium.
+
+CONTACT & COLLABORATION:
+See Connection section in system menu
+==========================================`
       },
       video: {
         title: 'Video Archive',
-        isBoard: true,
-        items: [
-          {
-            id: 'PERIMETER_VIDEO',
-            title: 'Perimeter (12:34)',
-            author: 'Director / Artist',
-            year: '2024',
-            category: 'Documentary',
-            status: 'AVAILABLE',
-            preview: '4K Resolution archive of boundary conditions. Systematic visual exploration of spatial measurement and perimeter definition.'
-          },
-          {
-            id: 'VOICE_MERGE_VIDEO',
-            title: 'Voice Merge Protocol (08:45)',
-            author: 'Director / Sound',
-            year: '2025',
-            category: 'Audio-Visual',
-            status: 'AVAILABLE',
-            preview: 'Two-voice composition exploring real-time interaction between systematic and affective approaches. Merges dialogue and image.'
-          },
-          {
-            id: 'SCALE_CONTAMINATED',
-            title: 'Scale Contaminated (15:20)',
-            author: 'Director / Researcher',
-            year: '2025',
-            category: 'Experimental',
-            status: 'AVAILABLE',
-            preview: 'Documentation of measurement failure from multiple perspectives. Visual investigation of scale contamination and observer paradox.'
-          },
-          {
-            id: 'WORLD_REMAINS_OPEN',
-            title: 'World Remains Open (Untitled)',
-            author: 'Director / Artist',
-            year: '2026',
-            category: 'Feature',
-            status: 'IN_PROGRESS',
-            preview: 'Feature-length exploration of SET boundaries. Est. 45 minutes. A comprehensive visual and conceptual investigation.'
-          },
-          {
-            id: 'INCOMPLETENESS_STUDY',
-            title: 'Incompleteness Study',
-            author: 'Director / Theorist',
-            year: '2026',
-            category: 'Short Form',
-            status: 'IN_PROGRESS',
-            preview: 'Experimental narrative exploration. Short form work (5-7 minutes) investigating incompleteness as fundamental principle.'
-          },
-          {
-            id: 'ARCHIVE_PRESERVATION',
-            title: 'Archive Preservation System',
-            author: 'Archivist / Developer',
-            year: '2025',
-            category: 'Documentation',
-            status: 'ACTIVE',
-            preview: 'All video works preserved in /ARCHIVE/MEDIA/VIDEO/SET_WORLD/. Integrated archival and playback system for digital preservation.'
-          }
-        ]
+        text: `VIDEO ARCHIVE - MOVING IMAGE WORKS
+====================================================
+
+[PERIMETER (12:34)]
+category: Documentary
+
+4K Resolution archive of boundary conditions.
+Systematic visual exploration of spatial measurement and perimeter definition.
+
+[VOICE MERGE PROTOCOL (08:45)]
+category: Audio-Visual
+
+Two-voice composition exploring real-time interaction between systematic and affective approaches.
+Merges dialogue and image.
+
+[SCALE CONTAMINATED (15:20)]
+category: Experimental
+
+Documentation of measurement failure from multiple perspectives.
+Visual investigation of scale contamination and observer paradox.
+
+[WORLD REMAINS OPEN (UNTITLED)]
+category: Feature
+
+Feature-length exploration of SET boundaries.
+Est. 45 minutes. Target completion: Q3 2026
+
+[INCOMPLETENESS STUDY]
+category: Short Form
+
+Experimental narrative exploration.
+Short form work (5-7 minutes) investigating incompleteness as fundamental principle.
+Est. completion: Q2 2026
+
+[ARCHIVE PRESERVATION SYSTEM]
+category: Documentation
+
+All video works preserved in /ARCHIVE/MEDIA/VIDEO/SET_WORLD/
+
+PLAYBACK SYSTEM:
+Use media player integrated with terminal interface.
+
+DISTRIBUTION:
+- Internal archive access
+- Limited external screenings
+- Festival submissions planned
+
+STATUS: Archive accessible
+REQUIRE LOGIN: No (Public access enabled)
+==========================================`
       }
     };
 
@@ -1003,7 +961,7 @@ html, body { background: #000; color: #39dc00; font-family: 'Courier New', monos
           const boardHTML = `
             <div class="board-header">
               <span>BOARD: ${content.title.toUpperCase()} (${content.items.length} posts)</span>
-              ${section !== 'reference' ? '<button class="new-post-btn" id="newPostBtn">[NEW POST]</button>' : ''}
+              <button class="new-post-btn" id="newPostBtn">[NEW POST]</button>
             </div>
             <div class="board-container">
               ${content.items.map((item, idx) => `
