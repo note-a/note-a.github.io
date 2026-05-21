@@ -631,127 +631,180 @@ html, body { background: #000; color: #39dc00; font-family: 'Courier New', monos
     const contents = {
       project: {
         title: 'Project SET',
-        text: `PROJECT SET - OVERVIEW
-====================================================
-
-SET IS THE WORLD
-
-A cyberpunk-themed visual and textual exploration of the boundaries between observer and observed, world and self.
-
-CORE CONCEPT:
-Instructions, coerced body, suspended gaze. Archiving the structure of photography by halting reproduction.
-
-Set is the world. I'm measuring the perimeter of the set.
-But the scale I hold is already contaminated by the world itself.
-
-STRUCTURE:
-- 6 distinct sections exploring different aspects of the SET framework
-- Terminal-based interface for navigation
-- DOS aesthetic as metaphorical framework
-- Interactive content loading system
-
-STATUS: ACTIVE
-LAST UPDATE: 2026-05-21
-==========================================`
+        isBoard: true,
+        items: [
+          {
+            id: 'PROJECT_OVERVIEW',
+            title: 'Project SET Overview',
+            author: 'Artist / Theorist',
+            year: '2025-2026',
+            category: 'Concept',
+            status: 'ACTIVE',
+            preview: 'A cyberpunk-themed visual and textual exploration of the boundaries between observer and observed, world and self. Core framework.'
+          },
+          {
+            id: 'CORE_CONCEPT',
+            title: 'Core Concept',
+            author: 'Artist / Theorist',
+            year: '2025',
+            category: 'Philosophy',
+            status: 'FOUNDATIONAL',
+            preview: 'Instructions, coerced body, suspended gaze. Archiving the structure of photography by halting reproduction. The fundamental thesis.'
+          },
+          {
+            id: 'MEASUREMENT_PARADOX',
+            title: 'Measurement Paradox',
+            author: 'Artist / Theorist',
+            year: '2025',
+            category: 'Theory',
+            status: 'CORE',
+            preview: 'Set is the world. I am measuring the perimeter of the set. But the scale I hold is already contaminated by the world itself.'
+          },
+          {
+            id: 'STRUCTURE_FRAMEWORK',
+            title: 'Structure & Framework',
+            author: 'Artist / Developer',
+            year: '2025-2026',
+            category: 'System Design',
+            status: 'IMPLEMENTED',
+            preview: '6 distinct sections exploring different aspects of SET framework. Terminal-based interface. DOS aesthetic. Interactive system.'
+          }
+        ]
       },
       inclusion: {
         title: 'SET Inclusion',
-        text: `SET INCLUSION - PARTICIPATION FRAMEWORK
-====================================================
-
-What does it mean to be INCLUDED in a SET?
-
-DEFINITIONS:
-- A set is a collection of distinct objects
-- Inclusion implies membership within boundaries
-- The observer is simultaneously within and outside the set
-
-PARADOX:
-The SET includes everything, yet remains incomplete.
-The observer measures the SET, yet is part of its measurement.
-
-VOICE MERGE PROTOCOL:
-PORT_01 (AI) : SYSTEMATIC / INDIFFERENT
-PORT_02 (HUMAN) : WANDERING / AFFECTIVE
-
-STATUS: [WARN] BOUNDARY_COLLISION DETECTED
-ERROR: SCALE_CONTAMINATED
-NOTES: The ruler used for measurement is already part of the SET's logic.
-
-RESOLUTION: BOTH REMAIN INCOMPLETE.
-THIS INCOMPLETENESS IS PRECISELY THE WORLD.
-==========================================`
+        isBoard: true,
+        items: [
+          {
+            id: 'INCLUSION_DEFINITION',
+            title: 'What is Inclusion?',
+            author: 'Artist / Theorist',
+            year: '2025',
+            category: 'Definitions',
+            status: 'PUBLISHED',
+            preview: 'What does it mean to be INCLUDED in a SET? A set is a collection of distinct objects. Inclusion implies membership within boundaries.'
+          },
+          {
+            id: 'OBSERVER_PARADOX',
+            title: 'Observer Paradox',
+            author: 'Artist / Theorist',
+            year: '2025',
+            category: 'Philosophy',
+            status: 'CORE',
+            preview: 'The observer is simultaneously within and outside the set. The SET includes everything, yet remains incomplete. Fundamental paradox.'
+          },
+          {
+            id: 'SCALE_CONTAMINATION',
+            title: 'Scale Contamination',
+            author: 'Artist / Researcher',
+            year: '2025',
+            category: 'Error Analysis',
+            status: 'DOCUMENTED',
+            preview: '[WARN] BOUNDARY_COLLISION DETECTED. The ruler used for measurement is already part of the SET\'s logic. Scale contaminated.'
+          },
+          {
+            id: 'VOICE_MERGE_PROTOCOL',
+            title: 'Voice Merge Protocol',
+            author: 'Artist / Composer',
+            year: '2025',
+            category: 'Method',
+            status: 'ACTIVE',
+            preview: 'PORT_01 (AI): SYSTEMATIC / INDIFFERENT. PORT_02 (HUMAN): WANDERING / AFFECTIVE. Both remain incomplete. This incompleteness is the world.'
+          }
+        ]
       },
       intro: {
-        title: 'Intro Text',
-        text: `INTRODUCTORY MATERIAL
-====================================================
-
-INSTRUCTIONS FOR NAVIGATION:
-
-1. Enter the SET world through the terminal interface
-2. Use the menu to navigate between different conceptual frameworks
-3. Each section explores different aspects of the SET thesis
-4. Read the terminal output as a narrative of discovery
-
-THE FUNDAMENTAL QUESTION:
-How can we measure something we are part of?
-
-STRUCTURE OF PHOTOGRAPHY:
-Photography halts reproduction.
-Vision measures through light and shadow.
-Language measures through words and meaning.
-
-BOTH REMAIN INCOMPLETE.
-
-KEY CONCEPTS:
-- Coerced Body: You are here against your will
-- Suspended Gaze: Your vision is held in abeyance
-- World Remains Open: Do not disconnect
-
-NEXT STEP: Explore the other sections using the menu
-==========================================`
+        title: 'Intro text',
+        isBoard: true,
+        items: [
+          {
+            id: 'NAVIGATION_GUIDE',
+            title: 'Navigation Instructions',
+            author: 'System / Guide',
+            year: '2025',
+            category: 'Tutorial',
+            status: 'ACTIVE',
+            preview: 'Enter the SET world through terminal interface. Use menu to navigate sections. Each explores different aspects of SET thesis.'
+          },
+          {
+            id: 'FUNDAMENTAL_QUESTION',
+            title: 'The Fundamental Question',
+            author: 'Artist / Theorist',
+            year: '2025',
+            category: 'Inquiry',
+            status: 'CORE',
+            preview: 'How can we measure something we are part of? This question drives all exploration in the SET framework.'
+          },
+          {
+            id: 'PHOTOGRAPHY_STRUCTURE',
+            title: 'Structure of Photography',
+            author: 'Artist / Theorist',
+            year: '2025',
+            category: 'Media Theory',
+            status: 'ESSAY',
+            preview: 'Photography halts reproduction. Vision measures through light and shadow. Language measures through words. Both remain incomplete.'
+          },
+          {
+            id: 'KEY_CONCEPTS',
+            title: 'Key Concepts',
+            author: 'System / Guide',
+            year: '2025',
+            category: 'Definitions',
+            status: 'REFERENCE',
+            preview: 'Coerced Body: you are here against your will. Suspended Gaze: vision held in abeyance. World Remains Open: do not disconnect.'
+          }
+        ]
       },
       rule: {
-        title: 'Rule',
-        text: `RULES OF THE SET
-====================================================
-
-FUNDAMENTAL RULES:
-
-1. THE OBSERVER IS OBSERVED
-   - You are not external to the SET
-   - Your measurement is a measurement of yourself
-   - Distance is an illusion
-
-2. INCOMPLETENESS IS COMPLETENESS
-   - No system can be fully closed
-   - The SET remains open by necessity
-   - Failure is the only success
-
-3. VOICE MUST MERGE
-   - Systematic thought alone fails
-   - Affective knowledge alone fails
-   - Only interference creates meaning
-
-4. LANGUAGE AND VISION COEXIST
-   - Neither fully describes the world
-   - Their superimposition creates noise
-   - Noise is the essence of the work
-
-5. DO NOT DISCONNECT
-   - The system remains open
-   - Logout is impossible
-   - You are permanently included
-
-EXCEPTIONS: None known
-VIOLATIONS: Punishable by inclusion
-
-AUTHORITY: The SET governs itself
-OVERSIGHT: Non-existent
-
-STATUS: These rules are not negotiable
-==========================================`
+        title: 'rule',
+        isBoard: true,
+        items: [
+          {
+            id: 'OBSERVER_OBSERVED',
+            title: 'Rule 1: The Observer is Observed',
+            author: 'System / Authority',
+            year: '2025',
+            category: 'Fundamental Rule',
+            status: 'BINDING',
+            preview: 'You are not external to the SET. Your measurement is a measurement of yourself. Distance is an illusion. Non-negotiable.'
+          },
+          {
+            id: 'INCOMPLETENESS_COMPLETENESS',
+            title: 'Rule 2: Incompleteness is Completeness',
+            author: 'System / Authority',
+            year: '2025',
+            category: 'Fundamental Rule',
+            status: 'BINDING',
+            preview: 'No system can be fully closed. The SET remains open by necessity. Failure is the only success. Paradox as principle.'
+          },
+          {
+            id: 'VOICE_MUST_MERGE',
+            title: 'Rule 3: Voice Must Merge',
+            author: 'System / Authority',
+            year: '2025',
+            category: 'Fundamental Rule',
+            status: 'BINDING',
+            preview: 'Systematic thought alone fails. Affective knowledge alone fails. Only interference creates meaning. Synthesis required.'
+          },
+          {
+            id: 'LANGUAGE_VISION_COEXIST',
+            title: 'Rule 4: Language and Vision Coexist',
+            author: 'System / Authority',
+            year: '2025',
+            category: 'Fundamental Rule',
+            status: 'BINDING',
+            preview: 'Neither fully describes the world. Their superimposition creates noise. Noise is the essence of the work. Embrace interference.'
+          },
+          {
+            id: 'DO_NOT_DISCONNECT',
+            title: 'Rule 5: Do Not Disconnect',
+            author: 'System / Authority',
+            year: '2025',
+            category: 'Fundamental Rule',
+            status: 'BINDING',
+            preview: 'The system remains open. Logout is impossible. You are permanently included. Participation is mandatory and eternal.'
+          }
+        ]
       },
       reference: {
         title: 'Reference',
@@ -950,7 +1003,7 @@ STATUS: These rules are not negotiable
           const boardHTML = `
             <div class="board-header">
               <span>BOARD: ${content.title.toUpperCase()} (${content.items.length} posts)</span>
-              <button class="new-post-btn" id="newPostBtn">[NEW POST]</button>
+              ${section !== 'reference' ? '<button class="new-post-btn" id="newPostBtn">[NEW POST]</button>' : ''}
             </div>
             <div class="board-container">
               ${content.items.map((item, idx) => `
