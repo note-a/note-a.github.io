@@ -2473,16 +2473,34 @@ ${preview}
       }
 
       if (content.isArchivePhotos) {
-        // For archive section, show search interface
+        // For archive section, show search interface and all photos
         mobileContent.innerHTML = `
           <div style="display: flex; gap: 8px; margin-bottom: 12px;">
             <input type="text" id="mobileArchiveSearch" placeholder="search: crash, floating, shadow"
               style="flex: 1; background: #000; border: 1px solid #39dc00; color: #39dc00; padding: 6px; font-size: 10px; font-family: monospace;">
           </div>
           <div id="mobilePhotoGallery" style="display: grid; grid-template-columns: 1fr; gap: 8px; max-height: calc(100% - 50px); overflow-y: auto;">
-            <div style="padding: 20px; text-align: center; color: #39dc00; font-size: 11px;">검색 키워드를 입력하세요: crash, floating, shadow</div>
           </div>
         `;
+
+        // Function to render photos
+        const renderPhotos = (photos) => {
+          const gallery = document.getElementById('mobilePhotoGallery');
+          if (photos.length === 0) {
+            gallery.innerHTML = `<div style="padding: 20px; text-align: center; color: #39dc00; font-size: 11px;">No results found</div>`;
+          } else {
+            gallery.innerHTML = photos.map(p => `
+              <div style="border: 1px solid #39dc00; padding: 8px; cursor: pointer; font-size: 10px;">
+                <strong>${p.title}</strong><br>
+                <span style="color: #39dc00; font-size: 9px;">${p.keywords.join(' • ')}</span><br>
+                <span style="color: #888; font-size: 9px; margin-top: 4px; display: block;">${p.description}</span>
+              </div>
+            `).join('');
+          }
+        };
+
+        // Display all photos initially
+        renderPhotos(content.photos);
 
         // Setup mobile photo search
         setTimeout(() => {
@@ -2490,26 +2508,34 @@ ${preview}
           if (searchInput) {
             searchInput.addEventListener('input', (e) => {
               const query = e.target.value.toLowerCase().trim();
-              const filtered = query ? content.photos.filter(p =>
-                p.keywords.some(k => k.toLowerCase().includes(query)) ||
-                p.title.toLowerCase().includes(query)
-              ) : [];
-
-              const gallery = document.getElementById('mobilePhotoGallery');
-              if (filtered.length === 0) {
-                gallery.innerHTML = `<div style="padding: 20px; text-align: center; color: #39dc00; font-size: 11px;">${query ? 'No results found' : '검색 키워드를 입력하세요: crash, floating, shadow'}</div>`;
+              let filtered;
+              if (query) {
+                filtered = content.photos.filter(p =>
+                  p.keywords.some(k => k.toLowerCase().includes(query)) ||
+                  p.title.toLowerCase().includes(query)
+                );
               } else {
-                gallery.innerHTML = filtered.map(p => `
-                  <div style="border: 1px solid #39dc00; padding: 8px; cursor: pointer; font-size: 10px;">
-                    <strong>${p.title}</strong><br>
-                    ${p.keywords.join(' • ')}
-                  </div>
-                `).join('');
+                filtered = content.photos;
               }
+
+              renderPhotos(filtered);
             });
-            searchInput.focus();
           }
         }, 0);
+      } else if (content.isSlideshow) {
+        // Slideshow format - show all slides as list
+        const slides = content.slides || [];
+        let output = `${content.title} (${slides.length} slides)\n\n`;
+
+        slides.forEach((slide, idx) => {
+          output += `────────────────────────────────────\n`;
+          output += `[SLIDE ${idx + 1}] ${slide.title}\n`;
+          output += `Category: ${slide.category} | Author: ${slide.author} | Year: ${slide.year}\n`;
+          output += `────────────────────────────────────\n`;
+          output += `${slide.text}\n\n`;
+        });
+
+        mobileContent.textContent = output;
       } else if (content.text) {
         // Text format
         mobileContent.textContent = content.text;
