@@ -556,7 +556,7 @@ html, body { background: #000; color: #39dc00; font-family: 'Courier New', monos
 }
 
 .detail-preview {
-  background: rgba(0, 255, 255, 0.05);
+  background: rgba(57, 220, 0, 0.05);
   border: 1px solid #39dc00;
   padding: 8px;
   margin: 8px 0;
@@ -573,6 +573,218 @@ html, body { background: #000; color: #39dc00; font-family: 'Courier New', monos
   font-size: 9px;
   display: flex;
   justify-content: space-between;
+}
+
+/* ===== PHOTO ARCHIVE STYLES ===== */
+.archive-search-bar {
+  display: flex;
+  gap: 6px;
+  padding: 8px 0;
+  border-bottom: 1px solid #39dc00;
+  margin-bottom: 8px;
+}
+
+.archive-search-input {
+  flex: 1;
+  background: #000;
+  border: 1px solid #39dc00;
+  color: #39dc00;
+  padding: 6px 8px;
+  font-family: 'Courier New', monospace;
+  font-size: 10px;
+  outline: none;
+}
+
+.archive-search-input:focus {
+  box-shadow: 0 0 10px rgba(57, 220, 0, 0.5);
+}
+
+.archive-search-btn {
+  background: #39dc00;
+  color: #000;
+  border: 1px solid #39dc00;
+  padding: 6px 12px;
+  font-size: 10px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.archive-search-btn:hover {
+  background: #ff9900;
+  border-color: #ff9900;
+}
+
+.photo-gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 10px;
+  overflow-y: auto;
+  max-height: calc(100% - 50px);
+}
+
+.photo-item {
+  border: 2px solid #39dc00;
+  background: #000;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  flex-direction: column;
+  min-height: 150px;
+}
+
+.photo-item:hover {
+  box-shadow: 0 0 15px rgba(57, 220, 0, 0.5);
+  background: rgba(57, 220, 0, 0.1);
+}
+
+.photo-item-image {
+  flex: 1;
+  background: #111;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-bottom: 1px solid #39dc00;
+  color: #39dc00;
+  font-size: 11px;
+  overflow: hidden;
+}
+
+.photo-item-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.photo-item-info {
+  padding: 6px 8px;
+  font-size: 9px;
+}
+
+.photo-item-title {
+  font-weight: bold;
+  color: #39dc00;
+  margin-bottom: 2px;
+}
+
+.photo-item-keywords {
+  color: #39dc00;
+  opacity: 0.7;
+  font-size: 8px;
+  word-break: break-word;
+}
+
+.no-results {
+  padding: 20px;
+  text-align: center;
+  color: #39dc00;
+  font-size: 11px;
+}
+
+/* Photo Detail Modal */
+.photo-detail-modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.9);
+  z-index: 3000;
+  align-items: center;
+  justify-content: center;
+}
+
+.photo-detail-modal.active {
+  display: flex;
+}
+
+.photo-detail-content {
+  background: #000;
+  border: 2px solid #39dc00;
+  padding: 0;
+  max-width: 600px;
+  width: 90%;
+  max-height: 80vh;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 0 30px rgba(57, 220, 0, 0.3);
+}
+
+.photo-detail-header {
+  background: #39dc00;
+  color: #000;
+  padding: 8px 12px;
+  font-weight: bold;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 11px;
+}
+
+.photo-detail-close {
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 16px;
+}
+
+.photo-detail-image-container {
+  background: #111;
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  max-height: 400px;
+  overflow: hidden;
+}
+
+.photo-detail-image-container img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+.photo-detail-info {
+  padding: 12px;
+  border-top: 1px solid #39dc00;
+  overflow-y: auto;
+  color: #39dc00;
+  font-size: 10px;
+}
+
+.photo-detail-title {
+  font-weight: bold;
+  font-size: 12px;
+  margin-bottom: 8px;
+}
+
+.photo-detail-description {
+  line-height: 1.5;
+  margin-bottom: 8px;
+}
+
+.photo-detail-keywords {
+  border-top: 1px dashed #39dc00;
+  padding-top: 8px;
+  font-size: 9px;
+}
+
+.photo-detail-keywords-label {
+  font-weight: bold;
+  margin-bottom: 4px;
+}
+
+.photo-detail-keywords-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.photo-keyword-tag {
+  background: rgba(57, 220, 0, 0.2);
+  border: 1px solid #39dc00;
+  padding: 2px 6px;
+  font-size: 8px;
 }
 
 /* ===== MOBILE RESPONSIVE ===== */
@@ -681,6 +893,27 @@ html, body { background: #000; color: #39dc00; font-family: 'Courier New', monos
     </div>
   </div>
 
+  <!-- Photo Detail Modal -->
+  <div class="photo-detail-modal" id="photoDetailModal">
+    <div class="photo-detail-content">
+      <div class="photo-detail-header">
+        <span id="photoDetailTitle">PHOTO DETAIL</span>
+        <span class="photo-detail-close" id="photoDetailClose">✕</span>
+      </div>
+      <div class="photo-detail-image-container" id="photoDetailImageContainer">
+        <img id="photoDetailImage" src="" alt="Photo">
+      </div>
+      <div class="photo-detail-info" id="photoDetailInfo">
+        <div class="photo-detail-title" id="photoDetailName"></div>
+        <div class="photo-detail-description" id="photoDetailDesc"></div>
+        <div class="photo-detail-keywords">
+          <div class="photo-detail-keywords-label">측정 키워드</div>
+          <div class="photo-detail-keywords-list" id="photoDetailKeywords"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- Write Post Modal -->
   <div class="modal-overlay" id="writeModal">
     <div class="modal-content">
@@ -765,37 +998,31 @@ html, body { background: #000; color: #39dc00; font-family: 'Courier New', monos
         ]
       },
       archive: {
-        title: 'Archive',
-        text: `ARCHIVE - DIGITAL VAULT
-====================================================
-
-[ARCHIVE_SYSTEM]
-category: Documentation, status: ACTIVE
-
-Complete digital archive of all SET works and documentation.
-Preserved for future access and research.
-
-[WORKS_CATALOG]
-category: Catalog, status: MAINTAINED
-
-Comprehensive catalog of all visual, audio, and textual works.
-Indexed and cross-referenced for easy navigation.
-
-[DOCUMENTATION]
-category: Records, status: ONGOING
-
-Complete documentation of project development, concepts, and evolution.
-Timestamped records of all major milestones and decisions.
-
-[MEDIA_STORAGE]
-category: Media, status: ACTIVE
-
-High-resolution storage of photography, video, and audio materials.
-Backup systems for preservation and redundancy.
-
-STATUS: ARCHIVE OPERATIONAL
-LAST UPDATE: 2026-05-21
-==========================================`
+        title: 'Photo Archive',
+        isArchivePhotos: true,
+        photos: [
+          {
+            id: 'CRASH_001',
+            title: 'CRASH',
+            filename: 'crash.svg',
+            keywords: ['crash', 'wall', 'structure', 'damage', 'decay'],
+            description: 'Measuring the boundaries of collapse. Surface documentation.'
+          },
+          {
+            id: 'FLOATING_002',
+            title: 'FLOATING',
+            filename: 'floating.svg',
+            keywords: ['floating', 'movement', 'displacement', 'object', 'space'],
+            description: 'Object suspended in transit. Scale and distance measurement.'
+          },
+          {
+            id: 'SHADOW_003',
+            title: 'SHADOW',
+            filename: 'shadow.svg',
+            keywords: ['shadow', 'light', 'perception', 'depth', 'detail'],
+            description: 'Close observation of material. Yellow measurement study.'
+          }
+        ]
       },
       inclusion: {
         title: 'SET Inclusion',
@@ -1091,7 +1318,26 @@ REQUIRE LOGIN: No (Public access enabled)
       const terminalContent = document.getElementById('terminalContent');
 
       if (content) {
-        if (content.isBoard) {
+        if (content.isArchivePhotos) {
+          // Archive Photos format with search
+          const archiveHTML = `
+            <div style="display: flex; flex-direction: column; height: 100%; padding: 0; margin: -12px;">
+              <div class="archive-search-bar" style="margin: 12px 12px 0 12px;">
+                <input type="text" class="archive-search-input" id="archiveSearchInput" placeholder="Search by keyword: crash, floating, shadow...">
+                <button class="archive-search-btn" id="archiveSearchBtn">SEARCH</button>
+              </div>
+              <div class="photo-gallery" id="photoGallery" style="margin: 12px;"></div>
+            </div>
+          `;
+          terminalContent.innerHTML = archiveHTML;
+
+          // Don't display photos initially - wait for search
+          const gallery = document.getElementById('photoGallery');
+          gallery.innerHTML = '<div class="no-results">검색 키워드를 입력하세요: crash, floating, shadow</div>';
+
+          // Setup search functionality
+          setupPhotoSearch(content.photos);
+        } else if (content.isBoard) {
           // Check if it's a list format
           if (content.isList) {
             // List format with table style - no header or footer
@@ -1576,6 +1822,122 @@ ${preview}
       document.addEventListener('keydown', function(e) {
         if (e.key === 'Escape') {
           menuSection.classList.remove('mobile-active');
+        }
+      });
+    }
+
+    // Display photo gallery
+    function displayPhotoGallery(photos, filtered) {
+      const gallery = document.getElementById('photoGallery');
+
+      if (filtered.length === 0) {
+        gallery.innerHTML = '<div class="no-results">No photos found matching your search.</div>';
+        return;
+      }
+
+      const galleryHTML = filtered.map(photo => `
+        <div class="photo-item" data-photo-id="${photo.id}">
+          <div class="photo-item-image">
+            <img src="images/${photo.filename}" alt="${photo.title}" onerror="this.style.display='none'; this.parentElement.textContent='[IMAGE]';">
+          </div>
+          <div class="photo-item-info">
+            <div class="photo-item-title">${photo.title}</div>
+            <div class="photo-item-keywords">${photo.keywords.join(' • ')}</div>
+          </div>
+        </div>
+      `).join('');
+
+      gallery.innerHTML = galleryHTML;
+
+      // Setup click handlers for photos
+      document.querySelectorAll('.photo-item').forEach(item => {
+        item.addEventListener('click', () => {
+          const photoId = item.getAttribute('data-photo-id');
+          const photo = photos.find(p => p.id === photoId);
+          if (photo) {
+            showPhotoDetail(photo);
+          }
+        });
+      });
+    }
+
+    // Setup photo search
+    function setupPhotoSearch(allPhotos) {
+      const searchInput = document.getElementById('archiveSearchInput');
+      const searchBtn = document.getElementById('archiveSearchBtn');
+      const gallery = document.getElementById('photoGallery');
+
+      if (!searchInput || !searchBtn) return;
+
+      function performSearch() {
+        const query = searchInput.value.toLowerCase().trim();
+
+        if (!query) {
+          // No search term - show empty message
+          gallery.innerHTML = '<div class="no-results">검색 키워드를 입력하세요: crash, floating, shadow</div>';
+          return;
+        }
+
+        // Search in keywords and title
+        const filtered = allPhotos.filter(photo => {
+          const keywordMatch = photo.keywords.some(kw =>
+            kw.toLowerCase().includes(query)
+          );
+          const titleMatch = photo.title.toLowerCase().includes(query);
+          const descMatch = photo.description.toLowerCase().includes(query);
+
+          return keywordMatch || titleMatch || descMatch;
+        });
+
+        displayPhotoGallery(allPhotos, filtered);
+      }
+
+      searchBtn.addEventListener('click', performSearch);
+      searchInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+          performSearch();
+        }
+      });
+
+      // Real-time search as user types
+      searchInput.addEventListener('input', performSearch);
+    }
+
+    // Show photo detail modal
+    function showPhotoDetail(photo) {
+      const modal = document.getElementById('photoDetailModal');
+      const title = document.getElementById('photoDetailTitle');
+      const image = document.getElementById('photoDetailImage');
+      const name = document.getElementById('photoDetailName');
+      const desc = document.getElementById('photoDetailDesc');
+      const keywords = document.getElementById('photoDetailKeywords');
+      const closeBtn = document.getElementById('photoDetailClose');
+
+      if (!modal) return;
+
+      title.textContent = `PHOTO: ${photo.id}`;
+      image.src = `images/${photo.filename}`;
+      image.alt = photo.title;
+      name.textContent = photo.title;
+      desc.textContent = photo.description;
+
+      keywords.innerHTML = photo.keywords.map(kw =>
+        `<span class="photo-keyword-tag">${kw}</span>`
+      ).join('');
+
+      modal.classList.add('active');
+
+      // Close button handler
+      if (closeBtn) {
+        closeBtn.onclick = () => {
+          modal.classList.remove('active');
+        };
+      }
+
+      // Close on background click
+      modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+          modal.classList.remove('active');
         }
       });
     }
