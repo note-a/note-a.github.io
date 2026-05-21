@@ -483,6 +483,98 @@ html, body { background: #000; color: #39dc00; font-family: 'Courier New', monos
   color: #000;
 }
 
+/* ===== DETAIL VIEW STYLE ===== */
+.detail-view {
+  padding: 0;
+  overflow: hidden;
+}
+
+.detail-header {
+  border: 2px solid #00ffff;
+  border-bottom: none;
+  background: #000;
+  padding: 8px 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: #00ffff;
+  font-size: 11px;
+  font-weight: bold;
+}
+
+.detail-time {
+  color: #00ffff;
+  font-size: 9px;
+  margin-bottom: 8px;
+}
+
+.detail-content {
+  border: 2px solid #00ffff;
+  background: #000;
+  color: #00ffff;
+  padding: 12px;
+  overflow-y: auto;
+  flex: 1;
+  font-size: 10px;
+  line-height: 1.6;
+  font-family: 'Courier New', monospace;
+}
+
+.detail-info-table {
+  margin-bottom: 12px;
+  border: 1px dashed #00ffff;
+  width: 100%;
+}
+
+.detail-info-row {
+  display: flex;
+  border-bottom: 1px dashed #00ffff;
+}
+
+.detail-info-row:last-child {
+  border-bottom: none;
+}
+
+.detail-info-label {
+  width: 120px;
+  padding: 4px 8px;
+  border-right: 1px dashed #00ffff;
+  font-weight: bold;
+  color: #00ffff;
+}
+
+.detail-info-value {
+  flex: 1;
+  padding: 4px 8px;
+  color: #00ffff;
+}
+
+.detail-divider {
+  height: 1px;
+  background: repeating-linear-gradient(90deg, #00ffff 0px, #00ffff 2px, transparent 2px, transparent 4px);
+  margin: 12px 0;
+}
+
+.detail-preview {
+  background: rgba(0, 255, 255, 0.05);
+  border: 1px solid #00ffff;
+  padding: 8px;
+  margin: 8px 0;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+.detail-footer {
+  border: 2px solid #00ffff;
+  border-top: none;
+  background: #000;
+  padding: 6px 12px;
+  color: #00ffff;
+  font-size: 9px;
+  display: flex;
+  justify-content: space-between;
+}
+
 /* ===== MOBILE RESPONSIVE ===== */
 @media (max-width: 768px) {
   .portfolio-container {
@@ -1173,10 +1265,6 @@ REQUIRE LOGIN: No (Public access enabled)
 
       listItems.forEach((item, idx) => {
         item.addEventListener('click', () => {
-          // Get current section content
-          const terminalContent = document.querySelector('.terminal-content');
-          const currentContent = terminalContent.innerHTML;
-
           // Find the data array for current section
           let currentSection = null;
           const menuItems = document.querySelectorAll('.menu-item.active');
@@ -1186,40 +1274,94 @@ REQUIRE LOGIN: No (Public access enabled)
 
           if (currentSection && contents[currentSection] && contents[currentSection].items) {
             const selectedItem = contents[currentSection].items[idx];
-            const detailText = `[${selectedItem.id || selectedItem.title.toUpperCase().replace(/\\s+/g, '_')}]
-Category: ${selectedItem.category}
-Status: ${selectedItem.status}
-Author: ${selectedItem.author}
-Year: ${selectedItem.year}
+            const now = new Date();
+            const timeStr = now.toLocaleString('en-US', {
+              weekday: 'short',
+              year: 'numeric',
+              month: 'short',
+              day: '2-digit',
+              hour: '2-digit',
+              minute: '2-digit',
+              second: '2-digit',
+              hour12: true,
+              timeZoneName: 'short'
+            });
 
-====================================================
+            const detailHTML = `
+              <div class="detail-view">
+                <div class="detail-header">
+                  <span>${currentSection.toUpperCase()}</span>
+                  <span style="color: #00ffff;">${timeStr}</span>
+                </div>
+                <div class="detail-content">
+                  <div class="detail-time">[${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}:${now.getSeconds().toString().padStart(2, '0')} - SYSTEM LOG ENTRY]</div>
 
-${selectedItem.preview}
+                  <div class="detail-info-table">
+                    <div class="detail-info-row">
+                      <div class="detail-info-label">ID</div>
+                      <div class="detail-info-value">${selectedItem.id || selectedItem.title.toUpperCase().replace(/\\s+/g, '_')}</div>
+                    </div>
+                    <div class="detail-info-row">
+                      <div class="detail-info-label">TITLE</div>
+                      <div class="detail-info-value">${selectedItem.title}</div>
+                    </div>
+                    <div class="detail-info-row">
+                      <div class="detail-info-label">AUTHOR</div>
+                      <div class="detail-info-value">${selectedItem.author}</div>
+                    </div>
+                    <div class="detail-info-row">
+                      <div class="detail-info-label">YEAR</div>
+                      <div class="detail-info-value">${selectedItem.year}</div>
+                    </div>
+                    <div class="detail-info-row">
+                      <div class="detail-info-label">CATEGORY</div>
+                      <div class="detail-info-value">${selectedItem.category}</div>
+                    </div>
+                    <div class="detail-info-row">
+                      <div class="detail-info-label">STATUS</div>
+                      <div class="detail-info-value">${selectedItem.status}</div>
+                    </div>
+                  </div>
 
-====================================================
+                  <div class="detail-divider"></div>
 
-[BACK]`;
+                  <div style="margin: 12px 0; color: #00ffff; font-weight: bold;">[CONTENT]</div>
+                  <div class="detail-preview">${selectedItem.preview}</div>
 
-            const contentText = document.getElementById('contentText');
-            contentText.textContent = detailText;
+                  <div class="detail-divider"></div>
+
+                  <div style="text-align: center; margin-top: 12px;">
+                    <span style="color: #00ffff; cursor: pointer;" id="backToList">[RETURN TO LIST]</span>
+                  </div>
+                </div>
+                <div class="detail-footer">
+                  <span>STATUS: LOADED | ENTRY TYPE: REFERENCE</span>
+                  <span>SIZE: ${selectedItem.preview.length} BYTES</span>
+                </div>
+              </div>
+            `;
+
+            const terminalContent = document.querySelector('.terminal-content');
+            terminalContent.innerHTML = detailHTML;
+
+            // Setup back button
+            const backBtn = document.getElementById('backToList');
+            if (backBtn) {
+              backBtn.addEventListener('click', () => {
+                loadContent(currentSection);
+              });
+            }
 
             // Scroll to top
-            const terminalContent = document.querySelector('.terminal-content');
             if (terminalContent) {
               terminalContent.scrollTop = 0;
             }
-
-            // Add back button functionality
-            setTimeout(() => {
-              const backBtn = document.querySelectorAll('.board-item-action, .list-item');
-              // Setup a simple back by reloading the list
-            }, 100);
           }
         });
 
         // Hover effect
         item.addEventListener('mouseover', () => {
-          item.style.background = 'rgba(57, 220, 0, 0.1)';
+          item.style.background = 'rgba(0, 255, 255, 0.1)';
         });
 
         item.addEventListener('mouseout', () => {
