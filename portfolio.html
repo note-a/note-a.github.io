@@ -9,6 +9,7 @@
 html, body { background: #000; color: #39dc00; font-family: 'Courier New', monospace; height: 100%; overflow: hidden; }
 
 .top-banner {
+  display: none;
   position: fixed; top: 0; left: 0; width: 100%; height: 32px;
   background: #000; border-bottom: 2px dashed #ff3333; color: #ff3333;
   padding: 6px 0; z-index: 999; overflow: hidden;
@@ -230,6 +231,258 @@ html, body { background: #000; color: #39dc00; font-family: 'Courier New', monos
   border-color: #ff9900;
 }
 
+/* ===== BOARD STYLE ===== */
+.board-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  overflow: hidden;
+  min-height: 400px;
+}
+
+.board-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 12px;
+  border-bottom: 1px solid #39dc00;
+  background: #000;
+  color: #39dc00;
+  font-size: 11px;
+}
+
+.new-post-btn {
+  background: #39dc00;
+  color: #000;
+  border: 1px solid #39dc00;
+  padding: 4px 8px;
+  font-size: 10px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.new-post-btn:hover {
+  background: #ff9900;
+  border-color: #ff9900;
+}
+
+/* ===== WRITE POST MODAL ===== */
+.modal-overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  z-index: 2000;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-overlay.active {
+  display: flex;
+}
+
+.modal-content {
+  background: #000;
+  border: 2px solid #39dc00;
+  padding: 20px;
+  width: 90%;
+  max-width: 500px;
+  color: #39dc00;
+  font-family: 'Courier New', monospace;
+  box-shadow: 0 0 20px rgba(57, 220, 0, 0.3);
+}
+
+.modal-title {
+  font-size: 12px;
+  font-weight: bold;
+  margin-bottom: 15px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #39dc00;
+}
+
+.form-group {
+  margin-bottom: 12px;
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group label {
+  font-size: 10px;
+  font-weight: bold;
+  margin-bottom: 4px;
+  text-transform: uppercase;
+}
+
+.form-group input,
+.form-group textarea {
+  background: #000;
+  border: 1px solid #39dc00;
+  color: #39dc00;
+  padding: 6px 8px;
+  font-family: 'Courier New', monospace;
+  font-size: 10px;
+  outline: none;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+  box-shadow: 0 0 10px rgba(57, 220, 0, 0.5);
+}
+
+.form-group textarea {
+  resize: vertical;
+  min-height: 60px;
+}
+
+.modal-buttons {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+  margin-top: 15px;
+  padding-top: 10px;
+  border-top: 1px solid #39dc00;
+}
+
+.modal-btn {
+  background: #39dc00;
+  color: #000;
+  border: 1px solid #39dc00;
+  padding: 6px 12px;
+  font-size: 10px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.modal-btn:hover {
+  background: #ff9900;
+  border-color: #ff9900;
+}
+
+.modal-btn.cancel {
+  background: #000;
+  color: #39dc00;
+}
+
+.modal-btn.cancel:hover {
+  background: #39dc00;
+  color: #000;
+}
+
+.board-item {
+  position: absolute;
+  border: 2px solid #39dc00;
+  background: #000;
+  padding: 0;
+  color: #39dc00;
+  font-size: 9px;
+  cursor: pointer;
+  box-shadow: 0 0 15px rgba(57, 220, 0, 0.2);
+  width: 240px;
+  opacity: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.board-item:hover {
+  box-shadow: 0 0 25px rgba(57, 220, 0, 0.5);
+  transform: scale(1.02);
+}
+
+.board-item-header {
+  background: linear-gradient(180deg, #50ff00 0%, #39dc00 100%);
+  color: #000;
+  padding: 6px 8px;
+  font-weight: bold;
+  font-size: 9px;
+  flex-shrink: 0;
+  border-bottom: 3px solid #1a6600;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.3),
+              0 4px 6px rgba(0, 0, 0, 0.4);
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+.board-item-title {
+  word-wrap: break-word;
+  letter-spacing: 0.5px;
+}
+
+.board-item-info {
+  padding: 6px 8px;
+  border-bottom: 1px solid #39dc00;
+  flex-shrink: 0;
+  font-size: 9px;
+}
+
+.board-item-from {
+  color: #39dc00;
+  font-weight: bold;
+  margin-bottom: 2px;
+}
+
+.board-item-meta-row {
+  color: #39dc00;
+  opacity: 0.8;
+  font-size: 9px;
+  margin-bottom: 1px;
+}
+
+.board-item-message {
+  padding: 6px 8px;
+  flex: 1;
+  border-bottom: 1px solid #39dc00;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.board-item-label {
+  font-weight: bold;
+  color: #39dc00;
+  font-size: 8px;
+  margin-bottom: 3px;
+  text-transform: uppercase;
+}
+
+.board-item-preview {
+  font-size: 9px;
+  line-height: 1.3;
+  opacity: 0.8;
+  word-wrap: break-word;
+  overflow: hidden;
+  flex: 1;
+}
+
+.board-item-actions {
+  padding: 4px 8px;
+  display: flex;
+  gap: 6px;
+  flex-shrink: 0;
+  justify-content: flex-start;
+}
+
+.board-item-action {
+  color: #39dc00;
+  cursor: pointer;
+  font-size: 8px;
+  font-weight: bold;
+  text-transform: uppercase;
+  padding: 2px 4px;
+  border: 1px solid #39dc00;
+  transition: all 0.2s;
+}
+
+.board-item-action:hover {
+  background: #39dc00;
+  color: #000;
+}
+
 /* ===== MOBILE RESPONSIVE ===== */
 @media (max-width: 768px) {
   .portfolio-container {
@@ -333,6 +586,43 @@ html, body { background: #000; color: #39dc00; font-family: 'Courier New', monos
         <span>SIZE: DYNAMIC</span>
       </div>
       </div>
+    </div>
+  </div>
+
+  <!-- Write Post Modal -->
+  <div class="modal-overlay" id="writeModal">
+    <div class="modal-content">
+      <div class="modal-title">NEW POST - WRITE MESSAGE</div>
+      <form id="postForm">
+        <div class="form-group">
+          <label for="postTitle">Title / ID</label>
+          <input type="text" id="postTitle" required placeholder="e.g., MY_WORK_TITLE">
+        </div>
+        <div class="form-group">
+          <label for="postAuthor">Author / From</label>
+          <input type="text" id="postAuthor" required placeholder="Your name">
+        </div>
+        <div class="form-group">
+          <label for="postYear">Year</label>
+          <input type="text" id="postYear" placeholder="2026">
+        </div>
+        <div class="form-group">
+          <label for="postCategory">Category</label>
+          <input type="text" id="postCategory" placeholder="e.g., Philosophy & Theory">
+        </div>
+        <div class="form-group">
+          <label for="postStatus">Status</label>
+          <input type="text" id="postStatus" placeholder="e.g., PUBLISHED">
+        </div>
+        <div class="form-group">
+          <label for="postPreview">Description / Preview</label>
+          <textarea id="postPreview" required placeholder="Write your post content here..."></textarea>
+        </div>
+        <div class="modal-buttons">
+          <button type="button" class="modal-btn cancel" id="cancelBtn">CANCEL</button>
+          <button type="submit" class="modal-btn">POST</button>
+        </div>
+      </form>
     </div>
   </div>
 
@@ -465,177 +755,430 @@ STATUS: These rules are not negotiable
       },
       reference: {
         title: 'Reference',
-        text: `REFERENCE MATERIALS AND SOURCES
-====================================================
-
-THEORETICAL FRAMEWORKS:
-
-Photography & Vision:
-- Roland Barthes, Camera Lucida
-- Susan Sontag, On Photography
-- Vilém Flusser, Towards a Philosophy of Photography
-
-Systems & Measurement:
-- Ludwig von Bertalanffy, General System Theory
-- Gregory Bateson, Steps to an Ecology of Mind
-- Douglas Hofstadter, Gödel, Escher, Bach
-
-Language & Noise:
-- Jacques Derrida, Différance and différence
-- Claude Shannon, A Mathematical Theory of Communication
-- Vilém Flusser, Into the Universe of Technical Images
-
-Philosophy of Self:
-- Michel Foucault, The Order of Things
-- Jean-Paul Sartre, Being and Nothingness
-- Gilles Deleuze, A Thousand Plateaus
-
-TECHNICAL REFERENCES:
-- DOS/Windows 95 Terminal Aesthetics
-- Cyberpunk Visual Language
-- Retro-computing Culture
-
-INSPIRATIONS:
-- The Matrix trilogy
-- Tron
-- Neuromancer (William Gibson)
-- Ghost in the Shell
-
-METHODOLOGY:
-Cross-disciplinary approach combining:
-- Visual art
-- Literary theory
-- Systems thinking
-- Technical aesthetics
-
-CITATION: Please reference as "SET IS THE WORLD (2026)"
-==========================================`
+        isBoard: true,
+        items: [
+          {
+            id: 'CAMERA_LUCIDA',
+            title: 'Camera Lucida',
+            author: 'Roland Barthes',
+            year: '1980',
+            category: 'Photography & Vision',
+            status: 'FOUNDATIONAL',
+            preview: 'A groundbreaking work on photography and indexicality. Explores the essence of photography as a medium of evidence and truth.'
+          },
+          {
+            title: 'On Photography',
+            author: 'Susan Sontag',
+            year: '1977',
+            category: 'Photography & Vision',
+            preview: 'Essays exploring photography as experience and metaphor. Investigates how images shape consciousness and perception.'
+          },
+          {
+            title: 'Towards a Philosophy of Photography',
+            author: 'Vilém Flusser',
+            year: '1983',
+            category: 'Photography & Vision',
+            preview: 'Technical images and apparatus. Examines photography as a form of technical mediation between humans and world.'
+          },
+          {
+            title: 'General System Theory',
+            author: 'Ludwig von Bertalanffy',
+            year: '1968',
+            category: 'Systems & Measurement',
+            preview: 'Foundational text on systems thinking. Provides framework for understanding complex wholes and their properties.'
+          },
+          {
+            title: 'Steps to an Ecology of Mind',
+            author: 'Gregory Bateson',
+            year: '1972',
+            category: 'Systems & Measurement',
+            preview: 'Integration of ideas across disciplines. Explores patterns and relationships in living systems.'
+          },
+          {
+            title: 'A Thousand Plateaus',
+            author: 'Gilles Deleuze & Félix Guattari',
+            year: '1987',
+            category: 'Philosophy & Theory',
+            preview: 'Rhizomatic thinking beyond hierarchy. Challenges linear and arborescent modes of organization.'
+          },
+          {
+            title: 'Gödel, Escher, Bach',
+            author: 'Douglas Hofstadter',
+            year: '1979',
+            category: 'Systems & Measurement',
+            preview: 'Dialogues on consciousness and self-reference. Explores strange loops and tangled hierarchies in art and thought.'
+          },
+          {
+            title: 'The Order of Things',
+            author: 'Michel Foucault',
+            year: '1966',
+            category: 'Philosophy of Self',
+            preview: 'Archaeology of knowledge and systems of classification. Examines how different eras organize understanding.'
+          }
+        ]
       },
       portfolio: {
         title: 'Portfolio',
-        text: `PORTFOLIO - WORKS IN THE SET
-====================================================
-
-VISUAL WORKS:
-
-1. Perimeter Scan #001-#012
-   - Photography series examining boundaries
-   - Measurement and contamination
-   - Archive: Visual documentation
-
-2. Voice Merge Installation
-   - Two-channel audio work
-   - Systematic vs. Affective
-   - Interactive listener experience
-
-3. Terminal Interface Design
-   - Custom cyberpunk aesthetic
-   - DOS homage to 1980s-90s computing
-   - Functional art object
-
-TEXTUAL WORKS:
-
-1. SET Theory Essays (6 parts)
-   - Philosophical exploration
-   - Personal narrative weaving
-   - Medium: Digital text
-
-2. Measurement Protocols
-   - Artistic investigation of quantification
-   - Scale contamination documentation
-   - Method: Systematic observation
-
-DIGITAL WORKS:
-
-1. Set IS The World (This Site)
-   - Interactive portfolio website
-   - Terminal-based navigation
-   - GitHub Pages deployment
-
-2. Archive Project
-   - Photography documentation system
-   - Conceptual framework
-   - Status: Ongoing
-
-UPCOMING:
-
-- Extended video work (archive section below)
-- Physical installation
-- Performance piece
-- Published collection
-
-CONTACT & COLLABORATION:
-See Connection section in system menu
-==========================================`
+        isBoard: true,
+        items: [
+          {
+            id: 'PERIMETER_SCAN',
+            title: 'Perimeter Scan #001-#012',
+            author: 'Artist / Photographer',
+            year: '2024-2025',
+            category: 'Photography Series',
+            status: 'EXHIBITED',
+            preview: 'Photography series examining boundaries. A systematic documentation of measurement and contamination through visual archive.'
+          },
+          {
+            id: 'VOICE_MERGE',
+            title: 'Voice Merge Installation',
+            author: 'Artist / Sound Designer',
+            year: '2025',
+            category: 'Audio Installation',
+            status: 'ACTIVE',
+            preview: 'Two-channel audio work exploring systematic vs. affective voices. Interactive listener experience merging AI and human perspectives.'
+          },
+          {
+            id: 'TERMINAL_DESIGN',
+            title: 'Terminal Interface Design',
+            author: 'Artist / Developer',
+            year: '2025',
+            category: 'Digital Art',
+            status: 'FUNCTIONAL',
+            preview: 'Custom cyberpunk aesthetic exploring DOS homage to 1980s-90s computing. Functional art object merging interface and concept.'
+          },
+          {
+            id: 'SET_ESSAYS',
+            title: 'SET Theory Essays (6 parts)',
+            author: 'Artist / Theorist',
+            year: '2025',
+            category: 'Philosophy & Theory',
+            status: 'PUBLISHED',
+            preview: 'Philosophical exploration with personal narrative weaving. Digital text examining the boundaries of observer and observed.'
+          },
+          {
+            id: 'MEASUREMENT_PROTOCOLS',
+            title: 'Measurement Protocols',
+            author: 'Artist / Researcher',
+            year: '2025',
+            category: 'Documentation',
+            status: 'ONGOING',
+            preview: 'Artistic investigation of quantification. Scale contamination documentation through systematic observation and analysis.'
+          },
+          {
+            id: 'SET_WORLD_SITE',
+            title: 'Set IS The World (Website)',
+            author: 'Artist / Developer',
+            year: '2025',
+            category: 'Web Project',
+            status: 'DEPLOYED',
+            preview: 'Interactive portfolio website with terminal-based navigation. GitHub Pages deployment merging concept and medium.'
+          }
+        ]
       },
       video: {
         title: 'Video Archive',
-        text: `VIDEO ARCHIVE - MOVING IMAGE WORKS
-====================================================
-
-COMPLETED WORKS:
-
-1. "Perimeter" (12:34)
-   - 4K Resolution
-   - Archive of boundary conditions
-   - Status: Available
-
-2. "Voice Merge Protocol" (08:45)
-   - Two-voice composition
-   - Real-time interaction
-   - Status: Available
-
-3. "Scale Contaminated" (15:20)
-   - Documentation of measurement failure
-   - Multiple perspectives
-   - Status: Available
-
-IN PROGRESS:
-
-1. "World Remains Open" (Untitled)
-   - Feature-length exploration
-   - Est. 45 minutes
-   - Target completion: Q3 2026
-
-2. "Incompleteness Study"
-   - Short form (5-7 minutes)
-   - Experimental narrative
-   - Est. completion: Q2 2026
-
-ARCHIVAL:
-
-All video works are preserved in:
-/ARCHIVE/MEDIA/VIDEO/SET_WORLD/
-
-PLAYBACK SYSTEM:
-Use media player integrated with terminal interface.
-(Terminal player not yet implemented in this version)
-
-DISTRIBUTION:
-- Internal archive access
-- Limited external screenings
-- Festival submissions planned
-
-NOTES:
-Video documentation of the SET concept
-May be viewed as companion to text and image works
-Each work explores different temporal dimensions
-of the same fundamental questions
-
-STATUS: Archive accessible
-REQUIRE LOGIN: No (Public access enabled)
-==========================================`
+        isBoard: true,
+        items: [
+          {
+            id: 'PERIMETER_VIDEO',
+            title: 'Perimeter (12:34)',
+            author: 'Director / Artist',
+            year: '2024',
+            category: 'Documentary',
+            status: 'AVAILABLE',
+            preview: '4K Resolution archive of boundary conditions. Systematic visual exploration of spatial measurement and perimeter definition.'
+          },
+          {
+            id: 'VOICE_MERGE_VIDEO',
+            title: 'Voice Merge Protocol (08:45)',
+            author: 'Director / Sound',
+            year: '2025',
+            category: 'Audio-Visual',
+            status: 'AVAILABLE',
+            preview: 'Two-voice composition exploring real-time interaction between systematic and affective approaches. Merges dialogue and image.'
+          },
+          {
+            id: 'SCALE_CONTAMINATED',
+            title: 'Scale Contaminated (15:20)',
+            author: 'Director / Researcher',
+            year: '2025',
+            category: 'Experimental',
+            status: 'AVAILABLE',
+            preview: 'Documentation of measurement failure from multiple perspectives. Visual investigation of scale contamination and observer paradox.'
+          },
+          {
+            id: 'WORLD_REMAINS_OPEN',
+            title: 'World Remains Open (Untitled)',
+            author: 'Director / Artist',
+            year: '2026',
+            category: 'Feature',
+            status: 'IN_PROGRESS',
+            preview: 'Feature-length exploration of SET boundaries. Est. 45 minutes. A comprehensive visual and conceptual investigation.'
+          },
+          {
+            id: 'INCOMPLETENESS_STUDY',
+            title: 'Incompleteness Study',
+            author: 'Director / Theorist',
+            year: '2026',
+            category: 'Short Form',
+            status: 'IN_PROGRESS',
+            preview: 'Experimental narrative exploration. Short form work (5-7 minutes) investigating incompleteness as fundamental principle.'
+          },
+          {
+            id: 'ARCHIVE_PRESERVATION',
+            title: 'Archive Preservation System',
+            author: 'Archivist / Developer',
+            year: '2025',
+            category: 'Documentation',
+            status: 'ACTIVE',
+            preview: 'All video works preserved in /ARCHIVE/MEDIA/VIDEO/SET_WORLD/. Integrated archival and playback system for digital preservation.'
+          }
+        ]
       }
     };
 
     // Initialize content display
     function loadContent(section) {
       const content = contents[section];
-      const contentText = document.getElementById('contentText');
+      const terminalContent = document.getElementById('terminalContent');
 
       if (content) {
-        contentText.textContent = content.text;
+        if (content.isBoard) {
+          // Board format
+          const boardHTML = `
+            <div class="board-header">
+              <span>BOARD: ${content.title.toUpperCase()} (${content.items.length} posts)</span>
+              <button class="new-post-btn" id="newPostBtn">[NEW POST]</button>
+            </div>
+            <div class="board-container">
+              ${content.items.map((item, idx) => `
+                <div class="board-item" data-index="${idx}">
+                  <div class="board-item-header">
+                    <div class="board-item-title">[${item.id || item.title.toUpperCase().replace(/\\s+/g, '_')} - ${item.status || 'REFERENCE'}]</div>
+                  </div>
+                  <div class="board-item-info">
+                    <div class="board-item-from">From: ${item.author}</div>
+                    <div class="board-item-meta-row">Year: ${item.year}</div>
+                    <div class="board-item-meta-row">Category: ${item.category}</div>
+                  </div>
+                  <div class="board-item-message">
+                    <div class="board-item-label">Description:</div>
+                    <div class="board-item-preview">${item.preview}</div>
+                  </div>
+                  <div class="board-item-actions">
+                    <span class="board-item-action">[read_more]</span>
+                    <span class="board-item-action">[close]</span>
+                  </div>
+                </div>
+              `).join('')}
+            </div>
+          `;
+          terminalContent.innerHTML = boardHTML;
+
+          // Setup new post button
+          setupNewPostModal(section);
+
+          // Position items randomly after a brief delay to ensure DOM is ready
+          setTimeout(() => positionBoardItems(), 50);
+        } else {
+          // Regular text format
+          const contentText = document.getElementById('contentText');
+          contentText.textContent = content.text;
+        }
       }
+    }
+
+    // Position board items in aligned grid
+    function positionBoardItems() {
+      const boardItems = document.querySelectorAll('.board-item');
+      const container = document.querySelector('.board-container');
+
+      if (!container) return;
+
+      const containerWidth = container.offsetWidth;
+      const containerHeight = container.offsetHeight;
+      const itemWidth = 240;
+      const itemHeight = 140;
+      const padding = 15; // Space between items
+      const columns = 3;
+
+      // Calculate grid dimensions
+      const gridX = 20; // Left margin
+      const gridY = 20; // Top margin
+      const totalItemWidth = itemWidth + padding;
+      const totalItemHeight = itemHeight + padding;
+
+      // Indices of cards that should be irregular (only 1-2 cards)
+      const irregularIndices = [3, 5];
+
+      boardItems.forEach((item, index) => {
+        // Calculate row and column
+        const col = index % columns;
+        const row = Math.floor(index / columns);
+
+        // Calculate base position
+        const baseX = gridX + col * totalItemWidth;
+        const baseY = gridY + row * totalItemHeight;
+
+        let x = baseX;
+        let y = baseY;
+
+        // Apply irregular placement only to specific card indices
+        if (irregularIndices.includes(index)) {
+          const offsetX = (Math.random() - 0.5) * 30; // -15 to +15 (larger range)
+          const offsetY = (Math.random() - 0.5) * 20; // -10 to +10 (larger range)
+          x = baseX + offsetX;
+          y = baseY + offsetY;
+
+          // Add slight negative margin for overlap effect
+          item.style.marginLeft = '-12px';
+          item.style.marginTop = '-8px';
+        }
+
+        // Apply styles with animation
+        const randomScale = 0.97 + Math.random() * 0.06;
+        const randomDelay = index * 30;
+
+        item.style.left = x + 'px';
+        item.style.top = y + 'px';
+        item.style.transform = `scale(${randomScale})`;
+        item.style.transition = `all 0.3s ease ${randomDelay}ms`;
+        item.style.opacity = '0';
+
+        // Trigger animation
+        setTimeout(() => {
+          item.style.opacity = '1';
+        }, 10);
+      });
+
+      // Enable dragging for board items
+      enableBoardDragging();
+    }
+
+    // Enable dragging functionality for board items
+    function enableBoardDragging() {
+      const boardItems = document.querySelectorAll('.board-item');
+      let draggedItem = null;
+      let offsetX = 0;
+      let offsetY = 0;
+
+      boardItems.forEach(item => {
+        item.style.cursor = 'grab';
+
+        item.addEventListener('mousedown', (e) => {
+          draggedItem = item;
+          draggedItem.style.cursor = 'grabbing';
+          draggedItem.style.zIndex = '1000';
+
+          // Remove transition for smooth dragging
+          draggedItem.style.transition = 'none';
+
+          const rect = item.getBoundingClientRect();
+          const container = document.querySelector('.board-container');
+          const containerRect = container.getBoundingClientRect();
+
+          offsetX = e.clientX - rect.left;
+          offsetY = e.clientY - rect.top;
+
+          e.preventDefault();
+        });
+      });
+
+      document.addEventListener('mousemove', (e) => {
+        if (!draggedItem) return;
+
+        const container = document.querySelector('.board-container');
+        const containerRect = container.getBoundingClientRect();
+
+        let newX = e.clientX - containerRect.left - offsetX;
+        let newY = e.clientY - containerRect.top - offsetY;
+
+        // Constrain within container
+        newX = Math.max(0, Math.min(newX, containerRect.width - draggedItem.offsetWidth));
+        newY = Math.max(0, Math.min(newY, containerRect.height - draggedItem.offsetHeight));
+
+        // Use requestAnimationFrame for smooth animation
+        requestAnimationFrame(() => {
+          draggedItem.style.left = newX + 'px';
+          draggedItem.style.top = newY + 'px';
+        });
+      });
+
+      document.addEventListener('mouseup', () => {
+        if (draggedItem) {
+          draggedItem.style.cursor = 'grab';
+          draggedItem.style.zIndex = 'auto';
+          // Restore transition for smooth deceleration
+          draggedItem.style.transition = 'all 0.3s ease 0ms';
+          draggedItem = null;
+        }
+      });
+    }
+
+    // Setup new post modal
+    function setupNewPostModal(section) {
+      const modal = document.getElementById('writeModal');
+      const newPostBtn = document.getElementById('newPostBtn');
+      const cancelBtn = document.getElementById('cancelBtn');
+      const postForm = document.getElementById('postForm');
+
+      if (!newPostBtn) return;
+
+      // Open modal
+      newPostBtn.addEventListener('click', () => {
+        modal.classList.add('active');
+        document.getElementById('postTitle').focus();
+      });
+
+      // Close modal
+      cancelBtn.addEventListener('click', () => {
+        modal.classList.remove('active');
+        postForm.reset();
+      });
+
+      // Close on overlay click
+      modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+          modal.classList.remove('active');
+          postForm.reset();
+        }
+      });
+
+      // Submit form
+      postForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+
+        // Get form values
+        const newItem = {
+          id: document.getElementById('postTitle').value.toUpperCase().replace(/\\s+/g, '_'),
+          title: document.getElementById('postTitle').value,
+          author: document.getElementById('postAuthor').value,
+          year: document.getElementById('postYear').value || new Date().getFullYear(),
+          category: document.getElementById('postCategory').value || 'Uncategorized',
+          status: document.getElementById('postStatus').value || 'PUBLISHED',
+          preview: document.getElementById('postPreview').value
+        };
+
+        // Add to contents array
+        if (contents[section].items) {
+          contents[section].items.push(newItem);
+
+          // Reload content
+          modal.classList.remove('active');
+          postForm.reset();
+          loadContent(section);
+        }
+      });
+
+      // Close on ESC key
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && modal.classList.contains('active')) {
+          modal.classList.remove('active');
+          postForm.reset();
+        }
+      });
     }
 
     // Menu item click handler
