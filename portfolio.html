@@ -207,6 +207,11 @@ html, body { background: #000; color: #39dc00; font-family: 'Courier New', monos
   background: #ff9900;
 }
 
+/* ===== PIXELATION FILTER ===== */
+@supports (filter: url(#pixelate)) {
+  /* SVG filter support exists */
+}
+
 /* ===== HAMBURGER MENU (MOBILE) ===== */
 .hamburger-btn {
   display: none;
@@ -936,6 +941,22 @@ html, body { background: #000; color: #39dc00; font-family: 'Courier New', monos
   </style>
 </head>
 <body>
+  <!-- SVG Pixelation Filter -->
+  <svg style="display: none;">
+    <defs>
+      <filter id="pixelate">
+        <feFlood x="0%" y="0%" width="100%" height="100%" flood-color="#000" result="color"/>
+        <feComposite in="SourceGraphic" in2="color" operator="in" result="coloredSource"/>
+        <feGaussianBlur in="coloredSource" stdDeviation="4" result="blurred"/>
+        <feComponentTransfer in="blurred" color-interpolation-filters="sRGB">
+          <feFuncR type="discrete" tableValues="0 0.25 0.5 0.75 1"/>
+          <feFuncG type="discrete" tableValues="0 0.25 0.5 0.75 1"/>
+          <feFuncB type="discrete" tableValues="0 0.25 0.5 0.75 1"/>
+        </feComponentTransfer>
+      </filter>
+    </defs>
+  </svg>
+
   <div class="top-banner">&gt;&gt;&gt; FATAL_BREACH_DETECTED : SYSTEM KERNEL COMPROMISED. DO NOT DISCONNECT. TRACING... &lt;&lt;&lt;</div>
 
   <!-- DESKTOP LAYOUT -->
@@ -1525,11 +1546,11 @@ REQUIRE LOGIN: No (Public access enabled)
           // Archive Photos format with search
           const archiveHTML = `
             <div style="display: flex; flex-direction: column; height: 100%; padding: 0; margin: -12px;">
-              <div class="archive-search-bar" style="margin: 12px 12px 0 12px;">
+              <div class="photo-gallery" id="photoGallery" style="margin: 12px; flex: 1; overflow-y: auto;"></div>
+              <div class="archive-search-bar" style="margin: 0 12px 12px 12px; flex-shrink: 0;">
                 <input type="text" class="archive-search-input" id="archiveSearchInput" placeholder="Search by keyword: crash, floating, shadow...">
                 <button class="archive-search-btn" id="archiveSearchBtn">SEARCH</button>
               </div>
-              <div class="photo-gallery" id="photoGallery" style="margin: 12px;"></div>
             </div>
           `;
           terminalContent.innerHTML = archiveHTML;
@@ -2128,25 +2149,29 @@ ${preview}
     }
 
     // Display photo gallery
-    function displayPhotoGallery(photos, filtered) {
+    function displayPhotoGallery(photos, filtered, isSearchResult = false) {
       const gallery = document.getElementById('photoGallery');
 
       if (filtered.length === 0) {
-        gallery.innerHTML = '<div class="no-results">No photos found matching your search.</div>';
+        gallery.innerHTML = '<div class="no-results">검색 결과가 없습니다.</div>';
         return;
       }
 
-      const galleryHTML = filtered.map(photo => `
-        <div class="photo-item" data-photo-id="${photo.id}">
-          <div class="photo-item-image">
-            <img src="images/${photo.filename}" alt="${photo.title}" onerror="this.style.display='none'; this.parentElement.textContent='[IMAGE]';">
-          </div>
-          <div class="photo-item-info">
-            <div class="photo-item-title">${photo.title}</div>
-            <div class="photo-item-keywords">${photo.keywords.join(' • ')}</div>
-          </div>
+      const galleryHTML = `
+        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; width: 100%;">
+          ${filtered.map(photo => `
+            <div class="photo-item" data-photo-id="${photo.id}" style="border: 1px solid #39dc00; padding: 12px; cursor: pointer; transition: all 0.1s;">
+              <div class="photo-item-image" style="width: 100%; height: 150px; background: #000; border: 1px dashed #39dc00; margin-bottom: 8px; display: flex; align-items: center; justify-content: center; overflow: hidden;">
+                <img src="images/${photo.filename}" alt="${photo.title}" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display='none'; this.parentElement.textContent='[IMAGE]';">
+              </div>
+              <div class="photo-item-info" style="font-size: 11px;">
+                <div class="photo-item-title" style="font-weight: bold; margin-bottom: 4px;">${photo.title}</div>
+                <div class="photo-item-keywords" style="font-size: 9px; opacity: 0.8;">${photo.keywords.join(' • ')}</div>
+              </div>
+            </div>
+          `).join('')}
         </div>
-      `).join('');
+      `;
 
       gallery.innerHTML = galleryHTML;
 
@@ -2159,6 +2184,12 @@ ${preview}
             showPhotoDetail(photo);
           }
         });
+        item.addEventListener('mouseover', () => {
+          item.style.background = 'rgba(57, 220, 0, 0.1)';
+        });
+        item.addEventListener('mouseout', () => {
+          item.style.background = 'transparent';
+        });
       });
     }
 
@@ -2170,19 +2201,61 @@ ${preview}
 
       if (!searchInput || !searchBtn) return;
 
-      // Display random photos initially
-      function displayRandomPhotos() {
-        // Shuffle array and show random photo
-        const shuffled = [...allPhotos].sort(() => Math.random() - 0.5);
-        displayPhotoGallery(allPhotos, shuffled.slice(0, Math.ceil(Math.random() * allPhotos.length)));
+      // Display initial photos with pixelation effect - Big Brother image only
+      function displayInitialPhotos() {
+        gallery.innerHTML = `
+          <div style="display: flex; flex-direction: column; align-items: center; gap: 20px; padding: 20px; height: 100%; justify-content: center;">
+            <div style="width: 100%; height: 100%; max-width: 450px; max-height: 400px;">
+              <img src="images/big-brother.jpg" alt="BIG BROTHER"
+                style="width: 100%; height: 100%; object-fit: cover; display: block;">
+            </div>
+          </div>
+        `;
+      }
+
+      // Pixelate image using Canvas
+      function pixelateImage(img, canvas, pixelSize, photo) {
+        const ctx = canvas.getContext('2d');
+        canvas.width = img.naturalWidth || img.width;
+        canvas.height = img.naturalHeight || img.height;
+
+        // Draw original image
+        ctx.drawImage(img, 0, 0);
+
+        // Get image data
+        const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+        const data = imageData.data;
+
+        // Pixelate
+        for (let i = 0; i < canvas.height; i += pixelSize) {
+          for (let j = 0; j < canvas.width; j += pixelSize) {
+            const pixelIndex = (Math.floor(i) * canvas.width + Math.floor(j)) * 4;
+            const r = data[pixelIndex];
+            const g = data[pixelIndex + 1];
+            const b = data[pixelIndex + 2];
+
+            // Fill rectangle with average color
+            ctx.fillStyle = `rgb(${r},${g},${b})`;
+            ctx.fillRect(j, i, pixelSize, pixelSize);
+          }
+        }
+
+        // Show canvas, hide image
+        canvas.style.display = 'block';
+        img.style.display = 'none';
+
+        // Add click handler
+        canvas.onclick = function() {
+          showPhotoDetail(photo);
+        };
       }
 
       function performSearch() {
         const query = searchInput.value.toLowerCase().trim();
 
         if (!query) {
-          // No search term - show random photos
-          displayRandomPhotos();
+          // No search term - show initial photos
+          displayInitialPhotos();
           return;
         }
 
@@ -2197,7 +2270,7 @@ ${preview}
           return keywordMatch || titleMatch || descMatch;
         });
 
-        displayPhotoGallery(allPhotos, filtered);
+        displayPhotoGallery(allPhotos, filtered, true);
       }
 
       searchBtn.addEventListener('click', performSearch);
@@ -2207,19 +2280,19 @@ ${preview}
         }
       });
 
-      // When user types - clear results and show message
+      // When user types - show hint message
       searchInput.addEventListener('input', (e) => {
         if (e.target.value.trim() === '') {
-          // If input is cleared, show random photos again
-          displayRandomPhotos();
+          // If input is cleared, show initial photos again
+          displayInitialPhotos();
         } else {
           // While typing, show hint message
           gallery.innerHTML = '<div class="no-results">검색하고 엔터를 누르세요</div>';
         }
       });
 
-      // Show random photos on initial load
-      displayRandomPhotos();
+      // Show initial photos on load
+      displayInitialPhotos();
     }
 
     // Show photo detail modal
