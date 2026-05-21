@@ -1112,52 +1112,69 @@ html, body { background: #000; color: #39dc00; font-family: 'Courier New', monos
     // Re-detect on window resize
     window.addEventListener('resize', detectAndSwitchLayout);
 
+    // ===== SLIDESHOW VARIABLES =====
+    let currentSlideIndex = 0;
+    let currentSlides = [];
+
     // ===== CONTENT DATA AND FUNCTIONS =====
     // Content data for all sections
     const contents = {
       project: {
         title: 'Project SET',
-        text: `PROJECT SET - WORLD MEASUREMENT FRAMEWORK
-====================================================
-
-[PROJECT OVERVIEW]
-category: Concept
-author: Artist / Theorist
-year: 2025-2026
-
-A cyberpunk-themed visual and textual exploration of the boundaries between observer and observed, world and self. Core framework for SET.
+        isSlideshow: true,
+        slides: [
+          {
+            id: 'slide_1',
+            title: 'Project SET Overview',
+            category: 'Concept',
+            author: 'Artist / Theorist',
+            year: '2025-2026',
+            text: `A cyberpunk-themed visual and textual exploration of the boundaries between observer and observed, world and self. Core framework for SET.
 
 This project operates as a comprehensive investigation into measurement, perception, and the paradox of the observer being part of the observed system. Through visual and textual intervention, SET proposes that the act of measurement inherently contaminates the measuring instrument (in this case, us).
 
-[CORE CONCEPT]
-category: Philosophy
-author: Artist / Theorist
-year: 2025
-
-Instructions, coerced body, suspended gaze. Archiving the structure of photography by halting reproduction. The fundamental thesis.
+STATUS: ACTIVE
+FRAMEWORK: 6 distinct sections exploring different aspects of SET
+INTERFACE: Terminal-based with DOS aesthetic`
+          },
+          {
+            id: 'slide_2',
+            title: 'Core Concept',
+            category: 'Philosophy',
+            author: 'Artist / Theorist',
+            year: '2025',
+            text: `Instructions, coerced body, suspended gaze. Archiving the structure of photography by halting reproduction. The fundamental thesis.
 
 The core concept rests on three pillars:
 - Instructions: Systems of control embedded in visual culture
 - Coerced Body: We are not free agents in the SET; we are part of its structure
 - Suspended Gaze: Vision is held in abeyance; we cannot see clearly from within
 
-[MEASUREMENT PARADOX]
-category: Theory
-author: Artist / Theorist
-year: 2025
-
-Set is the world. I am measuring the perimeter of the set. But the scale I hold is already contaminated by the world itself.
+METHODOLOGY: Textual and visual exploration through interference and superimposition`
+          },
+          {
+            id: 'slide_3',
+            title: 'Measurement Paradox',
+            category: 'Theory',
+            author: 'Artist / Theorist',
+            year: '2025',
+            text: `Set is the world. I am measuring the perimeter of the set. But the scale I hold is already contaminated by the world itself.
 
 This paradox forms the central tension of the work. Any attempt to measure or define the boundaries of the SET is itself already infected by the SET's logic. The measuring tool is not neutral; it is part of what is being measured.
 
-[STRUCTURE & FRAMEWORK]
-category: System Design
-author: Artist / Developer
-year: 2025-2026
+OBSERVATION: The observer is observed
+IMPLICATION: Distance is an illusion
+RESOLUTION: The incompleteness is precisely the world`
+          },
+          {
+            id: 'slide_4',
+            title: 'Structure & Framework',
+            category: 'System Design',
+            author: 'Artist / Developer',
+            year: '2025-2026',
+            text: `6 distinct sections exploring different aspects of SET framework. Terminal-based interface. DOS aesthetic. Interactive system.
 
-6 distinct sections exploring different aspects of SET framework. Terminal-based interface. DOS aesthetic. Interactive system.
-
-Technical Implementation:
+TECHNICAL IMPLEMENTATION:
 - JavaScript-based viewport detection for responsive layout
 - Real-time content loading and dynamic rendering
 - Archive administration system with publishing workflow
@@ -1165,13 +1182,14 @@ Technical Implementation:
 - Cross-section content publishing system
 - localStorage integration for persistent data
 
-Visual Language:
+VISUAL LANGUAGE:
 - Terminal/DOS aesthetic with #39dc00 green color scheme
 - Monospace typography (Courier New)
 - Grid and flexbox layouts
 - Minimal visual hierarchy through border and spacing
-
-==========================================`
+- Responsive mobile/desktop layout separation`
+          }
+        ]
       },
       archive: {
         title: 'Photo Archive',
@@ -1468,7 +1486,10 @@ REQUIRE LOGIN: No (Public access enabled)
       const publishedPosts = getPublishedPosts(section);
 
       if (content) {
-        if (content.isArchivePhotos) {
+        if (content.isSlideshow) {
+          // Slideshow format
+          loadSlideshow(content);
+        } else if (content.isArchivePhotos) {
           // Archive Photos format with search
           const archiveHTML = `
             <div style="display: flex; flex-direction: column; height: 100%; padding: 0; margin: -12px;">
@@ -1876,6 +1897,79 @@ ${preview}
             // Just prevent default, the board stays visible
           });
         }
+      });
+    }
+
+    // Load slideshow - full screen format
+    function loadSlideshow(content) {
+      currentSlides = content.slides;
+      currentSlideIndex = 0;
+
+      const terminalContent = document.getElementById('terminalContent');
+      const slideshowHTML = `
+        <div class="slideshow-container" style="display: flex; flex-direction: column; height: 100%; padding: 0; margin: -12px;">
+          <div class="slideshow-content" style="flex: 1; overflow-y: auto; padding: 12px; background: #000; display: flex; flex-direction: column; min-height: 0;">
+            <div class="slide-header" style="margin-bottom: 20px; border-bottom: 1px dashed #39dc00; padding-bottom: 12px;">
+              <div class="slide-title" style="font-size: 16px; font-weight: bold; color: #39dc00; margin-bottom: 8px;"></div>
+              <div class="slide-meta" style="font-size: 10px; color: #39dc00; opacity: 0.7;"></div>
+            </div>
+            <div class="slide-text" style="flex: 1; overflow-y: auto;"></div>
+          </div>
+          <div class="slideshow-controls" style="display: flex; justify-content: space-between; align-items: center; padding: 12px; border-top: 1px solid #39dc00; background: #000; flex-shrink: 0;">
+            <button class="slide-prev" style="background: #39dc00; color: #000; border: 1px solid #39dc00; padding: 6px 12px; cursor: pointer; font-weight: bold; font-size: 10px; transition: all 0.2s; font-family: 'Courier New', monospace;">← PREV</button>
+            <span class="slide-counter" style="color: #39dc00; font-size: 10px; font-weight: bold; font-family: 'Courier New', monospace;">1/4</span>
+            <button class="slide-next" style="background: #39dc00; color: #000; border: 1px solid #39dc00; padding: 6px 12px; cursor: pointer; font-weight: bold; font-size: 10px; transition: all 0.2s; font-family: 'Courier New', monospace;">NEXT →</button>
+          </div>
+        </div>
+      `;
+
+      terminalContent.innerHTML = slideshowHTML;
+      displaySlide(0);
+      setupSlideshowControls();
+    }
+
+    // Display specific slide
+    function displaySlide(slideIndex) {
+      const slide = currentSlides[slideIndex];
+      document.querySelector('.slide-title').textContent = slide.title;
+      document.querySelector('.slide-meta').textContent = `${slide.category} | ${slide.author} | ${slide.year}`;
+      document.querySelector('.slide-text').innerHTML = `<pre style="white-space: pre-wrap; word-wrap: break-word; margin: 0; color: #39dc00; font-family: 'Courier New', monospace; font-size: 12px; line-height: 1.6;">${slide.text}</pre>`;
+      document.querySelector('.slide-counter').textContent = `${slideIndex + 1}/${currentSlides.length}`;
+    }
+
+    // Setup slideshow navigation
+    function setupSlideshowControls() {
+      const prevBtn = document.querySelector('.slide-prev');
+      const nextBtn = document.querySelector('.slide-next');
+
+      prevBtn.addEventListener('click', () => {
+        currentSlideIndex = (currentSlideIndex - 1 + currentSlides.length) % currentSlides.length;
+        displaySlide(currentSlideIndex);
+      });
+
+      prevBtn.addEventListener('mouseover', () => {
+        prevBtn.style.background = '#ff9900';
+        prevBtn.style.borderColor = '#ff9900';
+      });
+
+      prevBtn.addEventListener('mouseout', () => {
+        prevBtn.style.background = '#39dc00';
+        prevBtn.style.borderColor = '#39dc00';
+      });
+
+      nextBtn.addEventListener('click', () => {
+        currentSlideIndex = (currentSlideIndex + 1) % currentSlides.length;
+        displaySlide(currentSlideIndex);
+      });
+
+      nextBtn.addEventListener('mouseover', () => {
+        nextBtn.style.background = '#ff9900';
+        nextBtn.style.borderColor = '#ff9900';
+      });
+
+      nextBtn.addEventListener('mouseout', () => {
+        nextBtn.style.background = '#39dc00';
+        nextBtn.style.borderColor = '#39dc00';
       });
     }
 
