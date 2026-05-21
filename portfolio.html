@@ -896,6 +896,13 @@ html, body { background: #000; color: #39dc00; font-family: 'Courier New', monos
   overflow-wrap: break-word;
   word-break: break-word;
   max-width: 100%;
+  white-space: pre-wrap;
+}
+
+#mobileContentText {
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
 }
 
 .mobile-terminal-statusbar {
@@ -1077,7 +1084,7 @@ html, body { background: #000; color: #39dc00; font-family: 'Courier New', monos
         TERMINAL VIEWER
       </div>
       <div class="mobile-terminal-content" id="mobileTerminalContent">
-        <pre id="mobileContentText"></pre>
+        <div id="mobileContentText"></div>
       </div>
       <div class="mobile-terminal-statusbar">
         <span>STATUS: LOADED</span>
@@ -2474,12 +2481,15 @@ ${preview}
 
       if (content.isArchivePhotos) {
         // For archive section, show search interface and all photos
+        mobileContent.style.whiteSpace = 'normal';
         mobileContent.innerHTML = `
-          <div style="display: flex; gap: 8px; margin-bottom: 12px;">
-            <input type="text" id="mobileArchiveSearch" placeholder="search: crash, floating, shadow"
-              style="flex: 1; background: #000; border: 1px solid #39dc00; color: #39dc00; padding: 6px; font-size: 10px; font-family: monospace;">
-          </div>
-          <div id="mobilePhotoGallery" style="display: grid; grid-template-columns: 1fr; gap: 8px; max-height: calc(100% - 50px); overflow-y: auto;">
+          <div style="display: flex; flex-direction: column; height: 100%; gap: 0;">
+            <div style="display: flex; gap: 8px; padding: 12px 0 8px 0; flex-shrink: 0;">
+              <input type="text" id="mobileArchiveSearch" placeholder="search: crash, floating, shadow"
+                style="flex: 1; background: #000; border: 1px solid #39dc00; color: #39dc00; padding: 6px; font-size: 10px; font-family: monospace;">
+            </div>
+            <div id="mobilePhotoGallery" style="display: grid; grid-template-columns: 1fr; gap: 8px; overflow-y: auto; flex: 1;">
+            </div>
           </div>
         `;
 
