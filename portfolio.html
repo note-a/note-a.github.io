@@ -627,10 +627,18 @@ html, body { background: #000; color: #39dc00; font-family: 'Courier New', monos
 
 .photo-gallery {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-  gap: 10px;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 8px;
   overflow-y: auto;
   max-height: calc(100% - 50px);
+  max-width: 100%;
+}
+
+@media (max-width: 480px) {
+  .photo-gallery {
+    grid-template-columns: 1fr;
+    gap: 6px;
+  }
 }
 
 .photo-item {
@@ -845,6 +853,10 @@ html, body { background: #000; color: #39dc00; font-family: 'Courier New', monos
 .mobile-header-title {
   font-size: 12px;
   font-weight: bold;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  word-break: break-word;
+  max-width: 70vw;
 }
 
 .mobile-terminal {
@@ -871,14 +883,19 @@ html, body { background: #000; color: #39dc00; font-family: 'Courier New', monos
 
 .mobile-terminal-content {
   flex: 1;
-  padding: 16px;
+  padding: 12px;
   overflow-y: auto;
+  overflow-x: hidden;
   background: #000;
   color: #39dc00;
   font-size: 12px;
   line-height: 1.8;
   min-height: 0;
   -webkit-font-smoothing: antialiased;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  word-break: break-word;
+  max-width: 100%;
 }
 
 .mobile-terminal-statusbar {
@@ -921,7 +938,7 @@ html, body { background: #000; color: #39dc00; font-family: 'Courier New', monos
 }
 
 .mobile-menu-item {
-  padding: 16px 12px;
+  padding: 16px 8px;
   border-bottom: 1px solid #39dc00;
   cursor: pointer;
   color: #39dc00;
@@ -935,6 +952,9 @@ html, body { background: #000; color: #39dc00; font-family: 'Courier New', monos
   align-items: center;
   justify-content: center;
   -webkit-tap-highlight-color: transparent;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  word-break: break-word;
 }
 
 .mobile-menu-item:hover {
