@@ -1022,6 +1022,7 @@ html, body { background: #000; color: #39dc00; font-family: 'Courier New', monos
         <div class="menu-item" data-section="rule">log</div>
         <div class="menu-item" data-section="reference">reference</div>
         <div class="menu-item" data-section="archive">Archive</div>
+        <canvas id="menuGrammarCanvas" style="flex: 1; width: 100%; min-height: 0; display: block; background: #000;"></canvas>
       </div>
 
       <div class="menu-statusbar">
@@ -1519,6 +1520,11 @@ NEXT STEP: Explore the other sections using the menu
           }
         ]
       },
+      grammar: {
+        title: 'Grammar Codes',
+        isGrammarCodes: true,
+        codes: ['MONOLITH','STRATA','DISSOLVE','LITGRID','VANISH','MIRRORSURF','PEEL','SNOWFILL','OXIDE','ADWRAP','ROADCLASH','WALLTXT','OVERGROW','ISOLATE','RUPTURE','GRID','CLUSTER','FLOAT','SKELETON','BLOOM','WRAP','SURFACE','DUALFRAME','HEADOBJ','BACKPOSE','DUALFIG','DIPTYCH','FGBG','COLORISO','SKINREP','BODYTXT','BGPAT','SCALE','ATMOFUSE','GLASSDUAL','AEROFLT','ARCHCAP','BACKLIT','SURFILL','BLURABS','HRZLAY','WNDGLO','SPTISO','VANSRC','FUNREV','FOGDIS','EQREP','ISOOBJ','URBREFL','ARTNAT','LGTPAT','UNIDIST','FUNSAT','MATCOV','DMGPAT','TONEDIS','HETOBJ','DOCAGE','LGTSTR','OBJREP','FACBLK','HANDEXT','FOOTEXT','HRZPAS','DRKSPOT','GROUPREP','BGDOM','DUALSPC','PLNTENV','GENPORT','NONSUBS','DRESSIDENT','LIMBACT','REPDOM','REFLMED','SMOKLYR','OPTFUSE','PARTINTR','OBJCOVR','ARCHOP','GLASMED','ATMOSOLV','SCLFIG','HORZERO']
+      },
       video: {
         title: 'Video Archive',
         text: `VIDEO ARCHIVE - MOVING IMAGE WORKS
@@ -1596,7 +1602,9 @@ REQUIRE LOGIN: No (Public access enabled)
 
         // Direct property assignment for each section
         if (adminContents.project && adminContents.project.slides) {
+          console.log('Updating project slides from admin:', adminContents.project.slides[0]?.title);
           contents.project.slides = adminContents.project.slides;
+          console.log('Project slides updated, current slide 0 title:', contents.project.slides[0]?.title);
         }
         if (adminContents.inclusion && adminContents.inclusion.text) {
           contents.inclusion.text = adminContents.inclusion.text;
@@ -1655,7 +1663,9 @@ REQUIRE LOGIN: No (Public access enabled)
       const publishedPosts = getPublishedPosts(section);
 
       if (content) {
-        if (content.isSlideshow) {
+        if (content.isGrammarCodes) {
+          loadGrammarCodes(content);
+        } else if (content.isSlideshow) {
           // Slideshow format
           loadSlideshow(content);
         } else if (content.isArchivePhotos) {
@@ -2083,6 +2093,114 @@ REQUIRE LOGIN: No (Public access enabled)
           }
         });
       });
+    }
+
+    // Grammar Codes floating animation
+    let grammarAnimId = null;
+    function loadGrammarCodes(content) {
+      const terminalContent = document.getElementById('terminalContent');
+      if (grammarAnimId) { cancelAnimationFrame(grammarAnimId); grammarAnimId = null; }
+
+      terminalContent.innerHTML = `<canvas id="grammarCanvas" style="display:block;width:100%;height:100%;background:#000;"></canvas>`;
+
+      const canvas = document.getElementById('grammarCanvas');
+      const ctx = canvas.getContext('2d');
+      const codes = content.codes;
+
+      function resize() {
+        canvas.width = terminalContent.clientWidth;
+        canvas.height = terminalContent.clientHeight;
+      }
+      resize();
+
+      // 파티클 생성
+      const particles = [];
+      codes.forEach(code => {
+        // 각 코드를 2~3개씩 흩뿌림
+        const count = Math.floor(Math.random() * 2) + 1;
+        for (let i = 0; i < count; i++) {
+          particles.push({
+            text: code,
+            x: Math.random() * canvas.width,
+            y: Math.random() * canvas.height,
+            vx: (Math.random() - 0.5) * 0.4,
+            vy: (Math.random() - 0.5) * 0.3,
+            opacity: Math.random() * 0.7 + 0.1,
+            targetOpacity: Math.random() * 0.8 + 0.1,
+            size: Math.floor(Math.random() * 7) + 7,
+            bright: Math.random() > 0.85
+          });
+        }
+      });
+
+      function draw() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.fillStyle = '#000';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        particles.forEach(p => {
+          // 이동
+          p.x += p.vx;
+          p.y += p.vy;
+          if (p.x < -80) p.x = canvas.width + 40;
+          if (p.x > canvas.width + 80) p.x = -40;
+          if (p.y < -20) p.y = canvas.height + 10;
+          if (p.y > canvas.height + 20) p.y = -10;
+
+          // opacity 서서히 변화
+          const diff = p.targetOpacity - p.opacity;
+          if (Math.abs(diff) < 0.005) {
+            p.targetOpacity = Math.random() * 0.75 + 0.05;
+          }
+          p.opacity += diff * 0.008;
+
+          // 그리기
+          ctx.globalAlpha = p.opacity;
+          ctx.font = `${p.size}px 'Courier New', monospace`;
+          ctx.fillStyle = p.bright ? '#ffffff' : '#39dc00';
+          ctx.letterSpacing = '1px';
+          ctx.fillText(p.text, p.x, p.y);
+        });
+
+        ctx.globalAlpha = 1;
+        grammarAnimId = requestAnimationFrame(draw);
+      }
+      draw();
+
+      // 모바일 버전도 동일하게
+      const mobileCanvas = document.getElementById('mobileGrammarCanvas');
+      if (mobileCanvas) startGrammarMobile(mobileCanvas, codes);
+    }
+
+    function startGrammarMobile(canvas, codes) {
+      const ctx = canvas.getContext('2d');
+      canvas.width = canvas.clientWidth;
+      canvas.height = canvas.clientHeight;
+      const particles = codes.map(code => ({
+        text: code, x: Math.random()*canvas.width, y: Math.random()*canvas.height,
+        vx: (Math.random()-0.5)*0.4, vy: (Math.random()-0.5)*0.3,
+        opacity: Math.random()*0.7+0.1, targetOpacity: Math.random()*0.8+0.1,
+        size: Math.floor(Math.random()*5)+6, bright: Math.random()>0.85
+      }));
+      function draw() {
+        ctx.clearRect(0,0,canvas.width,canvas.height);
+        ctx.fillStyle='#000'; ctx.fillRect(0,0,canvas.width,canvas.height);
+        particles.forEach(p => {
+          p.x+=p.vx; p.y+=p.vy;
+          if(p.x<-60) p.x=canvas.width+20; if(p.x>canvas.width+60) p.x=-20;
+          if(p.y<-20) p.y=canvas.height+10; if(p.y>canvas.height+20) p.y=-10;
+          const diff=p.targetOpacity-p.opacity;
+          if(Math.abs(diff)<0.005) p.targetOpacity=Math.random()*0.75+0.05;
+          p.opacity+=diff*0.008;
+          ctx.globalAlpha=p.opacity;
+          ctx.font=`${p.size}px 'Courier New',monospace`;
+          ctx.fillStyle=p.bright?'#ffffff':'#39dc00';
+          ctx.fillText(p.text,p.x,p.y);
+        });
+        ctx.globalAlpha=1;
+        requestAnimationFrame(draw);
+      }
+      draw();
     }
 
     // Load slideshow - full screen format
@@ -2574,7 +2692,20 @@ REQUIRE LOGIN: No (Public access enabled)
           return;
         }
 
-      if (content.isArchivePhotos) {
+      if (content.isGrammarCodes) {
+        mobileContent.style.whiteSpace = 'normal';
+        mobileContent.style.padding = '0';
+        mobileContent.innerHTML = `<canvas id="mobileGrammarCanvas" style="display:block;width:100%;height:100%;min-height:400px;background:#000;"></canvas>`;
+        setTimeout(() => {
+          const canvas = document.getElementById('mobileGrammarCanvas');
+          if (canvas) {
+            canvas.width = canvas.clientWidth || 300;
+            canvas.height = canvas.clientHeight || 400;
+            startGrammarMobile(canvas, content.codes);
+          }
+        }, 50);
+        return;
+      } else if (content.isArchivePhotos) {
         // For archive section, show search interface and big brother image initially
         mobileContent.style.whiteSpace = 'normal';
         mobileContent.innerHTML = `
@@ -2776,23 +2907,125 @@ REQUIRE LOGIN: No (Public access enabled)
             if (data.reference && data.reference.items) contents.reference.items = data.reference.items;
             if (data.video && data.video.text) contents.video.text = data.video.text;
             if (data.archive && data.archive.photos) contents.archive.photos = data.archive.photos;
-
-            // Re-render current section
-            const isMobile = window.innerWidth <= 768;
-            const activeSection = isMobile
-              ? (document.querySelector('.mobile-menu-item.active')?.getAttribute('data-section') || 'project')
-              : (document.querySelector('[data-section].active')?.getAttribute('data-section') || 'project');
-            if (isMobile) loadContentToMobile(activeSection);
-            else loadContent(activeSection);
           }
+
+          // Re-apply localStorage data (admin edits take priority over GitHub)
+          loadAdminContentsFromStorage();
+
+          // Re-render current section
+          const isMobile = window.innerWidth <= 768;
+          const activeSection = isMobile
+            ? (document.querySelector('.mobile-menu-item.active')?.getAttribute('data-section') || 'project')
+            : (document.querySelector('[data-section].active')?.getAttribute('data-section') || 'project');
+          if (isMobile) loadContentToMobile(activeSection);
+          else loadContent(activeSection);
         })
-        .catch(() => {});
+        .catch(() => {
+          // Even if GitHub fetch fails, re-apply localStorage data
+          loadAdminContentsFromStorage();
+        });
+    }
+
+    // Menu panel grammar canvas animation — geometric polygon orbits
+    function startMenuGrammarCanvas() {
+      const canvas = document.getElementById('menuGrammarCanvas');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      const codes = ['MONOLITH','STRATA','DISSOLVE','LITGRID','VANISH','MIRRORSURF','PEEL','SNOWFILL','OXIDE','ADWRAP','ROADCLASH','WALLTXT','OVERGROW','ISOLATE','RUPTURE','GRID','CLUSTER','FLOAT','SKELETON','BLOOM','WRAP','SURFACE','DUALFRAME','HEADOBJ','BACKPOSE','DUALFIG','DIPTYCH','FGBG','COLORISO','SKINREP','BODYTXT','BGPAT','SCALE','ATMOFUSE','GLASSDUAL','AEROFLT','ARCHCAP','BACKLIT','SURFILL','BLURABS','HRZLAY','WNDGLO','SPTISO','VANSRC','FUNREV','FOGDIS','EQREP','ISOOBJ','URBREFL','ARTNAT','LGTPAT','UNIDIST','FUNSAT','MATCOV','DMGPAT','TONEDIS','HETOBJ','DOCAGE','LGTSTR','OBJREP','FACBLK','HANDEXT','FOOTEXT','HRZPAS','DRKSPOT','GROUPREP','BGDOM','DUALSPC','PLNTENV','GENPORT','NONSUBS','DRESSIDENT','LIMBACT','REPDOM','REFLMED','SMOKLYR','OPTFUSE','PARTINTR','OBJCOVR','ARCHOP','GLASMED','ATMOSOLV','SCLFIG','HORZERO'];
+
+      function setSize() {
+        canvas.width = canvas.clientWidth;
+        canvas.height = canvas.clientHeight;
+      }
+      setSize();
+      window.addEventListener('resize', setSize);
+
+      const COLS = 4;
+      const CELL_H = 18;
+
+      let cells = [];
+      function initCells() {
+        const rows = Math.ceil(canvas.height / CELL_H) + 1;
+        cells = [];
+        for (let r = 0; r < rows; r++) {
+          for (let c = 0; c < COLS; c++) {
+            const ba = Math.random() * 0.2 + 0.75;
+            cells.push({
+              code: codes[Math.floor(Math.random() * codes.length)],
+              nextCode: null,
+              alpha: ba,
+              state: 'idle',
+              timer: Math.floor(Math.random() * 100),
+              interval: Math.floor(Math.random() * 40) + 20,
+              baseAlpha: ba
+            });
+          }
+        }
+      }
+      initCells();
+
+      const FADE_SPEED = 0.12;
+
+      function draw() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.fillStyle = '#000';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        const colW = canvas.width / COLS;
+
+        cells.forEach((cell, i) => {
+          const r = Math.floor(i / COLS);
+          const c = i % COLS;
+          const x = c * colW + 4;
+          const y = r * CELL_H + CELL_H - 4;
+
+          if (cell.state === 'idle') {
+            cell.timer++;
+            if (cell.timer >= cell.interval) {
+              cell.timer = 0;
+              cell.interval = Math.floor(Math.random() * 40) + 20;
+              cell.nextCode = codes[Math.floor(Math.random() * codes.length)];
+              cell.state = 'fadeout';
+            }
+          } else if (cell.state === 'fadeout') {
+            cell.alpha -= FADE_SPEED;
+            if (cell.alpha <= 0) {
+              cell.alpha = 0;
+              cell.code = cell.nextCode;
+              cell.baseAlpha = Math.random() * 0.2 + 0.75;
+              cell.state = 'fadein';
+            }
+          } else if (cell.state === 'fadein') {
+            cell.alpha += FADE_SPEED * 0.7;
+            if (cell.alpha >= cell.baseAlpha) {
+              cell.alpha = cell.baseAlpha;
+              cell.state = 'idle';
+            }
+          }
+
+          if (cell.alpha <= 0) return;
+
+          ctx.globalAlpha = cell.alpha;
+          ctx.font = `9px 'Courier New', monospace`;
+          ctx.shadowBlur = 0;
+          ctx.fillStyle = '#39dc00';
+          ctx.fillText(cell.code, x, y);
+        });
+
+        ctx.globalAlpha = 1;
+        requestAnimationFrame(draw);
+      }
+
+      draw();
     }
 
     // Initialize on page load
     document.addEventListener('DOMContentLoaded', function() {
       // Load admin-edited contents from localStorage
       loadAdminContentsFromStorage();
+
+      // Start menu grammar canvas animation
+      setTimeout(startMenuGrammarCanvas, 100);
 
       // Setup all layouts first
       setupMenuItems();
