@@ -1079,7 +1079,7 @@ html, body { background: #000; color: #39dc00; font-family: 'Courier New', monos
   @keyframes blink { 50% { opacity: 0; } }
   .sys-alert-body { color: #ff9900; line-height: 1.6; }
   </style>
-  <script src="./marked.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
   <script>
     if (typeof marked !== 'undefined') {
       marked.setOptions({
@@ -1088,6 +1088,8 @@ html, body { background: #000; color: #39dc00; font-family: 'Courier New', monos
         pedantic: false,
         async: false
       });
+    } else {
+      console.error('marked.js failed to load');
     }
   </script>
 </head>
@@ -1288,8 +1290,7 @@ html, body { background: #000; color: #39dc00; font-family: 'Courier New', monos
       loadAdminContentsFromStorage();
     }, 3000);
 
-    // Detect layout on initial load - do it immediately AND after load event
-    detectAndSwitchLayout();
+    // Detect layout on initial load - wait for contents to be defined
     window.addEventListener('load', detectAndSwitchLayout);
 
     // Re-detect on window resize
@@ -1720,6 +1721,22 @@ REQUIRE LOGIN: No (Public access enabled)
       }
     }
 
+    // 마크다운을 HTML로 변환하는 함수
+    function convertMarkdownToHTML(text) {
+      if (!text) return text;
+      // 이미 HTML인지 확인 (< 문자가 있으면 HTML)
+      if (text.includes('<')) return text;
+      // marked.js가 있으면 변환, 없으면 그대로
+      if (typeof marked !== 'undefined') {
+        try {
+          return marked.parse(text);
+        } catch (e) {
+          return text;
+        }
+      }
+      return text;
+    }
+
     // Load admin-edited contents from localStorage
     function loadAdminContentsFromStorage() {
       try {
@@ -1740,10 +1757,20 @@ REQUIRE LOGIN: No (Public access enabled)
           contents.intro.text = adminContents.intro.text;
         }
         if (adminContents.rule) {
-          contents.rule.items = Array.isArray(adminContents.rule) ? adminContents.rule : (adminContents.rule.items || []);
+          const ruleItems = Array.isArray(adminContents.rule) ? adminContents.rule : (adminContents.rule.items || []);
+          // 마크다운을 HTML로 변환
+          ruleItems.forEach(item => {
+            if (item.preview) item.preview = convertMarkdownToHTML(item.preview);
+          });
+          contents.rule.items = ruleItems;
         }
         if (adminContents.reference) {
-          contents.reference.items = Array.isArray(adminContents.reference) ? adminContents.reference : (adminContents.reference.items || []);
+          const refItems = Array.isArray(adminContents.reference) ? adminContents.reference : (adminContents.reference.items || []);
+          // 마크다운을 HTML로 변환
+          refItems.forEach(item => {
+            if (item.preview) item.preview = convertMarkdownToHTML(item.preview);
+          });
+          contents.reference.items = refItems;
         }
         if (adminContents.video && adminContents.video.text) {
           contents.video.text = adminContents.video.text;
@@ -2100,7 +2127,12 @@ REQUIRE LOGIN: No (Public access enabled)
     function showListItemDetail(item) {
       const tc = document.getElementById('terminalContent');
       const preview = item.preview || '';
-      let mdHTML = (typeof marked !== 'undefined') ? marked.parse(preview) : `<pre>${preview}</pre>`;
+      // preview가 이미 HTML인지 체크 (< 문자 포함)
+      let mdHTML = preview;
+      if (!preview.includes('<')) {
+        // HTML이 아니면 마크다운으로 취급 (하지만 marked 없으면 그냥 <pre>로)
+        mdHTML = (typeof marked !== 'undefined') ? marked.parse(preview) : `<pre>${preview}</pre>`;
+      }
       // 테이블 스타일 강제 적용
       mdHTML = mdHTML.replace(/<table>/g, '<table style="display:table !important; width:100% !important; border-collapse:collapse !important;">');
       mdHTML = mdHTML.replace(/<tr>/g, '<tr style="display:table-row !important; min-height:30px !important;">');
