@@ -433,8 +433,8 @@ html, body { background: #000; color: #39dc00; font-family: 'Courier New', monos
   font-size: 9px;
   cursor: pointer;
   box-shadow: 0 0 15px rgba(57, 220, 0, 0.2);
-  width: 240px;
-  height: 160px;
+  width: 150px;
+  height: 100px;
   overflow: hidden;
   opacity: 1;
   display: flex;
@@ -1046,6 +1046,7 @@ html, body { background: #000; color: #39dc00; font-family: 'Courier New', monos
   .md-content th { background: #39dc00; color: #000; font-weight: bold; }
   </style>
   <script src="./marked.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lz-string/1.4.4/lz-string.min.js"></script>
 </head>
 <body>
   <!-- SVG Pixelation Filter -->
@@ -1379,13 +1380,6 @@ VISUAL LANGUAGE:
         title: 'Photo Archive',
         isArchivePhotos: true,
         photos: [
-          {
-            id: 'BIG_BROTHER_000',
-            title: 'BIG BROTHER',
-            filename: 'https://raw.githubusercontent.com/note-a/note-a.github.io/refs/heads/main/big-brother.jpg',
-            keywords: ['big brother', 'observation', 'control', 'surveillance'],
-            description: 'Main archive entry. Observational documentation system.'
-          },
           {
             id: 'CRASH_001',
             title: 'CRASH',
@@ -1725,10 +1719,24 @@ REQUIRE LOGIN: No (Public access enabled)
       }
     };
 
+    // localStorage에서 archiveData 파싱 (LZString 압축 지원)
+    function getArchiveData() {
+      try {
+        let raw = localStorage.getItem('archiveData') || '{}';
+        if (typeof LZString !== 'undefined') {
+          const decompressed = LZString.decompress(raw);
+          if (decompressed) raw = decompressed;
+        }
+        return JSON.parse(raw);
+      } catch (e) {
+        return {};
+      }
+    }
+
     // Get published posts from archive-admin
     function getPublishedPosts(section) {
       try {
-        const archiveData = JSON.parse(localStorage.getItem('archiveData') || '{}');
+        const archiveData = getArchiveData();
         // admin은 completed를 flat array로 저장 — 양쪽 형식 모두 처리
         const completedItems = Array.isArray(archiveData.completed)
           ? archiveData.completed
@@ -1775,8 +1783,7 @@ REQUIRE LOGIN: No (Public access enabled)
         // archiveData.reference 직접 저장 항목 (구버전 호환) — reference에만 병합
         // published posts(publishedSection 기반)는 renderSection의 getPublishedPosts()가 처리하므로
         // 여기서는 구버전 직접저장 항목만 병합해 중복을 방지한다
-        const archiveDataStr = localStorage.getItem('archiveData');
-        const archiveData = JSON.parse(archiveDataStr || '{}');
+        const archiveData = getArchiveData();
 
         const directRefItems = Array.isArray(archiveData.reference)
           ? archiveData.reference
@@ -1922,7 +1929,7 @@ REQUIRE LOGIN: No (Public access enabled)
               </div>
               <div class="board-container">
                 ${allBoardItems.map((item, idx) => `
-                  <div class="board-item" data-index="${idx}" style="display: flex; flex-direction: column; background: #000; border: 1px solid #39dc00; position: absolute; width: 240px;">
+                  <div class="board-item" data-index="${idx}" style="display: flex; flex-direction: column; background: #000; border: 1px solid #39dc00; position: absolute;">
                     <div style="background: linear-gradient(180deg, #50ff00 0%, #39dc00 100%); color: #000; padding: 3px 12px; font-weight: bold; font-size: 11px; border-bottom: 1px solid #39dc00; display: flex; justify-content: flex-end; align-items: center;">
                       <span style="cursor: pointer; font-size: 12px; flex-shrink: 0;">×</span>
                     </div>
@@ -2007,10 +2014,10 @@ REQUIRE LOGIN: No (Public access enabled)
       if (!container) return;
 
       const containerWidth = container.offsetWidth;
-      const itemWidth = 180;
-      const itemHeight = 120;
-      const padding = 12; // Space between items
-      const columns = 4;
+      const itemWidth = 150;
+      const itemHeight = 100;
+      const padding = 10; // Space between items
+      const columns = 5;
 
       // Calculate grid dimensions
       const gridX = 20; // Left margin
@@ -2564,15 +2571,11 @@ REQUIRE LOGIN: No (Public access enabled)
 
       if (!searchInput || !searchBtn) return;
 
-      // Display initial photos with pixelation effect - Big Brother image only
+      // Display initial photos with placeholder
       function displayInitialPhotos() {
         gallery.innerHTML = `
           <div style="display: flex; flex-direction: column; align-items: center; gap: 20px; padding: 20px; height: 100%; justify-content: center;">
-            <div style="width: 100%; height: 100%; max-width: 450px; max-height: 400px;">
-              <img src="https://raw.githubusercontent.com/note-a/note-a.github.io/main/big-brother.jpg" alt="BIG BROTHER"
-                style="width: 100%; height: 100%; object-fit: cover; display: block;">
-            </div>
-            <div style="text-align: center; color: #39dc00; font-size: 15px; margin-top: 10px; font-family: 'Courier New', monospace; font-weight: bold;">
+            <div style="text-align: center; color: #39dc00; font-size: 15px; font-family: 'Courier New', monospace; font-weight: bold;">
               Enter your instructions
             </div>
           </div>
@@ -2824,9 +2827,6 @@ REQUIRE LOGIN: No (Public access enabled)
         mobileContent.innerHTML = `
           <div style="display: flex; flex-direction: column; height: 100%; gap: 0;">
             <div style="display: flex; flex-direction: column; align-items: center; gap: 12px; padding: 12px; flex-shrink: 0;">
-              <div style="width: 100%; height: 180px; background: #000; display: flex; align-items: center; justify-content: center; border: 1px solid #39dc00; overflow: hidden;">
-                <img src="https://raw.githubusercontent.com/note-a/note-a.github.io/refs/heads/main/big-brother.jpg" style="max-width: 100%; max-height: 100%; object-fit: cover;" alt="BIG BROTHER">
-              </div>
               <div style="text-align: center; color: #39dc00; font-size: 11px; font-family: monospace;">Enter your instructions</div>
               <input type="text" id="mobileArchiveSearch" placeholder="search: crash, floating, shadow"
                 style="width: 100%; background: #000; border: 1px solid #39dc00; color: #39dc00; padding: 6px; font-size: 10px; font-family: monospace; box-sizing: border-box;">
