@@ -1845,8 +1845,8 @@ REQUIRE LOGIN: No (Public access enabled)
             `;
             terminalContent.innerHTML = listHTML;
 
-            // Setup list item click handlers
-            setupListItemClickHandlers();
+            // Setup list item click handlers — allItems 전달해서 정확한 index 참조
+            setupListItemClickHandlers(allItems);
           } else {
             // Board format
             // Combine default items with published posts
@@ -2082,17 +2082,18 @@ REQUIRE LOGIN: No (Public access enabled)
       modal.classList.add('active');
     }
 
-    function setupListItemClickHandlers() {
+    function setupListItemClickHandlers(itemsArray) {
       const listItems = document.querySelectorAll('.list-item');
 
       listItems.forEach((item, idx) => {
         item.addEventListener('click', () => {
-          let currentSection = null;
-          const menuItems = document.querySelectorAll('.menu-item.active');
-          if (menuItems.length > 0) currentSection = menuItems[0].getAttribute('data-section');
-          if (currentSection && contents[currentSection] && contents[currentSection].items) {
-            openItemPreviewPopup(contents[currentSection].items[idx]);
-          }
+          // itemsArray가 전달된 경우 그것 사용, 아닐 경우 현재 섹션의 contents에서 fallback
+          const targetItems = itemsArray || (() => {
+            const activeMenu = document.querySelector('.menu-item.active');
+            const sec = activeMenu ? activeMenu.getAttribute('data-section') : null;
+            return sec && contents[sec] ? contents[sec].items : [];
+          })();
+          if (targetItems[idx]) openItemPreviewPopup(targetItems[idx]);
         });
 
         // Hover effect
