@@ -2994,7 +2994,7 @@ REQUIRE LOGIN: No (Public access enabled)
         if (ts - lastTime < FPS_INTERVAL) return;
         lastTime = ts;
         ctx.clearRect(0, 0, canvas.width, canvas.height);
-        ctx.font = '14px "Courier New", monospace';
+        ctx.font = '15px "Courier New", monospace';
         cells.forEach(cell => {
           if (cell.state === 'idle') {
             if (++cell.timer >= cell.interval) { cell.timer = 0; cell.interval = Math.floor(Math.random() * 30) + 15; cell.nextCode = codes[Math.floor(Math.random() * codes.length)]; cell.state = 'fadeout'; }
@@ -3005,7 +3005,7 @@ REQUIRE LOGIN: No (Public access enabled)
             cell.alpha += FADE_SPEED * 0.6;
             if (cell.alpha >= cell.baseAlpha) { cell.alpha = cell.baseAlpha; cell.state = 'idle'; }
           }
-          ctx.fillStyle = `rgba(57,220,0,${cell.alpha})`;
+          ctx.fillStyle = `rgba(48,185,0,${cell.alpha})`;
           ctx.fillText(cell.code, cell.x, cell.y);
         });
       }
