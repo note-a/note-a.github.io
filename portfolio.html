@@ -1288,7 +1288,8 @@ html, body { background: #000; color: #39dc00; font-family: 'Courier New', monos
       loadAdminContentsFromStorage();
     }, 3000);
 
-    // Detect layout on initial load
+    // Detect layout on initial load - do it immediately AND after load event
+    detectAndSwitchLayout();
     window.addEventListener('load', detectAndSwitchLayout);
 
     // Re-detect on window resize
@@ -1738,11 +1739,11 @@ REQUIRE LOGIN: No (Public access enabled)
         if (adminContents.intro && adminContents.intro.text) {
           contents.intro.text = adminContents.intro.text;
         }
-        if (adminContents.rule && adminContents.rule.items) {
-          contents.rule.items = adminContents.rule.items;
+        if (adminContents.rule) {
+          contents.rule.items = Array.isArray(adminContents.rule) ? adminContents.rule : (adminContents.rule.items || []);
         }
-        if (adminContents.reference && adminContents.reference.items) {
-          contents.reference.items = adminContents.reference.items;
+        if (adminContents.reference) {
+          contents.reference.items = Array.isArray(adminContents.reference) ? adminContents.reference : (adminContents.reference.items || []);
         }
         if (adminContents.video && adminContents.video.text) {
           contents.video.text = adminContents.video.text;
