@@ -1861,16 +1861,16 @@ REQUIRE LOGIN: No (Public access enabled)
       let draggedItem = null;
       let offsetX = 0;
       let offsetY = 0;
+      let hasMoved = false;
 
       boardItems.forEach(item => {
         item.style.cursor = 'grab';
 
         item.addEventListener('mousedown', (e) => {
           draggedItem = item;
+          hasMoved = false;
           draggedItem.style.cursor = 'grabbing';
           draggedItem.style.zIndex = '1000';
-
-          // Remove transition for smooth dragging
           draggedItem.style.transition = 'none';
 
           const rect = item.getBoundingClientRect();
@@ -1886,6 +1886,7 @@ REQUIRE LOGIN: No (Public access enabled)
 
       document.addEventListener('mousemove', (e) => {
         if (!draggedItem) return;
+        hasMoved = true;
 
         const container = document.querySelector('.board-container');
         const containerRect = container.getBoundingClientRect();
@@ -1893,11 +1894,9 @@ REQUIRE LOGIN: No (Public access enabled)
         let newX = e.clientX - containerRect.left - offsetX;
         let newY = e.clientY - containerRect.top - offsetY;
 
-        // Constrain within container
         newX = Math.max(0, Math.min(newX, containerRect.width - draggedItem.offsetWidth));
         newY = Math.max(0, Math.min(newY, containerRect.height - draggedItem.offsetHeight));
 
-        // Use requestAnimationFrame for smooth animation
         requestAnimationFrame(() => {
           draggedItem.style.left = newX + 'px';
           draggedItem.style.top = newY + 'px';
@@ -1906,11 +1905,15 @@ REQUIRE LOGIN: No (Public access enabled)
 
       document.addEventListener('mouseup', () => {
         if (draggedItem) {
+          // 실제로 드래그된 경우에만 플래그 설정
+          if (hasMoved) {
+            draggedItem._wasDragged = true;
+          }
           draggedItem.style.cursor = 'grab';
           draggedItem.style.zIndex = 'auto';
-          // Restore transition for smooth deceleration
           draggedItem.style.transition = 'all 0.3s ease 0ms';
           draggedItem = null;
+          hasMoved = false;
         }
       });
     }
@@ -2014,47 +2017,71 @@ REQUIRE LOGIN: No (Public access enabled)
     function setupBoardItemClickHandlers() {
       const boardItems = document.querySelectorAll('.board-item');
 
-      boardItems.forEach((item, idx) => {
-        const readMoreBtn = item.querySelector('.board-item-action');
-        const closeBtn = item.querySelectorAll('.board-item-action')[1];
+      boardItems.forEach((item) => {
+        const idx = parseInt(item.getAttribute('data-index'));
 
-        if (readMoreBtn) {
-          readMoreBtn.addEventListener('click', (e) => {
+        // × 버튼 클릭 시 아무것도 안 함 (드래그와 구분)
+        const closeSpan = item.querySelector('span');
+        if (closeSpan) {
+          closeSpan.addEventListener('click', (e) => {
             e.stopPropagation();
-            const title = item.querySelector('.board-item-title').textContent;
-            const author = item.querySelector('.board-item-from').textContent;
-            const meta = item.querySelectorAll('.board-item-meta-row');
-            const preview = item.querySelector('.board-item-preview').textContent;
-
-            const detailText = `${title}
-
-${author}
-${meta[0]?.textContent || ''}
-${meta[1]?.textContent || ''}
-
-========================================
-
-${preview}
-
-========================================`;
-
-            const contentText = document.getElementById('contentText');
-            contentText.textContent = detailText;
-
-            // Scroll to top
-            const terminalContent = document.querySelector('.terminal-content');
-            if (terminalContent) {
-              terminalContent.scrollTop = 0;
-            }
           });
         }
 
-        if (closeBtn) {
-          closeBtn.addEventListener('click', (e) => {
-            e.stopPropagation();
-            // Just prevent default, the board stays visible
-          });
-        }
+        // 카드 클릭 시 상세 보기 열기
+        item.addEventListener('click', (e) => {
+          // 드래그 중이면 클릭 무시
+          if (item._wasDragged) {
+            item._wasDragged = false;
+            return;
+          }
+
+          // 현재 섹션의 아이템 찾기
+          const activeMenu = document.querySelector('[data-section].active');
+          const currentSection = activeMenu ? activeMenu.getAttribute('data-section') : 'reference';
+          const publishedPosts = getPublishedPosts(currentSection);
+          const baseItems = (contents[currentSection] && contents[currentSection].items) ? contents[currentSection].items : [];
+          const allBoardItems = [...baseItems, ...publishedPosts];
+          const selectedItem = allBoardItems[idx];
+
+          if (!selectedItem) return;
+
+          const terminalContent = document.querySelector('.terminal-content');
+          if (!terminalContent) return;
+
+          const detailHTML = `
+            <div class="detail-view">
+              <div class="detail-header">
+                <span>${currentSection.toUpperCase()}</span>
+                <span style="color: #39dc00; cursor: pointer;" id="backToBoard">[BACK]</span>
+              </div>
+              <div class="detail-content">
+                <div class="detail-info-table">
+                  <div class="detail-info-row">
+                    <div class="detail-info-label">TITLE</div>
+                    <div class="detail-info-value">${selectedItem.title}</div>
+                  </div>
+                  <div class="detail-info-row">
+                    <div class="detail-info-label">CATEGORY</div>
+                    <div class="detail-info-value">${selectedItem.category || '-'}</div>
+                  </div>
+                </div>
+                <div class="detail-divider"></div>
+                <div class="detail-preview">${selectedItem.preview || ''}</div>
+              </div>
+            </div>
+          `;
+
+          terminalContent.innerHTML = detailHTML;
+          terminalContent.scrollTop = 0;
+
+          const backBtn = document.getElementById('backToBoard');
+          if (backBtn) {
+            backBtn.addEventListener('click', () => {
+              loadContent(currentSection);
+            });
+          }
+        });
       });
     }
 
