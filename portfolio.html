@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>SET IS THE WORLD - PORTFOLIO</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
   <style>
 * { margin: 0; padding: 0; box-sizing: border-box; }
 html, body { background: #000; color: #39dc00; font-family: 'Courier New', monospace; height: 100%; overflow: hidden; }
@@ -19,6 +20,16 @@ html, body { background: #000; color: #39dc00; font-family: 'Courier New', monos
 
 @keyframes marquee { 0% { text-indent: 100vw; } 100% { text-indent: -150vw; } }
 
+#wireframeCanvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+}
+
 .portfolio-container {
   display: flex;
   justify-content: center;
@@ -28,6 +39,8 @@ html, body { background: #000; color: #39dc00; font-family: 'Courier New', monos
   margin-top: 32px;
   padding: 20px;
   gap: 0;
+  position: relative;
+  z-index: 10;
 }
 
 .portfolio-window {
@@ -996,6 +1009,8 @@ html, body { background: #000; color: #39dc00; font-family: 'Courier New', monos
     </defs>
   </svg>
 
+  <canvas id="wireframeCanvas"></canvas>
+
   <div class="top-banner">&gt;&gt;&gt; FATAL_BREACH_DETECTED : SYSTEM KERNEL COMPROMISED. DO NOT DISCONNECT. TRACING... &lt;&lt;&lt;</div>
 
   <!-- DESKTOP LAYOUT -->
@@ -1134,6 +1149,45 @@ html, body { background: #000; color: #39dc00; font-family: 'Courier New', monos
   </div>
 
   <script>
+    // ===== ROTATING WIREFRAME SPHERE BACKGROUND =====
+    (function() {
+      const canvas = document.getElementById('wireframeCanvas');
+      const scene = new THREE.Scene();
+      const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+      const renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true, alpha: true });
+
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      renderer.setClearColor(0x000000, 0.05);
+
+      camera.position.z = 300;
+
+      // 와이어프레임 구 생성
+      const geometry = new THREE.IcosahedronGeometry(150, 5);
+      const material = new THREE.LineBasicMaterial({ color: 0x39dc00, linewidth: 2 });
+      const wireframe = new THREE.LineSegments(
+        new THREE.WireframeGeometry(geometry),
+        material
+      );
+      scene.add(wireframe);
+
+      // 애니메이션
+      function animate() {
+        requestAnimationFrame(animate);
+        wireframe.rotation.x += 0.005;
+        wireframe.rotation.y += 0.01;
+        renderer.render(scene, camera);
+      }
+
+      // 윈도우 리사이즈
+      window.addEventListener('resize', () => {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+      });
+
+      animate();
+    })();
+
     // ===== VIEWPORT DETECTION AND LAYOUT SWITCHING =====
     function detectAndSwitchLayout() {
       const isMobile = window.innerWidth <= 768;
