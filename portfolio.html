@@ -4,7 +4,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>SET IS THE WORLD - PORTFOLIO</title>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
   <style>
 * { margin: 0; padding: 0; box-sizing: border-box; }
 html, body { background: #000; color: #39dc00; font-family: 'Courier New', monospace; height: 100%; overflow: hidden; }
@@ -19,16 +18,6 @@ html, body { background: #000; color: #39dc00; font-family: 'Courier New', monos
 }
 
 @keyframes marquee { 0% { text-indent: 100vw; } 100% { text-indent: -150vw; } }
-
-#wireframeCanvas {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 0;
-  pointer-events: none;
-}
 
 .portfolio-container {
   display: flex;
@@ -59,7 +48,7 @@ html, body { background: #000; color: #39dc00; font-family: 'Courier New', monos
   display: flex;
   flex-direction: column;
   border: 2px solid #39dc00;
-  background: #000;
+  background: rgba(0, 0, 0, 0.75);
   box-shadow: 0 0 20px rgba(57, 220, 0, 0.3);
 }
 
@@ -127,7 +116,7 @@ html, body { background: #000; color: #39dc00; font-family: 'Courier New', monos
 .menu-statusbar {
   padding: 8px 12px;
   border-top: 1px solid #39dc00;
-  background: #000;
+  background: rgba(0, 0, 0, 0.85);
   color: #39dc00;
   font-size: 10px;
   display: flex;
@@ -140,7 +129,7 @@ html, body { background: #000; color: #39dc00; font-family: 'Courier New', monos
   display: flex;
   flex-direction: column;
   border: 2px solid #39dc00;
-  background: #000;
+  background: rgba(0, 0, 0, 0.75);
   box-shadow: 0 0 20px rgba(57, 220, 0, 0.3);
 }
 
@@ -177,7 +166,7 @@ html, body { background: #000; color: #39dc00; font-family: 'Courier New', monos
   flex: 1;
   padding: 12px;
   overflow-y: auto;
-  background: #000;
+  background: rgba(0, 0, 0, 0.85);
   color: #39dc00;
   font-size: 12px;
   line-height: 1.6;
@@ -1009,13 +998,14 @@ html, body { background: #000; color: #39dc00; font-family: 'Courier New', monos
     </defs>
   </svg>
 
-  <canvas id="wireframeCanvas"></canvas>
-
   <div class="top-banner">&gt;&gt;&gt; FATAL_BREACH_DETECTED : SYSTEM KERNEL COMPROMISED. DO NOT DISCONNECT. TRACING... &lt;&lt;&lt;</div>
 
   <!-- DESKTOP LAYOUT -->
   <div id="desktop-layout">
     <button class="hamburger-btn" id="hamburgerBtn">☰</button>
+
+    <!-- Background blinking code names -->
+    <div id="backgroundCodeNames" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 5; pointer-events: none; overflow: hidden; font-family: 'Courier New', monospace; color: #2d8f00; font-size: 14px; letter-spacing: -1px; padding: 4px;"></div>
 
     <div class="portfolio-container">
       <div class="portfolio-window">
@@ -1037,7 +1027,7 @@ html, body { background: #000; color: #39dc00; font-family: 'Courier New', monos
         <div class="menu-item" data-section="rule">log</div>
         <div class="menu-item" data-section="reference">reference</div>
         <div class="menu-item" data-section="archive">Archive</div>
-        <canvas id="menuGrammarCanvas" style="flex: 1; width: 100%; min-height: 0; display: block; background: #000;"></canvas>
+        <div style="position: relative; flex: 1; width: 100%; min-height: 0;"></div>
       </div>
 
       <div class="menu-statusbar">
@@ -1149,45 +1139,6 @@ html, body { background: #000; color: #39dc00; font-family: 'Courier New', monos
   </div>
 
   <script>
-    // ===== ROTATING WIREFRAME SPHERE BACKGROUND =====
-    (function() {
-      const canvas = document.getElementById('wireframeCanvas');
-      const scene = new THREE.Scene();
-      const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-      const renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true, alpha: true });
-
-      renderer.setSize(window.innerWidth, window.innerHeight);
-      renderer.setClearColor(0x000000, 0.05);
-
-      camera.position.z = 300;
-
-      // 와이어프레임 구 생성
-      const geometry = new THREE.IcosahedronGeometry(150, 5);
-      const material = new THREE.LineBasicMaterial({ color: 0x39dc00, linewidth: 2 });
-      const wireframe = new THREE.LineSegments(
-        new THREE.WireframeGeometry(geometry),
-        material
-      );
-      scene.add(wireframe);
-
-      // 애니메이션
-      function animate() {
-        requestAnimationFrame(animate);
-        wireframe.rotation.x += 0.005;
-        wireframe.rotation.y += 0.01;
-        renderer.render(scene, camera);
-      }
-
-      // 윈도우 리사이즈
-      window.addEventListener('resize', () => {
-        camera.aspect = window.innerWidth / window.innerHeight;
-        camera.updateProjectionMatrix();
-        renderer.setSize(window.innerWidth, window.innerHeight);
-      });
-
-      animate();
-    })();
-
     // ===== VIEWPORT DETECTION AND LAYOUT SWITCHING =====
     function detectAndSwitchLayout() {
       const isMobile = window.innerWidth <= 768;
@@ -1725,11 +1676,14 @@ REQUIRE LOGIN: No (Public access enabled)
         } else if (content.isArchivePhotos) {
           // Archive Photos format with search
           const archiveHTML = `
-            <div style="display: flex; flex-direction: column; height: 100%; padding: 0; margin: -12px;">
+            <div style="display: flex; flex-direction: column; height: 100%; padding: 0; margin: -12px; position: relative;">
               <div class="photo-gallery" id="photoGallery" style="margin: 12px; flex: 1; overflow-y: auto;"></div>
-              <div class="archive-search-bar" style="margin: 0 12px 12px 12px; flex-shrink: 0;">
-                <input type="text" class="archive-search-input" id="archiveSearchInput" placeholder="Search by keyword: crash, floating, shadow...">
-                <button class="archive-search-btn" id="archiveSearchBtn">SEARCH</button>
+              <div style="position: relative; margin: 0 12px 12px 12px; flex-shrink: 0;">
+                <canvas id="archiveWireframeCanvas" style="position: absolute; bottom: 0; left: 0; width: 100%; height: 120px; z-index: 5; pointer-events: none;"></canvas>
+                <div class="archive-search-bar" style="position: relative; z-index: 10;">
+                  <input type="text" class="archive-search-input" id="archiveSearchInput" placeholder="Search by keyword: crash, floating, shadow...">
+                  <button class="archive-search-btn" id="archiveSearchBtn">SEARCH</button>
+                </div>
               </div>
             </div>
           `;
@@ -1738,6 +1692,38 @@ REQUIRE LOGIN: No (Public access enabled)
           // Don't display photos initially - wait for search
           const gallery = document.getElementById('photoGallery');
           gallery.innerHTML = '<div class="no-results">검색 키워드를 입력하세요: crash, floating, shadow</div>';
+
+          // Initialize rotating wireframe sphere at archive bottom
+          setTimeout(() => {
+            const archiveCanvas = document.getElementById('archiveWireframeCanvas');
+            if (archiveCanvas && typeof THREE !== 'undefined') {
+              const scene = new THREE.Scene();
+              const w = archiveCanvas.clientWidth;
+              const h = archiveCanvas.clientHeight;
+              const camera = new THREE.PerspectiveCamera(75, w / h || 1, 0.1, 1000);
+              const renderer = new THREE.WebGLRenderer({ canvas: archiveCanvas, antialias: true, alpha: true });
+
+              renderer.setSize(w, h);
+              renderer.setClearColor(0x000000, 0.05);
+              camera.position.z = 200;
+
+              const geometry = new THREE.IcosahedronGeometry(80, 3);
+              const material = new THREE.LineBasicMaterial({ color: 0x39dc00, linewidth: 1 });
+              const wireframe = new THREE.LineSegments(
+                new THREE.WireframeGeometry(geometry),
+                material
+              );
+              scene.add(wireframe);
+
+              function animateArchive() {
+                requestAnimationFrame(animateArchive);
+                wireframe.rotation.x += 0.005;
+                wireframe.rotation.y += 0.01;
+                renderer.render(scene, camera);
+              }
+              animateArchive();
+            }
+          }, 100);
 
           // Setup search functionality
           setupPhotoSearch(content.photos);
@@ -2980,64 +2966,52 @@ REQUIRE LOGIN: No (Public access enabled)
         });
     }
 
-    // Menu panel grammar canvas animation — geometric polygon orbits
-    function startMenuGrammarCanvas() {
-      const canvas = document.getElementById('menuGrammarCanvas');
-      if (!canvas) return;
-      const ctx = canvas.getContext('2d');
+    // Initialize background blinking code names
+    function initBackgroundCodeNames() {
+      const container = document.getElementById('backgroundCodeNames');
+      if (!container) return;
+
       const codes = ['MONOLITH','STRATA','DISSOLVE','LITGRID','VANISH','MIRRORSURF','PEEL','SNOWFILL','OXIDE','ADWRAP','ROADCLASH','WALLTXT','OVERGROW','ISOLATE','RUPTURE','GRID','CLUSTER','FLOAT','SKELETON','BLOOM','WRAP','SURFACE','DUALFRAME','HEADOBJ','BACKPOSE','DUALFIG','DIPTYCH','FGBG','COLORISO','SKINREP','BODYTXT','BGPAT','SCALE','ATMOFUSE','GLASSDUAL','AEROFLT','ARCHCAP','BACKLIT','SURFILL','BLURABS','HRZLAY','WNDGLO','SPTISO','VANSRC','FUNREV','FOGDIS','EQREP','ISOOBJ','URBREFL','ARTNAT','LGTPAT','UNIDIST','FUNSAT','MATCOV','DMGPAT','TONEDIS','HETOBJ','DOCAGE','LGTSTR','OBJREP','FACBLK','HANDEXT','FOOTEXT','HRZPAS','DRKSPOT','GROUPREP','BGDOM','DUALSPC','PLNTENV','GENPORT','NONSUBS','DRESSIDENT','LIMBACT','REPDOM','REFLMED','SMOKLYR','OPTFUSE','PARTINTR','OBJCOVR','ARCHOP','GLASMED','ATMOSOLV','SCLFIG','HORZERO'];
 
-      function setSize() {
-        canvas.width = canvas.clientWidth;
-        canvas.height = canvas.clientHeight;
-      }
-      setSize();
-      window.addEventListener('resize', setSize);
-
-      const COLS = 4;
-      const CELL_H = 18;
-
+      const COLS = 40;
+      const CELL_H = 15;
       let cells = [];
+
       function initCells() {
-        const rows = Math.ceil(canvas.height / CELL_H) + 1;
         cells = [];
+        const rows = Math.ceil(window.innerHeight / CELL_H) + 1;
         for (let r = 0; r < rows; r++) {
           for (let c = 0; c < COLS; c++) {
-            const ba = Math.random() * 0.2 + 0.75;
+            const ba = Math.random() * 0.2 + 0.2;
             cells.push({
               code: codes[Math.floor(Math.random() * codes.length)],
               nextCode: null,
               alpha: ba,
               state: 'idle',
-              timer: Math.floor(Math.random() * 100),
-              interval: Math.floor(Math.random() * 40) + 20,
+              timer: Math.floor(Math.random() * 50),
+              interval: Math.floor(Math.random() * 30) + 15,
               baseAlpha: ba
             });
           }
         }
       }
-      initCells();
 
-      const FADE_SPEED = 0.12;
-
-      function draw() {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        ctx.fillStyle = '#000';
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-        const colW = canvas.width / COLS;
+      function renderText() {
+        container.innerHTML = '';
+        const colW = window.innerWidth / COLS;
+        const FADE_SPEED = 0.15;
 
         cells.forEach((cell, i) => {
           const r = Math.floor(i / COLS);
           const c = i % COLS;
-          const x = c * colW + 4;
+          const x = c * colW + 8;
           const y = r * CELL_H + CELL_H - 4;
 
           if (cell.state === 'idle') {
             cell.timer++;
             if (cell.timer >= cell.interval) {
               cell.timer = 0;
-              cell.interval = Math.floor(Math.random() * 40) + 20;
+              cell.interval = Math.floor(Math.random() * 60) + 40;
               cell.nextCode = codes[Math.floor(Math.random() * codes.length)];
               cell.state = 'fadeout';
             }
@@ -3046,31 +3020,44 @@ REQUIRE LOGIN: No (Public access enabled)
             if (cell.alpha <= 0) {
               cell.alpha = 0;
               cell.code = cell.nextCode;
-              cell.baseAlpha = Math.random() * 0.2 + 0.75;
+              cell.baseAlpha = Math.random() * 0.2 + 0.2;
               cell.state = 'fadein';
             }
           } else if (cell.state === 'fadein') {
-            cell.alpha += FADE_SPEED * 0.7;
+            cell.alpha += FADE_SPEED * 0.6;
             if (cell.alpha >= cell.baseAlpha) {
               cell.alpha = cell.baseAlpha;
               cell.state = 'idle';
             }
           }
 
-          if (cell.alpha <= 0) return;
-
-          ctx.globalAlpha = cell.alpha;
-          ctx.font = `9px 'Courier New', monospace`;
-          ctx.shadowBlur = 0;
-          ctx.fillStyle = '#39dc00';
-          ctx.fillText(cell.code, x, y);
+          if (cell.alpha > 0.01) {
+            const span = document.createElement('div');
+            span.textContent = cell.code;
+            span.style.position = 'absolute';
+            span.style.left = x + 'px';
+            span.style.top = y + 'px';
+            span.style.opacity = cell.alpha;
+            span.style.whiteSpace = 'nowrap';
+            span.style.fontSize = '14px';
+            span.style.letterSpacing = '-1px';
+            container.appendChild(span);
+          }
         });
-
-        ctx.globalAlpha = 1;
-        requestAnimationFrame(draw);
       }
 
-      draw();
+      initCells();
+
+      function animate() {
+        requestAnimationFrame(animate);
+        renderText();
+      }
+
+      animate();
+
+      window.addEventListener('resize', () => {
+        initCells();
+      });
     }
 
     // Initialize on page load
@@ -3078,13 +3065,13 @@ REQUIRE LOGIN: No (Public access enabled)
       // Load admin-edited contents from localStorage
       loadAdminContentsFromStorage();
 
-      // Start menu grammar canvas animation
-      setTimeout(startMenuGrammarCanvas, 100);
-
       // Setup all layouts first
       setupMenuItems();
       setupHamburger();
       setupMobileLayout();
+
+      // Initialize background code names animation
+      initBackgroundCodeNames();
 
       // Then detect and apply layout (which loads content)
       detectAndSwitchLayout();
