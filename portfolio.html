@@ -569,9 +569,41 @@ html, body { background: #000; color: #39dc00; font-family: 'Courier New', monos
   padding: 12px;
   overflow-y: auto;
   flex: 1;
-  font-size: 10px;
+  font-size: 11px;
   line-height: 1.6;
   font-family: 'Courier New', monospace;
+}
+
+.detail-content .md-content table {
+  display: table !important;
+  border-collapse: collapse !important;
+  width: 100% !important;
+  margin: 10px 0 !important;
+  font-size: 11px !important;
+}
+
+.detail-content .md-content tr {
+  display: table-row !important;
+  min-height: 24px !important;
+}
+
+.detail-content .md-content th,
+.detail-content .md-content td {
+  border: 1px solid #39dc00 !important;
+  padding: 8px 10px !important;
+  text-align: left !important;
+  color: #39dc00 !important;
+  background: #000 !important;
+  font-size: 11px !important;
+  display: table-cell !important;
+  min-height: 24px !important;
+  line-height: 1.4 !important;
+}
+
+.detail-content .md-content th {
+  background: #39dc00 !important;
+  color: #000 !important;
+  font-weight: bold !important;
 }
 
 .detail-info-table {
@@ -1029,8 +1061,8 @@ html, body { background: #000; color: #39dc00; font-family: 'Courier New', monos
   .md-content { font-family: 'Courier New', monospace; font-size: 11px; color: #39dc00; line-height: 1.7; }
   .md-content h1,.md-content h2,.md-content h3 { color: #39dc00; margin: 12px 0 6px; font-size: 13px; border-bottom: 1px solid #39dc00; padding-bottom: 4px; }
   .md-content p { margin: 6px 0; }
-  .md-content table { border-collapse: collapse; width: 100%; margin: 10px 0; font-size: 11px; }
-  .md-content th, .md-content td { border: 1px solid #39dc00; padding: 4px 8px; text-align: left; }
+  .md-content table { border-collapse: collapse; width: 100%; margin: 10px 0; font-size: 11px !important; }
+  .md-content th, .md-content td { border: 1px solid #39dc00; padding: 6px 10px; text-align: left; font-size: 11px !important; }
   .md-content th { background: #39dc00; color: #000; font-weight: bold; }
   .md-content img { max-width: 100%; border: 1px solid #39dc00; margin: 8px 0; display: block; }
   .md-content ul, .md-content ol { margin: 6px 0 6px 16px; }
@@ -1047,12 +1079,15 @@ html, body { background: #000; color: #39dc00; font-family: 'Courier New', monos
   @keyframes blink { 50% { opacity: 0; } }
   .sys-alert-body { color: #ff9900; line-height: 1.6; }
   </style>
-  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <script src="./marked.min.js"></script>
   <script>
     if (typeof marked !== 'undefined') {
-      try { marked.use({ gfm: true, breaks: true }); } catch(e) {
-        try { marked.setOptions({ gfm: true, breaks: true }); } catch(e2) {}
-      }
+      marked.setOptions({
+        breaks: true,
+        gfm: true,
+        pedantic: false,
+        async: false
+      });
     }
   </script>
 </head>
@@ -2064,7 +2099,12 @@ REQUIRE LOGIN: No (Public access enabled)
     function showListItemDetail(item) {
       const tc = document.getElementById('terminalContent');
       const preview = item.preview || '';
-      const mdHTML = (typeof marked !== 'undefined') ? marked.parse(preview) : `<pre>${preview}</pre>`;
+      let mdHTML = (typeof marked !== 'undefined') ? marked.parse(preview) : `<pre>${preview}</pre>`;
+      // 테이블 스타일 강제 적용
+      mdHTML = mdHTML.replace(/<table>/g, '<table style="display:table !important; width:100% !important; border-collapse:collapse !important;">');
+      mdHTML = mdHTML.replace(/<tr>/g, '<tr style="display:table-row !important; min-height:30px !important;">');
+      mdHTML = mdHTML.replace(/<td>/g, '<td style="display:table-cell !important; padding:10px !important; border:1px solid #39dc00 !important; min-height:30px !important;">');
+      mdHTML = mdHTML.replace(/<th>/g, '<th style="display:table-cell !important; padding:10px !important; border:1px solid #39dc00 !important; background:#39dc00 !important; color:#000 !important; min-height:30px !important;">');
       tc.innerHTML = `
         <div class="detail-view">
           <div class="detail-header">
