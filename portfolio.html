@@ -433,12 +433,13 @@ html, body { background: #000; color: #39dc00; font-family: 'Courier New', monos
   font-size: 9px;
   cursor: pointer;
   box-shadow: 0 0 15px rgba(57, 220, 0, 0.2);
-  width: 150px;
-  height: 100px;
+  width: 200px;
+  height: 160px;
   overflow: hidden;
   opacity: 1;
   display: flex;
   flex-direction: column;
+  transition: box-shadow 0.2s, transform 0.2s;
 }
 
 .board-item:hover {
@@ -1753,6 +1754,8 @@ REQUIRE LOGIN: No (Public access enabled)
 
     // 캐시: 비동기 IndexedDB 읽기 결과를 동기 호출에서 사용하기 위한 캐시
     let _archiveDataCache = null;
+    // GitHub에서 동기화된 published posts (모바일 등 다른 기기에서 읽기용)
+    let _githubPublishedPosts = [];
 
     async function refreshArchiveCache() {
       try {
@@ -1791,15 +1794,24 @@ REQUIRE LOGIN: No (Public access enabled)
     }
 
     // Get published posts from archive-admin
+    // IndexedDB 캐시(현재 기기) + GitHub 동기화 데이터(모바일 등 다른 기기) 병합
     function getPublishedPosts(section) {
       try {
         const archiveData = getArchiveData();
-        // admin은 completed를 flat array로 저장 — 양쪽 형식 모두 처리
         const completedItems = Array.isArray(archiveData.completed)
           ? archiveData.completed
           : (archiveData.completed?.items || []);
 
-        return completedItems.filter(item => item.publishedSection === section);
+        // IndexedDB 글 + GitHub 동기화 글 합치고 중복(id 기준) 제거
+        const all = [...completedItems, ..._githubPublishedPosts];
+        const seen = new Set();
+        return all.filter(item => {
+          if (item.publishedSection !== section) return false;
+          const key = item.id || item.title;
+          if (seen.has(key)) return false;
+          seen.add(key);
+          return true;
+        });
       } catch (e) {
         return [];
       }
@@ -1986,14 +1998,20 @@ REQUIRE LOGIN: No (Public access enabled)
               </div>
               <div class="board-container">
                 ${allBoardItems.map((item, idx) => `
-                  <div class="board-item" data-index="${idx}" style="display: flex; flex-direction: column; background: #000; border: 1px solid #39dc00; position: absolute;">
-                    <div style="background: linear-gradient(180deg, #50ff00 0%, #39dc00 100%); color: #000; padding: 3px 12px; font-weight: bold; font-size: 11px; border-bottom: 1px solid #39dc00; display: flex; justify-content: flex-end; align-items: center;">
-                      <span style="cursor: pointer; font-size: 12px; flex-shrink: 0;">×</span>
+                  <div class="board-item" data-index="${idx}">
+                    <div style="background: linear-gradient(180deg, #50ff00 0%, #39dc00 100%); color: #000; padding: 4px 8px; font-size: 8px; border-bottom: 2px solid #1a6600; display: flex; justify-content: space-between; align-items: center; flex-shrink: 0;">
+                      <span style="opacity: 0.7; letter-spacing: 1px;">${item.category || 'REF'}</span>
+                      <span style="cursor: pointer; font-size: 12px;">×</span>
                     </div>
-                    <div style="padding: 8px 12px; color: #39dc00; font-size: 11px; display: flex; flex-direction: column; gap: 0;">
-                      <div style="word-break: break-word; padding-bottom: 5px; border-bottom: 1px solid #39dc00; font-weight: bold;">${item.title}</div>
-                      <div style="padding-top: 4px; padding-bottom: 4px; border-bottom: 1px solid #39dc00; color: #ffb000;">${item.category || '-'}</div>
-                      <div style="padding-top: 5px; font-size: 10px; color: #aaa; white-space: normal; line-height: 1.5; word-break: break-word;">${item.preview || ''}</div>
+                    <div style="padding: 7px 9px 4px; flex-shrink: 0; border-bottom: 1px dashed rgba(57,220,0,0.35);">
+                      <div style="font-weight: bold; font-size: 10px; color: #39dc00; word-break: break-word; line-height: 1.3; max-height: 2.6em; overflow: hidden;">${item.title}</div>
+                      <div style="font-size: 9px; color: #ffb000; margin-top: 2px; opacity: 0.9;">${[item.author, item.year].filter(Boolean).join(' · ') || ''}</div>
+                    </div>
+                    <div style="padding: 5px 9px; flex: 1; overflow: hidden;">
+                      <div style="font-size: 9px; color: rgba(57,220,0,0.65); line-height: 1.45; word-break: break-word; display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden;">${item.preview || ''}</div>
+                    </div>
+                    <div style="padding: 3px 9px 5px; flex-shrink: 0; border-top: 1px dashed rgba(57,220,0,0.25); display: flex; justify-content: flex-end;">
+                      <span style="font-size: 8px; color: rgba(57,220,0,0.45); letter-spacing: 1px;">READ MORE ›</span>
                     </div>
                   </div>
                 `).join('')}
@@ -2071,10 +2089,10 @@ REQUIRE LOGIN: No (Public access enabled)
       if (!container) return;
 
       const containerWidth = container.offsetWidth;
-      const itemWidth = 150;
-      const itemHeight = 100;
-      const padding = 10; // Space between items
-      const columns = 5;
+      const itemWidth = 200;
+      const itemHeight = 160;
+      const padding = 12; // Space between items
+      const columns = 4;
 
       // Calculate grid dimensions
       const gridX = 20; // Left margin
@@ -2631,7 +2649,10 @@ REQUIRE LOGIN: No (Public access enabled)
       // Display initial photos with placeholder
       function displayInitialPhotos() {
         gallery.innerHTML = `
-          <div style="display: flex; flex-direction: column; align-items: center; gap: 20px; padding: 20px; height: 100%; justify-content: center;">
+          <div style="display: flex; flex-direction: column; align-items: center; gap: 16px; padding: 20px;">
+            <img src="images/big-brother.jpg"
+              style="max-width: 100%; max-height: 340px; object-fit: contain; display: block;"
+              onerror="this.style.display='none'">
             <div style="text-align: center; color: #39dc00; font-size: 15px; font-family: 'Courier New', monospace; font-weight: bold;">
               Enter your instructions
             </div>
@@ -2883,7 +2904,10 @@ REQUIRE LOGIN: No (Public access enabled)
         mobileContent.style.whiteSpace = 'normal';
         mobileContent.innerHTML = `
           <div style="display: flex; flex-direction: column; height: 100%; gap: 0;">
-            <div style="display: flex; flex-direction: column; align-items: center; gap: 12px; padding: 12px; flex-shrink: 0;">
+            <div style="display: flex; flex-direction: column; align-items: center; gap: 10px; padding: 12px; flex-shrink: 0;">
+              <img src="images/big-brother.jpg"
+                style="max-width: 100%; max-height: 220px; object-fit: contain; display: block;"
+                onerror="this.style.display='none'">
               <div style="text-align: center; color: #39dc00; font-size: 11px; font-family: monospace;">Enter your instructions</div>
               <input type="text" id="mobileArchiveSearch" placeholder="search: crash, floating, shadow"
                 style="width: 100%; background: #000; border: 1px solid #39dc00; color: #39dc00; padding: 6px; font-size: 10px; font-family: monospace; box-sizing: border-box;">
@@ -3064,11 +3088,17 @@ REQUIRE LOGIN: No (Public access enabled)
       }
     });
 
-    // Fetch admin-contents.json from GitHub and apply
+    // Fetch admin-contents.json + published-posts.json from GitHub and apply
     function fetchAndApplyAdminContents() {
-      fetch('https://raw.githubusercontent.com/note-a/note-a-github/main/admin-contents.json?t=' + Date.now())
-        .then(r => r.json())
-        .then(data => {
+      const ts = Date.now();
+      const base = 'https://raw.githubusercontent.com/note-a/note-a-github/main/';
+
+      Promise.all([
+        fetch(base + 'admin-contents.json?t=' + ts).then(r => r.ok ? r.json() : {}),
+        fetch(base + 'published-posts.json?t=' + ts).then(r => r.ok ? r.json() : []).catch(() => [])
+      ])
+        .then(([data, publishedPosts]) => {
+          // admin-contents.json 적용
           if (data && Object.keys(data).length > 0) {
             if (data.project && data.project.slides) contents.project.slides = data.project.slides;
             if (data.inclusion && data.inclusion.text) contents.inclusion.text = data.inclusion.text;
@@ -3077,6 +3107,11 @@ REQUIRE LOGIN: No (Public access enabled)
             if (data.reference && data.reference.items) contents.reference.items = data.reference.items;
             if (data.video && data.video.text) contents.video.text = data.video.text;
             if (data.archive && data.archive.photos) contents.archive.photos = data.archive.photos;
+          }
+
+          // published-posts.json 적용 (모바일 등 다른 기기에서 글 보이도록)
+          if (Array.isArray(publishedPosts) && publishedPosts.length > 0) {
+            _githubPublishedPosts = publishedPosts;
           }
 
           // Re-apply localStorage data (admin edits take priority over GitHub)
@@ -3091,7 +3126,6 @@ REQUIRE LOGIN: No (Public access enabled)
           else loadContent(activeSection);
         })
         .catch(() => {
-          // Even if GitHub fetch fails, re-apply localStorage data
           loadAdminContentsFromStorage();
         });
     }
