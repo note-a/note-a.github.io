@@ -36,7 +36,7 @@ html, body { background: #000; color: #39dc00; font-family: 'Courier New', monos
   display: flex;
   width: 100%;
   max-width: 900px;
-  height: calc(100vh - 80px);
+  height: calc(100vh - 180px);
   gap: 12px;
   overflow: hidden;
 }
@@ -1599,6 +1599,69 @@ NEXT STEP: Explore the other sections using the menu
             year: '1966',
             category: 'Philosophy of Self',
             preview: 'Archaeology of knowledge and systems of classification. Examines how different eras organize understanding.'
+          },
+          {
+            title: 'Ways of Seeing',
+            author: 'John Berger',
+            year: '1972',
+            category: 'Photography & Vision',
+            preview: 'How we look at images and the social meaning of vision. A critical examination of art, representation, and power.'
+          },
+          {
+            title: 'The Society of the Spectacle',
+            author: 'Guy Debord',
+            year: '1967',
+            category: 'Philosophy & Theory',
+            preview: 'Critique of contemporary consumer culture and commodity fetishism. The spectacle as a social relation between people.'
+          },
+          {
+            title: 'Simulacra and Simulation',
+            author: 'Jean Baudrillard',
+            year: '1981',
+            category: 'Philosophy & Theory',
+            preview: 'The hyperreal precedes and determines the real. Explores how copies replace originals in postmodern culture.'
+          },
+          {
+            title: 'Being and Time',
+            author: 'Martin Heidegger',
+            year: '1927',
+            category: 'Philosophy of Self',
+            preview: 'Dasein, thrownness, and care. Fundamental ontology as the basis for understanding human existence.'
+          },
+          {
+            title: 'The Visible and the Invisible',
+            author: 'Maurice Merleau-Ponty',
+            year: '1968',
+            category: 'Philosophy of Self',
+            preview: 'Flesh as the fabric of the world. The intertwining of seeing and being seen in embodied perception.'
+          },
+          {
+            title: 'Anti-Oedipus',
+            author: 'Deleuze & Guattari',
+            year: '1972',
+            category: 'Philosophy & Theory',
+            preview: 'Desiring machines and schizoanalysis. A critique of psychoanalytic reductions of unconscious production.'
+          },
+          {
+            title: 'Discipline and Punish',
+            author: 'Michel Foucault',
+            year: '1975',
+            category: 'Systems & Measurement',
+            preview: 'The birth of the prison and normalization. Surveillance as a form of power that produces docile bodies.'
+          },
+          {
+            title: 'The Postmodern Condition',
+            author: 'Jean-François Lyotard',
+            year: '1979',
+            category: 'Philosophy & Theory',
+            preview: 'The incredulity toward metanarratives. Knowledge, legitimation, and the conditions of postmodern culture.'
+          },
+          {
+            title: 'Specters of Marx',
+            author: 'Jacques Derrida',
+            year: '1993',
+            category: 'Philosophy & Theory',
+            preview: 'Hauntology and the persistence of the past. The ghost as a figure for historical return and obligation.'
           }
         ]
       },
@@ -1819,8 +1882,8 @@ REQUIRE LOGIN: No (Public access enabled)
         } else if (content.isBoard) {
           // Check if it's a list format
           if (content.isList) {
-            // Combine default items with published posts
-            const allItems = [...content.items, ...publishedPosts];
+            // 최신 등록 순서로 — published posts를 역순(최신 먼저)으로, 기본 항목은 그 뒤
+            const allItems = [...publishedPosts].reverse().concat(content.items);
 
             // List format with table style - no header or footer
             const listHTML = `
@@ -1944,10 +2007,10 @@ REQUIRE LOGIN: No (Public access enabled)
       if (!container) return;
 
       const containerWidth = container.offsetWidth;
-      const itemWidth = 240;
-      const itemHeight = 160;
-      const padding = 15; // Space between items
-      const columns = 3;
+      const itemWidth = 180;
+      const itemHeight = 120;
+      const padding = 12; // Space between items
+      const columns = 4;
 
       // Calculate grid dimensions
       const gridX = 20; // Left margin
