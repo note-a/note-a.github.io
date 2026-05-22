@@ -36,7 +36,7 @@ html, body { background: #000; color: #39dc00; font-family: 'Courier New', monos
   display: flex;
   width: 100%;
   max-width: 900px;
-  height: 550px;
+  height: calc(100vh - 180px);
   gap: 12px;
   overflow: hidden;
 }
@@ -305,8 +305,11 @@ html, body { background: #000; color: #39dc00; font-family: 'Courier New', monos
 #itemPreviewModal .popup-box {
   background: #000;
   border: 2px solid #39dc00;
-  width: 420px;
-  max-width: 90vw;
+  width: 520px;
+  max-width: 92vw;
+  max-height: 85vh;
+  display: flex;
+  flex-direction: column;
   font-family: 'Courier New', monospace;
   color: #39dc00;
   box-shadow: 0 0 20px rgba(57,220,0,0.4);
