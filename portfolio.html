@@ -1833,7 +1833,7 @@ REQUIRE LOGIN: No (Public access enabled)
                   ${allItems.map((item, idx) => `
                     <div class="list-item" data-index="${idx}" style="cursor: pointer; display: flex; border-bottom: 1px dashed #39dc00; transition: background 0.2s; padding: 0;">
                       <div style="flex: 1; padding: 6px 12px; color: #39dc00; font-size: 11px; border-right: 1px solid #39dc00; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
-                        ${item.id || item.title.toUpperCase().replace(/\\s+/g, '_')}
+                        ${item.title || item.id}
                       </div>
                       <div style="width: 150px; padding: 6px 12px; color: #39dc00; font-size: 11px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
                         ${item.category}
