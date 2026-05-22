@@ -1117,28 +1117,12 @@ html, body { background: #000; color: #39dc00; font-family: 'Courier New', monos
       <div class="modal-title">NEW POST - WRITE MESSAGE</div>
       <form id="postForm">
         <div class="form-group">
-          <label for="postTitle">Title / ID</label>
-          <input type="text" id="postTitle" required placeholder="e.g., MY_WORK_TITLE">
+          <label for="postTitle">Title</label>
+          <input type="text" id="postTitle" required placeholder="Write your title here...">
         </div>
         <div class="form-group">
-          <label for="postAuthor">Author / From</label>
-          <input type="text" id="postAuthor" required placeholder="Your name">
-        </div>
-        <div class="form-group">
-          <label for="postYear">Year</label>
-          <input type="text" id="postYear" placeholder="2026">
-        </div>
-        <div class="form-group">
-          <label for="postCategory">Category</label>
-          <input type="text" id="postCategory" placeholder="e.g., Philosophy & Theory">
-        </div>
-        <div class="form-group">
-          <label for="postStatus">Status</label>
-          <input type="text" id="postStatus" placeholder="e.g., PUBLISHED">
-        </div>
-        <div class="form-group">
-          <label for="postPreview">Description / Preview</label>
-          <textarea id="postPreview" required placeholder="Write your post content here..."></textarea>
+          <label for="postPreview">Content</label>
+          <textarea id="postPreview" required placeholder="Write your content here..."></textarea>
         </div>
         <div class="modal-buttons">
           <button type="button" class="modal-btn cancel" id="cancelBtn">CANCEL</button>
@@ -1383,7 +1367,7 @@ THIS INCOMPLETENESS IS PRECISELY THE WORLD.
       intro: {
         title: 'Intro Text',
         isFigmaBoard: true,
-        figmaUrl: 'https://www.figma.com/board/S1HsBejKWRbZPxZ3fSMaDG/제목-없음?node-id=221-109&t=WrDMGwGZBp0nmFrV-0',
+        figmaUrl: 'https://www.figma.com/board/S1HsBejKWRbZPxZ3fSMaDG/제목-없음?node-id=85-238&t=jdjagi0bvYpFCvgx-0',
         text: `INTRODUCTORY MATERIAL
 ====================================================
 
@@ -1740,22 +1724,14 @@ REQUIRE LOGIN: No (Public access enabled)
               </div>
               <div class="board-container">
                 ${allBoardItems.map((item, idx) => `
-                  <div class="board-item" data-index="${idx}">
-                    <div class="board-item-header">
-                      <div class="board-item-title">[${item.id || item.title.toUpperCase().replace(/\\s+/g, '_')} - ${item.status || 'REFERENCE'}]</div>
+                  <div class="board-item" data-index="${idx}" style="display: flex; flex-direction: column; background: #000; border: 1px solid #39dc00; position: absolute; min-width: 200px; width: 200px;">
+                    <div style="background: linear-gradient(180deg, #50ff00 0%, #39dc00 100%); color: #000; padding: 2px 12px; font-weight: bold; font-size: 11px; border-bottom: 1px solid #39dc00; display: flex; justify-content: flex-end; align-items: center;">
+                      <span style="cursor: pointer; font-size: 12px; flex-shrink: 0;">×</span>
                     </div>
-                    <div class="board-item-info">
-                      <div class="board-item-from">From: ${item.author}</div>
-                      <div class="board-item-meta-row">Year: ${item.year}</div>
-                      <div class="board-item-meta-row">Category: ${item.category}</div>
-                    </div>
-                    <div class="board-item-message">
-                      <div class="board-item-label">Description:</div>
-                      <div class="board-item-preview">${item.preview}</div>
-                    </div>
-                    <div class="board-item-actions">
-                      <span class="board-item-action">[read_more]</span>
-                      <span class="board-item-action">[close]</span>
+                    <div style="padding: 6px 12px; color: #39dc00; font-size: 9px; display: flex; flex-direction: column; gap: 0;">
+                      <div style="word-break: break-word; padding-bottom: 4px; border-bottom: 1px solid #39dc00;">${item.title}</div>
+                      <div style="padding-top: 4px; padding-bottom: 4px; border-bottom: 1px solid #39dc00;">${item.category || '-'}</div>
+                      <div style="padding-top: 4px; font-size: 8px; color: #888; white-space: normal; line-height: 1.4; word-break: break-word;">${item.preview || ''}</div>
                     </div>
                   </div>
                 `).join('')}
@@ -1774,10 +1750,10 @@ REQUIRE LOGIN: No (Public access enabled)
           const figmaHTML = `
             <div style="display: flex; flex-direction: column; height: 100%; padding: 0; margin: -12px; background: #000;">
               <div style="padding: 12px; border-bottom: 1px solid #39dc00; background: #000; color: #39dc00; font-size: 11px; font-weight: bold;">
-                DESIGN BOARD - FIGMA
+                TIMELINE
               </div>
-              <div style="flex: 1; padding: 12px; overflow: hidden; background: #000;">
-                <iframe style="width: 100%; height: 100%; border: 1px solid #39dc00; background: #000;" src="https://www.figma.com/embed?embed_host=share&url=https://www.figma.com/board/S1HsBejKWRbZPxZ3fSMaDG/제목-없음" allowfullscreen></iframe>
+              <div style="flex: 1; padding: 12px; overflow: auto; background: #000;">
+                <iframe style="width: 100%; height: 100%; border: 1px solid #39dc00; background: #000;" src="https://www.figma.com/embed?embed_host=share&url=https://www.figma.com/board/S1HsBejKWRbZPxZ3fSMaDG/제목-없음?node-id=85-238&t=jdjagi0bvYpFCvgx-0" allowfullscreen allow="fullscreen" scrolling="auto"></iframe>
               </div>
             </div>
           `;
@@ -1978,28 +1954,12 @@ REQUIRE LOGIN: No (Public access enabled)
 
                   <div class="detail-info-table">
                     <div class="detail-info-row">
-                      <div class="detail-info-label">ID</div>
-                      <div class="detail-info-value">${selectedItem.id || selectedItem.title.toUpperCase().replace(/\\s+/g, '_')}</div>
-                    </div>
-                    <div class="detail-info-row">
                       <div class="detail-info-label">TITLE</div>
                       <div class="detail-info-value">${selectedItem.title}</div>
                     </div>
                     <div class="detail-info-row">
-                      <div class="detail-info-label">AUTHOR</div>
-                      <div class="detail-info-value">${selectedItem.author}</div>
-                    </div>
-                    <div class="detail-info-row">
-                      <div class="detail-info-label">YEAR</div>
-                      <div class="detail-info-value">${selectedItem.year}</div>
-                    </div>
-                    <div class="detail-info-row">
                       <div class="detail-info-label">CATEGORY</div>
                       <div class="detail-info-value">${selectedItem.category}</div>
-                    </div>
-                    <div class="detail-info-row">
-                      <div class="detail-info-label">STATUS</div>
-                      <div class="detail-info-value">${selectedItem.status}</div>
                     </div>
                   </div>
 
@@ -2208,10 +2168,10 @@ ${preview}
         const newItem = {
           id: document.getElementById('postTitle').value.toUpperCase().replace(/\\s+/g, '_'),
           title: document.getElementById('postTitle').value,
-          author: document.getElementById('postAuthor').value,
-          year: document.getElementById('postYear').value || new Date().getFullYear(),
-          category: document.getElementById('postCategory').value || 'Uncategorized',
-          status: document.getElementById('postStatus').value || 'PUBLISHED',
+          author: 'User',
+          year: new Date().getFullYear().toString(),
+          category: 'General',
+          status: 'PUBLISHED',
           preview: document.getElementById('postPreview').value
         };
 
@@ -2673,10 +2633,10 @@ ${preview}
         mobileContent.innerHTML = `
           <div style="display: flex; flex-direction: column; height: 100%; gap: 0;">
             <div style="padding: 12px; border-bottom: 1px solid #39dc00; background: #000; color: #39dc00; font-size: 11px; font-weight: bold;">
-              DESIGN BOARD - FIGMA
+              TIMELINE
             </div>
-            <div style="flex: 1; padding: 12px; overflow: hidden; background: #000;">
-              <iframe style="width: 100%; height: 100%; border: 1px solid #39dc00; background: #000;" src="https://www.figma.com/embed?embed_host=share&url=https://www.figma.com/board/S1HsBejKWRbZPxZ3fSMaDG/제목-없음" allowfullscreen></iframe>
+            <div style="flex: 1; padding: 12px; overflow: auto; background: #000;">
+              <iframe style="width: 100%; height: 100%; border: 1px solid #39dc00; background: #000;" src="https://www.figma.com/embed?embed_host=share&url=https://www.figma.com/board/S1HsBejKWRbZPxZ3fSMaDG/제목-없음?node-id=85-238&t=jdjagi0bvYpFCvgx-0" allowfullscreen allow="fullscreen" scrolling="auto"></iframe>
             </div>
           </div>
         `;
@@ -2712,18 +2672,14 @@ ${preview}
           if (isCardFormat) {
             // Board format for reference (matching desktop)
             html += `
-              <div style="cursor: pointer; border: 1px solid #39dc00; margin-bottom: 12px; background: #000; transition: all 0.2s;" class="mobile-list-item mobile-board-item" data-index="${idx}">
-                <div style="background: linear-gradient(180deg, #50ff00 0%, #39dc00 100%); color: #000; padding: 8px; font-weight: bold; font-size: 9px; border-bottom: 2px solid #1a6600;">
-                  [${itemId} - ${status}]
+              <div style="cursor: pointer; border: 1px solid #39dc00; margin-bottom: 12px; background: #000; transition: all 0.2s; display: flex; flex-direction: column;" class="mobile-list-item mobile-board-item" data-index="${idx}">
+                <div style="background: linear-gradient(180deg, #50ff00 0%, #39dc00 100%); color: #000; padding: 1px 8px; font-weight: bold; font-size: 9px; border-bottom: 1px solid #39dc00; display: flex; justify-content: flex-end; align-items: center;">
+                  <span style="flex-shrink: 0;">×</span>
                 </div>
-                <div style="padding: 8px; border-bottom: 1px solid #39dc00; background: #000; color: #39dc00; font-size: 8px;">
-                  <div style="color: #39dc00; font-weight: bold; margin-bottom: 3px;">From: ${author}</div>
-                  <div style="color: #888; margin-bottom: 2px;">Year: ${year}</div>
-                  <div style="color: #888;">Category: ${category}</div>
-                </div>
-                <div style="padding: 8px; border-bottom: 1px solid #39dc00; background: #000; color: #39dc00; min-height: 60px; font-size: 8px; line-height: 1.4; white-space: pre-wrap; word-wrap: break-word; overflow: hidden;">
-                  <div style="font-weight: bold; margin-bottom: 4px; color: #888;">Description:</div>
-                  <div style="color: #39dc00;">${preview || '(no description)'}</div>
+                <div style="padding: 4px 8px; color: #39dc00; font-size: 7px; display: flex; flex-direction: column; gap: 0;">
+                  <div style="word-break: break-word; padding-bottom: 3px; border-bottom: 1px solid #39dc00;">${item.title}</div>
+                  <div style="padding-top: 3px; padding-bottom: 3px; border-bottom: 1px solid #39dc00;">${category}</div>
+                  <div style="padding-top: 3px; color: #666; white-space: normal; line-height: 1.3; word-break: break-word;">${item.preview || ''}</div>
                 </div>
               </div>
             `;
