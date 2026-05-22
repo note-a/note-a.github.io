@@ -569,41 +569,9 @@ html, body { background: #000; color: #39dc00; font-family: 'Courier New', monos
   padding: 12px;
   overflow-y: auto;
   flex: 1;
-  font-size: 11px;
+  font-size: 10px;
   line-height: 1.6;
   font-family: 'Courier New', monospace;
-}
-
-.detail-content .md-content table {
-  display: table !important;
-  border-collapse: collapse !important;
-  width: 100% !important;
-  margin: 10px 0 !important;
-  font-size: 11px !important;
-}
-
-.detail-content .md-content tr {
-  display: table-row !important;
-  min-height: 24px !important;
-}
-
-.detail-content .md-content th,
-.detail-content .md-content td {
-  border: 1px solid #39dc00 !important;
-  padding: 8px 10px !important;
-  text-align: left !important;
-  color: #39dc00 !important;
-  background: #000 !important;
-  font-size: 11px !important;
-  display: table-cell !important;
-  min-height: 24px !important;
-  line-height: 1.4 !important;
-}
-
-.detail-content .md-content th {
-  background: #39dc00 !important;
-  color: #000 !important;
-  font-weight: bold !important;
 }
 
 .detail-info-table {
@@ -666,7 +634,7 @@ html, body { background: #000; color: #39dc00; font-family: 'Courier New', monos
   display: flex;
   gap: 6px;
   padding: 8px 0;
-  margin-top: 28px;
+  border-bottom: 1px solid #39dc00;
   margin-bottom: 8px;
 }
 
@@ -1061,8 +1029,8 @@ html, body { background: #000; color: #39dc00; font-family: 'Courier New', monos
   .md-content { font-family: 'Courier New', monospace; font-size: 11px; color: #39dc00; line-height: 1.7; }
   .md-content h1,.md-content h2,.md-content h3 { color: #39dc00; margin: 12px 0 6px; font-size: 13px; border-bottom: 1px solid #39dc00; padding-bottom: 4px; }
   .md-content p { margin: 6px 0; }
-  .md-content table { border-collapse: collapse; width: 100%; margin: 10px 0; font-size: 11px !important; }
-  .md-content th, .md-content td { border: 1px solid #39dc00; padding: 6px 10px; text-align: left; font-size: 11px !important; }
+  .md-content table { border-collapse: collapse; width: 100%; margin: 10px 0; font-size: 11px; }
+  .md-content th, .md-content td { border: 1px solid #39dc00; padding: 4px 8px; text-align: left; }
   .md-content th { background: #39dc00; color: #000; font-weight: bold; }
   .md-content img { max-width: 100%; border: 1px solid #39dc00; margin: 8px 0; display: block; }
   .md-content ul, .md-content ol { margin: 6px 0 6px 16px; }
@@ -1071,27 +1039,8 @@ html, body { background: #000; color: #39dc00; font-family: 'Courier New', monos
   .md-content pre { background: #1a1a1a; border: 1px solid #39dc00; padding: 8px; margin: 8px 0; overflow-x: auto; }
   .md-content blockquote { border-left: 2px solid #39dc00; margin: 8px 0; padding-left: 10px; opacity: 0.8; }
   .md-content a { color: #39dc00; }
-  .md-content hr { border: none; border-top: 1px solid #39dc00; margin: 12px 0; }
-  .md-content del { opacity: 0.5; }
-  .sys-alert { border: 1px solid #ff3333; background: rgba(255,51,51,0.08); padding: 10px 14px; margin: 10px 0; font-family: 'Courier New', monospace; font-size: 11px; color: #ff3333; }
-  .sys-alert-header { font-weight: bold; margin-bottom: 6px; letter-spacing: 1px; }
-  .blink-warn { animation: blink 0.8s step-end infinite; }
-  @keyframes blink { 50% { opacity: 0; } }
-  .sys-alert-body { color: #ff9900; line-height: 1.6; }
   </style>
   <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-  <script>
-    if (typeof marked !== 'undefined') {
-      marked.setOptions({
-        breaks: true,
-        gfm: true,
-        pedantic: false,
-        async: false
-      });
-    } else {
-      console.error('marked.js failed to load');
-    }
-  </script>
 </head>
 <body>
   <!-- SVG Pixelation Filter -->
@@ -1290,7 +1239,7 @@ html, body { background: #000; color: #39dc00; font-family: 'Courier New', monos
       loadAdminContentsFromStorage();
     }, 3000);
 
-    // Detect layout on initial load - wait for contents to be defined
+    // Detect layout on initial load
     window.addEventListener('load', detectAndSwitchLayout);
 
     // Re-detect on window resize
@@ -1721,22 +1670,6 @@ REQUIRE LOGIN: No (Public access enabled)
       }
     }
 
-    // 마크다운을 HTML로 변환하는 함수
-    function convertMarkdownToHTML(text) {
-      if (!text) return text;
-      // 이미 HTML인지 확인 (< 문자가 있으면 HTML)
-      if (text.includes('<')) return text;
-      // marked.js가 있으면 변환, 없으면 그대로
-      if (typeof marked !== 'undefined') {
-        try {
-          return marked.parse(text);
-        } catch (e) {
-          return text;
-        }
-      }
-      return text;
-    }
-
     // Load admin-edited contents from localStorage
     function loadAdminContentsFromStorage() {
       try {
@@ -1756,21 +1689,11 @@ REQUIRE LOGIN: No (Public access enabled)
         if (adminContents.intro && adminContents.intro.text) {
           contents.intro.text = adminContents.intro.text;
         }
-        if (adminContents.rule) {
-          const ruleItems = Array.isArray(adminContents.rule) ? adminContents.rule : (adminContents.rule.items || []);
-          // 마크다운을 HTML로 변환
-          ruleItems.forEach(item => {
-            if (item.preview) item.preview = convertMarkdownToHTML(item.preview);
-          });
-          contents.rule.items = ruleItems;
+        if (adminContents.rule && adminContents.rule.items) {
+          contents.rule.items = adminContents.rule.items;
         }
-        if (adminContents.reference) {
-          const refItems = Array.isArray(adminContents.reference) ? adminContents.reference : (adminContents.reference.items || []);
-          // 마크다운을 HTML로 변환
-          refItems.forEach(item => {
-            if (item.preview) item.preview = convertMarkdownToHTML(item.preview);
-          });
-          contents.reference.items = refItems;
+        if (adminContents.reference && adminContents.reference.items) {
+          contents.reference.items = adminContents.reference.items;
         }
         if (adminContents.video && adminContents.video.text) {
           contents.video.text = adminContents.video.text;
@@ -1825,12 +1748,11 @@ REQUIRE LOGIN: No (Public access enabled)
         } else if (content.isArchivePhotos) {
           // Archive Photos format with search
           const archiveHTML = `
-            <div style="position: relative; height: 100%; margin: -12px;">
-              <div class="photo-gallery" id="photoGallery" style="position: absolute; inset: 0; bottom: 68px; margin: 12px; overflow-y: auto;"></div>
-              <canvas id="archiveWireframeCanvas" style="display:none;"></canvas>
-              <div style="position: absolute; bottom: 0; left: 12px; right: 12px; padding-bottom: 12px; z-index: 10;">
-                <div style="text-align: center; color: #39dc00; font-size: 15px; font-family: 'Courier New', monospace; font-weight: bold; padding-bottom: 8px;">Enter your instructions</div>
-                <div class="archive-search-bar" style="margin: 0;">
+            <div style="display: flex; flex-direction: column; height: 100%; padding: 0; margin: -12px; position: relative;">
+              <div class="photo-gallery" id="photoGallery" style="margin: 12px; flex: 1; overflow-y: auto;"></div>
+              <div style="position: relative; margin: 0 12px 12px 12px; flex-shrink: 0;">
+                <canvas id="archiveWireframeCanvas" style="position: absolute; bottom: 0; left: 0; width: 100%; height: 120px; z-index: 5; pointer-events: none;"></canvas>
+                <div class="archive-search-bar" style="position: relative; z-index: 10;">
                   <input type="text" class="archive-search-input" id="archiveSearchInput" placeholder="Search by keyword: crash, floating, shadow...">
                   <button class="archive-search-btn" id="archiveSearchBtn">SEARCH</button>
                 </div>
@@ -1920,14 +1842,14 @@ REQUIRE LOGIN: No (Public access enabled)
               </div>
               <div class="board-container">
                 ${allBoardItems.map((item, idx) => `
-                  <div class="board-item" data-index="${idx}" style="display: flex; flex-direction: column; background: #000; border: 1px solid #39dc00; position: absolute; min-width: 240px; width: 240px; min-height: 160px;">
-                    <div style="background: linear-gradient(180deg, #50ff00 0%, #39dc00 100%); color: #000; padding: 2px 8px; font-weight: bold; font-size: 11px; border-bottom: 1px solid #39dc00; display: flex; justify-content: flex-end; align-items: center;">
+                  <div class="board-item" data-index="${idx}" style="display: flex; flex-direction: column; background: #000; border: 1px solid #39dc00; position: absolute; min-width: 200px; width: 200px;">
+                    <div style="background: linear-gradient(180deg, #50ff00 0%, #39dc00 100%); color: #000; padding: 2px 12px; font-weight: bold; font-size: 11px; border-bottom: 1px solid #39dc00; display: flex; justify-content: flex-end; align-items: center;">
                       <span style="cursor: pointer; font-size: 12px; flex-shrink: 0;">×</span>
                     </div>
-                    <div style="padding: 5px 8px; color: #39dc00; font-size: 9px; display: flex; flex-direction: column; gap: 0;">
+                    <div style="padding: 6px 12px; color: #39dc00; font-size: 9px; display: flex; flex-direction: column; gap: 0;">
                       <div style="word-break: break-word; padding-bottom: 4px; border-bottom: 1px solid #39dc00;">${item.title}</div>
                       <div style="padding-top: 4px; padding-bottom: 4px; border-bottom: 1px solid #39dc00;">${item.category || '-'}</div>
-                      <div style="padding-top: 4px; font-size: 9px; color: #888; line-height: 1.4; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 5; -webkit-box-orient: vertical;">${item.preview || ''}</div>
+                      <div style="padding-top: 4px; font-size: 8px; color: #888; white-space: normal; line-height: 1.4; word-break: break-word;">${item.preview || ''}</div>
                     </div>
                   </div>
                 `).join('')}
@@ -2124,42 +2046,6 @@ REQUIRE LOGIN: No (Public access enabled)
       modal.classList.add('active');
     }
 
-    function showListItemDetail(item) {
-      const tc = document.getElementById('terminalContent');
-      const preview = item.preview || '';
-      // preview가 이미 HTML인지 체크 (< 문자 포함)
-      let mdHTML = preview;
-      if (!preview.includes('<')) {
-        // HTML이 아니면 마크다운으로 취급 (하지만 marked 없으면 그냥 <pre>로)
-        mdHTML = (typeof marked !== 'undefined') ? marked.parse(preview) : `<pre>${preview}</pre>`;
-      }
-      // 테이블 스타일 강제 적용
-      mdHTML = mdHTML.replace(/<table>/g, '<table style="display:table !important; width:100% !important; border-collapse:collapse !important;">');
-      mdHTML = mdHTML.replace(/<tr>/g, '<tr style="display:table-row !important; min-height:30px !important;">');
-      mdHTML = mdHTML.replace(/<td>/g, '<td style="display:table-cell !important; padding:10px !important; border:1px solid #39dc00 !important; min-height:30px !important;">');
-      mdHTML = mdHTML.replace(/<th>/g, '<th style="display:table-cell !important; padding:10px !important; border:1px solid #39dc00 !important; background:#39dc00 !important; color:#000 !important; min-height:30px !important;">');
-      tc.innerHTML = `
-        <div class="detail-view">
-          <div class="detail-header">
-            <span>${item.id || item.title}</span>
-            <button id="detailBackBtn" style="background:#000;color:#39dc00;border:1px solid #39dc00;padding:2px 10px;cursor:pointer;font-family:'Courier New',monospace;font-size:11px;">← BACK</button>
-          </div>
-          <div class="detail-content">
-            <div style="margin-bottom:10px;padding-bottom:8px;border-bottom:1px dashed #39dc00;font-size:11px;display:flex;gap:16px;">
-              ${item.category ? `<span>${item.category}</span>` : ''}
-              ${item.year ? `<span>${item.year}</span>` : ''}
-              ${item.author ? `<span>${item.author}</span>` : ''}
-            </div>
-            <div class="md-content" style="font-size:11px;">${mdHTML}</div>
-          </div>
-        </div>
-      `;
-      document.getElementById('detailBackBtn').addEventListener('click', () => {
-        const activeMenu = document.querySelector('.menu-item.active');
-        if (activeMenu) activeMenu.click();
-      });
-    }
-
     function setupListItemClickHandlers() {
       const listItems = document.querySelectorAll('.list-item');
 
@@ -2168,11 +2054,8 @@ REQUIRE LOGIN: No (Public access enabled)
           let currentSection = null;
           const menuItems = document.querySelectorAll('.menu-item.active');
           if (menuItems.length > 0) currentSection = menuItems[0].getAttribute('data-section');
-          if (currentSection && contents[currentSection]) {
-            const publishedPosts = getPublishedPosts(currentSection);
-            const baseItems = contents[currentSection].items || [];
-            const allItems = [...baseItems, ...publishedPosts];
-            if (allItems[idx]) showListItemDetail(allItems[idx]);
+          if (currentSection && contents[currentSection] && contents[currentSection].items) {
+            openItemPreviewPopup(contents[currentSection].items[idx]);
           }
         });
 
@@ -2220,7 +2103,7 @@ REQUIRE LOGIN: No (Public access enabled)
 
           if (!selectedItem) return;
 
-          showListItemDetail(selectedItem);
+          openItemPreviewPopup(selectedItem);
         });
       });
     }
@@ -2584,10 +2467,13 @@ REQUIRE LOGIN: No (Public access enabled)
       // Display initial photos with pixelation effect - Big Brother image only
       function displayInitialPhotos() {
         gallery.innerHTML = `
-          <div style="display: flex; flex-direction: column; align-items: center; padding: 12px;">
-            <div style="width: 100%; max-width: 450px;">
+          <div style="display: flex; flex-direction: column; align-items: center; gap: 20px; padding: 20px; height: 100%; justify-content: center;">
+            <div style="width: 100%; height: 100%; max-width: 450px; max-height: 400px;">
               <img src="https://raw.githubusercontent.com/note-a/note-a.github.io/main/big-brother.jpg" alt="BIG BROTHER"
-                style="width: 100%; height: auto; object-fit: cover; display: block;">
+                style="width: 100%; height: 100%; object-fit: cover; display: block;">
+            </div>
+            <div style="text-align: center; color: #39dc00; font-size: 15px; margin-top: 10px; font-family: 'Courier New', monospace; font-weight: bold;">
+              Enter your instructions
             </div>
           </div>
         `;
