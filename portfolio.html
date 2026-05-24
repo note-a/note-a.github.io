@@ -36,7 +36,7 @@ html, body { background: #000; color: #39dc00; font-family: 'Courier New', monos
   display: flex;
   width: 100%;
   max-width: 900px;
-  height: calc(100vh - 180px);
+  height: calc(100vh - 240px);
   gap: 12px;
   overflow: hidden;
 }
@@ -324,11 +324,48 @@ html, body { background: #000; color: #39dc00; font-family: 'Courier New', monos
   font-family: 'Courier New', monospace;
   color: #39dc00;
   box-shadow: 0 0 20px rgba(57,220,0,0.4);
+  position: relative;
+  margin-top: 26px;
+  border-top-left-radius: 0;
+  border-radius: 0 3px 3px 3px;
+}
+#itemPreviewModal .popup-file-tab {
+  position: absolute;
+  top: -28px;
+  left: -2px;
+  height: 28px;
+  padding: 0 18px;
+  background: #000;
+  border: 2px solid #39dc00;
+  border-bottom: 2px solid #000;
+  font-family: 'Courier New', monospace;
+  font-size: 9px;
+  font-weight: bold;
+  color: #39dc00;
+  letter-spacing: 3px;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  border-radius: 4px 4px 0 0;
+  text-transform: uppercase;
+}
+#itemPreviewModal .popup-file-tab::before {
+  content: '▤';
+  font-size: 11px;
+  opacity: 0.8;
 }
 #itemPreviewModal .popup-header {
   display: flex; justify-content: space-between; align-items: flex-start;
-  padding: 14px 16px 8px;
+  padding: 12px 16px 10px 20px;
   border-bottom: 1px solid #39dc00;
+  border-left: 3px solid rgba(57,220,0,0.25);
+  background: linear-gradient(180deg, rgba(57,220,0,0.04) 0%, transparent 100%);
+}
+#itemPreviewModal .popup-header-meta {
+  font-size: 8px;
+  color: rgba(57,220,0,0.4);
+  letter-spacing: 1px;
+  margin-bottom: 6px;
 }
 #itemPreviewModal .popup-title { font-size: 14px; font-weight: bold; }
 #itemPreviewModal .popup-close {
@@ -337,14 +374,23 @@ html, body { background: #000; color: #39dc00; font-family: 'Courier New', monos
 }
 #itemPreviewModal .popup-category {
   font-size: 11px; color: #39dc00; opacity: 0.7;
-  padding: 6px 16px; border-bottom: 1px solid #39dc00;
+  padding: 6px 16px 6px 20px;
+  border-bottom: 1px solid #39dc00;
+  border-left: 3px solid rgba(57,220,0,0.25);
+  display: flex; align-items: center; gap: 8px;
+}
+#itemPreviewModal .popup-category::before {
+  content: '──';
+  opacity: 0.4;
+  font-size: 9px;
 }
 #itemPreviewModal .popup-body {
-  padding: 12px 16px;
+  padding: 14px 16px 12px 20px;
   font-size: 11px;
   line-height: 1.7;
   max-height: 60vh;
   overflow-y: auto;
+  border-left: 3px solid rgba(57,220,0,0.1);
 }
 
 .modal-content {
@@ -924,10 +970,15 @@ html, body { background: #000; color: #39dc00; font-family: 'Courier New', monos
   flex: 1;
   display: flex;
   flex-direction: column;
-  border: none;
+  border-top: 2px solid #7fff4f;
+  border-left: 2px solid #7fff4f;
+  border-bottom: 2px solid #1a5500;
+  border-right: 2px solid #1a5500;
+  box-shadow: 0 0 20px rgba(57,220,0,0.2), inset 1px 1px 0 rgba(150,255,80,0.12), inset -1px -1px 0 rgba(0,0,0,0.5);
   background: #000;
   overflow: hidden;
   min-height: 0;
+  margin: 6px;
 }
 
 .mobile-terminal-titlebar {
@@ -1056,6 +1107,8 @@ html, body { background: #000; color: #39dc00; font-family: 'Courier New', monos
   .md-content table { border-collapse: collapse; width: 100%; margin: 10px 0; font-size: 11px; }
   .md-content th, .md-content td { border: 1px solid #39dc00 !important; padding: 4px 8px; text-align: left; }
   .md-content th { background: #39dc00; color: #000; font-weight: bold; }
+
+
   </style>
   <script src="./marked.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/lz-string/1.4.4/lz-string.min.js"></script>
@@ -1082,8 +1135,12 @@ html, body { background: #000; color: #39dc00; font-family: 'Courier New', monos
   <!-- Item Preview Popup -->
   <div id="itemPreviewModal">
     <div class="popup-box">
+      <div class="popup-file-tab" id="popupFileTab">FILE</div>
       <div class="popup-header">
-        <div class="popup-title" id="popupTitle"></div>
+        <div>
+          <div class="popup-header-meta" id="popupHeaderMeta">DOC · REF</div>
+          <div class="popup-title" id="popupTitle"></div>
+        </div>
         <button class="popup-close" id="popupClose">×</button>
       </div>
       <div class="popup-category" id="popupCategory"></div>
@@ -1150,6 +1207,8 @@ html, body { background: #000; color: #39dc00; font-family: 'Courier New', monos
   </div>
   </div>
   <!-- END DESKTOP LAYOUT -->
+
+
 
   <!-- MOBILE LAYOUT -->
   <div id="mobile-layout">
@@ -1575,7 +1634,7 @@ THIS INCOMPLETENESS IS PRECISELY THE WORLD.
       },
       reference: {
         title: 'Reference',
-        isBoard: true,
+        isBookshelf: true,
         items: [
           {
             id: 'CAMERA_LUCIDA',
@@ -1919,12 +1978,10 @@ REQUIRE LOGIN: No (Public access enabled)
 
     // Initialize content display
     function loadContent(section) {
-      const content = contents[section];
       const terminalContent = document.getElementById('terminalContent');
-
-      terminalContent.style.transition = 'opacity 0.1s ease';
+      terminalContent.style.transition = 'opacity 0.25s ease';
       terminalContent.style.opacity = '0';
-      setTimeout(function() { _loadContentInner(section); requestAnimationFrame(function() { terminalContent.style.opacity = '1'; }); }, 100);
+      setTimeout(function() { _loadContentInner(section); setTimeout(function() { terminalContent.style.opacity = '1'; }, 20); }, 250);
     }
     function _loadContentInner(section) {
       const content = contents[section];
@@ -1953,10 +2010,10 @@ REQUIRE LOGIN: No (Public access enabled)
             <div style="display: flex; flex-direction: column; height: 100%; padding: 0; margin: -12px -20px; position: relative;">
               <div class="photo-gallery" id="photoGallery" style="padding: 12px 20px; flex: 1; overflow-y: auto;">
                 <div id="archiveInitialView" style="display:flex;flex-direction:column;align-items:center;gap:16px;padding:20px;">
-                  <img src="images/big-brother.jpg"
+                  <img src="images/big-brother.jpg?v=2"
                     style="max-width:100%;max-height:300px;object-fit:contain;display:block;"
                     onerror="this.style.display='none'">
-                  <div style="text-align:center;color:#39dc00;font-size:15px;font-family:'Courier New',monospace;font-weight:bold;">
+                  <div style="text-align:center;color:#39dc00;font-size:15px;font-family:'Monaco','Menlo','Consolas','Courier New',monospace;font-weight:bold;">
                     Enter your instructions
                   </div>
                 </div>
@@ -2017,6 +2074,105 @@ REQUIRE LOGIN: No (Public access enabled)
         } else if (content.isContactSheet) {
           // 풀스크린 오버레이로 열기
           openContactSheetOverlay(content);
+        } else if (content.isBookshelf) {
+          // Bookshelf format — single shelf, monotone, groups of 3
+          const allBookItems = [...content.items, ...publishedPosts];
+
+          // Terminal palette — CRT green + amber phosphor
+          // Near-black spines, vivid marks — exact from library_bookshelf.html shelf3
+          const grayThemes = [
+            { bg: '#000000', band: '#00aa00', side: '#8a8a8a', tc: '#aaaaaa', mark: '#8a8a8a', line: true },
+            { bg: '#000000', band: '#888888', side: '#8a8a8a', tc: '#aaaaaa', mark: '#8a8a8a', line: true },
+            { bg: '#000000', band: '#aaaa00', side: '#8a8a8a', tc: '#aaaaaa', mark: '#8a8a8a', line: true },
+            { bg: '#000000', band: '#00aa00', side: '#8a8a8a', tc: '#aaaaaa', mark: '#8a8a8a', line: true },
+            { bg: '#000000', band: '#888888', side: '#8a8a8a', tc: '#aaaaaa', mark: '#8a8a8a', line: true },
+            { bg: '#000000', band: '#aaaa00', side: '#8a8a8a', tc: '#aaaaaa', mark: '#8a8a8a', line: true },
+            { bg: '#000000', band: '#00aa00', side: '#8a8a8a', tc: '#aaaaaa', mark: '#8a8a8a', line: true },
+            { bg: '#000000', band: '#888888', side: '#8a8a8a', tc: '#aaaaaa', mark: '#8a8a8a', line: true },
+            { bg: '#000000', band: '#aaaa00', side: '#8a8a8a', tc: '#aaaaaa', mark: '#8a8a8a', line: true },
+            { bg: '#000000', band: '#00aa00', side: '#8a8a8a', tc: '#aaaaaa', mark: '#8a8a8a', line: true },
+            { bg: '#000000', band: '#888888', side: '#8a8a8a', tc: '#aaaaaa', mark: '#8a8a8a', line: true },
+            { bg: '#000000', band: '#aaaa00', side: '#8a8a8a', tc: '#aaaaaa', mark: '#8a8a8a', line: true },
+            { bg: '#000000', band: '#00aa00', side: '#8a8a8a', tc: '#aaaaaa', mark: '#8a8a8a', line: true },
+            { bg: '#000000', band: '#888888', side: '#8a8a8a', tc: '#aaaaaa', mark: '#8a8a8a', line: true },
+            { bg: '#000000', band: '#aaaa00', side: '#8a8a8a', tc: '#aaaaaa', mark: '#8a8a8a', line: true },
+            { bg: '#000000', band: '#00aa00', side: '#8a8a8a', tc: '#aaaaaa', mark: '#8a8a8a', line: true },
+          ];
+          const baseWidths  = [24, 28, 25, 32, 22, 27, 31, 24, 28, 25, 27, 22, 28, 32, 24, 27];
+          const baseHeights = [221, 242, 229, 259, 214, 238, 234, 251, 225, 240, 214, 232, 238, 223, 253, 229];
+          const leans       = [-1.5, -0.8, 0, 0, 1.2, 0, -1, 0, 0.7, 0, 1.5, -0.6, 0, 0, 0.4, -0.3];
+
+          // Build single row: groups of 3 with clear empty gaps
+          const GROUP = 3;
+          let rowInner = '';
+          allBookItems.forEach((item, idx) => {
+            if (idx > 0 && idx % GROUP === 0) {
+              rowInner += `<div style="flex-shrink:0;width:48px;"></div>`;
+            }
+            const th   = grayThemes[idx % grayThemes.length];
+            const w    = baseWidths[idx % baseWidths.length];
+            const h    = baseHeights[idx % baseHeights.length];
+            const lean = leans[idx % leans.length];
+            rowInner += `<div class="bk3d" data-index="${idx}" style="width:${w}px;height:${h}px;transform:rotate(${lean}deg);transform-origin:bottom center;" title="${(item.title||'').replace(/"/g,'&quot;')}">
+              <div style="width:100%;height:100%;background:${th.bg};overflow:hidden;position:relative;border-radius:1px 0 0 1px;">
+                <div style="position:absolute;inset:0;background:linear-gradient(90deg,rgba(255,255,255,.06) 0%,transparent 40%,rgba(0,0,0,.18) 100%);pointer-events:none;"></div>
+                <div style="position:absolute;left:0;right:0;top:0;height:14px;background:${th.band};"></div>
+                ${th.line ? `<div style="position:absolute;top:0;bottom:0;left:${Math.round(w*.28)}px;width:1px;background:${th.band};z-index:3;opacity:.5;"></div><div style="position:absolute;top:0;bottom:0;left:${Math.round(w*.72)}px;width:1px;background:${th.band};z-index:3;opacity:.5;"></div>` : ''}
+                ${th.mark ? `<div style="position:absolute;top:-4px;right:${Math.max(4,Math.round(w*.3))}px;width:8px;height:18px;background:${th.mark};clip-path:polygon(0 0,100% 0,100% 85%,50% 100%,0 85%);z-index:5;opacity:.9;"></div>` : ''}
+                <div style="position:absolute;top:19px;bottom:8px;left:0;right:0;display:flex;flex-direction:column;justify-content:space-between;align-items:center;overflow:hidden;pointer-events:none;">
+                  <span style="writing-mode:vertical-rl;color:${th.tc};font-weight:700;font-size:9px;letter-spacing:.04em;max-height:72%;overflow:hidden;text-align:center;">${item.title||''}</span>
+                  <span style="writing-mode:vertical-rl;color:${th.tc};opacity:.6;font-size:7px;letter-spacing:.02em;max-height:22%;overflow:hidden;">${item.author||''}</span>
+                </div>
+              </div>
+              <div class="bk-side" style="background:${th.side};"></div>
+            </div>`;
+          });
+
+          const bookshelfHTML = `
+            <style>
+              .bk3d{position:relative;cursor:pointer;flex-shrink:0;transition:transform .2s ease,filter .2s ease;z-index:2;}
+              .bk3d:hover{transform:translateY(-12px) rotate(0deg) !important;filter:brightness(1.3);}
+              .bk3d::before{
+                content:'';position:absolute;left:4px;top:-5px;right:-5px;height:5px;
+                background:repeating-linear-gradient(90deg,#f0e8d0 0,#f0e8d0 1.5px,#d4c8a8 1.5px,#d4c8a8 2.8px);
+                transform:skewX(-45deg);transform-origin:bottom left;z-index:5;
+              }
+              .bk3d::after{content:none;}
+              .bk-side{position:absolute;right:-5px;top:-5px;width:5px;bottom:0;transform:skewY(-45deg);transform-origin:top left;z-index:5;}
+              .bk3d-bend{width:12px;flex-shrink:0;background:linear-gradient(180deg,#00ff00 0%,#00cc00 100%);border-radius:2px 2px 0 0;position:relative;z-index:2;box-shadow:2px 0 5px rgba(0,0,0,.7);}
+              .bk3d-bend::after{content:'';position:absolute;top:-2px;left:-2px;right:-2px;height:3px;background:linear-gradient(90deg,#222 0%,#333 40%,#222 100%);border-radius:2px;}
+            </style>
+            <div style="display:flex;flex-direction:column;height:100%;margin:-12px;background:#000;font-family:'Monaco','Menlo','Consolas','Courier New',monospace;overflow:hidden;">
+              <div style="padding:7px 12px;border-bottom:1px solid #39dc00;font-size:10px;font-weight:bold;flex-shrink:0;color:#39dc00;letter-spacing:1px;display:flex;justify-content:space-between;align-items:center;">
+                <span>REFERENCE — ${allBookItems.length} ENTRIES</span>
+                <span style="opacity:.4;font-weight:normal;font-size:9px;">← scroll →</span>
+              </div>
+
+              <div style="flex:1;display:flex;flex-direction:column;min-height:0;">
+                <div style="flex:1;"></div>
+                <div style="overflow-x:auto;overflow-y:visible;padding:0 12px 0 40px;scrollbar-width:thin;scrollbar-color:#222 #000;">
+                  <div style="display:inline-flex;align-items:flex-end;gap:2px;min-width:min-content;">
+                    <div class="bk3d-bend" style="height:50px;"></div>
+                    ${rowInner}
+                    <div class="bk3d-bend" style="height:42px;"></div>
+                  </div>
+                </div>
+                <div style="flex-shrink:0;height:1px;background:#00ff00;"></div>
+              </div>
+
+              <div style="flex-shrink:0;padding:5px 12px;font-size:9px;color:rgba(57,220,0,0.35);display:flex;justify-content:flex-end;align-items:center;border-top:2px solid #00ff00;">
+                <span>click to open</span>
+              </div>
+            </div>
+          `;
+          terminalContent.innerHTML = bookshelfHTML;
+
+          document.querySelectorAll('.bk3d').forEach(el => {
+            el.addEventListener('click', () => {
+              const idx = parseInt(el.dataset.index);
+              openItemPreviewPopup(allBookItems[idx]);
+            });
+          });
         } else if (content.isBoard) {
           // Check if it's a list format
           if (content.isList) {
@@ -2296,8 +2452,10 @@ REQUIRE LOGIN: No (Public access enabled)
 
       const overlay = document.createElement('div');
       overlay.id = 'csOverlay';
+      const isMobileOverlay = window.innerWidth < 1024;
+      const overlayInset = isMobileOverlay ? '4px' : '10vh 23vw';
       overlay.style.cssText = `
-        position: fixed; inset: 10vh 23vw;
+        position: fixed; inset: ${overlayInset};
         background: #000; z-index: 9000;
         display: flex; flex-direction: column;
         font-family: monospace;
@@ -2312,19 +2470,19 @@ REQUIRE LOGIN: No (Public access enabled)
       // 헤더 바
       overlay.innerHTML = `
         <div id="csOverlayHeader" style="
-          display: flex; align-items: center; gap: 12px;
-          padding: 7px 14px; border-bottom: 1px solid #39dc00;
-          flex-shrink: 0; background: #000;
+          display: flex; align-items: center; gap: ${isMobileOverlay ? '6px' : '12px'};
+          padding: ${isMobileOverlay ? '8px 10px' : '7px 14px'}; border-bottom: 1px solid #39dc00;
+          flex-shrink: 0; background: #39dc00;
         ">
-          <span id="csOverlayTitle" style="color:#39dc00;font-size:11px;letter-spacing:2px;font-family:monospace;flex-shrink:0;">ENTIRE</span>
-          <span id="csWaveform" style="flex:1;font-family:monospace;font-size:11px;color:rgba(57,220,0,0.5);letter-spacing:2px;overflow:hidden;white-space:nowrap;text-align:center;"></span>
-          <label style="cursor:pointer;display:flex;align-items:center;gap:5px;flex-shrink:0;">
+          <span id="csOverlayTitle" style="color:#000;font-size:11px;letter-spacing:2px;font-family:monospace;font-weight:bold;flex-shrink:0;">ENTIRE</span>
+          <span id="csWaveform" style="flex:1;font-family:monospace;font-size:${isMobileOverlay ? '8px' : '11px'};color:rgba(0,0,0,0.4);letter-spacing:1px;overflow:hidden;white-space:nowrap;text-align:center;"></span>
+          ${isMobileOverlay ? '' : `<label style="cursor:pointer;display:flex;align-items:center;gap:5px;flex-shrink:0;">
             <input type="file" id="csLocalFolder" multiple accept="image/*" style="display:none;">
-            <span id="csLoadBtn" style="font-family:monospace;font-size:10px;padding:3px 10px;border:1px solid rgba(57,220,0,0.5);color:rgba(57,220,0,0.7);white-space:nowrap;cursor:pointer;">📁 사진 폴더 선택</span>
+            <span id="csLoadBtn" style="font-family:monospace;font-size:10px;padding:3px 10px;border:1px solid rgba(0,0,0,0.4);color:rgba(0,0,0,0.7);white-space:nowrap;cursor:pointer;">📁 사진 폴더 선택</span>
           </label>
-          <span id="csLoadStatus" style="font-size:9px;color:#666;font-family:monospace;flex-shrink:0;"></span>
+          <span id="csLoadStatus" style="font-size:9px;color:#333;font-family:monospace;flex-shrink:0;"></span>`}
           <button id="csOverlayClose" style="
-            background: transparent; border: 1px solid #39dc00; color: #39dc00;
+            background: transparent; border: 1px solid rgba(0,0,0,0.4); color: #000;
             font-family: monospace; font-size: 11px; padding: 3px 10px; cursor: pointer; flex-shrink:0;
           ">✕</button>
         </div>
@@ -2368,8 +2526,9 @@ REQUIRE LOGIN: No (Public access enabled)
         // Escape는 closeOverlay 내부에서 fade 후 remove됨
       });
 
-      // 로컬 폴더에서 사진 불러오기
-      document.getElementById('csLocalFolder').addEventListener('change', function(e) {
+      // 로컬 폴더에서 사진 불러오기 (데스크탑 전용)
+      const csLocalFolderEl = document.getElementById('csLocalFolder');
+      if (csLocalFolderEl) csLocalFolderEl.addEventListener('change', function(e) {
         const files = Array.from(e.target.files);
         if (!files.length) return;
 
@@ -2454,6 +2613,7 @@ REQUIRE LOGIN: No (Public access enabled)
           const lb = document.createElement('div');
           lb.id = 'csLightbox';
           lb.style.cssText = 'position:absolute;inset:0;z-index:50;background:#000;display:flex;flex-direction:column;font-family:monospace;';
+          const isMobLb = window.innerWidth < 768;
           lb.innerHTML = `
             <div style="display:flex;align-items:center;gap:8px;padding:6px 12px;border-bottom:1px solid #39dc00;flex-shrink:0;background:#000;">
               <button id="lbBackBtn" style="font-size:9px;padding:2px 8px;border:1px solid rgba(57,220,0,0.5);background:transparent;color:rgba(57,220,0,0.7);cursor:pointer;font-family:monospace;letter-spacing:1px;">↩ GRID</button>
@@ -2462,12 +2622,12 @@ REQUIRE LOGIN: No (Public access enabled)
               <button id="lbPrevBtn" style="font-size:13px;padding:2px 10px;border:1px solid rgba(57,220,0,0.3);background:transparent;color:rgba(57,220,0,0.7);cursor:pointer;font-family:monospace;">←</button>
               <button id="lbNextBtn" style="font-size:13px;padding:2px 10px;border:1px solid rgba(57,220,0,0.3);background:transparent;color:rgba(57,220,0,0.7);cursor:pointer;font-family:monospace;">→</button>
             </div>
-            <div style="flex:1;display:flex;gap:14px;padding:14px;background:#000;min-height:0;">
-              <div style="flex:1;display:flex;align-items:center;justify-content:center;min-width:0;min-height:0;padding:24px 20px;overflow:hidden;">
-                <img src="${imgSrc}" data-fname="${fname}" style="max-width:100%;max-height:100%;object-fit:contain;display:block;border:1px solid #39dc00;padding:32px;box-shadow:0 0 12px rgba(57,220,0,0.15);" loading="lazy">
+            <div style="flex:1;display:flex;flex-direction:${isMobLb ? 'column' : 'row'};gap:${isMobLb ? '0' : '14px'};padding:${isMobLb ? '8px' : '14px'};background:#000;min-height:0;overflow-y:${isMobLb ? 'auto' : 'hidden'};">
+              <div style="flex:${isMobLb ? '0 0 auto' : '1'};height:${isMobLb ? '200px' : 'auto'};display:flex;align-items:center;justify-content:center;min-width:0;min-height:0;padding:${isMobLb ? '8px' : '24px 20px'};overflow:hidden;">
+                <img src="${imgSrc}" data-fname="${fname}" style="max-width:100%;max-height:100%;object-fit:contain;display:block;border:1px solid #39dc00;padding:${isMobLb ? '12px' : '32px'};box-shadow:0 0 12px rgba(57,220,0,0.15);" loading="lazy">
               </div>
-              <div style="width:320px;flex-shrink:0;display:flex;flex-direction:column;justify-content:center;gap:28px;font-family:monospace;padding-right:52px;">
-                <div style="border:1px solid #39dc00;padding:12px 16px;display:flex;flex-direction:column;gap:10px;width:180px;align-self:flex-end;min-height:100px;justify-content:space-between;">
+              <div style="${isMobLb ? 'width:100%;padding:8px;' : 'width:320px;flex-shrink:0;padding-right:52px;'}display:flex;flex-direction:column;justify-content:${isMobLb ? 'flex-start' : 'center'};gap:${isMobLb ? '10px' : '28px'};font-family:monospace;">
+                <div style="border:1px solid #39dc00;padding:10px 14px;display:flex;flex-direction:column;gap:8px;${isMobLb ? 'width:100%;' : 'width:180px;align-self:flex-end;'}min-height:80px;justify-content:space-between;">
                   <div style="display:flex;align-items:center;justify-content:space-between;">
                     <span style="font-size:9px;color:#777;letter-spacing:2px;">VERDICT</span>
                     <span style="font-size:11px;padding:2px 9px;border:1px solid ${color};color:${color};letter-spacing:1px;">${LABELS[v]||v}</span>
@@ -2481,14 +2641,14 @@ REQUIRE LOGIN: No (Public access enabled)
                     <span style="font-size:11px;color:#ffe94d;letter-spacing:1px;">${p.dir}</span>
                   </div>` : ''}
                 </div>
-                <div style="border:1px solid #39dc00;padding:20px;display:flex;flex-direction:column;gap:14px;min-height:200px;width:280px;">
+                <div style="border:1px solid #39dc00;padding:14px;display:flex;flex-direction:column;gap:10px;${isMobLb ? 'width:100%;min-height:80px;' : 'min-height:200px;width:280px;'}">
                   ${p.category ? `<div style="display:flex;align-items:center;justify-content:space-between;">
                     <span style="font-size:9px;color:#777;letter-spacing:2px;">CATEGORY</span>
                     <span style="font-size:11px;color:#39dc00;letter-spacing:1px;">${p.category}</span>
                   </div>` : ''}
                   ${p.category ? `<div style="border-top:1px solid #39dc00;"></div>` : ''}
                   <div style="font-size:9px;color:#777;letter-spacing:2px;">${v === 'drop' ? 'REASON' : 'NOTE'}</div>
-                  <div style="font-size:12px;color:#ccc;line-height:1.9;">${p.reason || '—'}</div>
+                  <div style="font-size:${isMobLb ? '11px' : '12px'};color:#ccc;line-height:1.9;">${p.reason || '—'}</div>
                 </div>
               </div>
             </div>
@@ -2524,9 +2684,8 @@ REQUIRE LOGIN: No (Public access enabled)
         updateTitle(levelTitle);
 
         // 페이드 트랜지션
-        container.style.transition = 'opacity 0.1s ease';
+        container.style.transition = 'opacity 0.25s ease';
         container.style.opacity = '0';
-
         setTimeout(function() {
 
         // Empty state
@@ -2630,8 +2789,8 @@ REQUIRE LOGIN: No (Public access enabled)
             </div>
           </div>`;
 
-        requestAnimationFrame(function() { container.style.opacity = '1'; });
-        }, 100); // fade out 완료 후 렌더
+        setTimeout(function() { container.style.opacity = '1'; }, 20);
+        }, 250);
 
       }
       // ─── 이벤트 위임: container에 단 하나의 리스너로 모든 클릭 처리 ───
@@ -2757,8 +2916,10 @@ REQUIRE LOGIN: No (Public access enabled)
     // Setup list item click handlers
     function openItemPreviewPopup(item) {
       const modal = document.getElementById('itemPreviewModal');
+      document.getElementById('popupFileTab').textContent = item.category || 'FILE';
+      document.getElementById('popupHeaderMeta').textContent = 'DOC · ' + (item.category || 'REF') + (item.year ? '  ·  ' + item.year : '');
       document.getElementById('popupTitle').textContent = item.title || '';
-      document.getElementById('popupCategory').textContent = (item.category || '') + (item.year ? '  ·  ' + item.year : '');
+      document.getElementById('popupCategory').textContent = (item.author ? item.author + '  ' : '') + (item.year ? '· ' + item.year : '');
       const fullContent = item.text || item.preview || '';
       document.getElementById('popupBody').innerHTML = (typeof marked !== 'undefined') ? marked.parse(fullContent) : fullContent;
       modal.classList.add('active');
@@ -3196,7 +3357,7 @@ REQUIRE LOGIN: No (Public access enabled)
       function displayInitialPhotos() {
         gallery.innerHTML = `
           <div style="display: flex; flex-direction: column; align-items: center; gap: 16px; padding: 20px;">
-            <img src="images/big-brother.jpg"
+            <img src="images/big-brother.jpg?v=2"
               style="max-width: 100%; max-height: 340px; object-fit: contain; display: block;"
               onerror="this.style.display='none'">
             <div style="text-align: center; color: #39dc00; font-size: 15px; font-family: 'Courier New', monospace; font-weight: bold;">
@@ -3459,7 +3620,7 @@ REQUIRE LOGIN: No (Public access enabled)
         mobileContent.innerHTML = `
           <div style="display: flex; flex-direction: column; height: 100%; gap: 0;">
             <div style="display: flex; flex-direction: column; align-items: center; gap: 10px; padding: 12px; flex-shrink: 0;">
-              <img src="images/big-brother.jpg"
+              <img src="images/big-brother.jpg?v=2"
                 style="max-width: 100%; max-height: 220px; object-fit: contain; display: block;"
                 onerror="this.style.display='none'">
               <div style="text-align: center; color: #39dc00; font-size: 11px; font-family: monospace;">Enter your instructions</div>
@@ -3537,6 +3698,96 @@ REQUIRE LOGIN: No (Public access enabled)
         html += '</div>';
         mobileContent.innerHTML = html;
 
+      } else if (content.isBookshelf) {
+        // Bookshelf format for mobile — rich dark palette, same as desktop
+        const allBookItems = [...(content.items || []), ...getPublishedPosts(section)];
+        // library_bookshelf.html shelf3 colors — matches desktop
+        const bookPalette = [
+          { bg: '#000000', band: '#00aa00', side: '#8a8a8a', tc: '#aaaaaa', mark: '#8a8a8a', line: true },
+          { bg: '#000000', band: '#888888', side: '#8a8a8a', tc: '#aaaaaa', mark: '#8a8a8a', line: true },
+          { bg: '#000000', band: '#aaaa00', side: '#8a8a8a', tc: '#aaaaaa', mark: '#8a8a8a', line: true },
+          { bg: '#000000', band: '#00aa00', side: '#8a8a8a', tc: '#aaaaaa', mark: '#8a8a8a', line: true },
+          { bg: '#000000', band: '#888888', side: '#8a8a8a', tc: '#aaaaaa', mark: '#8a8a8a', line: true },
+          { bg: '#000000', band: '#aaaa00', side: '#8a8a8a', tc: '#aaaaaa', mark: '#8a8a8a', line: true },
+          { bg: '#000000', band: '#00aa00', side: '#8a8a8a', tc: '#aaaaaa', mark: '#8a8a8a', line: true },
+          { bg: '#000000', band: '#888888', side: '#8a8a8a', tc: '#aaaaaa', mark: '#8a8a8a', line: true },
+          { bg: '#000000', band: '#aaaa00', side: '#8a8a8a', tc: '#aaaaaa', mark: '#8a8a8a', line: true },
+          { bg: '#000000', band: '#00aa00', side: '#8a8a8a', tc: '#aaaaaa', mark: '#8a8a8a', line: true },
+          { bg: '#000000', band: '#888888', side: '#8a8a8a', tc: '#aaaaaa', mark: '#8a8a8a', line: true },
+          { bg: '#000000', band: '#aaaa00', side: '#8a8a8a', tc: '#aaaaaa', mark: '#8a8a8a', line: true },
+          { bg: '#000000', band: '#00aa00', side: '#8a8a8a', tc: '#aaaaaa', mark: '#8a8a8a', line: true },
+          { bg: '#000000', band: '#888888', side: '#8a8a8a', tc: '#aaaaaa', mark: '#8a8a8a', line: true },
+          { bg: '#000000', band: '#aaaa00', side: '#8a8a8a', tc: '#aaaaaa', mark: '#8a8a8a', line: true },
+          { bg: '#000000', band: '#00aa00', side: '#8a8a8a', tc: '#aaaaaa', mark: '#8a8a8a', line: true },
+        ];
+        const mWidths  = [24, 28, 25, 32, 22, 27, 31, 24, 28, 25, 27, 22, 28, 32, 24, 27];
+        const mHeights = [187, 204, 194, 219, 182, 201, 197, 212, 190, 202, 182, 195, 201, 189, 214, 194];
+        const mLeans   = [-1.5, -0.8, 0, 0, 1.2, 0, -1, 0, 0.7, 0, 1.5, -0.6, 0, 0, 0.4, -0.3];
+        const MGROUP   = 3;
+        let mRowInner  = '';
+        allBookItems.forEach((item, idx) => {
+          if (idx > 0 && idx % MGROUP === 0) {
+            mRowInner += `<div style="flex-shrink:0;width:40px;"></div>`;
+          }
+          const p    = bookPalette[idx % bookPalette.length];
+          const w    = mWidths[idx % mWidths.length];
+          const h    = mHeights[idx % mHeights.length];
+          const lean = mLeans[idx % mLeans.length];
+          mRowInner += `<div class="bk3d-m" data-index="${idx}" style="width:${w}px;height:${h}px;transform:rotate(${lean}deg);transform-origin:bottom center;" title="${(item.title||'').replace(/"/g,'&quot;')}">
+            <div style="width:100%;height:100%;background:${p.bg};overflow:hidden;position:relative;border-radius:1px 0 0 1px;">
+              <div style="position:absolute;inset:0;background:linear-gradient(90deg,rgba(255,255,255,.06) 0%,transparent 40%,rgba(0,0,0,.18) 100%);pointer-events:none;"></div>
+              <div style="position:absolute;left:0;right:0;top:0;height:12px;background:${p.band};"></div>
+              ${p.line ? `<div style="position:absolute;top:0;bottom:0;left:${Math.round(w*.28)}px;width:1px;background:${p.band};z-index:3;opacity:.5;"></div><div style="position:absolute;top:0;bottom:0;left:${Math.round(w*.72)}px;width:1px;background:${p.band};z-index:3;opacity:.5;"></div>` : ''}
+              ${p.mark ? `<div style="position:absolute;top:-4px;right:${Math.max(3,Math.round(w*.3))}px;width:7px;height:16px;background:${p.mark};clip-path:polygon(0 0,100% 0,100% 85%,50% 100%,0 85%);z-index:5;opacity:.9;"></div>` : ''}
+              <div style="position:absolute;top:17px;bottom:6px;left:0;right:0;display:flex;flex-direction:column;justify-content:space-between;align-items:center;overflow:hidden;pointer-events:none;">
+                <span style="writing-mode:vertical-rl;color:${p.tc};font-weight:700;font-size:9px;letter-spacing:.04em;max-height:72%;overflow:hidden;text-align:center;">${item.title||''}</span>
+                <span style="writing-mode:vertical-rl;color:${p.tc};opacity:.6;font-size:7px;letter-spacing:.02em;max-height:22%;overflow:hidden;">${item.author||''}</span>
+              </div>
+            </div>
+            <div class="bk-side" style="background:${p.side};"></div>
+          </div>`;
+        });
+        mobileContent.style.whiteSpace = 'normal';
+        mobileContent.style.padding = '0';
+        mobileContent.innerHTML = `
+          <style>
+            .bk3d-m{position:relative;cursor:pointer;flex-shrink:0;transition:transform .18s ease,filter .18s ease;z-index:2;}
+            .bk3d-m:active{transform:translateY(-12px) rotate(0deg) !important;filter:brightness(1.3);}
+            .bk3d-m::before{
+              content:'';position:absolute;left:4px;top:-5px;right:-5px;height:5px;
+              background:repeating-linear-gradient(90deg,#f0e8d0 0,#f0e8d0 1.5px,#d4c8a8 1.5px,#d4c8a8 2.8px);
+              transform:skewX(-45deg);transform-origin:bottom left;z-index:5;
+            }
+            .bk3d-m::after{content:none;}
+            .bk-side{position:absolute;right:-5px;top:-5px;width:5px;bottom:0;transform:skewY(-45deg);transform-origin:top left;z-index:5;}
+            .bk3d-m-bend{width:12px;flex-shrink:0;background:linear-gradient(180deg,#00ff00 0%,#00cc00 100%);border-radius:2px 2px 0 0;position:relative;z-index:2;box-shadow:2px 0 5px rgba(0,0,0,.7);}
+          </style>
+          <div style="display:flex;flex-direction:column;font-family:'Monaco','Menlo','Consolas','Courier New',monospace;background:#000;">
+            <div style="padding:7px 12px;border-bottom:1px solid #39dc00;font-size:10px;font-weight:bold;flex-shrink:0;color:#39dc00;letter-spacing:1px;display:flex;justify-content:space-between;align-items:center;">
+              <span>REFERENCE — ${allBookItems.length} ENTRIES</span>
+              <span style="opacity:0.4;font-weight:normal;font-size:9px;">← scroll →</span>
+            </div>
+            <div style="overflow-x:auto;overflow-y:visible;padding:20px 12px 0 40px;scrollbar-width:thin;scrollbar-color:#1a1a1a #000;-webkit-overflow-scrolling:touch;">
+              <div style="display:inline-flex;align-items:flex-end;gap:2px;min-width:min-content;">
+                <div class="bk3d-m-bend" style="height:44px;"></div>
+                ${mRowInner}
+                <div class="bk3d-m-bend" style="height:36px;"></div>
+              </div>
+            </div>
+            <div style="flex-shrink:0;height:44px;background:linear-gradient(180deg,rgba(57,220,0,0.16) 0%,rgba(57,220,0,0.05) 55%,rgba(0,0,0,0) 100%);"></div>
+            <div style="flex-shrink:0;padding:5px 12px;font-size:9px;color:rgba(57,220,0,0.35);display:flex;justify-content:flex-end;align-items:center;border-top:1px solid rgba(57,220,0,0.12);">
+              <span>tap to open</span>
+            </div>
+          </div>
+        `;
+        setTimeout(() => {
+          document.querySelectorAll('.bk3d-m').forEach(el => {
+            el.addEventListener('click', () => {
+              const idx = parseInt(el.dataset.index);
+              if (allBookItems[idx]) showMobileItemDetail(allBookItems[idx], allBookItems, idx, section);
+            });
+          });
+        }, 0);
       } else if (content.isFigmaBoard) {
         // Figma board format
         mobileContent.innerHTML = `
@@ -3775,6 +4026,7 @@ REQUIRE LOGIN: No (Public access enabled)
         // Load initial content
         loadContent('project');
         // Mobile content is loaded by detectAndSwitchLayout
+
       }
     });
   </script>
