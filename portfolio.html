@@ -47,9 +47,13 @@ html, body { background: #000; color: #39dc00; font-family: 'Courier New', monos
   flex-shrink: 0;
   display: flex;
   flex-direction: column;
-  border: 2px solid #39dc00;
+  border-top: 2px solid #7fff4f;
+  border-left: 2px solid #7fff4f;
+  border-bottom: 2px solid #1a5500;
+  border-right: 2px solid #1a5500;
   background: rgba(0, 0, 0, 0.75);
-  box-shadow: 0 0 20px rgba(57, 220, 0, 0.3);
+  box-shadow: 0 0 20px rgba(57,220,0,0.2), inset 1px 1px 0 rgba(150,255,80,0.12), inset -1px -1px 0 rgba(0,0,0,0.5);
+  position: relative;
 }
 
 .menu-titlebar {
@@ -92,7 +96,10 @@ html, body { background: #000; color: #39dc00; font-family: 'Courier New', monos
 
 .menu-item {
   padding: 12px;
-  border: 2px solid #39dc00;
+  border-top: 2px solid #7fff4f;
+  border-left: 2px solid #7fff4f;
+  border-bottom: 2px solid #1a5500;
+  border-right: 2px solid #1a5500;
   background: #000;
   color: #39dc00;
   cursor: pointer;
@@ -128,9 +135,13 @@ html, body { background: #000; color: #39dc00; font-family: 'Courier New', monos
   flex: 1;
   display: flex;
   flex-direction: column;
-  border: 2px solid #39dc00;
+  border-top: 2px solid #7fff4f;
+  border-left: 2px solid #7fff4f;
+  border-bottom: 2px solid #1a5500;
+  border-right: 2px solid #1a5500;
   background: rgba(0, 0, 0, 0.75);
-  box-shadow: 0 0 20px rgba(57, 220, 0, 0.3);
+  box-shadow: 0 0 20px rgba(57,220,0,0.2), inset 1px 1px 0 rgba(150,255,80,0.12), inset -1px -1px 0 rgba(0,0,0,0.5);
+  position: relative;
 }
 
 .terminal-titlebar {
@@ -2143,7 +2154,7 @@ REQUIRE LOGIN: No (Public access enabled)
       const itemWidth = 200;
       const itemHeight = 160;
       const padding = 12; // Space between items
-      const columns = 4;
+      const columns = 3;
 
       // Calculate grid dimensions
       const gridX = 20; // Left margin
@@ -2290,8 +2301,11 @@ REQUIRE LOGIN: No (Public access enabled)
         background: #000; z-index: 9000;
         display: flex; flex-direction: column;
         font-family: monospace;
-        border: 1px solid #39dc00;
-        box-shadow: 0 0 40px rgba(57,220,0,0.15);
+        border-top: 2px solid #7fff4f;
+        border-left: 2px solid #7fff4f;
+        border-bottom: 2px solid #1a5500;
+        border-right: 2px solid #1a5500;
+        box-shadow: 0 0 20px rgba(57,220,0,0.2), inset 1px 1px 0 rgba(150,255,80,0.12), inset -1px -1px 0 rgba(0,0,0,0.5);
         opacity: 0; transition: opacity 0.15s ease;
       `;
 
