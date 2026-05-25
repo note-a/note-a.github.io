@@ -1412,7 +1412,8 @@ html, body { background: #000; color: #39dc00; font-family: 'Courier New', monos
       },
       about: {
         title: 'About',
-        text: ''
+        text: '',
+        artistStatement: ''
       },
       archive: {
         title: 'Measure',
@@ -1825,6 +1826,9 @@ REQUIRE LOGIN: No (Public access enabled)
         if (adminContents.about && adminContents.about.text !== undefined) {
           contents.about.text = adminContents.about.text;
         }
+        if (adminContents.about && adminContents.about.artistStatement !== undefined) {
+          contents.about.artistStatement = adminContents.about.artistStatement;
+        }
         if (adminContents.inclusion && adminContents.inclusion.text) {
           contents.inclusion.text = adminContents.inclusion.text;
         }
@@ -2205,32 +2209,53 @@ REQUIRE LOGIN: No (Public access enabled)
           `;
           terminalContent.innerHTML = figmaHTML;
         } else {
-          // Regular text format
+          // Regular text format (About etc.)
           const mdText = content.text || '';
           const displayText = mdText || '<span style="opacity:0.5">[어드민에서 내용을 입력하세요]</span>';
-          let textHTML = `<div class="md-content" style="padding: 12px;" id="contentText">${displayText}</div>`;
-
-          // Add published posts if any
-          if (publishedPosts.length > 0) {
-            textHTML += `
-              <div style="margin-top: 20px; padding-top: 15px; border-top: 1px solid #39dc00; color: #39dc00; font-size: 11px;">
-                <div style="font-weight: bold; margin-bottom: 10px;">최근 게시물:</div>
-                <div style="display: flex; flex-direction: column; gap: 8px;">
-                  ${publishedPosts.map(item => `
-                    <div style="border: 1px solid #39dc00; padding: 8px; font-size: 9px;">
-                      <div style="font-weight: bold;">${item.title}</div>
-                      <div style="opacity: 0.8; font-size: 8px;">By ${item.author} (${item.year})</div>
-                      <div style="margin-top: 4px;">${item.preview.substring(0, 100)}...</div>
-                    </div>
-                  `).join('')}
-                </div>
-              </div>
-            `;
-          }
-
+          const hasStatement = !!(content.artistStatement);
+          const statementBtnHTML = hasStatement
+            ? `<div style="margin-top:18px;padding-top:14px;border-top:1px dashed #39dc00;">
+                 <button onclick="loadAboutStatement()" style="background:#000;border-top:2px solid #7fff4f;border-left:2px solid #7fff4f;border-bottom:2px solid #1a5500;border-right:2px solid #1a5500;color:#39dc00;padding:6px 16px;font-family:'Courier New',monospace;font-size:10px;cursor:pointer;letter-spacing:1px;font-weight:bold;transition:all 0.1s;" onmouseover="this.style.background='#39dc00';this.style.color='#000';" onmouseout="this.style.background='#000';this.style.color='#39dc00';">[ ARTIST STATEMENT → ]</button>
+               </div>`
+            : '';
+          let textHTML = `<div style="padding:12px;"><div class="md-content" id="contentText">${displayText}</div>${statementBtnHTML}</div>`;
           terminalContent.innerHTML = textHTML;
         }
       }
+    }
+
+    // Show artist statement view (desktop)
+    function loadAboutStatement() {
+      const terminalContent = document.getElementById('terminalContent');
+      if (!terminalContent) return;
+      const stmt = contents.about.artistStatement || '';
+      const displayStmt = stmt || '<span style="opacity:0.5">[어드민에서 아티스트 스테이트먼트를 입력하세요]</span>';
+      terminalContent.innerHTML = `
+        <div style="padding:12px;">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;padding-bottom:10px;border-bottom:1px dashed #39dc00;">
+            <button onclick="loadContent('about')" style="background:#000;border-top:2px solid #7fff4f;border-left:2px solid #7fff4f;border-bottom:2px solid #1a5500;border-right:2px solid #1a5500;color:#39dc00;padding:4px 12px;font-family:'Courier New',monospace;font-size:9px;cursor:pointer;letter-spacing:1px;font-weight:bold;transition:all 0.1s;" onmouseover="this.style.background='#39dc00';this.style.color='#000';" onmouseout="this.style.background='#000';this.style.color='#39dc00';">[ ← BACK ]</button>
+            <span style="color:#39dc00;font-size:10px;font-weight:bold;letter-spacing:2px;opacity:0.8;">ARTIST_STATEMENT.TXT</span>
+          </div>
+          <div class="md-content">${displayStmt}</div>
+        </div>
+      `;
+    }
+
+    // Show artist statement view (mobile)
+    function loadAboutStatementMobile() {
+      const mobileContent = document.getElementById('mobileContentText');
+      if (!mobileContent) return;
+      const stmt = contents.about.artistStatement || '';
+      const displayStmt = stmt || '<div style="padding:20px;color:#39dc00;opacity:0.5;font-size:11px;">[어드민에서 아티스트 스테이트먼트를 입력하세요]</div>';
+      mobileContent.innerHTML = `
+        <div style="padding:12px;">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;padding-bottom:10px;border-bottom:1px dashed #39dc00;">
+            <button onclick="loadContentToMobile('about')" style="background:#000;border-top:2px solid #7fff4f;border-left:2px solid #7fff4f;border-bottom:2px solid #1a5500;border-right:2px solid #1a5500;color:#39dc00;padding:5px 12px;font-family:'Courier New',monospace;font-size:10px;cursor:pointer;letter-spacing:1px;font-weight:bold;">[ ← BACK ]</button>
+            <span style="color:#39dc00;font-size:10px;font-weight:bold;letter-spacing:2px;opacity:0.8;">ARTIST_STATEMENT.TXT</span>
+          </div>
+          <div class="md-content">${displayStmt}</div>
+        </div>
+      `;
     }
 
     // Position board items in aligned grid
@@ -3754,9 +3779,16 @@ REQUIRE LOGIN: No (Public access enabled)
         `;
       } else if (content.text !== undefined) {
         // Text format (텍스트가 빈 문자열이어도 표시)
-        mobileContent.innerHTML = content.text
+        const mobileMainText = content.text
           ? content.text
           : '<div style="padding:20px;color:#39dc00;opacity:0.5;font-size:11px;">[어드민에서 내용을 입력하세요]</div>';
+        const hasMobileStatement = !!(content.artistStatement);
+        const mobileStmtBtn = hasMobileStatement
+          ? `<div style="margin-top:18px;padding-top:14px;border-top:1px dashed #39dc00;">
+               <button onclick="loadAboutStatementMobile()" style="background:#000;border-top:2px solid #7fff4f;border-left:2px solid #7fff4f;border-bottom:2px solid #1a5500;border-right:2px solid #1a5500;color:#39dc00;padding:7px 16px;font-family:'Courier New',monospace;font-size:10px;cursor:pointer;letter-spacing:1px;font-weight:bold;">[ ARTIST STATEMENT → ]</button>
+             </div>`
+          : '';
+        mobileContent.innerHTML = `<div style="padding:12px;">${mobileMainText}${mobileStmtBtn}</div>`;
       } else if (content.items) {
         // List/Board format - Match desktop table layout
         mobileContent.innerHTML = '';
@@ -3874,6 +3906,7 @@ REQUIRE LOGIN: No (Public access enabled)
           if (data && Object.keys(data).length > 0) {
             if (data.project && data.project.photos && data.project.photos.some(p => p.type === 'sheet')) contents.project.photos = data.project.photos;
             if (data.about && data.about.text !== undefined) contents.about.text = data.about.text;
+            if (data.about && data.about.artistStatement !== undefined) contents.about.artistStatement = data.about.artistStatement;
             if (data.inclusion && data.inclusion.text) contents.inclusion.text = data.inclusion.text;
             if (data.intro && data.intro.photos && data.intro.photos.some(p => p.type === 'sheet')) contents.intro.photos = data.intro.photos;
             if (data.rule && data.rule.items) contents.rule.items = data.rule.items;
