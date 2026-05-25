@@ -18,6 +18,10 @@ html, body { background: #000; color: #39dc00; font-family: 'Courier New', monos
 }
 
 @keyframes marquee { 0% { text-indent: 100vw; } 100% { text-indent: -150vw; } }
+@keyframes pm-blink { 0%,100% { opacity:1; } 50% { opacity:0; } }
+.pm-blink { animation: pm-blink 1s infinite; }
+@keyframes vlpulse { 0%,100%{opacity:1;box-shadow:0 0 4px #ffb000;} 50%{opacity:0.3;box-shadow:none;} }
+@keyframes vlSlideIn { from{opacity:0;} to{opacity:1;} }
 
 .portfolio-container {
   display: flex;
@@ -35,7 +39,7 @@ html, body { background: #000; color: #39dc00; font-family: 'Courier New', monos
 .portfolio-window {
   display: flex;
   width: 100%;
-  max-width: 950px;
+  max-width: 1260px;
   height: calc(100vh - 240px);
   gap: 12px;
   overflow: hidden;
@@ -1207,6 +1211,72 @@ html, body { background: #000; color: #39dc00; font-family: 'Courier New', monos
         <span style="color:#39dc00;">SIZE: DYNAMIC</span>
       </div>
       </div>
+
+      <!-- RIGHT COLUMN: TASK MANAGER + VIEWER LOG -->
+      <div style="width:260px;flex-shrink:0;display:flex;flex-direction:column;gap:10px;align-self:flex-start;">
+
+        <!-- TASK MANAGER -->
+        <div id="pmWindow" style="
+          background:#000;
+          border-top:2px solid #7fff4f; border-left:2px solid #7fff4f;
+          border-bottom:2px solid #1a5500; border-right:2px solid #1a5500;
+          box-shadow:0 0 20px rgba(57,220,0,0.2);
+          font-family:'Courier New',monospace;
+          display:flex; flex-direction:column;
+        ">
+          <div style="background:#39dc00;color:#000;padding:5px 10px;font-size:11px;font-weight:bold;display:flex;justify-content:space-between;align-items:center;flex-shrink:0;">
+            <span>TASK MANAGER — SET.EXE</span>
+            <div style="display:flex;gap:3px;">
+              <div onclick="const b=document.getElementById('pmBody');b.style.display=b.style.display==='none'?'flex':'none';" style="width:14px;height:14px;background:#39dc00;border:1px solid #000;color:#000;font-size:9px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-weight:bold;">_</div>
+              <div style="width:14px;height:14px;background:#39dc00;border:1px solid #000;color:#000;font-size:9px;display:flex;align-items:center;justify-content:center;font-weight:bold;">□</div>
+            </div>
+          </div>
+          <div style="border-bottom:1px solid #39dc00;padding:3px 10px;font-size:10px;display:flex;gap:12px;color:#39dc00;opacity:0.7;flex-shrink:0;">
+            <span>File</span><span>Options</span><span>View</span><span>Help</span>
+          </div>
+          <div id="pmBody" style="display:flex;flex-direction:column;flex:1;min-height:0;">
+            <div style="display:grid;grid-template-columns:2fr 0.8fr 1fr 1fr;padding:3px 10px;font-size:9px;color:#39dc00;border-bottom:1px solid #1a5500;opacity:0.55;flex-shrink:0;">
+              <span>Process</span><span>PID</span><span>CPU</span><span>Status</span>
+            </div>
+            <div id="pmRows" style="flex:1;overflow:hidden;"></div>
+            <div style="border-top:1px solid #39dc00;padding:4px 10px;font-size:9px;display:flex;justify-content:space-between;color:#39dc00;opacity:0.65;flex-shrink:0;">
+              <span>Processes: 6</span>
+              <span>CPU: <span id="pmTotalCpu">--</span>%</span>
+              <span>MEM: 64MB <span class="pm-blink">█</span></span>
+            </div>
+          </div>
+        </div>
+
+        <!-- VIEWER LOG -->
+        <div id="vlWindow" style="
+          background:#000;
+          border-top:2px solid #7fff4f; border-left:2px solid #7fff4f;
+          border-bottom:2px solid #1a5500; border-right:2px solid #1a5500;
+          box-shadow:0 0 20px rgba(57,220,0,0.15);
+          font-family:'Courier New',monospace;
+        ">
+          <div style="background:#39dc00;color:#000;padding:5px 10px;font-size:10px;font-weight:bold;letter-spacing:1px;display:flex;justify-content:space-between;align-items:center;">
+            <span>VIEWER_LOG.EXE</span>
+            <div onclick="const b=document.getElementById('vlBody');b.style.display=b.style.display==='none'?'block':'none';" style="width:13px;height:13px;background:#39dc00;border:1px solid #000;color:#000;font-size:8px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-weight:bold;">_</div>
+          </div>
+          <div id="vlBody">
+            <div style="border-bottom:1px solid #1a1a1a;padding:4px 10px;font-size:9px;display:flex;justify-content:space-between;align-items:center;">
+              <span><span id="vlDot" style="display:inline-block;width:6px;height:6px;background:#ffb000;border-radius:50%;margin-right:5px;vertical-align:middle;animation:vlpulse 0.9s infinite;box-shadow:0 0 4px #ffb000;"></span><span style="color:#555;font-size:9px;">MEASURE SEARCH LOG</span></span>
+              <span style="color:#ffb000;font-size:9px;" id="vlCount">0 queries</span>
+            </div>
+            <div style="height:130px;overflow:hidden;">
+              <div id="vlList" style="display:flex;flex-direction:column;padding:4px 0;"></div>
+            </div>
+            <div style="border-top:1px solid #1a1a1a;padding:4px 10px;font-size:9px;display:flex;justify-content:space-between;align-items:center;">
+              <span style="color:#333;">SRC: /measure/search</span>
+              <span style="color:#555;" id="vlLastTime">--:--:--</span>
+              <span style="color:#ffb000;animation:pm-blink 1s infinite;">█</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
     </div>
   </div>
   </div>
@@ -1894,6 +1964,9 @@ REQUIRE LOGIN: No (Public access enabled)
       // Close any open overlays before loading new content
       console.log('loadContent called with section: ' + section);
       closeAllOverlays();
+
+      // PM 창 활성 섹션 업데이트
+      if (typeof pmRender === 'function') pmRender(section);
 
       const terminalContent = document.getElementById('terminalContent');
       terminalContent.style.transition = 'opacity 0.25s ease';
@@ -4025,6 +4098,106 @@ REQUIRE LOGIN: No (Public access enabled)
         // Mobile content is loaded by detectAndSwitchLayout
 
       }
+
+      // ── PROCESS MONITOR ──────────────────────────────────────
+      const pmProcesses = [
+        { key:'project',   name:'SET.EXE',        pid:'0x001', cpu:72 },
+        { key:'inclusion', name:'INCLUSION.EXE',   pid:'0x002', cpu:38 },
+        { key:'rule',      name:'LOG.DLL',          pid:'0x003', cpu:15 },
+        { key:'reference', name:'REFERENCE.SYS',   pid:'0x004', cpu:5  },
+        { key:'archive',   name:'MEASURE.EXE',     pid:'0x005', cpu:91 },
+        { key:'about',     name:'ABOUT.TXT',        pid:'0x006', cpu:8  },
+      ];
+
+      function pmRender(activeKey) {
+        const container = document.getElementById('pmRows');
+        if (!container) return;
+        container.innerHTML = pmProcesses.map(p => {
+          const isActive = p.key === activeKey;
+          const rowBg = isActive ? 'rgba(57,220,0,0.12)' : 'transparent';
+          const barW = Math.max(2, Math.min(99, p.cpu + (Math.random()-0.5)*10));
+          p._curCpu = barW;
+          // 샘플 색상 그대로: active=green, others=white(#e0e0e0)
+          const nameColor = isActive ? '#39dc00' : '#909090';
+          const statusColor = isActive ? '#39dc00' : '#39dc00';
+          const pidColor = '#888';
+          return `
+            <div onclick="loadContent('${p.key}'); pmRender('${p.key}');"
+              style="display:grid;grid-template-columns:2fr 0.8fr 1fr 1fr;align-items:center;padding:5px 10px;font-size:10px;border-bottom:1px dashed #0d2e00;cursor:pointer;background:${rowBg};transition:background 0.1s;"
+              onmouseover="this.style.background='rgba(57,220,0,0.08)'"
+              onmouseout="this.style.background='${isActive?'rgba(57,220,0,0.12)':'transparent'}'">
+              <span style="font-weight:bold;color:${nameColor};white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${p.name}</span>
+              <span style="color:${pidColor};font-size:9px;">${p.pid}</span>
+              <span>
+                <span style="display:inline-block;width:34px;height:7px;border:1px solid #39dc00;background:#000;overflow:hidden;vertical-align:middle;">
+                  <span style="display:block;height:100%;width:${barW}%;background:#39dc00;"></span>
+                </span>
+              </span>
+              <span style="color:${statusColor};font-size:9px;">RUNNING</span>
+            </div>`;
+        }).join('');
+      }
+
+      // CPU 바 주기적 업데이트
+      setInterval(() => {
+        const activeKey = document.querySelector('.menu-item.active')?.getAttribute('data-section') || 'about';
+        pmRender(activeKey);
+        const avg = Math.floor(pmProcesses.reduce((s,p)=>s+(p._curCpu||p.cpu),0)/pmProcesses.length);
+        const el = document.getElementById('pmTotalCpu');
+        if (el) el.textContent = avg;
+      }, 1400);
+
+      // 초기 렌더
+      pmRender('about');
+
+      // ── VIEWER LOG ───────────────────────────────────────────
+      let _vlTotal = 0;
+
+      function _pad(n) { return String(n).padStart(2,'0'); }
+      function _vlTime() {
+        const d = new Date();
+        return `${_pad(d.getHours())}:${_pad(d.getMinutes())}:${_pad(d.getSeconds())}`;
+      }
+
+      function vlAddEntry(query) {
+        const list = document.getElementById('vlList');
+        const countEl = document.getElementById('vlCount');
+        const lastEl = document.getElementById('vlLastTime');
+        if (!list) return;
+        _vlTotal++;
+        const t = _vlTime();
+
+        // 기존 항목 age 올리기
+        list.querySelectorAll('.vl-entry').forEach((el, i) => {
+          el.setAttribute('data-age', Math.min(i + 1, 4));
+          _vlApplyAge(el);
+        });
+
+        const entry = document.createElement('div');
+        entry.className = 'vl-entry';
+        entry.setAttribute('data-age', '0');
+        entry.style.cssText = 'display:grid;grid-template-columns:52px 1fr;gap:6px;padding:3px 10px;font-size:9px;border-bottom:1px solid #0a0a0a;animation:vlSlideIn 0.3s ease;';
+        entry.innerHTML = `<span style="color:#ffb000;font-size:8px;padding-top:1px;">[${t}]</span><span style="color:#ffb000;font-weight:bold;">${query}</span>`;
+        list.prepend(entry);
+
+        while (list.children.length > 7) list.lastElementChild.remove();
+
+        if (countEl) countEl.textContent = _vlTotal + ' queries';
+        if (lastEl) lastEl.textContent = t;
+      }
+
+      function _vlApplyAge(el) {
+        const age = parseInt(el.getAttribute('data-age') || 0);
+        const colors = ['#ffb000','#c8c8c8','#888','#444','#222'];
+        const timeColors = ['#ffb000','#666','#444','#2a2a2a','#1a1a1a'];
+        const q = el.querySelector('span:last-child');
+        const tm = el.querySelector('span:first-child');
+        if (q) q.style.color = colors[age];
+        if (q) q.style.fontWeight = age === 0 ? 'bold' : 'normal';
+        if (tm) tm.style.color = timeColors[age];
+      }
+
+
     });
   </script>
 </body>
