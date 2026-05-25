@@ -883,6 +883,7 @@ html, body { background: #000; color: #39dc00; font-family: 'Courier New', monos
       const items = [];
       rows.forEach(el => {
         const title = el.querySelector('.ali-title')?.value || '';
+        const pinnedEl = el.querySelector('.ali-pinned');
         items.push({
           id: title.toUpperCase().replace(/\s+/g, '_') || `ITEM_${Date.now()}`,
           title,
@@ -890,7 +891,8 @@ html, body { background: #000; color: #39dc00; font-family: 'Courier New', monos
           year: el.querySelector('.ali-year')?.value || '',
           category: el.querySelector('.ali-category')?.value || '',
           status: el.querySelector('.ali-status')?.value || '',
-          preview: el.querySelector('.ali-preview')?.value || ''
+          preview: el.querySelector('.ali-preview')?.value || '',
+          pinned: pinnedEl ? pinnedEl.checked : false
         });
       });
       if (!_adminEditBuffer[section]) _adminEditBuffer[section] = {};
@@ -1561,11 +1563,19 @@ html, body { background: #000; color: #39dc00; font-family: 'Courier New', monos
         const cv = (item.category || '').replace(/"/g, '&quot;');
         const sv = (item.status || '').replace(/"/g, '&quot;');
         const pv = (item.preview || '').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+        const pinned = item.pinned ? 'checked' : '';
+        const pinnedBorder = item.pinned ? 'border:1px solid #ffb000;' : 'border:1px dashed #39dc00;';
 
         html += `
-    <div class="admin-item-row" style="border:1px dashed #39dc00;padding:12px;">
+    <div class="admin-item-row" style="${pinnedBorder}padding:12px;">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
-        <span style="font-weight:bold;font-size:11px;color:#39dc00;">ITEM ${idx + 1}</span>
+        <div style="display:flex;align-items:center;gap:10px;">
+          <span style="font-weight:bold;font-size:11px;color:${item.pinned ? '#ffb000' : '#39dc00'};">ITEM ${idx + 1}${item.pinned ? ' 📌' : ''}</span>
+          <label style="display:flex;align-items:center;gap:4px;cursor:pointer;font-size:10px;color:#ffb000;">
+            <input type="checkbox" class="ali-pinned" ${pinned} style="accent-color:#ffb000;cursor:pointer;">
+            상단고정
+          </label>
+        </div>
         <button onclick="adminDeleteItem('${section}',${idx})" style="background:#331000;color:#ff3333;border:1px solid #ff3333;padding:3px 10px;font-family:monospace;font-size:9px;cursor:pointer;letter-spacing:1px;">✕ DELETE</button>
       </div>
       <div style="display:flex;flex-direction:column;gap:8px;">
