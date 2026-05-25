@@ -960,10 +960,17 @@ html, body { background: #000; color: #39dc00; font-family: 'Courier New', monos
         const response = await fetch('https://raw.githubusercontent.com/note-a/note-a-github/main/admin-contents.json?t=' + Date.now());
         if (response.ok) {
           const data = await response.json();
-          portfolioEditData = data;
           _dataSource = 'github';
-          // Sync to localStorage so subsequent loads are consistent
-          try { localStorage.setItem('adminContents', JSON.stringify(data)); } catch(e) {}
+          // Merge: GitHub as base, local data takes priority (preserves unsaved/locally-saved edits)
+          try {
+            const existingLocal = JSON.parse(localStorage.getItem('adminContents') || '{}');
+            // Per-key merge: if local has a key, keep it (user's edits > GitHub CDN cache)
+            const merged = Object.assign({}, data, existingLocal);
+            portfolioEditData = merged;
+            localStorage.setItem('adminContents', JSON.stringify(merged));
+          } catch(e) {
+            portfolioEditData = data;
+          }
           _updateDataSourceBadge();
           return;
         }
@@ -1265,7 +1272,7 @@ html, body { background: #000; color: #39dc00; font-family: 'Courier New', monos
       } else if (subsection === 'archive') {
         formHTML = generateArchivePhotosForm();
       } else if (subsection === 'about') {
-        formHTML = generateSlidesForm('about');
+        formHTML = generateTextForm('about');
       }
 
       portfolioEditContent.innerHTML = formHTML;
@@ -1514,11 +1521,17 @@ html, body { background: #000; color: #39dc00; font-family: 'Courier New', monos
 
     function generateTextForm(section) {
       const text = portfolioEditData[section]?.text || '';
+      const labels = { about: 'ABOUT — 작가 소개 편집', inclusion: 'SET INCLUSION 편집', video: 'VIDEO 편집' };
+      const label = labels[section] || 'EDIT ' + section.toUpperCase();
+      const hint = section === 'about'
+        ? '<div style="font-size:9px;color:#888;margin-bottom:8px;line-height:1.6;">작가 소개, 작업 노트 등 자유 입력. HTML 또는 일반 텍스트.<br>작성 후 상단 [SAVE] 버튼을 누르세요.</div>'
+        : '';
 
       return `
-        <div style="display: flex; flex-direction: column; gap: 8px;">
-          <label style="display: block; font-size: 10px; font-weight: bold;">EDIT ${section.toUpperCase()}</label>
-          <textarea class="portfolio-text-${section}" style="width: 100%; height: 400px; background: #000; border: 1px solid #39dc00; color: #39dc00; padding: 8px; font-family: monospace; font-size: 10px; outline: none; box-sizing: border-box; resize: vertical;">${text}</textarea>
+        <div style="display:flex;flex-direction:column;gap:8px;padding:12px;">
+          <div style="color:#39dc00;font-size:11px;font-weight:bold;border-bottom:1px solid #39dc00;padding-bottom:8px;">${label}</div>
+          ${hint}
+          <textarea class="portfolio-text-${section}" style="width:100%;height:420px;background:#000;border:1px solid #39dc00;color:#39dc00;padding:8px;font-family:monospace;font-size:11px;outline:none;box-sizing:border-box;resize:vertical;line-height:1.7;">${text}</textarea>
         </div>
       `;
     }
@@ -1655,21 +1668,22 @@ html, body { background: #000; color: #39dc00; font-family: 'Courier New', monos
     }
 
     function savePortfolioChanges() {
+      // Active tab 감지: active 클래스 우선, 없으면 hidden input(slidesSection/csPhotosJson)으로 추론
       const tabs = document.querySelectorAll('.portfolio-subsection-tab.active');
-      const activeTab = tabs.length > 0 ? tabs[0] : null;
-      const subsection = activeTab ? activeTab.getAttribute('data-subsection') : 'project';
+      let activeTab = tabs.length > 0 ? tabs[0] : null;
+      let subsection = activeTab ? activeTab.getAttribute('data-subsection') : null;
+      // 폴백: 폼 내부 힌트로 감지
+      if (!subsection) {
+        if (document.querySelector('.portfolio-text-about')) subsection = 'about';
+        else if (document.querySelector('.portfolio-text-inclusion')) subsection = 'inclusion';
+        else if (document.querySelector('.portfolio-text-video')) subsection = 'video';
+        else if (document.getElementById('csPhotosJson')) subsection = document.getElementById('csPhotosJson').getAttribute('data-section') || 'project';
+        else subsection = 'project';
+      }
 
       // Collect data from forms
       // (project section now uses contact sheet / gallery form — handled below via csPhotosJson)
-      if (subsection === 'about') {
-        const slidesSection = document.getElementById('slidesSection')?.value || 'about';
-        _syncSlidesToBuffer(slidesSection);
-        const slides = (_adminEditBuffer[slidesSection]?.slides || []).map((s, i) => ({
-          ...s, id: s.id || `slide_${i + 1}`
-        }));
-        if (!portfolioEditData[slidesSection]) portfolioEditData[slidesSection] = {};
-        portfolioEditData[slidesSection].slides = slides;
-      } else if (subsection === 'inclusion' || subsection === 'video') {
+      if (subsection === 'about' || subsection === 'inclusion' || subsection === 'video') {
         const text = document.querySelector(`.portfolio-text-${subsection}`)?.value || '';
         if (!portfolioEditData[subsection]) portfolioEditData[subsection] = {};
         portfolioEditData[subsection].text = text;
@@ -1883,6 +1897,17 @@ html, body { background: #000; color: #39dc00; font-family: 'Courier New', monos
         portfolioEditItem.classList.add('active');
       }
     });
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+  <script>
+    mermaid.initialize({ startOnLoad: false, theme: 'default' });
+    // 콘텐츠가 동적으로 삽입된 후 mermaid 차트 렌더링
+    function renderMermaid(container) {
+      const nodes = (container || document).querySelectorAll('.mermaid:not([data-processed])');
+      if (nodes.length > 0) mermaid.run({ nodes });
+    }
+    // MutationObserver로 콘텐츠 삽입 감지 후 자동 렌더링
+    new MutationObserver(() => renderMermaid()).observe(document.body, { childList: true, subtree: true });
   </script>
 </body>
 </html>
