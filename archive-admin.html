@@ -1534,7 +1534,7 @@ html, body { background: #000; color: #39dc00; font-family: 'Courier New', monos
       const inputStyle = 'width:100%;background:#000;border:1px solid #39dc00;color:#39dc00;padding:6px;font-family:monospace;font-size:10px;outline:none;box-sizing:border-box;';
       const sectionLabel = section === 'rule' ? 'LOG — 항목 편집' : 'REFERENCE — 항목 편집';
       const sectionNote = section === 'rule'
-        ? '<div style="font-size:9px;color:#666;padding:6px 8px;border:1px dashed #333;margin-bottom:4px;">ℹ 새 게시물은 [NEW POST] 버튼으로 발행하세요. 여기서는 고정 항목을 편집합니다.</div>'
+        ? '<div style="font-size:10px;color:#ffb000;padding:8px 10px;border:1px solid #ffb000;margin-bottom:4px;line-height:1.6;">⚠ 이 탭은 포트폴리오 고정 항목 편집용입니다.<br>새 게시물 작성은 왼쪽 메뉴의 <strong>[NEW]</strong> 버튼을 사용하세요.</div>'
         : '';
 
       let html = `<div style="display:flex;flex-direction:column;gap:12px;padding:12px;">
