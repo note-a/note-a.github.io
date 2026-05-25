@@ -1412,121 +1412,7 @@ html, body { background: #000; color: #39dc00; font-family: 'Courier New', monos
       },
       about: {
         title: 'About',
-        isSlideshow: true,
-        slides: [
-          {
-            id: 'slide_1',
-            title: 'Project SET Overview',
-            category: 'Concept',
-            author: 'Artist / Theorist',
-            year: '2025-2026',
-            text: `A cyberpunk-themed visual and textual exploration of the boundaries between observer and observed, world and self. Core framework for SET.
-
-This project operates as a comprehensive investigation into measurement, perception, and the paradox of the observer being part of the observed system. Through visual and textual intervention, SET proposes that the act of measurement inherently contaminates the measuring instrument (in this case, us).
-
-STATUS: ACTIVE
-FRAMEWORK: 6 distinct sections exploring different aspects of SET
-INTERFACE: Terminal-based with DOS aesthetic`
-          },
-          {
-            id: 'slide_2',
-            title: 'Core Concept',
-            category: 'Philosophy',
-            author: 'Artist / Theorist',
-            year: '2025',
-            text: `Instructions, coerced body, suspended gaze. Archiving the structure of photography by halting reproduction. The fundamental thesis.
-
-The core concept rests on three pillars:
-- Instructions: Systems of control embedded in visual culture
-- Coerced Body: We are not free agents in the SET; we are part of its structure
-- Suspended Gaze: Vision is held in abeyance; we cannot see clearly from within
-
-METHODOLOGY: Textual and visual exploration through interference and superimposition`
-          },
-          {
-            id: 'slide_3',
-            title: 'Measurement Paradox',
-            category: 'Theory',
-            author: 'Artist / Theorist',
-            year: '2025',
-            text: `Set is the world. I am measuring the perimeter of the set. But the scale I hold is already contaminated by the world itself.
-
-This paradox forms the central tension of the work. Any attempt to measure or define the boundaries of the SET is itself already infected by the SET's logic. The measuring tool is not neutral; it is part of what is being measured.
-
-OBSERVATION: The observer is observed
-IMPLICATION: Distance is an illusion
-RESOLUTION: The incompleteness is precisely the world`
-          },
-          {
-            id: 'slide_4',
-            title: 'Structure & Framework',
-            category: 'System Design',
-            author: 'Artist / Developer',
-            year: '2025-2026',
-            text: `6 distinct sections exploring different aspects of SET framework. Terminal-based interface. DOS aesthetic. Interactive system.
-
-TECHNICAL IMPLEMENTATION:
-- JavaScript-based viewport detection for responsive layout`
-          },
-          {
-            id: 'slide_5',
-            title: 'Voice Merge Protocol',
-            category: 'Method',
-            author: 'Artist / Theorist',
-            year: '2025',
-            text: `PORT_01 (AI) : SYSTEMATIC / INDIFFERENT
-PORT_02 (HUMAN) : WANDERING / AFFECTIVE
-
-Neither voice alone can describe the world completely. Systematic analysis fails without affective knowledge. Emotional response without structure lacks meaning. Only through merger do we approach truth.
-
-RESULT: Noise becomes signal
-IMPLICATION: Both voices remain incomplete
-RESOLUTION: Incompleteness is the work itself`
-          },
-          {
-            id: 'slide_6',
-            title: 'Observation & Control',
-            category: 'Theory',
-            author: 'Artist / Theorist',
-            year: '2025',
-            text: `The act of observation changes what is observed. The observer cannot stand outside the system being measured. We are simultaneously inside and outside, measuring and measured.
-
-PANOPTICON EFFECT: Knowledge as surveillance
-BOUNDARY DISSOLUTION: Inside/outside becomes meaningless
-PARADOX: Complete knowledge of the SET would require being outside it - impossible
-
-This impossibility is not a failure. It is the framework itself.`
-          },
-          {
-            id: 'slide_7',
-            title: 'Archive & Documentation',
-            category: 'Practice',
-            author: 'Artist / Developer',
-            year: '2025-2026',
-            text: `Photography halts reproduction. Documentation freezes time. Archive is the anti-structure that attempts to capture structure.
-
-MATERIALS:
-- Visual documentation (photographs, SVG studies)
-- Textual intervention (rules, references, concepts)
-- Code as artistic medium (JavaScript, HTML, CSS)
-
-DISTRIBUTION: Open access through terminal interface
-PARTICIPATION: Required. Do not disconnect.
-STATUS: ONGOING
-- Real-time content loading and dynamic rendering
-- Archive administration system with publishing workflow
-- Photo search and display functionality
-- Cross-section content publishing system
-- localStorage integration for persistent data
-
-VISUAL LANGUAGE:
-- Terminal/DOS aesthetic with #39dc00 green color scheme
-- Monospace typography (Courier New)
-- Grid and flexbox layouts
-- Minimal visual hierarchy through border and spacing
-- Responsive mobile/desktop layout separation`
-          }
-        ]
+        text: ''
       },
       archive: {
         title: 'Measure',
@@ -1936,10 +1822,8 @@ REQUIRE LOGIN: No (Public access enabled)
         console.log('Loading admin contents from storage:', adminContents);
 
         // Direct property assignment for each section
-        if (adminContents.about && adminContents.about.slides) {
-          console.log('Updating about slides from admin:', adminContents.about.slides[0]?.title);
-          contents.about.slides = adminContents.about.slides;
-          console.log('About slides updated, current slide 0 title:', contents.about.slides[0]?.title);
+        if (adminContents.about && adminContents.about.text !== undefined) {
+          contents.about.text = adminContents.about.text;
         }
         if (adminContents.inclusion && adminContents.inclusion.text) {
           contents.inclusion.text = adminContents.inclusion.text;
@@ -2315,7 +2199,8 @@ REQUIRE LOGIN: No (Public access enabled)
         } else {
           // Regular text format
           const mdText = content.text || '';
-          let textHTML = `<div class="md-content" style="padding: 12px;" id="contentText">${mdText}</div>`;
+          const displayText = mdText || '<span style="opacity:0.5">[어드민에서 내용을 입력하세요]</span>';
+          let textHTML = `<div class="md-content" style="padding: 12px;" id="contentText">${displayText}</div>`;
 
           // Add published posts if any
           if (publishedPosts.length > 0) {
@@ -3139,10 +3024,16 @@ REQUIRE LOGIN: No (Public access enabled)
 
     // Load slideshow - full screen format
     function loadSlideshow(content) {
-      currentSlides = content.slides;
+      currentSlides = content.slides || [];
       currentSlideIndex = 0;
 
       const terminalContent = document.getElementById('terminalContent');
+
+      // 슬라이드 없으면 빈 상태 표시
+      if (currentSlides.length === 0) {
+        terminalContent.innerHTML = `<div style="padding:20px;color:#39dc00;font-size:11px;opacity:0.6;">[About 내용이 없습니다. 어드민에서 슬라이드를 추가하세요.]</div>`;
+        return;
+      }
       const slideshowHTML = `
         <div class="slideshow-container" style="display: flex; flex-direction: column; height: 100%; padding: 0; margin: -12px -20px;">
           <div class="slideshow-content" style="flex: 1; padding: 16px 20px; background: #000; display: flex; flex-direction: column; min-height: 0; overflow: hidden;">
@@ -3853,9 +3744,11 @@ REQUIRE LOGIN: No (Public access enabled)
             </div>
           </div>
         `;
-      } else if (content.text) {
-        // Text format
-        mobileContent.innerHTML = content.text;
+      } else if (content.text !== undefined) {
+        // Text format (텍스트가 빈 문자열이어도 표시)
+        mobileContent.innerHTML = content.text
+          ? content.text
+          : '<div style="padding:20px;color:#39dc00;opacity:0.5;font-size:11px;">[어드민에서 내용을 입력하세요]</div>';
       } else if (content.items) {
         // List/Board format - Match desktop table layout
         mobileContent.innerHTML = '';
@@ -3962,7 +3855,7 @@ REQUIRE LOGIN: No (Public access enabled)
           // admin-contents.json 적용
           if (data && Object.keys(data).length > 0) {
             if (data.project && data.project.photos && data.project.photos.some(p => p.type === 'sheet')) contents.project.photos = data.project.photos;
-            if (data.about && data.about.slides) contents.about.slides = data.about.slides;
+            if (data.about && data.about.text !== undefined) contents.about.text = data.about.text;
             if (data.inclusion && data.inclusion.text) contents.inclusion.text = data.inclusion.text;
             if (data.intro && data.intro.photos && data.intro.photos.some(p => p.type === 'sheet')) contents.intro.photos = data.intro.photos;
             if (data.rule && data.rule.items) contents.rule.items = data.rule.items;
