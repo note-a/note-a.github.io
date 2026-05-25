@@ -537,6 +537,10 @@ html, body { background: #000; color: #39dc00; font-family: 'Courier New', monos
             <option value="archive">Measure</option>
           </select>
         </div>
+        <div class="form-group" style="flex-direction:row;align-items:center;gap:8px;">
+          <input type="checkbox" id="postPinned" style="accent-color:#ffb000;width:14px;height:14px;cursor:pointer;">
+          <label for="postPinned" style="cursor:pointer;color:#ffb000;font-size:10px;margin:0;">● 상단 고정 (Log/Reference에서 목록 맨 위에 표시)</label>
+        </div>
         <div class="form-group">
           <label>Description / Content (Markdown 지원)</label>
           <textarea id="postPreview" placeholder="Write your draft content here..." oninput="updateMdPreview(this.value)"></textarea>
@@ -647,6 +651,8 @@ html, body { background: #000; color: #39dc00; font-family: 'Courier New', monos
       });
       var sec = document.getElementById('postSection');
       if (sec) sec.value = '';
+      var pinned = document.getElementById('postPinned');
+      if (pinned) pinned.checked = false;
       var prev = document.getElementById('mdPreviewBox');
       if (prev) prev.textContent = '내용을 입력하면 미리보기가 표시됩니다.';
     }
@@ -682,7 +688,8 @@ html, body { background: #000; color: #39dc00; font-family: 'Courier New', monos
           status: document.getElementById('postStatus').value || 'DRAFT',
           preview: previewVal,
           text: previewVal,
-          publishedSection: publishedSection || null
+          publishedSection: publishedSection || null,
+          pinned: document.getElementById('postPinned')?.checked || false
         };
 
         var saveSection;
@@ -1219,6 +1226,10 @@ html, body { background: #000; color: #39dc00; font-family: 'Courier New', monos
               <option value="archive" ${item.publishedSection==='archive'?'selected':''}>Archive</option>
             </select>
           </div>
+          <div style="margin-bottom:12px;display:flex;align-items:center;gap:8px;">
+            <input type="checkbox" id="editPinned" ${item.pinned?'checked':''} style="accent-color:#ffb000;width:14px;height:14px;cursor:pointer;">
+            <label for="editPinned" style="cursor:pointer;color:#ffb000;font-size:11px;margin:0;">● 상단 고정 (Log/Reference 목록 맨 위에 표시)</label>
+          </div>
 
           <div style="margin-bottom: 12px;">
             <label style="color: #39dc00; font-size: 11px;">Content</label>
@@ -1242,7 +1253,8 @@ html, body { background: #000; color: #39dc00; font-family: 'Courier New', monos
           status: document.getElementById('editStatus').value,
           preview: document.getElementById('editContent').value,
           text: document.getElementById('editContent').value,
-          publishedSection: document.getElementById('editSection').value || null
+          publishedSection: document.getElementById('editSection').value || null,
+          pinned: document.getElementById('editPinned')?.checked || false
         };
         saveArchiveData();
         loadContent(section);
@@ -1529,11 +1541,24 @@ html, body { background: #000; color: #39dc00; font-family: 'Courier New', monos
         ? '<div style="font-size:9px;color:#888;margin-bottom:8px;line-height:1.6;">작가 소개, 작업 노트 등 자유 입력. HTML 또는 일반 텍스트.<br>작성 후 상단 [SAVE] 버튼을 누르세요.</div>'
         : '';
 
+      // About 전용: 아티스트 스테이트먼트 추가 textarea
+      const statementBlock = section === 'about' ? (() => {
+        const stmt = portfolioEditData.about?.artistStatement || '';
+        return `
+          <div style="margin-top:16px;padding-top:14px;border-top:1px dashed #39dc00;">
+            <div style="color:#ffb000;font-size:10px;font-weight:bold;margin-bottom:6px;letter-spacing:1px;">ARTIST STATEMENT</div>
+            <div style="font-size:9px;color:#888;margin-bottom:8px;line-height:1.6;">About 하단 [ARTIST STATEMENT →] 버튼 클릭 시 표시됩니다. 비워두면 버튼이 나타나지 않습니다.</div>
+            <textarea class="portfolio-text-about-statement" style="width:100%;height:260px;background:#000;border:1px solid #ffb000;color:#e0e0e0;padding:8px;font-family:monospace;font-size:11px;outline:none;box-sizing:border-box;resize:vertical;line-height:1.7;">${stmt}</textarea>
+          </div>
+        `;
+      })() : '';
+
       return `
         <div style="display:flex;flex-direction:column;gap:8px;padding:12px;">
           <div style="color:#39dc00;font-size:11px;font-weight:bold;border-bottom:1px solid #39dc00;padding-bottom:8px;">${label}</div>
           ${hint}
-          <textarea class="portfolio-text-${section}" style="width:100%;height:420px;background:#000;border:1px solid #39dc00;color:#39dc00;padding:8px;font-family:monospace;font-size:11px;outline:none;box-sizing:border-box;resize:vertical;line-height:1.7;">${text}</textarea>
+          <textarea class="portfolio-text-${section}" style="width:100%;height:300px;background:#000;border:1px solid #39dc00;color:#39dc00;padding:8px;font-family:monospace;font-size:11px;outline:none;box-sizing:border-box;resize:vertical;line-height:1.7;">${text}</textarea>
+          ${statementBlock}
         </div>
       `;
     }
@@ -1697,6 +1722,11 @@ html, body { background: #000; color: #39dc00; font-family: 'Courier New', monos
         const text = document.querySelector(`.portfolio-text-${subsection}`)?.value || '';
         if (!portfolioEditData[subsection]) portfolioEditData[subsection] = {};
         portfolioEditData[subsection].text = text;
+        // About 전용: 아티스트 스테이트먼트 저장
+        if (subsection === 'about') {
+          const stmtEl = document.querySelector('.portfolio-text-about-statement');
+          portfolioEditData.about.artistStatement = stmtEl ? stmtEl.value : '';
+        }
       } else if (subsection === 'rule' || subsection === 'reference') {
         _syncItemsToBuffer(subsection);
         const items = _adminEditBuffer[subsection]?.items || [];
