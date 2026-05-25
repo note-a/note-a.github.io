@@ -35,7 +35,7 @@ html, body { background: #000; color: #39dc00; font-family: 'Courier New', monos
 .portfolio-window {
   display: flex;
   width: 100%;
-  max-width: 900px;
+  max-width: 950px;
   height: calc(100vh - 240px);
   gap: 12px;
   overflow: hidden;
@@ -693,7 +693,8 @@ html, body { background: #000; color: #39dc00; font-family: 'Courier New', monos
   display: flex;
   gap: 6px;
   padding: 8px 0;
-  margin-bottom: 0;
+  margin: 0 auto 0 auto;
+  max-width: 500px;
 }
 
 .archive-search-input {
@@ -1179,8 +1180,8 @@ html, body { background: #000; color: #39dc00; font-family: 'Courier New', monos
       </div>
 
       <div class="menu-statusbar">
-        <span>6 Files</span>
-        <span style="color:#39dc00;">SELECT FILE</span>
+        <span style="color:#b0b0b0;">6 Files</span>
+        <span style="color:#ffff00;">SELECT FILE</span>
       </div>
     </div>
 
@@ -2027,8 +2028,8 @@ REQUIRE LOGIN: No (Public access enabled)
             <div style="display: flex; flex-direction: column; height: 100%; padding: 0; margin: -12px -20px; position: relative;">
               <div class="photo-gallery" id="photoGallery" style="padding: 12px 20px; flex: 1; overflow-y: auto;">
                 <div id="archiveInitialView" style="display:flex;flex-direction:column;align-items:center;gap:16px;padding:20px;">
-                  <img src="images/big-brother.jpg?v=2"
-                    style="max-width:100%;max-height:120px;object-fit:contain;display:block;"
+                  <img src="images/big-brother.jpg?v=3"
+                    style="max-width:100%;max-height:270px;object-fit:contain;display:block;"
                     onerror="this.style.display='none'">
                   <div style="text-align:center;color:#39dc00;font-size:15px;font-family:'Monaco','Menlo','Consolas','Courier New',monospace;font-weight:bold;">
                     Enter your instructions
@@ -2206,7 +2207,7 @@ REQUIRE LOGIN: No (Public access enabled)
               <div style="display: flex; flex-direction: column; height: 100%; padding: 0; margin: -12px;">
                 ${noticeHTML}
                 <div style="padding: 8px 0; border-bottom: 1px solid #39dc00; background: #000; color: #39dc00; font-size: 11px; flex-shrink: 0; display: flex;">
-                  <div style="flex: 1; padding: 0 12px; font-weight: bold; border-right: 1px solid #39dc00;">ID</div>
+                  <div style="flex: 1; padding: 0 12px; font-weight: bold; border-right: 1px solid #39dc00;">title</div>
                   <div style="width: 150px; padding: 0 12px; font-weight: bold;">CATEGORY</div>
                 </div>
                 <div style="flex: 1; overflow-y: auto; background: #000; min-height: 0;">
@@ -3136,9 +3137,9 @@ REQUIRE LOGIN: No (Public access enabled)
       const slideshowHTML = `
         <div class="slideshow-container" style="display: flex; flex-direction: column; height: 100%; padding: 0; margin: -12px -20px;">
           <div class="slideshow-content" style="flex: 1; padding: 16px 20px; background: #000; display: flex; flex-direction: column; min-height: 0; overflow: hidden;">
-            <div class="slide-header" style="margin-bottom: 16px; border-bottom: 1px dashed #2a9c00; padding: 0 24px 12px 24px; flex-shrink: 0;">
-              <div class="slide-title" style="font-size: 16px; font-weight: bold; color: #b0b0b0; margin-bottom: 8px;"></div>
-              <div class="slide-meta" style="font-size: 10px; color: #ffff00; opacity: 0.7;"></div>
+            <div class="slide-header" style="margin-bottom: 16px; padding: 0 24px 12px 24px; flex-shrink: 0;">
+              <div class="slide-title" style="font-size: 16px; font-weight: bold; color: #39dc00; margin-bottom: 8px;"></div>
+              <div class="slide-meta" style="font-size: 10px; color: #ffdd00; opacity: 0.7;"></div>
             </div>
             <div class="slide-text" style="flex: 1; overflow-y: auto; min-height: 0;"></div>
           </div>
@@ -3400,8 +3401,8 @@ REQUIRE LOGIN: No (Public access enabled)
       function displayInitialPhotos() {
         gallery.innerHTML = `
           <div style="display: flex; flex-direction: column; align-items: center; gap: 16px; padding: 20px;">
-            <img src="images/big-brother.jpg?v=2"
-              style="max-width: 100%; max-height: 340px; object-fit: contain; display: block;"
+            <img src="images/big-brother.jpg?v=3"
+              style="max-width: 100%; max-height: 270px; object-fit: contain; display: block;"
               onerror="this.style.display='none'">
             <div style="text-align: center; color: #39dc00; font-size: 15px; font-family: 'Courier New', monospace; font-weight: bold;">
               Enter your instructions
@@ -3663,8 +3664,8 @@ REQUIRE LOGIN: No (Public access enabled)
         mobileContent.innerHTML = `
           <div style="display: flex; flex-direction: column; height: 100%; gap: 0;">
             <div style="display: flex; flex-direction: column; align-items: center; gap: 10px; padding: 12px; flex-shrink: 0;">
-              <img src="images/big-brother.jpg?v=2"
-                style="max-width: 100%; max-height: 220px; object-fit: contain; display: block;"
+              <img src="images/big-brother.jpg?v=3"
+                style="max-width: 100%; max-height: 270px; object-fit: contain; display: block;"
                 onerror="this.style.display='none'">
               <div style="text-align: center; color: #39dc00; font-size: 11px; font-family: monospace;">Enter your instructions</div>
               <input type="text" id="mobileArchiveSearch" placeholder="search: crash, floating, shadow"
@@ -3881,7 +3882,7 @@ REQUIRE LOGIN: No (Public access enabled)
                 </div>
                 <div style="padding: 8px 10px; color: #39dc00; font-size: 11px; display: flex; flex-direction: column; gap: 0; overflow: hidden;">
                   <div style="word-break: break-word; padding-bottom: 5px; border-bottom: 1px solid #39dc00; font-weight: bold; flex-shrink: 0;">${item.title}</div>
-                  <div style="padding-top: 4px; padding-bottom: 4px; border-bottom: 1px solid #39dc00; color: #ffb000; flex-shrink: 0;">${category}</div>
+                  <div style="padding-top: 4px; padding-bottom: 4px; border-bottom: 1px solid #39dc00; color: #ffc800; flex-shrink: 0;">${category}</div>
                   <div style="padding-top: 5px; font-size: 10px; color: #aaa; overflow: hidden; line-height: 1.5; word-break: break-word;">${item.preview || ''}</div>
                 </div>
               </div>
