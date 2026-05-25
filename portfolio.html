@@ -3463,6 +3463,9 @@ REQUIRE LOGIN: No (Public access enabled)
           return;
         }
 
+        // VIEWER LOG 기록
+        if (typeof vlAddEntry === 'function') vlAddEntry(query);
+
         // Search in keywords and title
         const filtered = allPhotos.filter(photo => {
           const keywordMatch = photo.keywords.some(kw =>
@@ -3715,6 +3718,7 @@ REQUIRE LOGIN: No (Public access enabled)
                 // No search - hide results
                 document.getElementById('mobilePhotoGallery').style.display = 'none';
               } else {
+                if (typeof vlAddEntry === 'function') vlAddEntry(query);
                 // Filter and show results
                 const filtered = content.photos.filter(p =>
                   p.keywords.some(k => k.toLowerCase().includes(query)) ||
@@ -4151,54 +4155,46 @@ REQUIRE LOGIN: No (Public access enabled)
       pmRender('about');
 
       // ── VIEWER LOG ───────────────────────────────────────────
-      let _vlTotal = 0;
-
-      function _pad(n) { return String(n).padStart(2,'0'); }
-      function _vlTime() {
-        const d = new Date();
-        return `${_pad(d.getHours())}:${_pad(d.getMinutes())}:${_pad(d.getSeconds())}`;
-      }
-
-      function vlAddEntry(query) {
-        const list = document.getElementById('vlList');
-        const countEl = document.getElementById('vlCount');
-        const lastEl = document.getElementById('vlLastTime');
-        if (!list) return;
-        _vlTotal++;
-        const t = _vlTime();
-
-        // 기존 항목 age 올리기
-        list.querySelectorAll('.vl-entry').forEach((el, i) => {
-          el.setAttribute('data-age', Math.min(i + 1, 4));
-          _vlApplyAge(el);
-        });
-
-        const entry = document.createElement('div');
-        entry.className = 'vl-entry';
-        entry.setAttribute('data-age', '0');
-        entry.style.cssText = 'display:grid;grid-template-columns:52px 1fr;gap:6px;padding:3px 10px;font-size:9px;border-bottom:1px solid #0a0a0a;animation:vlSlideIn 0.3s ease;';
-        entry.innerHTML = `<span style="color:#ffb000;font-size:8px;padding-top:1px;">[${t}]</span><span style="color:#ffb000;font-weight:bold;">${query}</span>`;
-        list.prepend(entry);
-
-        while (list.children.length > 7) list.lastElementChild.remove();
-
-        if (countEl) countEl.textContent = _vlTotal + ' queries';
-        if (lastEl) lastEl.textContent = t;
-      }
-
-      function _vlApplyAge(el) {
-        const age = parseInt(el.getAttribute('data-age') || 0);
-        const colors = ['#ffb000','#c8c8c8','#888','#444','#222'];
-        const timeColors = ['#ffb000','#666','#444','#2a2a2a','#1a1a1a'];
-        const q = el.querySelector('span:last-child');
-        const tm = el.querySelector('span:first-child');
-        if (q) q.style.color = colors[age];
-        if (q) q.style.fontWeight = age === 0 ? 'bold' : 'normal';
-        if (tm) tm.style.color = timeColors[age];
-      }
-
 
     });
+
+    // ── VIEWER LOG (전역) ─────────────────────────────────────
+    let _vlTotal = 0;
+    function _pad2(n) { return String(n).padStart(2,'0'); }
+    function _vlTime() {
+      const d = new Date();
+      return `${_pad2(d.getHours())}:${_pad2(d.getMinutes())}:${_pad2(d.getSeconds())}`;
+    }
+    function _vlApplyAge(el) {
+      const age = parseInt(el.getAttribute('data-age') || 0);
+      const colors = ['#ffb000','#c8c8c8','#888','#444','#222'];
+      const timeColors = ['#ffb000','#666','#444','#2a2a2a','#1a1a1a'];
+      const q = el.querySelector('span:last-child');
+      const tm = el.querySelector('span:first-child');
+      if (q) { q.style.color = colors[age]; q.style.fontWeight = age === 0 ? 'bold' : 'normal'; }
+      if (tm) tm.style.color = timeColors[age];
+    }
+    function vlAddEntry(query) {
+      const list = document.getElementById('vlList');
+      const countEl = document.getElementById('vlCount');
+      const lastEl = document.getElementById('vlLastTime');
+      if (!list) return;
+      _vlTotal++;
+      const t = _vlTime();
+      list.querySelectorAll('.vl-entry').forEach((el, i) => {
+        el.setAttribute('data-age', Math.min(i + 1, 4));
+        _vlApplyAge(el);
+      });
+      const entry = document.createElement('div');
+      entry.className = 'vl-entry';
+      entry.setAttribute('data-age', '0');
+      entry.style.cssText = 'display:grid;grid-template-columns:52px 1fr;gap:6px;padding:3px 10px;font-size:9px;border-bottom:1px solid #0a0a0a;animation:vlSlideIn 0.3s ease;';
+      entry.innerHTML = `<span style="color:#ffb000;font-size:8px;padding-top:1px;">[${t}]</span><span style="color:#ffb000;font-weight:bold;">${query}</span>`;
+      list.prepend(entry);
+      while (list.children.length > 7) list.lastElementChild.remove();
+      if (countEl) countEl.textContent = _vlTotal + ' queries';
+      if (lastEl) lastEl.textContent = t;
+    }
   </script>
 </body>
 </html>
