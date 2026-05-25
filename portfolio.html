@@ -2088,7 +2088,11 @@ REQUIRE LOGIN: No (Public access enabled)
           // Check if it's a list format
           if (content.isList) {
             // 최신 등록 순서로 — published posts를 역순(최신 먼저)으로, 기본 항목은 그 뒤
-            const allItems = [...publishedPosts].reverse().concat(content.items);
+            const rawItems = [...publishedPosts].reverse().concat(content.items);
+            // 핀된 항목 상단 고정, 나머지 순서 유지
+            const pinnedItems = rawItems.filter(i => i.pinned);
+            const normalItems = rawItems.filter(i => !i.pinned);
+            const allItems = [...pinnedItems, ...normalItems];
 
             // List format with table style - no header or footer
             const noticeHTML = content.notice ? `
@@ -2110,14 +2114,18 @@ REQUIRE LOGIN: No (Public access enabled)
                       'GRAMMAR': '#3333ff',
                       'SVA': '#ffff00'
                     };
-                    const catColor = categoryColors[item.category.toUpperCase()] || '#39dc00';
+                    const catColor = categoryColors[(item.category||'').toUpperCase()] || '#39dc00';
+                    const isPinned = !!item.pinned;
+                    const rowBg = isPinned ? 'background:rgba(255,176,0,0.07);border-bottom:1px solid rgba(255,176,0,0.4);' : 'border-bottom:1px dashed #39dc00;';
+                    const titleColor = isPinned ? '#ffb000' : '#e0e0e0';
+                    const pinMark = isPinned ? '<span style="color:#ffb000;margin-right:5px;font-size:10px;">●</span>' : '';
                     return `
-                    <div class="list-item" data-index="${idx}" style="cursor: pointer; display: flex; border-bottom: 1px dashed #39dc00; transition: background 0.2s; padding: 0;">
-                      <div style="flex: 1; padding: 6px 12px; color: #e0e0e0; font-size: 11px; border-right: 1px solid #39dc00; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
-                        ${item.title || item.id}
+                    <div class="list-item" data-index="${idx}" style="cursor:pointer;display:flex;${rowBg}transition:background 0.2s;padding:0;">
+                      <div style="flex:1;padding:6px 12px;color:${titleColor};font-size:11px;border-right:1px solid #39dc00;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">
+                        ${pinMark}${item.title || item.id}
                       </div>
-                      <div style="width: 150px; padding: 6px 12px; color: ${catColor}; font-size: 11px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
-                        ${item.category}
+                      <div style="width:150px;padding:6px 12px;color:${catColor};font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">
+                        ${item.category||''}
                       </div>
                     </div>
                   `;
@@ -3752,9 +3760,14 @@ REQUIRE LOGIN: No (Public access enabled)
       } else if (content.items) {
         // List/Board format - Match desktop table layout
         mobileContent.innerHTML = '';
-        const allItems = [...(content.items || [])];
+        const rawMobileItems = [...(content.items || [])];
         const publishedItems = getPublishedPosts(section);
-        allItems.push(...publishedItems);
+        rawMobileItems.push(...publishedItems);
+        // 핀된 항목 상단 고정
+        const allItems = [
+          ...rawMobileItems.filter(i => i.pinned),
+          ...rawMobileItems.filter(i => !i.pinned)
+        ];
 
         // Use card format for reference section, list format for others
         const isCardFormat = section === 'reference';
@@ -3791,14 +3804,19 @@ REQUIRE LOGIN: No (Public access enabled)
             `;
           } else {
             // List format for rule and others
+            const isPinnedM = !!item.pinned;
+            const rowStyleM = isPinnedM
+              ? 'background:rgba(255,176,0,0.07);border-bottom:1px solid rgba(255,176,0,0.4);'
+              : 'background:#000;border-bottom:1px dashed #39dc00;';
+            const titleColorM = isPinnedM ? '#ffb000' : '#39dc00';
             html += `
-              <div style="cursor: pointer; display: block; border-bottom: 1px dashed #39dc00; padding: 10px 12px; transition: background 0.2s; background: #000;" class="mobile-list-item" data-index="${idx}">
-                <div style="color: #39dc00; font-size: 12px; margin-bottom: 5px; font-weight: bold; word-break: break-all;">
-                  ${item.title || itemId}
+              <div style="cursor:pointer;display:block;${rowStyleM}padding:10px 12px;transition:background 0.2s;" class="mobile-list-item" data-index="${idx}">
+                <div style="color:${titleColorM};font-size:12px;margin-bottom:5px;font-weight:bold;word-break:break-all;">
+                  ${isPinnedM ? '<span style="font-size:10px;margin-right:4px;">●</span>' : ''}${item.title || itemId}
                 </div>
-                <div style="color: #39dc00; font-size: 11px; display: flex; justify-content: space-between; gap: 8px;">
+                <div style="color:#39dc00;font-size:11px;display:flex;justify-content:space-between;gap:8px;">
                   <span>${category}</span>
-                  <span style="color: #ffb000;">${status}</span>
+                  <span style="color:#ffb000;">${status}</span>
                 </div>
               </div>
             `;
