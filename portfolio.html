@@ -23,6 +23,63 @@ html, body { background: #000; color: #39dc00; font-family: 'Courier New', monos
 @keyframes vlpulse { 0%,100%{opacity:1;box-shadow:0 0 4px #ffb000;} 50%{opacity:0.3;box-shadow:none;} }
 @keyframes vlSlideIn { from{opacity:0;} to{opacity:1;} }
 
+/* ── 교집합 플로팅 창 ── */
+#ixFloat {
+  position: fixed;
+  z-index: 3100;
+  width: 160px;
+  background: #000;
+  border-top: 2px solid #7fff4f;
+  border-left: 2px solid #7fff4f;
+  border-bottom: 2px solid #1a5500;
+  border-right: 2px solid #1a5500;
+  box-shadow: 0 0 18px rgba(57,220,0,0.18), 0 0 30px rgba(255,176,0,0.04);
+  font-family: 'Courier New', monospace;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateX(-8px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+#ixFloat.ix-visible {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateX(0);
+}
+#ixFloat .ix-titlebar {
+  background: #39dc00; color: #000;
+  padding: 4px 8px; font-size: 9px; font-weight: bold;
+  letter-spacing: 1px; display: flex; justify-content: space-between; align-items: center;
+}
+#ixFloat .ix-btn {
+  width: 11px; height: 11px; background: #39dc00; border: 1px solid #000;
+  color: #000; font-size: 7px; display: flex; align-items: center; justify-content: center; cursor: pointer;
+}
+#ixFloat .ix-body { padding: 7px; }
+#ixFloat .ix-match {
+  position: relative; border: 1px solid #ffb000;
+  overflow: hidden; background: #050505; margin-bottom: 6px;
+  transition: opacity 0.4s;
+}
+#ixFloat .ix-match img { width: 100%; height: auto; display: block; opacity: 0.88; }
+#ixFloat .ix-lbl {
+  position: absolute; top: 4px; left: 4px;
+  font-size: 7px; font-weight: bold; color: #000; background: #ffb000;
+  padding: 1px 5px; letter-spacing: 0.5px;
+}
+#ixFloat .ix-name {
+  position: absolute; bottom: 0; left: 0; right: 0;
+  background: rgba(0,0,0,0.82); color: #ffb000; font-size: 7px; padding: 3px 5px;
+}
+#ixFloat .ix-tag-label { font-size: 7px; color: #333; margin-bottom: 3px; letter-spacing: 0.5px; }
+#ixFloat .ix-tags { display: flex; flex-wrap: wrap; gap: 3px; padding: 2px 0 4px; }
+#ixFloat .ix-tag { color: #ffb000; border: 1px solid #5a3800; font-size: 7px; padding: 1px 5px; letter-spacing: 0.5px; }
+#ixFloat .ix-progress { height: 2px; background: #0d2e00; }
+#ixFloat .ix-progress-fill { height: 100%; background: #39dc00; width: 0%; transition: width 0.1s linear; }
+#ixFloat .ix-statusbar {
+  border-top: 1px solid #0d2e00; padding: 3px 8px; font-size: 7px;
+  display: flex; justify-content: space-between; color: #1e5500;
+}
+
 .portfolio-container {
   display: flex;
   justify-content: center;
@@ -1340,6 +1397,29 @@ html, body { background: #000; color: #39dc00; font-family: 'Courier New', monos
     </div>
   </div>
 
+  <!-- 교집합 플로팅 창 (position:fixed, showPhotoDetail 시 조건부 표시) -->
+  <div id="ixFloat">
+    <div class="ix-titlebar">
+      <span>∩ MATCHED</span>
+      <div class="ix-btn" id="ixCloseBtn">✕</div>
+    </div>
+    <div class="ix-body">
+      <div class="ix-match" id="ixMatch">
+        <img id="ixImg" src="" alt="">
+        <div class="ix-lbl">INCLUSION</div>
+        <div class="ix-name" id="ixName">—</div>
+      </div>
+      <div class="ix-tag-label">SHARED CODES</div>
+      <div class="ix-tags" id="ixTags"></div>
+    </div>
+    <div class="ix-progress"><div class="ix-progress-fill" id="ixFill"></div></div>
+    <div class="ix-statusbar">
+      <span>IN INCLUSION</span>
+      <span id="ixIdx">1 / 1</span>
+      <span style="color:#ffb000;animation:pm-blink 1s infinite;">█</span>
+    </div>
+  </div>
+
   <!-- Write Post Modal -->
   <div class="modal-overlay" id="writeModal">
     <div class="modal-content">
@@ -1935,6 +2015,9 @@ REQUIRE LOGIN: No (Public access enabled)
         if (adminContents.archive && adminContents.archive.photos) {
           contents.archive.photos = adminContents.archive.photos;
         }
+        if (adminContents.inclusionPhotos && Array.isArray(adminContents.inclusionPhotos.photos)) {
+          _inclusionPhotos = adminContents.inclusionPhotos.photos;
+        }
 
         // archiveData.reference 직접 저장 항목 (구버전 호환) — reference에만 병합
         // published posts(publishedSection 기반)는 renderSection의 getPublishedPosts()가 처리하므로
@@ -1964,6 +2047,7 @@ REQUIRE LOGIN: No (Public access enabled)
       // Close any open overlays before loading new content
       console.log('loadContent called with section: ' + section);
       closeAllOverlays();
+      if (typeof closeIxWindow === 'function') closeIxWindow();
 
       // PM 창 활성 섹션 업데이트
       if (typeof pmRender === 'function') pmRender(section);
@@ -3503,6 +3587,114 @@ REQUIRE LOGIN: No (Public access enabled)
     }
 
     // Show photo detail modal
+    // ── 교집합 플로팅 창 ──────────────────────────────────────
+    // Inclusion 사진 데이터 (실제 사진 파일과 키워드)
+    // admin에서 업데이트 가능하도록 별도 관리
+    const inclusionPhotos = (function() {
+      try {
+        const stored = localStorage.getItem('inclusionPhotos');
+        if (stored) return JSON.parse(stored);
+      } catch(e) {}
+      // 기본 샘플 데이터 — 실제 파일명과 키워드로 교체 필요
+      return [
+        { id:'INCL_C01', title:'INCL_C01', filename:'', keywords:['crash','wall','structure','decay'] },
+        { id:'INCL_F07', title:'INCL_F07', filename:'', keywords:['floating','displacement','object','space'] },
+        { id:'INCL_SH2', title:'INCL_SH2', filename:'', keywords:['shadow','light','depth','perception'] },
+      ];
+    })();
+
+    // SET 사진의 키워드와 가장 많이 겹치는 Inclusion 사진 목록 반환 (겹침 없으면 빈 배열)
+    function findInclMatches(setPhoto) {
+      const setKws = new Set((setPhoto.keywords || []).map(k => k.toLowerCase()));
+      const scored = inclusionPhotos.map(ip => {
+        const shared = (ip.keywords || []).filter(k => setKws.has(k.toLowerCase()));
+        return { photo: ip, shared };
+      }).filter(x => x.shared.length > 0);
+      scored.sort((a, b) => b.shared.length - a.shared.length);
+      return scored; // [{ photo, shared }, ...]
+    }
+
+    let _ixMatches = [];
+    let _ixCur = 0;
+    let _ixTimer = null;
+    let _ixProg = 0;
+    const IX_DUR = 3500;
+
+    function _ixUpdateDOM(idx) {
+      const m = _ixMatches[idx];
+      if (!m) return;
+      const img = document.getElementById('ixImg');
+      const name = document.getElementById('ixName');
+      const tags = document.getElementById('ixTags');
+      const idxEl = document.getElementById('ixIdx');
+      // 이미지: filename 있으면 실제 경로, 없으면 빈 src (숨김)
+      if (m.photo.filename) {
+        img.src = resolvePhotoUrl(m.photo.filename);
+        img.style.display = 'block';
+        document.getElementById('ixMatch').style.display = 'block';
+      } else {
+        document.getElementById('ixMatch').style.display = 'none';
+      }
+      name.textContent = m.photo.title || m.photo.id;
+      tags.innerHTML = m.shared.map(k => `<span class="ix-tag">${k}</span>`).join('');
+      idxEl.textContent = (idx + 1) + ' / ' + _ixMatches.length;
+    }
+
+    function _ixStartCycle() {
+      clearInterval(_ixTimer);
+      _ixProg = 0;
+      if (_ixMatches.length <= 1) return; // 1개면 순환 불필요
+      _ixTimer = setInterval(function() {
+        _ixProg += 100 / (IX_DUR / 100);
+        if (_ixProg >= 100) {
+          _ixProg = 0;
+          _ixCur = (_ixCur + 1) % _ixMatches.length;
+          const match = document.getElementById('ixMatch');
+          match.style.opacity = '0';
+          setTimeout(function() { _ixUpdateDOM(_ixCur); match.style.opacity = '1'; }, 350);
+        }
+        document.getElementById('ixFill').style.width = _ixProg + '%';
+      }, 100);
+    }
+
+    function openIxWindow(setPhoto) {
+      _ixMatches = findInclMatches(setPhoto);
+      if (_ixMatches.length === 0) { closeIxWindow(); return; }
+      _ixCur = 0;
+      _ixUpdateDOM(0);
+      // 위치: photo detail modal 왼쪽에 붙이기
+      _ixPosition();
+      document.getElementById('ixFloat').classList.add('ix-visible');
+      _ixStartCycle();
+    }
+
+    function closeIxWindow() {
+      document.getElementById('ixFloat').classList.remove('ix-visible');
+      clearInterval(_ixTimer);
+      _ixTimer = null;
+      _ixProg = 0;
+      document.getElementById('ixFill').style.width = '0%';
+    }
+
+    function _ixPosition() {
+      const content = document.querySelector('.photo-detail-content');
+      const ix = document.getElementById('ixFloat');
+      if (!content || !ix) return;
+      const r = content.getBoundingClientRect();
+      const ixW = ix.offsetWidth || 180;
+      const gap = 8;
+      const left = Math.max(8, r.left - ixW - gap);
+      const top  = r.top;
+      ix.style.left = left + 'px';
+      ix.style.top  = top + 'px';
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+      const closeBtn = document.getElementById('ixCloseBtn');
+      if (closeBtn) closeBtn.addEventListener('click', closeIxWindow);
+    });
+    // ─────────────────────────────────────────────────────────
+
     function showPhotoDetail(photo) {
       const modal = document.getElementById('photoDetailModal');
       const title = document.getElementById('photoDetailTitle');
@@ -3526,10 +3718,14 @@ REQUIRE LOGIN: No (Public access enabled)
 
       modal.classList.add('active');
 
+      // 교집합 창 — 매칭 있을 때만 열기
+      setTimeout(function() { openIxWindow(photo); _ixPosition(); }, 50);
+
       // Close button handler
       if (closeBtn) {
         closeBtn.onclick = () => {
           modal.classList.remove('active');
+          closeIxWindow();
         };
       }
 
@@ -3537,6 +3733,7 @@ REQUIRE LOGIN: No (Public access enabled)
       modal.addEventListener('click', (e) => {
         if (e.target === modal) {
           modal.classList.remove('active');
+          closeIxWindow();
         }
       });
     }
@@ -3988,6 +4185,7 @@ REQUIRE LOGIN: No (Public access enabled)
             if (data.reference && data.reference.items) contents.reference.items = data.reference.items;
             if (data.video && data.video.text) contents.video.text = data.video.text;
             if (data.archive && data.archive.photos) contents.archive.photos = data.archive.photos;
+            if (data.inclusionPhotos && Array.isArray(data.inclusionPhotos.photos)) _inclusionPhotos = data.inclusionPhotos.photos;
           }
 
           // published-posts.json 적용 (모바일 등 다른 기기에서 글 보이도록)
