@@ -1239,7 +1239,25 @@ html, body { background: #000; color: #39dc00; font-family: 'Courier New', monos
         <div class="menu-item" data-section="reference">reference</div>
         <div class="menu-item" data-section="archive">Measure</div>
         <div class="menu-item active" data-section="about">About</div>
-        <div style="position: relative; flex: 1; width: 100%; min-height: 0;"></div>
+        <!-- CELL AUTOMATA -->
+        <div style="flex:1;min-height:0;display:flex;flex-direction:column;border-top:1px solid rgba(57,220,0,0.2);margin-top:4px;">
+          <div id="caTitle" style="background:#39dc00;color:#000;padding:3px 6px;font-size:7px;font-weight:bold;letter-spacing:.5px;display:flex;justify-content:space-between;align-items:center;flex-shrink:0;cursor:pointer;" onclick="const b=document.getElementById('caBody');b.style.display=b.style.display==='none'?'flex':'flex';">
+            <span>CELL_AUTOMATA.EXE</span>
+            <div style="display:flex;gap:2px;">
+              <div style="width:10px;height:10px;background:#000;color:#39dc00;font-size:7px;display:flex;align-items:center;justify-content:center;">−</div>
+              <div style="width:10px;height:10px;background:#000;color:#39dc00;font-size:7px;display:flex;align-items:center;justify-content:center;">✕</div>
+            </div>
+          </div>
+          <div id="caBody" style="display:flex;flex-direction:column;flex:1;min-height:0;">
+            <canvas id="caCanvas" style="display:block;width:100%;flex:1;min-height:120px;"></canvas>
+            <div style="padding:3px 6px;border-top:1px solid rgba(57,220,0,0.3);background:#000;display:flex;justify-content:space-between;flex-shrink:0;flex-wrap:wrap;gap:2px;">
+              <span id="caStat1" style="color:rgba(57,220,0,0.5);font-size:6px;font-family:'Courier New',monospace;">CELLS:0000</span>
+              <span id="caStat2" style="color:rgba(57,220,0,0.5);font-size:6px;font-family:'Courier New',monospace;">GEN:00000</span>
+              <span id="caStat3" style="color:rgba(57,220,0,0.5);font-size:6px;font-family:'Courier New',monospace;">DENSITY:0.0%</span>
+              <span id="caStat4" style="color:rgba(57,220,0,0.5);font-size:6px;font-family:'Courier New',monospace;">STABLE</span>
+            </div>
+          </div>
+        </div>
       </div>
 
       <div class="menu-statusbar">
@@ -2734,23 +2752,18 @@ REQUIRE LOGIN: No (Public access enabled)
           ? csNavStack.map(l => l.title).join(' › ') + ' › ' + levelTitle
           : '';
 
-        const cells = photos.map((p, i) => {
+        const PAGE = 80; // 처음 80장만 렌더링
+        const cells = photos.slice(0, PAGE).map((p, i) => {
           if (p.type === 'sheet') {
-            // Sub-sheet folder cell — mini 2×2 preview grid
+            // Sub-sheet folder cell — 단일 이미지 미리보기
             const childCount = (p.children || []).length;
-            // 폴더 미리보기: 자식 중 첫 4장의 실제 picsum 사진
-            const previewChildren = (p.children || []).flatMap(c => c.type === 'sheet' ? (c.children||[]) : [c]).slice(0,4);
-            const previewImgs = [0,1,2,3].map(ci => {
-              const child = previewChildren[ci];
-              const previewSrc = (child && (child.filename || child.url)) || '';
-              return `<div style="position:relative;overflow:hidden;background:#111;">
-                <img src="${previewSrc}" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;" loading="lazy">
-              </div>`;
-            }).join('');
+            const firstChild = (p.children || []).flatMap(c => c.type === 'sheet' ? (c.children||[]) : [c])[0];
+            const _pFull = (firstChild && (firstChild.filename || firstChild.url)) || '';
+            const previewSrc = _pFull ? _pFull.replace(/\/DSCF([^/]+)\.(jpg|JPG)$/, '/t/DSCF$1.jpg') : '';
             return `<div class="cs-cell cs-folder" data-idx="${i}" data-type="sheet"
               style="aspect-ratio:1;background:#0d0d0d;cursor:pointer;position:relative;overflow:hidden;outline:1px solid rgba(57,220,0,0.6);">
-              <div style="display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;width:100%;height:calc(100% - 18px);">${previewImgs}</div>
-              <div style="position:absolute;bottom:0;left:0;right:0;height:18px;background:rgba(57,220,0,0.12);border-top:1px solid rgba(57,220,0,0.4);display:flex;align-items:center;justify-content:center;gap:4px;">
+              <img src="${previewSrc}" style="position:absolute;top:0;left:0;width:100%;height:calc(100% - 18px);object-fit:cover;" loading="eager" decoding="async">
+              <div style="position:absolute;bottom:0;left:0;right:0;height:18px;background:rgba(0,0,0,0.75);border-top:1px solid rgba(57,220,0,0.4);display:flex;align-items:center;justify-content:center;gap:4px;">
                 <span style="font-size:6px;font-family:monospace;color:#39dc00;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;padding:0 3px;">${(p.title||p.id).toUpperCase()}</span>
                 <span style="font-size:5px;font-family:monospace;color:rgba(57,220,0,0.5);">(${childCount})</span>
               </div>
@@ -2764,12 +2777,13 @@ REQUIRE LOGIN: No (Public access enabled)
             const fakeStyle = fakeThumbnailStyle(num);
             const blobMap = overlayEl && overlayEl._blobMap;
             const blobSrc = blobMap && (blobMap[fname] || blobMap[num]);
-            // picsum ID 직접 사용 (없으면 num 기반)
-            const pid = p.picsumId || ((parseInt(num) % 990) + 10) || 50;
-            const imgSrc = blobSrc || p.filename || p.url || '';
+            // 그리드용 썸네일 URL: .../t/DSCF####.jpg (없으면 원본)
+            const fullSrc = p.filename || p.url || '';
+            const thumbSrc = fullSrc ? fullSrc.replace(/\/DSCF([^/]+)\.(jpg|JPG)$/, '/t/DSCF$1.jpg') : '';
+            const imgSrc = blobSrc || thumbSrc || fullSrc;
             return `<div class="cs-cell" data-idx="${i}" data-v="${v}" data-type="photo"
               style="aspect-ratio:1/1;cursor:pointer;position:relative;overflow:hidden;background:#111;${isKey ? `outline:2px solid ${color};outline-offset:-2px;` : `filter:brightness(0.4) saturate(0.3);`}">
-              <img src="${imgSrc}" data-fname="${fname}" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;" loading="lazy">
+              <img src="${imgSrc}" data-fname="${fname}" data-full="${fullSrc}" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;" loading="eager" decoding="async" onerror="if(!this._fb){this._fb=1;this.src=this.dataset.full}">
               ${isKey ? `<div style="position:absolute;top:2px;right:2px;font-size:5px;font-family:monospace;padding:1px 3px;background:${color};color:#000;">${LABELS[v]}</div>` : ''}
             </div>`;
           }
@@ -2786,9 +2800,14 @@ REQUIRE LOGIN: No (Public access enabled)
               ${filterBtns}
             </div>
             <div id="csGrid" style="flex:1;overflow-y:auto;padding:40px 48px;min-height:0;">
-              <div id="csCells" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(72px,1fr));gap:4px;">
+              <div id="csCells" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(72px,1fr));gap:4px;content-visibility:auto;">
                 ${cells}
               </div>
+              ${photos.length > PAGE ? `<div style="text-align:center;padding:16px 0;">
+                <button id="csLoadMore" data-loaded="${PAGE}" style="font-family:monospace;font-size:9px;padding:5px 18px;border:1px solid rgba(57,220,0,0.5);background:transparent;color:#39dc00;cursor:pointer;letter-spacing:1px;">
+                  더 보기 (${photos.length - PAGE}장 남음)
+                </button>
+              </div>` : ''}
             </div>
             <div id="csDetail" style="display:none;border-top:1px solid #39dc00;flex-shrink:0;">
               <div style="display:flex;gap:0;">
@@ -2810,6 +2829,40 @@ REQUIRE LOGIN: No (Public access enabled)
       }
       // ─── 이벤트 위임: container에 단 하나의 리스너로 모든 클릭 처리 ───
       container.addEventListener('click', function(e) {
+        // 더 보기 버튼
+        if (e.target.closest('#csLoadMore')) {
+          const btn = e.target.closest('#csLoadMore');
+          const loaded = parseInt(btn.dataset.loaded);
+          const PAGE = 80;
+          const next = currentPhotos.slice(loaded, loaded + PAGE);
+          const moreCells = next.map((p, i) => {
+            const v = p.verdict || 'drop';
+            const color = COLORS[v] || '#333';
+            const isKey = SHOW_BORDER.includes(v);
+            const fname = (p.id || '').toUpperCase();
+            const num = fname.replace(/\D/g,'');
+            const blobMap = overlayEl && overlayEl._blobMap;
+            const blobSrc = blobMap && (blobMap[fname] || blobMap[num]);
+            const fullSrc = p.filename || p.url || '';
+            const thumbSrc = fullSrc ? fullSrc.replace(/\/DSCF([^/]+)\.(jpg|JPG)$/, '/t/DSCF$1.jpg') : '';
+            const imgSrc = blobSrc || thumbSrc || fullSrc;
+            return `<div class="cs-cell" data-idx="${loaded + i}" data-v="${v}" data-type="photo"
+              style="aspect-ratio:1/1;cursor:pointer;position:relative;overflow:hidden;background:#111;${isKey ? `outline:2px solid ${color};outline-offset:-2px;` : `filter:brightness(0.4) saturate(0.3);`}">
+              <img src="${imgSrc}" data-fname="${fname}" data-full="${fullSrc}" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;" loading="lazy" onerror="if(!this._fb){this._fb=1;this.src=this.dataset.full}">
+              ${isKey ? `<div style="position:absolute;top:2px;right:2px;font-size:5px;font-family:monospace;padding:1px 3px;background:${color};color:#000;">${LABELS[v]}</div>` : ''}
+            </div>`;
+          }).join('');
+          const cellsEl = document.getElementById('csCells');
+          if (cellsEl) cellsEl.insertAdjacentHTML('beforeend', moreCells);
+          const newLoaded = loaded + PAGE;
+          const remaining = currentPhotos.length - newLoaded;
+          if (remaining <= 0) btn.parentElement.remove();
+          else {
+            btn.dataset.loaded = newLoaded;
+            btn.textContent = `더 보기 (${remaining}장 남음)`;
+          }
+          return;
+        }
         // BACK 버튼
         if (e.target.closest('#csBackBtn')) {
           if (csNavStack.length > 0) {
@@ -4159,6 +4212,9 @@ REQUIRE LOGIN: No (Public access enabled)
 
     // Initialize on page load
     document.addEventListener('DOMContentLoaded', async function() {
+      // 항상 GitHub 최신 데이터 사용 — 구버전 캐시 무조건 삭제
+      try { localStorage.removeItem('adminContents'); } catch(e) {}
+
       // IndexedDB 캐시 먼저 로드 (admin에서 저장한 대용량 데이터 읽기)
       await refreshArchiveCache();
 
@@ -4167,8 +4223,8 @@ REQUIRE LOGIN: No (Public access enabled)
       document.getElementById('popupClose').addEventListener('click', () => popupModal.classList.remove('active'));
       popupModal.addEventListener('click', (e) => { if (e.target === popupModal) popupModal.classList.remove('active'); });
 
-      // Load admin-edited contents from storage
-      loadAdminContentsFromStorage();
+      // Load admin-edited contents from storage (항상 비어있음 — GitHub fetch 전)
+      // loadAdminContentsFromStorage(); // 비활성화: GitHub 데이터가 우선
 
       // Setup all layouts first
       setupMenuItems();
@@ -4291,6 +4347,112 @@ REQUIRE LOGIN: No (Public access enabled)
       if (countEl) countEl.textContent = _vlTotal + ' queries';
       if (lastEl) lastEl.textContent = t;
     }
+  // ── CELL AUTOMATA ──────────────────────────────────
+  (function(){
+    const cv = document.getElementById('caCanvas');
+    if (!cv) return;
+    const cx = cv.getContext('2d');
+    const SZ = 4;
+    const GL = ['·','▪','░','▒','▓','█'];
+    const EVENTS = ['PATTERN_DETECTED','CLUSTER_FORMED','BOUNDARY_SHIFT','CELL_DECAY','EMERGENCE','COLLAPSE'];
+    let W, H, g, age, gen = 0, frame = 0;
+    const flashes = [];
+    let flashTimer = 0;
+
+    function init() {
+      const rect = cv.parentElement.getBoundingClientRect();
+      const w = Math.max(rect.width || 196, 100);
+      const h = Math.max(cv.offsetHeight || 160, 100);
+      W = Math.floor(w / SZ);
+      H = Math.floor(h / SZ);
+      cv.width  = W * SZ;
+      cv.height = H * SZ;
+      g   = Array.from({length:W}, () => Array.from({length:H}, () => Math.random() > .78 ? 1 : 0));
+      age = Array.from({length:W}, () => new Array(H).fill(0));
+    }
+
+    function step() {
+      const ng = Array.from({length:W}, () => new Array(H).fill(0));
+      const na = Array.from({length:W}, () => new Array(H).fill(0));
+      for (let i = 0; i < W; i++) for (let j = 0; j < H; j++) {
+        let n = 0;
+        for (let di = -1; di <= 1; di++) for (let dj = -1; dj <= 1; dj++) {
+          if (di === 0 && dj === 0) continue;
+          n += g[(i+di+W)%W][(j+dj+H)%H];
+        }
+        ng[i][j] = g[i][j] ? (n===2||n===3?1:0) : (n===3?1:0);
+        if (!ng[i][j] && Math.random() < .0004) ng[i][j] = 1;
+        na[i][j] = ng[i][j] ? Math.min(age[i][j]+1, 55) : 0;
+      }
+      g = ng; age = na; gen++;
+    }
+
+    function draw() {
+      frame++;
+      if (frame % 5 === 0) step();
+      const cw = cv.width, ch = cv.height;
+
+      cx.fillStyle = 'rgba(0,0,0,0.18)'; cx.fillRect(0, 0, cw, ch);
+
+      // 그리드
+      cx.strokeStyle = 'rgba(57,220,0,0.04)'; cx.lineWidth = .3;
+      for (let i = 0; i <= W; i++) { cx.beginPath(); cx.moveTo(i*SZ,0); cx.lineTo(i*SZ,ch); cx.stroke(); }
+      for (let j = 0; j <= H; j++) { cx.beginPath(); cx.moveTo(0,j*SZ); cx.lineTo(cw,j*SZ); cx.stroke(); }
+
+      // 스캔라인
+      for (let y = 0; y < ch; y += 3) { cx.fillStyle='rgba(0,0,0,0.06)'; cx.fillRect(0,y,cw,1); }
+
+      // 셀
+      let alive = 0;
+      cx.font = `bold ${SZ}px 'Courier New'`;
+      for (let i = 0; i < W; i++) for (let j = 0; j < H; j++) {
+        if (!g[i][j]) continue;
+        alive++;
+        const a = age[i][j];
+        const gi = Math.min(Math.floor(a/9), 5);
+        const alpha = .25 + gi * .14;
+        if (a < 5) { cx.fillStyle='rgba(57,220,0,0.08)'; cx.fillRect(i*SZ-1,j*SZ-1,SZ+2,SZ+2); }
+        cx.fillStyle = `rgba(57,220,0,${alpha})`;
+        cx.fillText(GL[gi], i*SZ, j*SZ+SZ-1);
+      }
+
+      // 플래시 이벤트
+      flashTimer++;
+      if (flashTimer > 80 + Math.random()*120) {
+        flashes.push({ text: EVENTS[Math.floor(Math.random()*EVENTS.length)],
+          x: 4+Math.random()*(cw-80), y: 10+Math.random()*(ch-14), life:50, max:50 });
+        flashTimer = 0;
+      }
+      cx.font = '6px Courier New';
+      flashes.forEach(f => {
+        f.life--;
+        const a = f.life/f.max;
+        const fw = cx.measureText(f.text).width;
+        cx.fillStyle=`rgba(0,15,0,${a*.85})`; cx.fillRect(f.x-2,f.y-8,fw+4,10);
+        cx.strokeStyle=`rgba(57,220,0,${a*.4})`; cx.lineWidth=.4; cx.strokeRect(f.x-2,f.y-8,fw+4,10);
+        cx.fillStyle=`rgba(57,220,0,${a*.7})`; cx.fillText(f.text,f.x,f.y);
+      });
+      for (let i = flashes.length-1; i >= 0; i--) if (flashes[i].life <= 0) flashes.splice(i,1);
+
+      // 밀도 바
+      const density = alive / (W*H);
+      const bx = cw-44, by = 3, bw = 40, bh = 4;
+      cx.strokeStyle='rgba(57,220,0,0.3)'; cx.lineWidth=.5; cx.strokeRect(bx,by,bw,bh);
+      cx.fillStyle='rgba(57,220,0,0.35)'; cx.fillRect(bx,by,bw*density,bh);
+
+      // 통계
+      document.getElementById('caStat1').textContent = `CELLS:${alive.toString().padStart(4,'0')}`;
+      document.getElementById('caStat2').textContent = `GEN:${gen.toString().padStart(5,'0')}`;
+      document.getElementById('caStat3').textContent = `${(density*100).toFixed(1)}%`;
+      document.getElementById('caStat4').textContent = alive<20?'DYING':alive>W*H*.4?'OVERPOP':'STABLE';
+
+      requestAnimationFrame(draw);
+    }
+
+    // 사이드바 렌더링 후 초기화
+    setTimeout(() => { init(); draw(); }, 500);
+    window.addEventListener('resize', () => { init(); });
+  })();
   </script>
 </body>
 </html>
