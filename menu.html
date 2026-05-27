@@ -6,7 +6,7 @@
   <title>SET - MENU</title>
   <style>
 * { margin: 0; padding: 0; box-sizing: border-box; }
-html, body { background: #000; color: #39dc00; font-family: 'Courier New', monospace; height: 100%; overflow: hidden; }
+html, body { background: #000; color: #00ff00; font-family: 'Courier New', monospace; height: 100%; overflow: hidden; }
 
 .top-banner {
   display: none;
@@ -29,14 +29,14 @@ html, body { background: #000; color: #39dc00; font-family: 'Courier New', monos
 }
 
 .folder-window {
-  border: 1.5px solid #39dc00;
+  border: 1.5px solid #00ff00;
   background: #000;
   width: 520px;
   height: 400px;
   flex-shrink: 0;
   display: flex;
   flex-direction: column;
-  box-shadow: 0 0 14px rgba(57,220,0,0.65), 0 0 32px rgba(57,220,0,0.2);
+  box-shadow: 0 0 14px rgba(0,255,0,0.65), 0 0 32px rgba(0,255,0,0.2);
   position: relative;
 }
 
@@ -45,28 +45,28 @@ html, body { background: #000; color: #39dc00; font-family: 'Courier New', monos
   content: '';
   position: absolute;
   inset: 4px;
-  border: 1px dashed rgba(57,220,0,0.15);
+  border: 1px dashed rgba(0,255,0,0.15);
   pointer-events: none;
   z-index: 2;
 }
 
 .folder-titlebar {
   background: #000;
-  color: #39dc00;
+  color: #00ff00;
   padding: 5px 8px;
   font-weight: bold;
   font-size: 11px;
   letter-spacing: 0.5px;
   display: flex;
   align-items: center;
-  border-bottom: 1px solid rgba(57,220,0,0.25);
+  border-bottom: 1px solid rgba(0,255,0,0.25);
   gap: 0;
 }
 
 .titlebar-fill {
   flex: 1;
   overflow: hidden;
-  color: rgba(57,220,0,0.2);
+  color: rgba(0,255,0,0.2);
   font-size: 10px;
   letter-spacing: 1px;
   padding: 0 4px;
@@ -86,14 +86,14 @@ html, body { background: #000; color: #39dc00; font-family: 'Courier New', monos
   cursor: pointer;
   font-size: 9px;
   font-family: 'Courier New', monospace;
-  color: rgba(57,220,0,0.45);
+  color: rgba(0,255,0,0.45);
   padding: 1px 2px;
   letter-spacing: 0;
   transition: color 0.1s;
 }
 
 .folder-icon:hover {
-  color: #39dc00;
+  color: #00ff00;
 }
 
 .folder-content {
@@ -101,19 +101,19 @@ html, body { background: #000; color: #39dc00; font-family: 'Courier New', monos
   padding: 12px;
   overflow-y: auto;
   background: #000;
-  color: #39dc00;
+  color: #00ff00;
   font-size: 12px;
   line-height: 1.8;
-  border-top: 1px solid #39dc00;
+  border-top: 1px solid #00ff00;
 }
 
 .path-bar {
   padding: 8px 12px;
-  border-bottom: 1px solid #39dc00;
+  border-bottom: 1px solid #00ff00;
   background: #000;
-  color: #39dc00;
+  color: #00ff00;
   font-size: 11px;
-  border-top: 1px solid #39dc00;
+  border-top: 1px solid #00ff00;
 }
 
 .menu-items {
@@ -130,7 +130,7 @@ html, body { background: #000; color: #39dc00; font-family: 'Courier New', monos
   padding: 20px 12px;
   cursor: pointer;
   transition: all 0.15s;
-  border: 1px solid rgba(57,220,0,0.18);
+  border: 1px solid rgba(0,255,0,0.18);
   background: #000;
   text-align: center;
   min-height: 80px;
@@ -138,9 +138,9 @@ html, body { background: #000; color: #39dc00; font-family: 'Courier New', monos
 
 .menu-item:hover,
 .menu-item.selected {
-  background: rgba(57,220,0,0.07);
-  border-color: rgba(57,220,0,0.5);
-  box-shadow: inset 0 0 20px rgba(57,220,0,0.04);
+  background: rgba(0,255,0,0.07);
+  border-color: rgba(0,255,0,0.5);
+  box-shadow: inset 0 0 20px rgba(0,255,0,0.04);
 }
 
 .menu-item-icon {
@@ -168,11 +168,11 @@ html, body { background: #000; color: #39dc00; font-family: 'Courier New', monos
 
 ::-webkit-scrollbar-track {
   background: #000;
-  border-left: 1px solid #39dc00;
+  border-left: 1px solid #00ff00;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #39dc00;
+  background: #00ff00;
 }
 
 ::-webkit-scrollbar-thumb:hover {
@@ -181,9 +181,9 @@ html, body { background: #000; color: #39dc00; font-family: 'Courier New', monos
 
 .status-bar {
   padding: 8px 12px;
-  border-top: 1px solid #39dc00;
+  border-top: 1px solid #00ff00;
   background: #000;
-  color: #39dc00;
+  color: #00ff00;
   font-size: 11px;
   display: flex;
   justify-content: space-between;
@@ -218,12 +218,12 @@ html, body { background: #000; color: #39dc00; font-family: 'Courier New', monos
 
       <!-- 상단 패널: Signal Intercept 타이틀 바 포함 -->
       <div style="display:flex;flex-direction:column;align-items:center;gap:0;margin-left:12px;">
-        <div style="display:flex;align-items:center;justify-content:space-between;background:#39dc00;color:#000;padding:3px 12px;font-weight:bold;font-size:10px;letter-spacing:1.5px;gap:8px;width:calc(100% + 0px);">
+        <div style="display:flex;align-items:center;justify-content:space-between;background:#00ff00;color:#000;padding:3px 12px;font-weight:bold;font-size:10px;letter-spacing:1.5px;gap:8px;width:calc(100% + 0px);">
           <span>SIGNAL INTERCEPT VIEWER</span>
           <div style="display:flex;gap:3px;flex-shrink:0;">
-            <button style="width:15px;height:15px;background:#39dc00;border:1px solid #000;cursor:pointer;font-size:8px;font-weight:bold;padding:0;">−</button>
-            <button style="width:15px;height:15px;background:#39dc00;border:1px solid #000;cursor:pointer;font-size:8px;font-weight:bold;padding:0;">□</button>
-            <button style="width:15px;height:15px;background:#39dc00;border:1px solid #000;cursor:pointer;font-size:8px;font-weight:bold;padding:0;">✕</button>
+            <button style="width:15px;height:15px;background:#00ff00;border:1px solid #000;cursor:pointer;font-size:8px;font-weight:bold;padding:0;">−</button>
+            <button style="width:15px;height:15px;background:#00ff00;border:1px solid #000;cursor:pointer;font-size:8px;font-weight:bold;padding:0;">□</button>
+            <button style="width:15px;height:15px;background:#00ff00;border:1px solid #000;cursor:pointer;font-size:8px;font-weight:bold;padding:0;">✕</button>
           </div>
         </div>
         <canvas id="interceptCanvas" style="display:block;flex-shrink:0;"></canvas>
@@ -298,7 +298,7 @@ html, body { background: #000; color: #39dc00; font-family: 'Courier New', monos
       canvas.style.width = W + 'px'; canvas.style.height = H + 'px';
       ctx.scale(dpr, dpr);
 
-      const GA = (a) => `rgba(57,220,0,${a})`;
+      const GA = (a) => `rgba(0,255,0,${a})`;
       let frame = 0;
 
       // ─── RADAR state ───
@@ -366,7 +366,7 @@ html, body { background: #000; color: #39dc00; font-family: 'Courier New', monos
         // ── Concentric rings with glow
         ctx.save();
         [1, 0.66, 0.33].forEach((s, i) => {
-          ctx.shadowColor = '#39dc00';
+          ctx.shadowColor = '#00ff00';
           ctx.shadowBlur  = [8, 4, 2][i];
           ctx.strokeStyle = GA([0.22, 0.14, 0.09][i]); ctx.lineWidth = 1;
           ctx.beginPath(); ctx.arc(cx, cy, r * s, 0, Math.PI * 2); ctx.stroke();
@@ -427,7 +427,7 @@ html, body { background: #000; color: #39dc00; font-family: 'Courier New', monos
 
         // ── Sweep head with glow
         ctx.save();
-        ctx.shadowColor = '#39dc00'; ctx.shadowBlur = 12;
+        ctx.shadowColor = '#00ff00'; ctx.shadowBlur = 12;
         ctx.strokeStyle = GA(0.9); ctx.lineWidth = 1.5;
         ctx.beginPath(); ctx.moveTo(cx, cy);
         ctx.lineTo(cx + Math.cos(radarAngle) * r, cy + Math.sin(radarAngle) * r);
@@ -436,7 +436,7 @@ html, body { background: #000; color: #39dc00; font-family: 'Courier New', monos
 
         // ── Center dot (pulsing)
         ctx.save();
-        ctx.shadowColor = '#39dc00'; ctx.shadowBlur = 6 + 4 * Math.abs(Math.sin(radarTick * 0.05));
+        ctx.shadowColor = '#00ff00'; ctx.shadowBlur = 6 + 4 * Math.abs(Math.sin(radarTick * 0.05));
         ctx.fillStyle = GA(0.8);
         ctx.beginPath(); ctx.arc(cx, cy, 2.5, 0, Math.PI * 2); ctx.fill();
         ctx.restore();
@@ -446,7 +446,7 @@ html, body { background: #000; color: #39dc00; font-family: 'Courier New', monos
         if (pulsePhase < 0.6) {
           const pr = pulsePhase / 0.6 * r;
           ctx.save();
-          ctx.shadowColor = '#39dc00'; ctx.shadowBlur = 4;
+          ctx.shadowColor = '#00ff00'; ctx.shadowBlur = 4;
           ctx.strokeStyle = GA((1 - pulsePhase / 0.6) * 0.25);
           ctx.lineWidth = 1;
           ctx.beginPath(); ctx.arc(cx, cy, pr, 0, Math.PI * 2); ctx.stroke();
@@ -465,7 +465,7 @@ html, body { background: #000; color: #39dc00; font-family: 'Courier New', monos
             ctx.save();
             if (b.locked) {
               // Diamond + crosshair + pulse ring
-              ctx.shadowColor = '#39dc00'; ctx.shadowBlur = alpha * 10;
+              ctx.shadowColor = '#00ff00'; ctx.shadowBlur = alpha * 10;
               ctx.strokeStyle = GA(alpha * 0.9); ctx.lineWidth = 1;
               const ds = 4;
               ctx.beginPath();
@@ -484,7 +484,7 @@ html, body { background: #000; color: #39dc00; font-family: 'Courier New', monos
               }
             } else {
               // Dot with faint halo
-              ctx.shadowColor = '#39dc00'; ctx.shadowBlur = alpha * 6;
+              ctx.shadowColor = '#00ff00'; ctx.shadowBlur = alpha * 6;
               ctx.fillStyle = GA(alpha * 0.85);
               ctx.beginPath(); ctx.arc(bx, by, 2, 0, Math.PI * 2); ctx.fill();
               ctx.strokeStyle = GA(alpha * 0.2); ctx.lineWidth = 1;
@@ -645,7 +645,7 @@ html, body { background: #000; color: #39dc00; font-family: 'Courier New', monos
         ctx.font = `bold ${fs}px monospace`;
         ctx.fillStyle = GA(0.7); ctx.fillText('[ ', 4, 3);
         ctx.fillStyle = '#ff00ff'; ctx.fillText('►', 4 + ctx.measureText('[ ').width, 3);
-        ctx.fillStyle = '#39dc00'; ctx.fillText(' FILE MANAGER ]', 4 + ctx.measureText('[ ► ').width, 3);
+        ctx.fillStyle = '#00ff00'; ctx.fillText(' FILE MANAGER ]', 4 + ctx.measureText('[ ► ').width, 3);
         const now = new Date();
         ctx.fillStyle = GA(0.35); ctx.textAlign = 'right';
         ctx.fillText(now.toTimeString().slice(0, 5), W - 4, 3);
@@ -693,7 +693,7 @@ html, body { background: #000; color: #39dc00; font-family: 'Courier New', monos
           }
 
           const icon = item.type === 'root' ? '⊟' : item.type === 'dir' ? (isSel ? '▼' : '▶') : '·';
-          ctx.fillStyle = isSel ? '#39dc00' : item.type === 'file' ? GA(0.38) : '#39dc00';
+          ctx.fillStyle = isSel ? '#00ff00' : item.type === 'file' ? GA(0.38) : '#00ff00';
           const label = icon + ' ' + item.name;
           ctx.fillText(label, 3 + indent, y);
 
@@ -741,8 +741,8 @@ html, body { background: #000; color: #39dc00; font-family: 'Courier New', monos
 
         // File manager border (same style as card / menu)
         ctx.save();
-        ctx.shadowColor = '#39dc00'; ctx.shadowBlur = 14;
-        ctx.strokeStyle = '#39dc00';
+        ctx.shadowColor = '#00ff00'; ctx.shadowBlur = 14;
+        ctx.strokeStyle = '#00ff00';
         // top: thin
         ctx.lineWidth = 0.5;
         ctx.beginPath(); ctx.moveTo(0, FILE_Y); ctx.lineTo(W, FILE_Y); ctx.stroke();
@@ -753,7 +753,7 @@ html, body { background: #000; color: #39dc00; font-family: 'Courier New', monos
         ctx.beginPath(); ctx.moveTo(0, H - 0.75); ctx.lineTo(W, H - 0.75); ctx.stroke();
         ctx.restore();
         ctx.setLineDash([3, 5]);
-        ctx.strokeStyle = 'rgba(57,220,0,0.15)'; ctx.lineWidth = 1;
+        ctx.strokeStyle = 'rgba(0,255,0,0.15)'; ctx.lineWidth = 1;
         ctx.strokeRect(4, FILE_Y + 4, W - 8, H - FILE_Y - 8);
         ctx.setLineDash([]);
 
@@ -780,7 +780,7 @@ html, body { background: #000; color: #39dc00; font-family: 'Courier New', monos
       canvas.width = CW * dpr; canvas.height = CH * dpr;
       canvas.style.width = CW + 'px'; canvas.style.height = CH + 'px';
       ctx.scale(dpr, dpr);
-      const GA = (a) => `rgba(57,220,0,${a})`;
+      const GA = (a) => `rgba(0,255,0,${a})`;
       let frame = 0;
 
       function draw() {
@@ -816,17 +816,17 @@ html, body { background: #000; color: #39dc00; font-family: 'Courier New', monos
         // HEADER
         const hdrH = 30;
         ctx.fillStyle = GA(0.102); ctx.fillRect(px, py, pw, hdrH);
-        ctx.fillStyle = '#39dc00'; ctx.fillRect(px, py, 3, hdrH);
+        ctx.fillStyle = '#00ff00'; ctx.fillRect(px, py, 3, hdrH);
 
         const ldx = px+13, ldy = py+hdrH/2;
-        ctx.save(); ctx.shadowColor = '#39dc00'; ctx.shadowBlur = 8;
-        ctx.fillStyle = glitchOn ? '#ff00ff' : '#39dc00';
+        ctx.save(); ctx.shadowColor = '#00ff00'; ctx.shadowBlur = 8;
+        ctx.fillStyle = glitchOn ? '#ff00ff' : '#00ff00';
         ctx.beginPath(); ctx.moveTo(ldx,ldy-5); ctx.lineTo(ldx+5,ldy); ctx.lineTo(ldx,ldy+5); ctx.lineTo(ldx-5,ldy); ctx.closePath(); ctx.fill();
         ctx.restore();
 
         ctx.textAlign = 'left'; ctx.textBaseline = 'top';
         ctx.font = `bold ${fh}px monospace`;
-        ctx.fillStyle = glitchOn ? '#ff00ff' : '#39dc00';
+        ctx.fillStyle = glitchOn ? '#ff00ff' : '#00ff00';
         ctx.fillText('SYSTEM ACCESS', px+22, py+5);
         ctx.font = `${Math.max(6,fh-2)}px monospace`; ctx.fillStyle = GA(0.4);
         ctx.fillText('NOTE-A CREATIVE DIV', px+22, py+16);
@@ -848,7 +848,7 @@ html, body { background: #000; color: #39dc00; font-family: 'Courier New', monos
         ctx.fillStyle = GA(0.04); ctx.fillRect(phX,phY,phW,phH);
         ctx.strokeStyle = GA(0.33); ctx.lineWidth = 1; ctx.strokeRect(phX,phY,phW,phH);
         const bk = 5;
-        ctx.strokeStyle = '#39dc00'; ctx.lineWidth = 1.5;
+        ctx.strokeStyle = '#00ff00'; ctx.lineWidth = 1.5;
         [[phX,phY],[phX+phW,phY],[phX,phY+phH],[phX+phW,phY+phH]].forEach(([bx,by],i) => {
           const sx = i%2===0?1:-1, sy = i<2?1:-1;
           ctx.beginPath(); ctx.moveTo(bx+sx*bk,by); ctx.lineTo(bx,by); ctx.lineTo(bx,by+sy*bk); ctx.stroke();
@@ -881,7 +881,7 @@ html, body { background: #000; color: #39dc00; font-family: 'Courier New', monos
         for (let sl = phY; sl < phY+phH; sl+=2) ctx.fillRect(phX,sl,phW,1);
 
         ctx.font = `${Math.max(5,fh-5)}px monospace`;
-        ctx.fillStyle = frame%30<20 ? '#39dc00' : '#003300';
+        ctx.fillStyle = frame%30<20 ? '#00ff00' : '#003300';
         ctx.textAlign = 'left'; ctx.fillText('SCAN:OK',phX+2,phY+phH-3);
         ctx.fillStyle = GA(0.33); ctx.textAlign = 'right'; ctx.fillText('99.7%',phX+phW-2,phY+phH-3); ctx.textAlign = 'left';
 
@@ -895,7 +895,7 @@ html, body { background: #000; color: #39dc00; font-family: 'Courier New', monos
         ctx.font = `${inf}px monospace`;
         [['NAME','note-a'],['ID','NA-2026-042'],['ROLE','ARTIST'],['CLR','ADMIN'],['DEPT','WORLD-01'],['ISS','2026.01'],['EXP','2027.01']].forEach(([k,v],i) => {
           ctx.fillStyle = GA(0.26); ctx.fillText(k+':',ix,iy+i*flh);
-          ctx.fillStyle = '#39dc00'; ctx.fillText(v,ix+Math.floor(cw*0.19),iy+i*flh);
+          ctx.fillStyle = '#00ff00'; ctx.fillText(v,ix+Math.floor(cw*0.19),iy+i*flh);
         });
 
         // CHIP
@@ -963,7 +963,7 @@ html, body { background: #000; color: #39dc00; font-family: 'Courier New', monos
 
         let bxp2=bcX+5;
         allPat.forEach((w,i)=>{
-          if(i%2===0){ const sh=hardGlitch?(Math.random()-.5)*2:0; ctx.fillStyle=glitchOn?'#ff00ff':'#39dc00'; ctx.fillRect(bxp2,barY+sh,w*scl-0.2,bcH); }
+          if(i%2===0){ const sh=hardGlitch?(Math.random()-.5)*2:0; ctx.fillStyle=glitchOn?'#ff00ff':'#00ff00'; ctx.fillRect(bxp2,barY+sh,w*scl-0.2,bcH); }
           bxp2+=w*scl;
         });
 
@@ -1002,8 +1002,8 @@ html, body { background: #000; color: #39dc00; font-family: 'Courier New', monos
           const blink=t%24<16;
           ctx.fillStyle=blink?GA(0.125):GA(0.047); ctx.fillRect(px+7,stY-2,pw-14,19);
           ctx.strokeStyle=blink?GA(0.376):GA(0.188); ctx.lineWidth=1; ctx.strokeRect(px+7,stY-2,pw-14,19);
-          ctx.save(); ctx.shadowColor='#39dc00'; ctx.shadowBlur=blink?6:0;
-          ctx.font=`bold ${fh}px monospace`; ctx.fillStyle=blink?'#39dc00':GA(0.33);
+          ctx.save(); ctx.shadowColor='#00ff00'; ctx.shadowBlur=blink?6:0;
+          ctx.font=`bold ${fh}px monospace`; ctx.fillStyle=blink?'#00ff00':GA(0.33);
           ctx.fillText('◆ AUTHORIZED',px+13,stY); ctx.restore();
         } else {
           const dots='.'.repeat(Math.floor(t/10)%4);
@@ -1014,13 +1014,13 @@ html, body { background: #000; color: #39dc00; font-family: 'Courier New', monos
         }
 
         const ledOn=t%60<42;
-        ctx.save(); ctx.shadowColor='#39dc00'; ctx.shadowBlur=ledOn?14:0;
-        ctx.fillStyle=ledOn?'#39dc00':'#001800';
+        ctx.save(); ctx.shadowColor='#00ff00'; ctx.shadowBlur=ledOn?14:0;
+        ctx.fillStyle=ledOn?'#00ff00':'#001800';
         ctx.beginPath(); ctx.arc(px+pw-10,stY+8,4,0,Math.PI*2); ctx.fill(); ctx.restore();
 
         // OUTER GLOW BORDER
-        ctx.save(); ctx.shadowColor=glitchOn?'#ff00ff':'#39dc00'; ctx.shadowBlur=14;
-        ctx.strokeStyle=glitchOn?'#ff00ff':'#39dc00'; ctx.lineWidth=1.5; ctx.strokeRect(mx,my,cw2,ch2); ctx.restore();
+        ctx.save(); ctx.shadowColor=glitchOn?'#ff00ff':'#00ff00'; ctx.shadowBlur=14;
+        ctx.strokeStyle=glitchOn?'#ff00ff':'#00ff00'; ctx.lineWidth=1.5; ctx.strokeRect(mx,my,cw2,ch2); ctx.restore();
         ctx.setLineDash([3,5]); ctx.strokeStyle=GA(0.118); ctx.lineWidth=1;
         ctx.strokeRect(mx+3,my+3,cw2-6,ch2-6); ctx.setLineDash([]);
 
@@ -1057,7 +1057,7 @@ html, body { background: #000; color: #39dc00; font-family: 'Courier New', monos
       canvas.style.width = W + 'px'; canvas.style.height = H + 'px';
       ctx.scale(dpr, dpr);
 
-      const GA = (a) => `rgba(57,220,0,${a})`;
+      const GA = (a) => `rgba(0,255,0,${a})`;
       const CHARSET = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*<>[]{}|:/_.=+?';
       const MSGS = [
         'SET WORLD NODE AUTHENTICATED',
@@ -1142,13 +1142,13 @@ html, body { background: #000; color: #39dc00; font-family: 'Courier New', monos
 
         if (decMsg || decCur > 0) {
           ctx.save();
-          ctx.shadowColor = '#39dc00'; ctx.shadowBlur = 20;
+          ctx.shadowColor = '#00ff00'; ctx.shadowBlur = 20;
           ctx.shadowOffsetX = 0; ctx.shadowOffsetY = 0;
           ctx.font = 'bold 11px monospace'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-          ctx.fillStyle = '#39dc00';
+          ctx.fillStyle = '#00ff00';
           ctx.fillText(decMsg + (tick % 16 < 11 ? '█' : ''), CX + CW_MID / 2, cy);
           // 추가 글로우 레이어
-          ctx.shadowBlur = 6; ctx.shadowColor = 'rgba(57,220,0,0.5)';
+          ctx.shadowBlur = 6; ctx.shadowColor = 'rgba(0,255,0,0.5)';
           ctx.fillText(decMsg + (tick % 16 < 11 ? '█' : ''), CX + CW_MID / 2, cy);
           ctx.restore();
           // progress bar
@@ -1162,7 +1162,7 @@ html, body { background: #000; color: #39dc00; font-family: 'Courier New', monos
 
 
         // corner brackets
-        const bs = 10; ctx.strokeStyle = '#39dc00'; ctx.lineWidth = 1.5;
+        const bs = 10; ctx.strokeStyle = '#00ff00'; ctx.lineWidth = 1.5;
         [[0,0,1,1],[W,0,-1,1],[0,H,1,-1],[W,H,-1,-1]].forEach(([bx,by,dx,dy]) => {
           ctx.beginPath(); ctx.moveTo(bx+dx*bs,by); ctx.lineTo(bx,by); ctx.lineTo(bx,by+dy*bs); ctx.stroke();
         });
