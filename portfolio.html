@@ -2562,6 +2562,15 @@ REQUIRE LOGIN: No (Public access enabled)
           ">✕</button>
         </div>
         <div id="csOverlayBody" style="flex:1;overflow:hidden;min-height:0;"></div>
+        <div id="csBotStats" style="flex-shrink:0;background:#000;border-top:1px solid #39dc00;padding:6px 14px;display:flex;gap:16px;align-items:center;">
+          <span id="csStat1" style="font-size:9px;font-family:monospace;color:#39dc00;letter-spacing:1px;"></span>
+          <span style="font-size:9px;font-family:monospace;color:rgba(57,220,0,0.3);">·</span>
+          <span id="csStat2" style="font-size:9px;font-family:monospace;color:#39dc00;letter-spacing:1px;"></span>
+          <span style="font-size:9px;font-family:monospace;color:rgba(57,220,0,0.3);">·</span>
+          <span id="csStat3" style="font-size:9px;font-family:monospace;color:#39dc00;letter-spacing:1px;"></span>
+          <span style="flex:1;"></span>
+          <span id="csStat4" style="font-size:9px;font-family:monospace;color:rgba(57,220,0,0.4);letter-spacing:1px;"></span>
+        </div>
       `;
 
       document.body.appendChild(overlay);
@@ -2584,7 +2593,8 @@ REQUIRE LOGIN: No (Public access enabled)
         waveOffset += 0.4;
       }
       const waveTimer = setInterval(renderWave, 60);
-      overlay.addEventListener('remove', () => clearInterval(waveTimer));
+
+      overlay.addEventListener('remove', () => { clearInterval(waveTimer); clearInterval(statsTimer); });
 
       // 닫기
       function closeOverlay() {
@@ -2755,6 +2765,23 @@ REQUIRE LOGIN: No (Public access enabled)
         titleEl.textContent = path;
       }
 
+      const statsTimer = setInterval(function() {
+        const total = currentPhotos ? currentPhotos.filter(p => p.type !== 'sheet').length : 0;
+        const cells = document.querySelectorAll('#csCells .cs-cell[data-type="photo"]');
+        const rendered = cells.length;
+        const imgLoaded = Array.from(cells).filter(c => { const img = c.querySelector('img'); return img && img.complete && img.naturalWidth > 0; }).length;
+        const estMem = (imgLoaded * 42 / 1024).toFixed(1);
+        const pad = n => String(n).padStart(3, '0');
+        const s1 = document.getElementById('csStat1');
+        const s2 = document.getElementById('csStat2');
+        const s3 = document.getElementById('csStat3');
+        const s4 = document.getElementById('csStat4');
+        if (s1) s1.textContent = `TOTAL: ${pad(total)} FILES`;
+        if (s2) s2.textContent = `LOADED: ${pad(imgLoaded)}/${pad(rendered)}`;
+        if (s3) s3.textContent = `MEM: ${estMem}MB`;
+        if (s4) s4.textContent = currentLevelTitle ? currentLevelTitle.toUpperCase() : '';
+      }, 400);
+
       function renderLevel(photos, levelTitle) {
         currentPhotos = photos;
         currentLevelTitle = levelTitle;
@@ -2804,11 +2831,14 @@ REQUIRE LOGIN: No (Public access enabled)
             const _pFull = (firstChild && (firstChild.filename || firstChild.url)) || '';
             const previewSrc = _pFull ? _pFull.replace(/\/DSCF([^/]+)\.(jpg|JPG)$/, '/t/DSCF$1.jpg') : '';
             return `<div class="cs-cell cs-folder" data-idx="${i}" data-type="sheet"
-              style="aspect-ratio:1;background:#0d0d0d;cursor:pointer;position:relative;overflow:hidden;outline:1px solid rgba(57,220,0,0.6);">
-              <img src="${previewSrc}" style="position:absolute;top:0;left:0;width:100%;height:calc(100% - 18px);object-fit:cover;filter:brightness(0.35) saturate(0) sepia(1) hue-rotate(85deg);" loading="eager" decoding="async">
-              <div style="position:absolute;bottom:0;left:0;right:0;height:18px;background:rgba(0,0,0,0.75);border-top:1px solid rgba(57,220,0,0.4);display:flex;align-items:center;justify-content:center;gap:4px;">
-                <span style="font-size:6px;font-family:monospace;color:#39dc00;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;padding:0 3px;">${(p.title||p.id).toUpperCase()}</span>
-                <span style="font-size:5px;font-family:monospace;color:rgba(57,220,0,0.5);">(${childCount})</span>
+              style="cursor:pointer;display:flex;flex-direction:column;gap:4px;">
+              <div style="aspect-ratio:3/2;background:#0d0d0d;overflow:hidden;flex-shrink:0;border:1px solid #39dc00;">
+                <img src="${previewSrc}" style="width:100%;height:100%;object-fit:cover;filter:brightness(0.38) saturate(0) sepia(1) hue-rotate(90deg);" loading="eager" decoding="async">
+              </div>
+              <div style="display:flex;align-items:center;justify-content:center;gap:4px;padding:0 2px;">
+                <span style="font-size:5px;font-family:monospace;color:rgba(57,220,0,0.5);letter-spacing:0.5px;">[SYS]</span>
+                <span style="font-size:6px;font-family:monospace;color:#39dc00;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;letter-spacing:0.5px;">${(p.title||p.id).toUpperCase().replace(/\./g,'/')}</span>
+                <span style="font-size:5px;font-family:monospace;color:rgba(57,220,0,0.4);">(${childCount})</span>
               </div>
             </div>`;
           } else {
@@ -2825,7 +2855,7 @@ REQUIRE LOGIN: No (Public access enabled)
             const thumbSrc = fullSrc ? fullSrc.replace(/\/DSCF([^/]+)\.(jpg|JPG)$/, '/t/DSCF$1.jpg') : '';
             const imgSrc = blobSrc || thumbSrc || fullSrc;
             return `<div class="cs-cell" data-idx="${i}" data-v="${v}" data-type="photo"
-              style="aspect-ratio:1/1;cursor:pointer;position:relative;overflow:hidden;background:#111;${isKey ? `outline:2px solid ${color};outline-offset:-2px;` : `filter:brightness(0.35) saturate(0) sepia(1) hue-rotate(85deg);`}">
+              style="aspect-ratio:3/2;cursor:pointer;position:relative;overflow:hidden;background:#111;${isKey ? `outline:2px solid ${color};outline-offset:-2px;` : `filter:brightness(0.38) saturate(0) sepia(1) hue-rotate(90deg);`}">
               <img src="${imgSrc}" data-fname="${fname}" data-full="${fullSrc}" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;" loading="eager" decoding="async" onerror="if(!this._fb){this._fb=1;this.src=this.dataset.full}">
               ${isKey ? `<div style="position:absolute;top:2px;right:2px;font-size:5px;font-family:monospace;padding:1px 3px;background:${color};color:#000;">${LABELS[v]}</div>` : ''}
             </div>`;
@@ -2843,7 +2873,7 @@ REQUIRE LOGIN: No (Public access enabled)
               ${filterBtns}
             </div>
             <div id="csGrid" style="flex:1;overflow-y:auto;padding:40px 48px;min-height:0;">
-              <div id="csCells" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(72px,1fr));gap:4px;content-visibility:auto;">
+              <div id="csCells" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(85px,1fr));gap:5px;content-visibility:auto;">
                 ${cells}
               </div>
               ${photos.length > PAGE ? `<div style="text-align:center;padding:16px 0;">
@@ -2890,7 +2920,7 @@ REQUIRE LOGIN: No (Public access enabled)
             const thumbSrc = fullSrc ? fullSrc.replace(/\/DSCF([^/]+)\.(jpg|JPG)$/, '/t/DSCF$1.jpg') : '';
             const imgSrc = blobSrc || thumbSrc || fullSrc;
             return `<div class="cs-cell" data-idx="${loaded + i}" data-v="${v}" data-type="photo"
-              style="aspect-ratio:1/1;cursor:pointer;position:relative;overflow:hidden;background:#111;${isKey ? `outline:2px solid ${color};outline-offset:-2px;` : `filter:brightness(0.35) saturate(0) sepia(1) hue-rotate(85deg);`}">
+              style="aspect-ratio:3/2;cursor:pointer;position:relative;overflow:hidden;background:#111;${isKey ? `outline:2px solid ${color};outline-offset:-2px;` : `filter:brightness(0.38) saturate(0) sepia(1) hue-rotate(90deg);`}">
               <img src="${imgSrc}" data-fname="${fname}" data-full="${fullSrc}" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;" loading="lazy" onerror="if(!this._fb){this._fb=1;this.src=this.dataset.full}">
               ${isKey ? `<div style="position:absolute;top:2px;right:2px;font-size:5px;font-family:monospace;padding:1px 3px;background:${color};color:#000;">${LABELS[v]}</div>` : ''}
             </div>`;
