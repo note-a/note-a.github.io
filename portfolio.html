@@ -1585,8 +1585,7 @@ html, body { background: #000; color: #39dc00; font-family: 'Courier New', monos
       },
       inclusion: {
         title: 'SET Inclusion',
-        isContactSheet: true,
-        photos: []
+        isComingSoon: true
       },
       rule: {
         title: 'Log',
@@ -2024,7 +2023,35 @@ REQUIRE LOGIN: No (Public access enabled)
       const publishedPosts = getPublishedPosts(section);
 
       if (content) {
-        if (content.isGrammarCodes) {
+        if (content.isComingSoon) {
+          // SET Inclusion — 별도 섹션, 컨텍트시트 오버레이 아님
+          const SET_ASCII = `##############################################################
+##                                                          ##
+##    _______________________________                       ##
+##   /   _____/\\_   _____/\\__    ___/                      ##
+##   \\_____  \\  |    __)_   |    |                          ##
+##   /        \\ |        \\  |    |                          ##
+##  /_______  //_______  /  |____|                          ##
+##          \\/         \\/                                   ##
+##                                                          ##
+##  .___              .__               .__                 ##
+##  |   | ____   ____ |  |  __ __  _____|__| ____   ____   ##
+##  |   |/    \\_/ ___\\|  | |  |  \\/  ___/  |/  _ \\ /    \\  ##
+##  |   |   |  \\  \\___|  |_|  |  /\\___ \\|  (  <_> )   |  \\ ##
+##  |___|___|  /\\___  >____/____//____  >__|\\____/|___|  / ##
+##           \\/     \\/                \\/               \\/  ##
+##                                                          ##
+##############################################################`;
+          terminalContent.style.display = 'flex';
+          terminalContent.style.flexDirection = 'column';
+          terminalContent.style.alignItems = 'center';
+          terminalContent.style.justifyContent = 'center';
+          terminalContent.innerHTML = `
+            <pre style="font-family:'Courier New',monospace;font-size:clamp(7px,1.1vw,13px);
+              line-height:1.4;color:#e8e8e8;letter-spacing:0.04em;user-select:none;">${SET_ASCII}</pre>
+            <div style="margin-top:26px;font-family:'Courier New',monospace;font-size:13px;
+              color:#39dc00;letter-spacing:5px;">— COMING SOON —</div>`;
+        } else if (content.isGrammarCodes) {
           loadGrammarCodes(content);
         } else if (content.isSlideshow) {
           // Slideshow format — merge published posts as additional slides
@@ -2647,49 +2674,10 @@ REQUIRE LOGIN: No (Public access enabled)
         statusEl.textContent = `✓ ${files.length}장`;
       });
 
-      // ── ASCII 스플래시 ──────────────────────────────────────────
-      const SET_ASCII =
-`##############################################################
-##                                                          ##
-##    _______________________________                       ##
-##   /   _____/\\_   _____/\\__    ___/                       ##
-##   \\_____  \\  |    __)_   |    |                          ##
-##   /        \\ |        \\  |    |                          ##
-##  /_______  //_______  /  |____|                          ##
-##          \\/         \\/                                   ##
-##                                                          ##
-##  .___              .__               .__                 ##
-##  |   | ____   ____ |  |  __ __  _____|__| ____   ____    ##
-##  |   |/    \\_/ ___\\|  | |  |  \\/  ___/  |/  _ \\ /    \\   ##
-##  |   |   |  \\  \\___|  |_|  |  /\\___ \\|  (  <_> )   |  \\  ##
-##  |___|___|  /\\___  >____/____//____  >__|\\____/|___|  /  ##
-##           \\/     \\/                \\/               \\/   ##
-##                                                          ##
-##############################################################`;
-
+      // 갤러리 렌더링
       const body = document.getElementById('csOverlayBody');
-
-      const splash = document.createElement('div');
-      splash.style.cssText = `
-        position:absolute;inset:0;background:#000;z-index:10;
-        display:flex;flex-direction:column;align-items:center;justify-content:center;
-        transition:opacity 0.4s ease;
-      `;
-      splash.innerHTML = `
-        <pre style="
-          font-family:'Courier New',monospace;font-size:clamp(8px,1.3vw,15px);
-          line-height:1.4;color:#e8e8e8;letter-spacing:0.04em;
-          user-select:none;
-        ">${SET_ASCII}</pre>
-        <div style="
-          margin-top:26px;font-family:'Courier New',monospace;font-size:13px;
-          color:#39dc00;letter-spacing:5px;
-        ">— COMING SOON —</div>
-      `;
-      body.style.position = 'relative';
-      body.appendChild(splash);
-      // 갤러리 비활성화 중 — renderContactSheet 호출 안 함
-      // ────────────────────────────────────────────────────────────
+      const titleEl = document.getElementById('csOverlayTitle');
+      renderContactSheet(content, body, titleEl, overlay);
     }
 
     // 프레임 번호 기반 가상 사진 느낌의 그라디언트 생성
@@ -3912,7 +3900,18 @@ REQUIRE LOGIN: No (Public access enabled)
           return;
         }
 
-      if (content.isGrammarCodes) {
+      if (content.isComingSoon) {
+        mobileContent.style.display = 'flex';
+        mobileContent.style.flexDirection = 'column';
+        mobileContent.style.alignItems = 'center';
+        mobileContent.style.justifyContent = 'center';
+        mobileContent.innerHTML = `
+          <pre style="font-family:'Courier New',monospace;font-size:clamp(6px,2.5vw,11px);
+            line-height:1.4;color:#e8e8e8;letter-spacing:0.04em;user-select:none;white-space:pre;">SET : Inclusion</pre>
+          <div style="margin-top:20px;font-family:'Courier New',monospace;font-size:12px;
+            color:#39dc00;letter-spacing:4px;">— COMING SOON —</div>`;
+        return;
+      } else if (content.isGrammarCodes) {
         mobileContent.style.whiteSpace = 'normal';
         mobileContent.style.padding = '0';
         mobileContent.innerHTML = `<canvas id="mobileGrammarCanvas" style="display:block;width:100%;height:100%;min-height:400px;background:#000;"></canvas>`;
@@ -4219,8 +4218,12 @@ REQUIRE LOGIN: No (Public access enabled)
         const activeMenuItem = document.querySelector('[data-section].active') || document.querySelector('.mobile-menu-item.active');
         if (activeMenuItem) {
           const section = activeMenuItem.getAttribute('data-section') || 'about';
-          loadContent(section);
-          loadContentToMobile(section);
+          const c = contents[section];
+          const skipReload = c && (c.isContactSheet || c.isComingSoon);
+          if (!skipReload) {
+            loadContent(section);
+            loadContentToMobile(section);
+          }
         }
       }
     });
@@ -4263,12 +4266,20 @@ REQUIRE LOGIN: No (Public access enabled)
           window._csNavReset = true;
 
           // Re-render current section
+          // isContactSheet(오버레이 갤러리) / isComingSoon 섹션은 자동 재호출 안 함
           const isMobile = window.innerWidth <= 768;
           const activeSection = isMobile
             ? (document.querySelector('.mobile-menu-item.active')?.getAttribute('data-section') || 'about')
             : (document.querySelector('[data-section].active')?.getAttribute('data-section') || 'about');
-          if (isMobile) loadContentToMobile(activeSection);
-          else loadContent(activeSection);
+          const activeContent = contents[activeSection];
+          const skipReload = activeContent && (activeContent.isContactSheet || activeContent.isComingSoon);
+          if (!skipReload) {
+            if (isMobile) {
+              loadContentToMobile(activeSection);
+            } else {
+              loadContent(activeSection);
+            }
+          }
         })
         .catch(() => {
           loadAdminContentsFromStorage();
