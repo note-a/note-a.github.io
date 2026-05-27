@@ -2868,7 +2868,7 @@ REQUIRE LOGIN: No (Public access enabled)
             return `<div class="cs-cell cs-folder" data-idx="${i}" data-type="sheet"
               style="cursor:pointer;display:flex;flex-direction:column;gap:4px;">
               <div style="aspect-ratio:3/2;background:#0d0d0d;overflow:hidden;flex-shrink:0;border:1px solid #00ff00;">
-                <img src="${previewSrc}" style="width:100%;height:100%;object-fit:cover;filter:brightness(0.38) saturate(0) sepia(1) hue-rotate(90deg);" loading="eager" decoding="async">
+                <img src="${previewSrc}" data-full="${_pFull}" style="width:100%;height:100%;object-fit:cover;filter:brightness(0.6) saturate(0) sepia(1) hue-rotate(90deg);" loading="eager" decoding="async" onerror="if(!this._fb){this._fb=1;this.src=this.dataset.full}">
               </div>
               <div style="display:flex;align-items:center;justify-content:center;gap:4px;padding:0 2px;">
                 <span style="font-size:5px;font-family:monospace;color:rgba(0,255,0,0.5);letter-spacing:0.5px;">[SYS]</span>
@@ -2890,7 +2890,7 @@ REQUIRE LOGIN: No (Public access enabled)
             const thumbSrc = fullSrc ? fullSrc.replace(/\/DSCF([^/]+)\.(jpg|JPG)$/, '/t/DSCF$1.jpg') : '';
             const imgSrc = blobSrc || thumbSrc || fullSrc;
             return `<div class="cs-cell" data-idx="${i}" data-v="${v}" data-type="photo"
-              style="aspect-ratio:3/2;cursor:pointer;position:relative;overflow:hidden;${fakeStyle}${isKey ? `outline:2px solid ${color};outline-offset:-2px;` : `filter:brightness(0.38) saturate(0) sepia(1) hue-rotate(90deg);`}">
+              style="aspect-ratio:3/2;cursor:pointer;position:relative;overflow:hidden;background:#0d0d0d;${isKey ? `outline:2px solid ${color};outline-offset:-2px;` : `filter:brightness(0.6) saturate(0) sepia(1) hue-rotate(90deg);`}">
               ${imgSrc ? `<img src="${imgSrc}" data-fname="${fname}" data-full="${fullSrc}" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;" loading="eager" decoding="async" onerror="if(!this._fb){this._fb=1;this.src=this.dataset.full}">` : ''}
               ${isKey ? `<div style="position:absolute;top:2px;right:2px;font-size:5px;font-family:monospace;padding:1px 3px;background:${color};color:#000;">${LABELS[v]}</div>` : ''}
             </div>`;
