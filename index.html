@@ -4,9 +4,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>SET</title>
-  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Galmuri11&display=swap" rel="stylesheet">
+  
   <style>
-* { margin: 0; padding: 0; box-sizing: border-box; }
+* { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Press Start 2P', 'Galmuri11', monospace !important; }
 html {
   height: 100%;
 }
@@ -239,6 +240,22 @@ body {
 
   .ln { font-size: 8px; }
 }
+
+/* CRT 전환 효과 */
+@keyframes crt-on {
+  0%   { clip-path: inset(50% 50% 50% 50%); filter: brightness(6); }
+  20%  { clip-path: inset(48% 0% 48% 0%);   filter: brightness(3); }
+  55%  { clip-path: inset(0% 0% 0% 0%);     filter: brightness(1.6); }
+  100% { clip-path: inset(0% 0% 0% 0%);     filter: brightness(1); }
+}
+@keyframes crt-off {
+  0%   { clip-path: inset(0% 0% 0% 0%);         filter: brightness(1); }
+  40%  { clip-path: inset(48% 0% 48% 0%);       filter: brightness(3); }
+  72%  { clip-path: inset(49.5% 12% 49.5% 12%); filter: brightness(5); }
+  100% { clip-path: inset(50% 50% 50% 50%);     filter: brightness(0); }
+}
+body { animation: crt-on 0.55s ease-out forwards; }
+body.leaving { animation: crt-off 0.45s ease-in forwards !important; }
   </style>
 </head>
 <body>
@@ -279,10 +296,38 @@ body {
 <span class="ln">| INPUT : <span class="cur"> </span>                                        |</span>
 </div>
 <div class="btns">
-  <button onclick="window.location.href='menu.html'">  [ -&gt; ENTER ]  </button><button onclick="window.location.href='portfolio.html'">  [ BROWSE -&gt; ]  </button>
+  <button onclick="showConfirm('menu.html','ENTER','SET_WORLD/MENU')">  [ -&gt; ENTER ]  </button><button onclick="showConfirm('portfolio.html','BROWSE','SET_WORLD/PORTFOLIO')">  [ BROWSE -&gt; ]  </button>
 </div>
 
 </div>
+
+<!-- Confirm Modal -->
+<div id="confirmOverlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.82);z-index:9999;display:none;align-items:center;justify-content:center;">
+  <div style="
+    border:5px solid #00ff00;
+    background:#000;
+    padding:28px 32px;
+    width:340px;
+    max-width:90vw;
+    font-family:'Press Start 2P',monospace;
+    color:#00ff00;
+    box-shadow:0 0 8px rgba(0,255,0,0.5),0 0 20px rgba(0,255,0,0.22),0 0 40px rgba(0,255,0,0.1);
+    position:relative;
+  ">
+    <div style="font-size:9px;line-height:2;text-shadow:1.5px 0.8px rgba(255,0,0,0.35),-1.5px -0.8px rgba(0,255,255,0.28);">
+      <div id="cfLine1" style="opacity:0.5;">&gt; COMMAND: <span id="cfCmd"></span></div>
+      <div id="cfLine2" style="opacity:0.5;">&gt; DESTINATION: <span id="cfDest"></span></div>
+      <div id="cfLine3" style="opacity:0.5;">&gt; STATUS: READY</div>
+      <div style="margin-top:14px;font-size:10px;font-family:'Press Start 2P',monospace;">확인되었습니다.<span class="cur"> </span></div>
+      <div style="font-size:8px;margin-top:4px;opacity:0.6;">ACCESS GRANTED — PROCEED?</div>
+    </div>
+    <div style="display:flex;gap:0;margin-top:22px;border:3px solid #00ff00;">
+      <button id="cfOk" style="flex:1;font-family:'Press Start 2P',monospace;font-size:9px;background:#00ff00;color:#000;border:none;padding:10px 4px;cursor:pointer;text-shadow:1.5px 0.8px rgba(255,0,0,0.38),-1.5px -0.8px rgba(0,255,255,0.3);" onmouseover="this.style.background='#7fff00'" onmouseout="this.style.background='#00ff00'">[ OK ]</button>
+      <button onclick="hideConfirm()" style="flex:1;font-family:'Press Start 2P',monospace;font-size:9px;background:#000;color:#00ff00;border:none;border-left:3px solid #00ff00;padding:10px 4px;cursor:pointer;text-shadow:1.5px 0.8px rgba(255,0,0,0.35),-1.5px -0.8px rgba(0,255,255,0.28);" onmouseover="this.style.background='#001a00'" onmouseout="this.style.background='#000'">[ CANCEL ]</button>
+    </div>
+  </div>
+</div>
+
 <script>
 const items = ['ISOLATE','RUPTURE','GRID','CLUSTER','HEADOBJ','BACKPOSE','DUALFIG','DIPTYCH','STRATA','MATCOV','DMGPAT','TONEDIS','HETOBJ'];
 let idx = 0;
@@ -296,6 +341,27 @@ document.addEventListener('keydown', e => {
   if (e.key==='ArrowDown') { idx=Math.min(items.length-1,idx+1); render(); e.preventDefault(); }
 });
 render();
+
+function navigate(url) {
+  document.body.classList.add('leaving');
+  setTimeout(() => { window.location.href = url; }, 450);
+}
+
+let _confirmDest = '';
+function showConfirm(url, cmd, dest) {
+  _confirmDest = url;
+  document.getElementById('cfCmd').textContent = cmd;
+  document.getElementById('cfDest').textContent = dest;
+  document.getElementById('cfOk').onclick = () => { hideConfirm(); navigate(url); };
+  const ov = document.getElementById('confirmOverlay');
+  ov.style.display = 'flex';
+}
+function hideConfirm() {
+  document.getElementById('confirmOverlay').style.display = 'none';
+}
+document.getElementById('confirmOverlay').addEventListener('click', function(e) {
+  if (e.target === this) hideConfirm();
+});
 </script>
 </body>
 </html>
