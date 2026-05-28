@@ -1061,9 +1061,11 @@ html, body { background: #000; color: #00ff00; font-family: 'Press Start 2P', 'D
   color: #000;
   padding: 8px 12px;
   font-weight: bold;
-  font-size: 8px;
+  font-size: 10px;
   height: 48px;
   border-bottom: 2px solid #00ff00;
+  font-family: 'Press Start 2P', monospace;
+  text-shadow: 1.5px 0.8px rgba(255,0,0,0.38), -1.5px -0.8px rgba(0,255,255,0.3);
 }
 
 .mobile-header-left {
@@ -1078,21 +1080,24 @@ html, body { background: #000; color: #00ff00; font-family: 'Press Start 2P', 'D
   border: none;
   width: 44px;
   height: 44px;
-  font-size: 8px;
+  font-size: 20px;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
   -webkit-tap-highlight-color: transparent;
+  font-family: 'Press Start 2P', monospace;
+  text-shadow: 1.5px 0.8px rgba(255,0,0,0.38), -1.5px -0.8px rgba(0,255,255,0.3);
 }
 
 .mobile-header-title {
-  font-size: 7px;
+  font-size: 9px;
   font-weight: bold;
   word-wrap: break-word;
   overflow-wrap: break-word;
   word-break: break-word;
   max-width: 70vw;
+  text-shadow: 1.5px 0.8px rgba(255,0,0,0.38), -1.5px -0.8px rgba(0,255,255,0.3);
 }
 
 .mobile-terminal {
@@ -1188,7 +1193,7 @@ html, body { background: #000; color: #00ff00; font-family: 'Press Start 2P', 'D
   border-bottom: 1px solid #00ff00;
   cursor: pointer;
   color: #00ff00;
-  font-size: 7px;
+  font-size: 9px;
   background: #000;
   text-align: center;
   font-weight: bold;
@@ -1201,6 +1206,8 @@ html, body { background: #000; color: #00ff00; font-family: 'Press Start 2P', 'D
   word-wrap: break-word;
   overflow-wrap: break-word;
   word-break: break-word;
+  font-family: 'Press Start 2P', monospace;
+  text-shadow: 1.5px 0.8px rgba(255,0,0,0.35), -1.5px -0.8px rgba(0,255,255,0.28);
 }
 
 .mobile-menu-item:hover {
@@ -1409,11 +1416,11 @@ html, body { background: #000; color: #00ff00; font-family: 'Press Start 2P', 'D
             <span>File</span><span>Options</span><span>View</span><span>Help</span>
           </div>
           <div id="pmBody" style="display:flex;flex-direction:column;flex:1;min-height:0;">
-            <div style="display:grid;grid-template-columns:2fr 0.8fr 1fr 1fr;padding:3px 10px;font-size:7px;color:#00ff00;border-bottom:1px solid #003300;opacity:0.55;flex-shrink:0;">
+            <div style="display:grid;grid-template-columns:2fr 0.8fr 1fr 1fr;padding:3px 10px;font-size:8px;color:#00ff00;border-bottom:1px solid #003300;opacity:0.55;flex-shrink:0;">
               <span>Process</span><span>PID</span><span>CPU</span><span>Status</span>
             </div>
             <div id="pmRows" style="flex:1;overflow:hidden;"></div>
-            <div style="border-top:1px solid #00ff00;padding:4px 10px;font-size:9px;display:flex;justify-content:space-between;color:#555;flex-shrink:0;">
+            <div style="border-top:1px solid #00ff00;padding:4px 10px;font-size:8px;display:flex;justify-content:space-between;color:#555;flex-shrink:0;">
               <span>Processes: <span style="color:#ffb000;">6</span></span>
               <span>CPU: <span id="pmTotalCpu" style="color:#ffb000;">--</span>%</span>
               <span>MEM: <span style="color:#ffb000;">64MB</span> <span class="pm-blink" style="color:#ffb000;">█</span></span>
@@ -2652,7 +2659,7 @@ REQUIRE LOGIN: No (Public access enabled)
           padding: ${isMobileOverlay ? '8px 10px' : '7px 14px'}; border-bottom: 1px solid #00ff00;
           flex-shrink: 0; background: #00ff00;
         ">
-          <span id="csOverlayTitle" style="color:#000;font-size:8px;letter-spacing:2px;font-family: 'Press Start 2P', monospace;font-weight:bold;flex-shrink:0;">${content.title || 'ARCHIVE'}</span>
+          <span id="csOverlayTitle" style="color:#000;font-size:9px;letter-spacing:2px;font-family: 'Press Start 2P', monospace;font-weight:bold;flex-shrink:0;">${content.title || 'ARCHIVE'}</span>
           <span id="csWaveform" style="flex:1;font-family: 'Press Start 2P', 'DotGothic16', monospace;font-size:${isMobileOverlay ? '8px' : '11px'};color:rgba(0,0,0,0.4);letter-spacing:1px;overflow:hidden;white-space:nowrap;text-align:center;"></span>
           ${isMobileOverlay ? '' : `<label style="cursor:pointer;display:flex;align-items:center;gap:5px;flex-shrink:0;">
             <input type="file" id="csLocalFolder" multiple accept="image/*" style="display:none;">
@@ -3162,7 +3169,7 @@ REQUIRE LOGIN: No (Public access enabled)
                 </button>
               </div>` : ''}
             </div>
-            ${csNavStack.length < 2 ? `
+            ${csNavStack.length < 2 && window.innerWidth > 768 ? `
             <div id="fpPanel" style="
               flex-shrink:0;height:340px;background:#000;
               width:fit-content;
@@ -3195,8 +3202,10 @@ REQUIRE LOGIN: No (Public access enabled)
         // 폴더 셀에 직접 mouseenter/leave 리스너 부착 (모바일 제외)
         const isMobileGallery = window.innerWidth <= 768;
         if (csNavStack.length < 2) {
-          const firstFolder = currentPhotos.find(p => p.type === 'sheet');
-          if (firstFolder) showFolderPreview(firstFolder); // 기본: 첫 번째 폴더
+          if (!isMobileGallery) {
+            const firstFolder = currentPhotos.find(p => p.type === 'sheet');
+            if (firstFolder) showFolderPreview(firstFolder); // 기본: 첫 번째 폴더
+          }
 
           if (!isMobileGallery) container.querySelectorAll('.cs-folder').forEach(function(cell) {
             cell.addEventListener('mouseenter', function() {
@@ -4104,21 +4113,24 @@ REQUIRE LOGIN: No (Public access enabled)
       const year = item.year || 'N/A';
       const preview = item.preview || '';
 
+      const useGothic = (section === 'rule' || section === 'reference');
+      const gFont = useGothic ? "font-family:'DotGothic16',monospace;" : '';
+
       const detailHTML = `
-        <div style="padding: 12px; background: #000; color: #00ff00;">
-          <div style="margin-bottom: 12px;">
-            <div style="font-size: 8px; color: #888; margin-bottom: 8px;">
-              <button class="back-btn" style="background: none; border: none; color: #00ff00; cursor: pointer; font-size: 8px; text-decoration: underline;">&lt; BACK</button>
+        <div style="margin:-12px;width:calc(100% + 24px);padding:14px 16px;background:#000;color:#00ff00;box-sizing:border-box;${gFont}">
+          <div style="margin-bottom:14px;">
+            <div style="margin-bottom:10px;">
+              <button class="back-btn" style="background:none;border:none;color:#00ff00;cursor:pointer;font-size:13px;text-decoration:underline;${gFont}">&lt; BACK</button>
             </div>
-            <div style="font-weight: bold; font-size: 8px; margin-bottom: 8px; word-break: break-all;">
-              ${itemId}
+            <div style="font-weight:bold;font-size:15px;margin-bottom:10px;word-break:break-word;line-height:1.5;${gFont}">
+              ${item.title || itemId}
             </div>
-            <div style="font-size: 9px; color: #888; margin-bottom: 8px;">
+            <div style="font-size:13px;color:#888;line-height:1.6;${gFont}">
               <div>${category} | ${year} | ${status}</div>
               <div>${author}</div>
             </div>
           </div>
-          <div class="md-content" style="border-top: 1px solid #00ff00; padding-top: 12px; max-height: 400px; overflow-y: auto; font-size: 8px;">
+          <div class="md-content" style="border-top:1px solid #00ff00;padding-top:14px;overflow-y:auto;font-size:13px;line-height:1.8;${gFont}">
             ${(typeof marked !== 'undefined') ? marked.parse(preview) : preview}
           </div>
         </div>
@@ -4425,7 +4437,7 @@ REQUIRE LOGIN: No (Public access enabled)
         const mobileStmtBtn = hasMobileStatement
           ? `<button onclick="loadAboutStatementMobile()" style="position:absolute;bottom:14px;right:14px;background:#000;border-top:2px solid #80ff80;border-left:2px solid #80ff80;border-bottom:2px solid #003300;border-right:2px solid #003300;color:#00ff00;padding:7px 14px;font-family:'Press Start 2P', 'DotGothic16', monospace;font-size:10px;cursor:pointer;letter-spacing:1px;font-weight:bold;">[ ARTIST STATEMENT → ]</button>`
           : '';
-        mobileContent.innerHTML = `<div style="padding:12px;position:relative;min-height:100%;box-sizing:border-box;">${mobileMainText}${mobileStmtBtn}</div>`;
+        mobileContent.innerHTML = `<div style="padding:12px;position:relative;min-height:100%;box-sizing:border-box;font-family:'DotGothic16',monospace;">${mobileMainText}${mobileStmtBtn}</div>`;
       } else if (content.items) {
         // List/Board format - Match desktop table layout
         mobileContent.innerHTML = '';
@@ -4441,9 +4453,10 @@ REQUIRE LOGIN: No (Public access enabled)
         // Use card format for reference section, list format for others
         const isCardFormat = section === 'reference';
 
+        const isRuleFont = section === 'rule';
         let html = `
-          <div style="padding: 0; border-top: 1px solid #00ff00;">
-            <div style="padding: 12px; border-bottom: 1px solid #00ff00; background: #000; font-weight: bold; color: #00ff00; font-size: 8px;">
+          <div style="padding: 0; border-top: 1px solid #00ff00; margin: -12px; width: calc(100% + 24px);">
+            <div style="padding: 12px; border-bottom: 1px solid #00ff00; background: #000; font-weight: bold; color: #00ff00; font-size: ${isRuleFont ? '13px' : '8px'};${isRuleFont ? "font-family:'DotGothic16',monospace;" : ''}">
               ${content.title.toUpperCase()} (${allItems.length} items)
             </div>
             <div style="padding: ${isCardFormat ? '8px' : '0'};">
@@ -4478,12 +4491,14 @@ REQUIRE LOGIN: No (Public access enabled)
               ? 'background:rgba(180,228,0,0.07);border-bottom:1px solid rgba(180,228,0,0.4);'
               : 'background:#000;border-bottom:1px dashed #00ff00;';
             const titleColorM = isPinnedM ? '#ffb000' : '#00ff00';
+            const isRuleSection = section === 'rule';
+            const ruleFontStyle = isRuleSection ? "font-family:'DotGothic16',monospace;" : '';
             html += `
-              <div style="cursor:pointer;display:block;${rowStyleM}padding:10px 12px;transition:background 0.2s;" class="mobile-list-item" data-index="${idx}">
-                <div style="color:${titleColorM};font-size:12px;margin-bottom:5px;font-weight:bold;word-break:break-all;">
+              <div style="cursor:pointer;display:block;${rowStyleM}padding:10px 12px;transition:background 0.2s;${ruleFontStyle}" class="mobile-list-item" data-index="${idx}">
+                <div style="color:${titleColorM};font-size:${isRuleSection ? '14px' : '12px'};margin-bottom:5px;font-weight:bold;word-break:break-all;${ruleFontStyle}">
                   ${isPinnedM ? '<span style="font-size:10px;margin-right:4px;">●</span>' : ''}${item.title || itemId}
                 </div>
-                <div style="color:#00ff00;font-size:8px;display:flex;justify-content:space-between;gap:8px;">
+                <div style="color:#00ff00;font-size:${isRuleSection ? '12px' : '8px'};display:flex;justify-content:space-between;gap:8px;${ruleFontStyle}">
                   <span>${category}</span>
                   <span style="color:#ffb000;">${status}</span>
                 </div>
@@ -4719,17 +4734,17 @@ REQUIRE LOGIN: No (Public access enabled)
           const pidColor = '#666';
           return `
             <div onclick="loadContent('${p.key}'); pmRender('${p.key}');"
-              style="display:grid;grid-template-columns:2fr 0.8fr 1fr 1fr;align-items:center;padding:5px 10px;font-size:10px;border-bottom:1px dashed #001a00;cursor:pointer;background:${rowBg};transition:background 0.1s;"
+              style="display:grid;grid-template-columns:2fr 0.8fr 1fr 1fr;align-items:center;padding:5px 10px;font-size:8px;border-bottom:1px dashed #001a00;cursor:pointer;background:${rowBg};transition:background 0.1s;"
               onmouseover="this.style.background='rgba(0,255,0,0.08)'"
               onmouseout="this.style.background='${isActive?'rgba(0,255,0,0.12)':'transparent'}'">
               <span style="font-weight:bold;color:${nameColor};white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${p.name}</span>
-              <span style="color:${pidColor};font-size:9px;">${p.pid}</span>
+              <span style="color:${pidColor};font-size:8px;">${p.pid}</span>
               <span>
                 <span style="display:inline-block;width:34px;height:7px;border:1px solid rgba(0,255,0,0.4);background:#000;overflow:hidden;vertical-align:middle;">
                   <span style="display:block;height:100%;width:${barW}%;background:${barW>75?'#c8a000':barW>45?'rgba(0,255,0,0.7)':'rgba(0,255,0,0.45)'};"></span>
                 </span>
               </span>
-              <span style="color:${statusColor};font-size:9px;">RUNNING</span>
+              <span style="color:${statusColor};font-size:8px;">RUNNING</span>
             </div>`;
         }).join('');
       }
