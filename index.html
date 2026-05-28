@@ -4,10 +4,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>SET</title>
-  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Galmuri11&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
   
   <style>
-* { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Press Start 2P', 'Galmuri11', monospace !important; }
+* { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Press Start 2P', monospace !important; }
 html {
   height: 100%;
 }
@@ -73,8 +73,17 @@ body {
 .btns {
   display: flex;
   font-size: 14px;
-  border: 5px solid #00ff00;
+  border: 1px solid #00aa00;
   border-top: none;
+  outline: 2px solid #00ff00;
+  outline-offset: -3px;
+  box-shadow:
+    /* 외부 베벨 */
+    2px 0 0 rgba(180,255,130,0.8),
+    -2px 2px 0 rgba(0,20,0,0.9),
+    /* 내부 베벨 */
+    inset 2px -2px 0 rgba(180,255,130,0.5),
+    inset -2px 2px 0 rgba(0,40,0,1);
 }
 .btns button {
   flex: 1;
@@ -90,11 +99,18 @@ body {
 .btns button:hover { background: #7fff00; }
 
 .frame {
-  border: 5px solid #00ff00;
+  border: 1px solid #00aa00;
   position: relative;
+  outline: 2px solid #00ff00;
+  outline-offset: -4px;
   box-shadow:
-    inset 3px 3px 0 rgba(180,255,130,0.35),
-    inset -3px -3px 0 rgba(0,60,0,0.7),
+    /* 외부 베벨 - 밝음 */
+    2px 2px 0 rgba(180,255,130,0.8),
+    -2px -2px 0 rgba(0,20,0,0.9),
+    /* 내부 베벨 - 어두움 */
+    inset 2px 2px 0 rgba(180,255,130,0.5),
+    inset -2px -2px 0 rgba(0,40,0,1),
+    /* 글로우 */
     0 0 12px rgba(0,255,0,0.8),
     0 0 30px rgba(0,255,0,0.45),
     0 0 60px rgba(0,255,0,0.2);
