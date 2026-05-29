@@ -138,8 +138,8 @@ function showResults(filtered) {
           <div style="display:none;position:absolute;inset:0;align-items:center;justify-content:center;color:rgba(0,255,0,0.2);font-size:7px;">[NO IMG]</div>
         </div>
         <div style="padding:4px 5px;">
-          <div style="font-size:6px;color:rgba(0,255,0,0.5);margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${p.dir}</div>
-          <div style="font-size:5px;color:${verdictColor(p.verdict)};opacity:0.7;">${p.verdict} · ${p.title}</div>
+          <div style="font-size:8px;color:rgba(0,255,0,0.6);margin-bottom:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${p.dir}</div>
+          <div style="font-size:7px;color:${verdictColor(p.verdict)};opacity:0.8;">${p.verdict} · ${p.title}</div>
         </div>
       </div>
     `).join('')}
@@ -191,10 +191,10 @@ function showOverlay(photo) {
   const ov = document.createElement('div');
   ov.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.95);z-index:999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:16px;cursor:pointer;';
   ov.innerHTML = `
-    <div style="font-size:6px;color:rgba(0,255,0,0.5);letter-spacing:1px;">${photo.dir}</div>
+    <div style="font-size:9px;color:rgba(0,255,0,0.6);letter-spacing:1px;">${photo.dir}</div>
     <img src="${photo.filename}" style="max-width:100%;max-height:70vh;object-fit:contain;border:1px solid rgba(0,255,0,0.3);">
-    <div style="font-size:5px;color:${verdictColor(photo.verdict)};">${photo.verdict} · ${photo.title}</div>
-    <div style="font-size:5px;color:rgba(0,255,0,0.3);">[ click to close ]</div>
+    <div style="font-size:8px;color:${verdictColor(photo.verdict)};">${photo.verdict} · ${photo.title}</div>
+    <div style="font-size:7px;color:rgba(0,255,0,0.3);">[ click to close ]</div>
   `;
   ov.addEventListener('click', () => ov.remove());
   document.body.appendChild(ov);
