@@ -200,6 +200,35 @@ body {
 @media (max-width: 750px) {
   body { align-items: flex-start; padding: 10px; }
   .t { width: 100%; zoom: 0.72; }
+
+  .table-row { flex-direction: column; gap: 0; width: 100%; }
+
+  .table-left {
+    font-size: 12px;
+    padding-top: 6px;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    max-width: 100%;
+  }
+
+  .logpanel {
+    flex: none;
+    width: 100%;
+    height: auto;
+    min-height: 28px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-self: auto;
+    padding: 3px 4px;
+    gap: 2px;
+  }
+  .log-item {
+    font-size: 11px;
+    padding: 2px 6px;
+    white-space: nowrap;
+    display: inline-block;
+  }
 }
 
 /* ── MOBILE ── */
