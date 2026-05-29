@@ -10,7 +10,7 @@
     html, body { height:100%; background:#000; color:#00ff00; font-family:'Press Start 2P',monospace; overflow:hidden; }
     body { display:flex; flex-direction:column; }
 
-    #canvasWrap { flex-shrink:0; }
+    #canvasWrap { flex:1; overflow:hidden; position:relative; }
     #canvasWrap canvas { display:block; width:100%; height:auto; }
 
     .search-sim {
@@ -31,9 +31,13 @@
     }
     .search-sim button:hover { background:#006600; }
 
+    /* 결과는 캔버스 위 오버레이 */
     #photoGallery {
-      flex:1; overflow-y:auto; min-height:0;
+      display:none;
+      position:absolute; top:0; left:0; right:0; bottom:0;
+      background:#000; overflow-y:auto; z-index:10;
     }
+    #photoGallery.visible { display:block; }
     .no-results {
       padding:20px; font-size:7px; color:rgba(0,255,0,0.4); text-align:center;
     }
@@ -43,6 +47,7 @@
 
 <div id="canvasWrap">
   <canvas id="measureCanvas"></canvas>
+  <div id="photoGallery"></div>
 </div>
 
 <div class="search-sim">
@@ -50,11 +55,23 @@
   <button id="searchBtn">SEARCH</button>
 </div>
 
-<div id="photoGallery"></div>
-
 <script>
 // ── 사진 데이터 ──────────────────────────────────────────────
 let _photos = [];
+
+// portfolio.html에서 postMessage로 데이터 수신
+window.addEventListener('message', e => {
+  if (e.data && e.data.type === 'measurePhotos' && Array.isArray(e.data.photos)) {
+    _photos = e.data.photos;
+  }
+});
+// 부모에게 준비됐다고 알림 (로드 직후 + 약간 딜레이 후 재시도)
+function notifyReady() {
+  try { window.parent.postMessage({ type: 'measureReady' }, '*'); } catch(e) {}
+}
+notifyReady();
+setTimeout(notifyReady, 800);
+setTimeout(notifyReady, 2000);
 
 function flattenPhotos(data) {
   const results = [];
@@ -103,6 +120,7 @@ const verdictColor = v => v === 'core' ? '#00ff00' : v === 'support' ? '#88ff88'
 function showResults(filtered) {
   const gallery = document.getElementById('photoGallery');
   if (!gallery) return;
+  gallery.classList.add('visible');
 
   if (filtered.length === 0) {
     gallery.innerHTML = '<div class="no-results">검색 결과가 없습니다.</div>';
@@ -114,7 +132,7 @@ function showResults(filtered) {
     ${filtered.map(p => `
       <div data-id="${p.id}" style="border:1px solid rgba(0,255,0,0.3);cursor:pointer;"
         onmouseover="this.style.borderColor='#00ff00'" onmouseout="this.style.borderColor='rgba(0,255,0,0.3)'">
-        <div style="width:100%;height:90px;background:#050505;overflow:hidden;position:relative;">
+        <div style="width:100%;aspect-ratio:3/2;background:#050505;overflow:hidden;position:relative;">
           <img src="${p.filename}" style="width:100%;height:100%;object-fit:cover;" loading="lazy"
             onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
           <div style="display:none;position:absolute;inset:0;align-items:center;justify-content:center;color:rgba(0,255,0,0.2);font-size:7px;">[NO IMG]</div>
@@ -143,6 +161,13 @@ function performSearch() {
   const gallery = document.getElementById('photoGallery');
   if (!query) { gallery.innerHTML = ''; return; }
 
+  if (_photos.length === 0) {
+    gallery.classList.add('visible');
+    gallery.innerHTML = '<div class="no-results">데이터 로딩 중...<br>잠시 후 다시 시도해주세요.</div>';
+    notifyReady();
+    return;
+  }
+
   const filtered = _photos.filter(p =>
     (p.dir || '').toLowerCase().includes(query) ||
     (p.keywords || []).some(k => k.toLowerCase().includes(query)) ||
@@ -155,7 +180,10 @@ function performSearch() {
 document.getElementById('searchBtn').addEventListener('click', performSearch);
 document.getElementById('searchInput').addEventListener('keypress', e => { if (e.key === 'Enter') performSearch(); });
 document.getElementById('searchInput').addEventListener('input', e => {
-  if (!e.target.value.trim()) document.getElementById('photoGallery').innerHTML = '';
+  if (!e.target.value.trim()) {
+    const g = document.getElementById('photoGallery');
+    g.innerHTML = ''; g.classList.remove('visible');
+  }
 });
 
 // ── 풀스크린 오버레이 ─────────────────────────────────────────
