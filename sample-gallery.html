@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>PROJECT_SET — ARCHIVE</title>
-<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=VT323&family=Press+Start+2P&display=swap" rel="stylesheet">
 <style>
 :root {
   --g:   #00dd55;
@@ -19,7 +19,14 @@
   --bd:      #00aa3a;
 }
 * { margin:0; padding:0; box-sizing:border-box; }
-html,body { width:100%; height:100%; overflow:hidden; background:#000; font-family:'Press Start 2P',monospace; }
+html,body { width:100%; height:100%; overflow:hidden; background:#000; font-family:'VT323',monospace; }
+
+/* ════ 전역 스크롤바 ════ */
+* { scrollbar-width:thin; scrollbar-color:rgba(0,221,85,0.5) rgba(0,221,85,0.04); }
+*::-webkit-scrollbar { width:5px; height:5px; }
+*::-webkit-scrollbar-track { background:rgba(0,221,85,0.04); }
+*::-webkit-scrollbar-thumb { background:rgba(0,221,85,0.5); border-radius:0; }
+*::-webkit-scrollbar-thumb:hover { background:rgba(0,255,100,0.75); }
 
 /* ════ 블러 배경 — 초록 크고 흐리게 ════ */
 #bg { position:fixed; inset:0; z-index:0; background:#000702; overflow:hidden; }
@@ -56,6 +63,7 @@ html,body { width:100%; height:100%; overflow:hidden; background:#000; font-fami
 #wrap {
   width:1300px; max-width:calc(100vw - 70px);
   height:calc(100vh - 60px);
+  height:calc(100dvh - 60px);
   background:rgba(1,13,5,0.97);   /* 평면 */
   display:flex; flex-direction:column; gap:8px;
   position:relative; padding:10px;
@@ -182,14 +190,14 @@ html,body { width:100%; height:100%; overflow:hidden; background:#000; font-fami
 }
 #gallery-inner::-webkit-scrollbar { width:6px; }
 #gallery-inner::-webkit-scrollbar-track { background:transparent; }
-#gallery-inner::-webkit-scrollbar-thumb { background:rgba(0,221,85,0.3); }
+#gallery-inner::-webkit-scrollbar-thumb { background:rgba(0,255,0,0.35); border-radius:0; }
 /* 컨텍트시트 셀 */
 .gal-cell {
   aspect-ratio:3/2; cursor:pointer; position:relative; overflow:hidden;
-  background:#0a1209;
+  background:#0a1209; align-self:start;
 }
 .gal-cell img {
-  position:absolute; top:0; left:0; width:100%; height:100%; object-fit:cover;
+  position:absolute; inset:0; width:100%; height:100%; object-fit:cover;
 }
 .gal-cell.gal-core { outline:1px solid var(--acc); outline-offset:-1px; }
 .gal-cell.gal-sup  { outline:1px solid #ffb000; outline-offset:-1px; }
@@ -207,7 +215,7 @@ html,body { width:100%; height:100%; overflow:hidden; background:#000; font-fami
   aspect-ratio:3/2; background:#0a1209; overflow:hidden; border:1px solid rgba(0,221,85,0.2);
 }
 .gal-folder-thumb img {
-  width:100%; height:100%; object-fit:cover;
+  width:100%; height:100%; object-fit:cover; display:block;
   filter:brightness(0.6) saturate(0) sepia(1) hue-rotate(90deg);
 }
 .gal-folder-name {
@@ -223,7 +231,7 @@ html,body { width:100%; height:100%; overflow:hidden; background:#000; font-fami
 }
 #galBackBtn {
   font-size:6px; padding:2px 8px; border:1px solid var(--g); background:transparent;
-  color:var(--g); cursor:pointer; letter-spacing:1px; flex-shrink:0; font-family:'Press Start 2P',monospace;
+  color:var(--g); cursor:pointer; letter-spacing:1px; flex-shrink:0; font-family:'VT323',monospace;
 }
 #galBackBtn:hover { background:var(--g); color:#000; }
 #galBreadcrumb { font-size:5px; color:var(--g3); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
@@ -233,7 +241,7 @@ html,body { width:100%; height:100%; overflow:hidden; background:#000; font-fami
 }
 .gal-fb {
   font-size:6px; padding:2px 8px; border:1px solid; background:transparent;
-  cursor:pointer; letter-spacing:1px; font-family:'Press Start 2P',monospace;
+  cursor:pointer; letter-spacing:1px; font-family:'VT323',monospace;
 }
 .gal-fb[data-f="all"]     { border-color:var(--g); color:var(--g); }
 .gal-fb[data-f="core"]    { border-color:var(--acc); color:var(--acc); }
@@ -247,12 +255,13 @@ html,body { width:100%; height:100%; overflow:hidden; background:#000; font-fami
 #galGrid { padding:10px; }
 #galCells {
   display:grid; grid-template-columns:repeat(auto-fill,minmax(80px,1fr)); gap:4px;
+  align-items:start;
 }
 #galLoadMore {
   text-align:center; padding:12px;
 }
 #galLoadMore button {
-  font-family:'Press Start 2P',monospace; font-size:6px; padding:4px 14px;
+  font-family:'VT323',monospace; font-size:6px; padding:4px 14px;
   border:1px solid rgba(0,221,85,0.4); background:transparent; color:var(--g);
   cursor:pointer; letter-spacing:1px;
 }
@@ -271,7 +280,7 @@ html,body { width:100%; height:100%; overflow:hidden; background:#000; font-fami
   border-top:1px solid rgba(0,221,85,0.2); background:#000;
 }
 #galLbClose, #galLbPrev, #galLbNext {
-  font-family:'Press Start 2P',monospace; font-size:6px; padding:3px 8px;
+  font-family:'VT323',monospace; font-size:6px; padding:3px 8px;
   border:1px solid var(--g); background:transparent; color:var(--g); cursor:pointer;
 }
 #galLbClose:hover, #galLbPrev:hover, #galLbNext:hover { background:var(--g); color:#000; }
@@ -346,7 +355,7 @@ html,body { width:100%; height:100%; overflow:hidden; background:#000; font-fami
 /* ── 우측 컬럼 ── */
 #rightCol { width:300px; flex-shrink:0; display:flex; flex-direction:column; gap:8px; min-height:0; }
 #scanPnl { flex:0 0 auto; } #metaPnl { flex:0 0 auto; }
-#srcPnl { flex:1 1 0; min-height:0; } #relPnl { flex:1 1 0; min-height:0; }
+#srcPnl { flex:1 1 0; min-height:0; } #relPnl { min-height:0; } #sidePnl { min-height:0; }
 #rightCol .pnl { min-height:0; } #rightCol .pnl-in { height:100%; }
 /* 우측 패널 선 약화: 베벨·내부 보더 흐리게 */
 #rightCol .pnl { background:linear-gradient(135deg,#149040 0%,#006a25 52%,#00401a 100%); }
@@ -404,11 +413,11 @@ html,body { width:100%; height:100%; overflow:hidden; background:#000; font-fami
 .sc-target::after  { bottom:-3px; right:-3px; border-bottom:1px solid var(--acc); border-right:1px solid var(--acc); }
 /* 분석 퍼센트 */
 .sc-pct { position:absolute; right:7px; bottom:6px; font-size:7px; color:var(--acc);
-  z-index:5; letter-spacing:1px; font-family:'Press Start 2P',monospace;
+  z-index:5; letter-spacing:1px; font-family:'VT323',monospace;
   text-shadow:0 0 6px rgba(155,255,58,0.8); }
 /* 분석 레이블 */
 .sc-ana-lbl { position:absolute; left:7px; bottom:6px; font-size:5px; color:rgba(155,255,58,0.6);
-  z-index:5; letter-spacing:1.5px; font-family:'Press Start 2P',monospace; }
+  z-index:5; letter-spacing:1.5px; font-family:'VT323',monospace; }
 /* 글리치 슬라이스 */
 .sc-glitch { position:absolute; left:0; right:0; z-index:4; pointer-events:none;
   background:rgba(155,255,58,0.12); animation:scglitch 5s step-end infinite; }
@@ -440,7 +449,10 @@ html,body { width:100%; height:100%; overflow:hidden; background:#000; font-fami
 .fi-meta .mv.core { color:var(--acc); } .fi-meta .mv.drop { color:var(--g3); }
 
 /* SOURCE RECORD (원본 문서) */
-.src-doc { font-size:6px; line-height:1.85; color:var(--g3); height:100%; overflow:hidden; }
+.src-doc { font-size:10px; line-height:1.9; color:var(--g3); height:100%; overflow-y:auto; overflow-x:hidden; }
+.src-doc::-webkit-scrollbar { width:4px; }
+.src-doc::-webkit-scrollbar-track { background:transparent; }
+.src-doc::-webkit-scrollbar-thumb { background:rgba(0,255,0,0.3); }
 .src-doc .sk { color:rgba(180,40,0,0.5); }
 .src-doc .quote { color:var(--g2); border-left:2px solid var(--g4); padding-left:6px; margin:5px 0; display:block; }
 .src-doc .raw { color:rgba(0,221,85,0.45); }
@@ -460,8 +472,28 @@ html,body { width:100%; height:100%; overflow:hidden; background:#000; font-fami
   background:var(--acc); transform:rotate(45deg); }
 
 /* ════ 하단 행 ════ */
-#botRow { height:118px; flex-shrink:0; display:flex; gap:8px; }
+#botRow { height:160px; flex-shrink:0; display:flex; gap:8px; }
 #logPnl { flex:1; } #logPnl .pnl-in { height:100%; }
+#repContent::-webkit-scrollbar { width:3px; }
+#repContent::-webkit-scrollbar-thumb { background:rgba(0,255,0,0.35); }
+#repContent::-webkit-scrollbar-track { background:transparent; }
+#repModalBody::-webkit-scrollbar { width:5px; }
+#repModalBody::-webkit-scrollbar-thumb { background:rgba(0,255,0,0.4); }
+#repModalBody::-webkit-scrollbar-track { background:transparent; }
+#repFullBtn:hover { color:var(--acc) !important; border-color:var(--acc) !important; }
+.rep-h2 { color:var(--acc); display:block; margin:10px 0 4px; letter-spacing:1.5px; border-bottom:1px solid rgba(0,221,85,0.2); padding-bottom:3px; }
+.rep-h3 { color:var(--g2); display:block; margin:6px 0 2px; letter-spacing:1px; }
+.rep-trow { display:flex; gap:8px; border-bottom:1px solid rgba(0,221,85,0.1); padding:2px 0; }
+.rep-trow span { flex:1; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; color:var(--g2); }
+.rep-trow span:first-child { flex:0 0 90px; color:var(--g4); }
+.rep-thead { background:rgba(0,221,85,0.06); }
+.rep-thead span { color:var(--g3) !important; letter-spacing:.5px; }
+.rep-meta { color:var(--g3); display:block; line-height:1.7; }
+.rep-hr { border:none; border-top:1px solid rgba(0,221,85,0.2); margin:8px 0; }
+.rep-p { display:block; color:var(--g2); margin:2px 0; line-height:2; }
+.rep-core { color:#00ff88; }
+.rep-sup  { color:#ffcc00; }
+.rep-drop { color:rgba(255,60,30,0.8); }
 /* 촬영 보고서 */
 .rep-body { display:flex; flex-direction:column; height:100%; }
 .rep-2col { display:flex; gap:16px; flex:1; min-height:0; }
@@ -495,9 +527,17 @@ html,body { width:100%; height:100%; overflow:hidden; background:#000; font-fami
 .rec-cnt { margin-left:auto; color:var(--g2); font-size:5.5px; }
 
 /* ════ 섹션 공통 ════ */
-.sec-wrap { padding:14px; height:100%; overflow-y:auto; display:flex; flex-direction:column; gap:10px; }
-.sec-wrap::-webkit-scrollbar { width:4px; }
-.sec-wrap::-webkit-scrollbar-thumb { background:rgba(0,221,85,0.25); }
+.sec-wrap { padding:14px; height:100%; overflow-y:auto; display:flex; flex-direction:column; gap:10px; scrollbar-width:thin; scrollbar-color:rgba(0,221,85,0.55) rgba(0,221,85,0.05); }
+.sec-wrap::-webkit-scrollbar { width:5px; }
+.sec-wrap::-webkit-scrollbar-track { background:rgba(0,221,85,0.05); }
+.sec-wrap::-webkit-scrollbar-thumb { background:rgba(0,221,85,0.55); border-radius:0; }
+.sec-wrap::-webkit-scrollbar-thumb:hover { background:rgba(0,255,100,0.8); }
+/* 동적으로 생성되는 overflow:auto 요소에 적용 */
+.gs { scrollbar-width:thin; scrollbar-color:rgba(0,221,85,0.5) rgba(0,221,85,0.04); }
+.gs::-webkit-scrollbar { width:5px; height:5px; }
+.gs::-webkit-scrollbar-track { background:rgba(0,221,85,0.04); }
+.gs::-webkit-scrollbar-thumb { background:rgba(0,221,85,0.5); border-radius:0; }
+.gs::-webkit-scrollbar-thumb:hover { background:rgba(0,255,100,0.75); }
 .sec-hd { font-size:7px; color:var(--g); letter-spacing:2px; padding-bottom:8px; border-bottom:1px solid var(--g4); flex-shrink:0; }
 .sec-hd b { color:var(--acc); font-weight:normal; }
 /* SECTOR */
@@ -556,19 +596,22 @@ html,body { width:100%; height:100%; overflow:hidden; background:#000; font-fami
 .field-cat { font-size:5px; color:rgba(0,221,85,0.25); letter-spacing:1px; padding:6px 0 3px; border-top:1px solid rgba(0,221,85,0.08); margin-top:4px; }
 /* EXPORT */
 .exp-actions { display:flex; gap:6px; }
-.exp-btn { font-family:'Press Start 2P',monospace; font-size:6px; padding:4px 12px; border:1px solid var(--g); background:transparent; color:var(--g); cursor:pointer; letter-spacing:1px; }
+.exp-btn { font-family:'VT323',monospace; font-size:6px; padding:4px 12px; border:1px solid var(--g); background:transparent; color:var(--g); cursor:pointer; letter-spacing:1px; }
 .exp-btn:hover { background:var(--g); color:#000; }
 .exp-section { margin-top:8px; }
 .exp-section-hd { font-size:5.5px; color:rgba(180,40,0,0.6); letter-spacing:2px; margin-bottom:5px; }
 .exp-list { font-size:5px; color:var(--g3); line-height:2; max-height:200px; overflow-y:auto; padding:6px; border:1px solid var(--g4); background:rgba(0,0,0,0.3); }
 .exp-list::-webkit-scrollbar { width:3px; }
-.exp-list::-webkit-scrollbar-thumb { background:rgba(0,221,85,0.2); }
+.exp-list::-webkit-scrollbar-thumb { background:rgba(0,255,0,0.25); }
+#fpInfo::-webkit-scrollbar { width:4px; }
+#fpInfo::-webkit-scrollbar-track { background:transparent; }
+#fpInfo::-webkit-scrollbar-thumb { background:rgba(0,255,0,0.35); }
 /* OPTIONS */
 .opt-section { border:1px solid var(--g4); padding:10px 12px; }
 .opt-section-hd { font-size:5.5px; color:rgba(180,40,0,0.6); letter-spacing:2px; margin-bottom:8px; }
 .opt-row { display:flex; align-items:center; gap:8px; margin-bottom:7px; }
 .opt-lbl { font-size:6px; color:var(--g3); min-width:90px; }
-.opt-btn { font-family:'Press Start 2P',monospace; font-size:5.5px; padding:3px 8px; border:1px solid var(--g4); background:transparent; color:var(--g3); cursor:pointer; }
+.opt-btn { font-family:'VT323',monospace; font-size:5.5px; padding:3px 8px; border:1px solid var(--g4); background:transparent; color:var(--g3); cursor:pointer; }
 .opt-btn:hover { border-color:var(--g); color:var(--g); }
 .opt-btn.on { color:#000; background:var(--acc); border-color:var(--acc); }
 
@@ -633,7 +676,7 @@ html,body { width:100%; height:100%; overflow:hidden; background:#000; font-fami
           <div id="gallery-inner" style="display:none;"></div>
         </div>
         <!-- 동적 하단 정보 -->
-        <div id="mapInfo"></div>
+        <div id="mapInfo" style="display:none;"></div>
       </div></div>
     </div>
 
@@ -677,7 +720,7 @@ html,body { width:100%; height:100%; overflow:hidden; background:#000; font-fami
         <div class="pnl" id="metaPnl" style="flex:1; min-width:0;"><div class="pnl-in">
           <div class="pnl-hd">METADATA<span class="hd-r"><span class="pnl-tab" id="fiVerdict">—</span></span></div>
           <div class="pnl-bd">
-            <div class="fi-meta" id="fiMeta"></div>
+            <div class="fi-meta" id="fiMeta"><span style="font-size:6px;color:var(--g4);letter-spacing:1px;line-height:2;">AWAITING SELECTION —<br>SELECT A PHOTO TO VIEW METADATA</span></div>
           </div>
         </div></div>
 
@@ -687,22 +730,8 @@ html,body { width:100%; height:100%; overflow:hidden; background:#000; font-fami
       <div class="pnl" id="srcPnl"><div class="pnl-in">
         <div class="pnl-hd">SOURCE RECORD · 원본<span class="hd-r"><span class="pnl-tab" id="srcRef">····</span></span></div>
         <div class="pnl-bd">
+          <div id="srcPlaceholder" style="font-size:6px;color:var(--g4);letter-spacing:1px;line-height:2;padding:2px 0;">NO RECORD LOADED —<br>SELECT A PHOTO TO LOAD SOURCE</div>
           <div class="src-doc" id="srcDoc" style="display:none;"></div>
-        </div>
-      </div></div>
-
-      <!-- RELATED (교집합: 비슷한 컷) -->
-      <div class="pnl" id="relPnl"><div class="pnl-in">
-        <div class="pnl-hd">RELATED · 교집합
-          <span class="hd-r">
-            <span class="rel-mode on" data-rel="SEQ">SEQ</span>
-            <span class="rel-mode" data-rel="SCENE">SCENE</span>
-            <span class="rel-mode" data-rel="TAG">TAG</span>
-          </span>
-        </div>
-        <div class="pnl-bd">
-          <div class="rel-cap" id="relCap">— MATCHES</div>
-          <div class="rel-grid" id="relGrid"></div>
         </div>
       </div></div>
 
@@ -724,33 +753,62 @@ html,body { width:100%; height:100%; overflow:hidden; background:#000; font-fami
   <!-- 하단 행 -->
   <div id="botRow">
     <div class="pnl" id="logPnl"><div class="pnl-in">
-      <div class="pnl-hd">CAPTURE REPORT · 촬영 보고서<span class="hd-r"><span class="pnl-tab on" id="repNo">SCF-2026-03</span></span></div>
-      <div class="pnl-bd">
-        <div class="rep-body">
-          <div class="rep-ticker">» <span id="ticker">REPORT LOADED</span><span class="tk-cur"></span></div>
+      <div class="pnl-hd">CAPTURE REPORT · 촬영 보고서<span class="hd-r"><span id="repFullBtn" style="font-size:6px;color:var(--g4);cursor:pointer;padding:2px 6px;border:1px solid var(--g4);letter-spacing:1px;display:none" onclick="openRepModal()">원문 ▶</span><span class="pnl-tab on" id="repNo">—</span></span></div>
+      <div class="pnl-bd" style="padding:6px 10px;overflow:hidden;display:flex;flex-direction:column;">
+        <div id="repContent" class="gs" style="flex:1;overflow-y:auto;font-size:10px;line-height:2;color:var(--g2);">
+          <span style="color:var(--g4)">배치를 선택하면 보고서가 표시됩니다.</span>
         </div>
       </div>
     </div></div>
 
-    <div class="pnl" id="sidePnl"><div class="pnl-in">
-      <div class="pnl-hd">SPOTLIGHT<span class="hd-r" id="spMeta" style="font-size:5px;color:var(--g3)">RANDOM · CORE</span></div>
-      <div class="pnl-bd" id="spBody" style="display:flex;gap:8px;align-items:stretch;height:calc(100% - 22px)">
-        <div id="spImg" style="width:90px;flex-shrink:0;background:#050f07;border:1px solid var(--g4);overflow:hidden;cursor:pointer;position:relative">
-          <img id="spThumb" style="width:100%;height:100%;object-fit:cover;filter:brightness(.6) saturate(0) sepia(1) hue-rotate(90deg)" src="" onerror="this.style.display='none'">
-          <div style="position:absolute;bottom:3px;right:4px;font-size:4px;color:var(--g3)">CLICK ▶</div>
+    <!-- RELATED + SPOTLIGHT 2열 -->
+    <div style="display:flex;gap:8px;flex-shrink:0;width:440px;">
+
+      <div class="pnl" id="relPnl" style="flex:1;min-width:0;"><div class="pnl-in">
+        <div class="pnl-hd">RELATED · 교집합
+          <span class="hd-r">
+            <span class="rel-mode on" data-rel="SEQ">SEQ</span>
+            <span class="rel-mode" data-rel="SCENE">SCENE</span>
+            <span class="rel-mode" data-rel="TAG">TAG</span>
+          </span>
         </div>
-        <div style="flex:1;display:flex;flex-direction:column;gap:4px;min-width:0">
-          <div id="spFile" style="font-size:5.5px;color:var(--acc);letter-spacing:.5px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap"></div>
-          <div id="spBatch" style="font-size:5px;color:var(--g3);letter-spacing:.5px"></div>
-          <div id="spDirs" style="display:flex;flex-wrap:wrap;gap:3px;margin-top:2px"></div>
-          <div style="margin-top:auto;border-top:1px solid var(--g4);padding-top:4px;display:flex;gap:6px">
-            <div id="spVerdict" style="font-size:5.5px"></div>
-            <div id="spNext" style="font-size:5px;color:var(--g4);cursor:pointer;margin-left:auto">NEXT ›</div>
+        <div class="pnl-bd">
+          <div class="rel-cap" id="relCap">SELECT A PHOTO TO VIEW RELATED</div>
+          <div class="rel-grid" id="relGrid"></div>
+        </div>
+      </div></div>
+
+      <div class="pnl" id="sidePnl" style="flex:2;min-width:0;"><div class="pnl-in">
+        <div class="pnl-hd">SPOTLIGHT<span class="hd-r" id="spMeta" style="font-size:5px;color:var(--g3)">RANDOM · CORE</span></div>
+        <div class="pnl-bd" id="spBody" style="display:flex;gap:8px;align-items:stretch;height:calc(100% - 22px)">
+          <div id="spImg" style="aspect-ratio:3/2;height:100%;flex-shrink:0;background:#050f07;border:1px solid var(--g4);overflow:hidden;cursor:pointer;position:relative">
+            <img id="spThumb" style="width:100%;height:100%;object-fit:cover;filter:brightness(.6) saturate(0) sepia(1) hue-rotate(90deg)" src="" onerror="this.style.display='none'">
+            <div style="position:absolute;bottom:3px;right:4px;font-size:4px;color:var(--g3)">▶</div>
+          </div>
+          <div style="flex:1;display:flex;flex-direction:column;gap:4px;min-width:0">
+            <div id="spFile" style="font-size:5.5px;color:var(--acc);letter-spacing:.5px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap"></div>
+            <div id="spBatch" style="font-size:5px;color:var(--g3);letter-spacing:.5px"></div>
+            <div id="spDirs" style="display:flex;flex-wrap:wrap;gap:3px;margin-top:2px"></div>
+            <div style="margin-top:auto;border-top:1px solid var(--g4);padding-top:4px;display:flex;gap:6px">
+              <div id="spVerdict" style="font-size:5.5px"></div>
+              <div id="spNext" style="font-size:5px;color:var(--g4);cursor:pointer;margin-left:auto">NEXT ›</div>
+            </div>
           </div>
         </div>
-      </div>
-    </div></div>
+      </div></div>
 
+    </div>
+
+  </div>
+
+  <!-- 보고서 원문 모달 (소형 팝업, 오버레이 없음) -->
+  <div id="repModal" style="display:none;position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);z-index:9999;width:min(360px,calc(100vw-80px));height:440px;background:#020e05;border:1px solid var(--g);flex-direction:column;box-shadow:0 0 60px rgba(0,0,0,0.95),0 0 2px rgba(0,221,85,0.4);">
+    <div style="display:flex;align-items:center;padding:10px 16px;border-bottom:1px solid var(--g4);flex-shrink:0;">
+      <span style="font-size:8px;color:var(--acc);letter-spacing:2px">◆ CAPTURE REPORT · 원문</span>
+      <span id="repModalTitle" style="font-size:7px;color:var(--g3);margin-left:12px"></span>
+      <span onclick="closeRepModal()" style="margin-left:auto;font-size:8px;color:var(--g4);cursor:pointer;padding:2px 8px;border:1px solid var(--g4);letter-spacing:1px">✕ CLOSE</span>
+    </div>
+    <div id="repModalBody" class="gs" style="flex:1;overflow-y:auto;padding:16px 20px;font-family:'VT323',monospace;font-size:10px;line-height:2;color:var(--g2);"></div>
   </div>
 
   <!-- 상태 바 -->
@@ -973,48 +1031,207 @@ function renderSector(el, D){
   const maxMF = Math.max(...months.map(m=>m.leaves.length), 1);
   const maxBF = Math.max(...batches.map(b=>b.leaves.length), 1);
 
-  el.innerHTML = `<div class="sec-wrap">
-    <div class="sec-hd">TIMELINE · <b>${months.length} MONTHS</b></div>
-    ${months.map(m=>{
-      const core=m.leaves.filter(p=>p.verdict==='core').length;
-      const sup=m.leaves.filter(p=>p.verdict==='support').length;
-      const tot=m.leaves.length;
-      const fpct=Math.round(tot/maxMF*100);
-      const rate=(tot/30).toFixed(1);
-      const mBatches=batches.filter(b=>b.monthKey===m.id);
-      return `<div class="month-group">
-        <div class="month-row">
-          <span class="month-label">${m.name}</span>
-          <span class="month-track">
-            <span class="month-fill" style="width:${fpct}%"></span>
-            <span class="month-core" style="width:${Math.round(core/maxMF*100)}%"></span>
-          </span>
-          <span class="month-meta">${tot.toLocaleString()}F · C${core} S${sup} · ${rate}/d</span>
-        </div>
-        <div class="batch-sub">
-          ${mBatches.map(b=>{
-            const bc=b.leaves.filter(p=>p.verdict==='core').length;
-            const bs=b.leaves.filter(p=>p.verdict==='support').length;
-            const bt=b.leaves.length;
-            const bw=Math.round(bt/maxBF*100);
-            const cw=Math.round(bc/maxBF*100);
-            return `<div class="batch-row" data-bk="${b.id}">
-              <span class="batch-id">${b.id.split('/').pop()}</span>
-              <span class="batch-bars">
-                <span class="batch-bar drop" style="width:${bw}px"></span>
-                <span class="batch-bar core" style="width:${cw}px;position:absolute;left:0;top:0"></span>
-              </span>
-              <span class="batch-cnt">C<b style="color:var(--acc)">${bc}</b> S<b style="color:#ffb000">${bs}</b> <b style="color:var(--g3)">${bt}</b>F</span>
-            </div>`;
-          }).join('')}
-        </div>
-      </div>`;
-    }).join('')}
+  // 좌우 2열 레이아웃: 왼쪽=타임라인, 오른쪽=차트 3종
+  el.innerHTML = `<div style="display:flex;height:100%;overflow:hidden;">
+    <!-- 왼쪽: 타임라인 -->
+    <div class="gs" style="flex:1;overflow-y:auto;padding:14px;border-right:1px solid rgba(0,221,85,0.12);">
+      <div class="sec-hd" style="margin-bottom:8px;">TIMELINE · <b>${months.length} MONTHS</b></div>
+      ${months.map(m=>{
+        const core=m.leaves.filter(p=>p.verdict==='core').length;
+        const sup=m.leaves.filter(p=>p.verdict==='support').length;
+        const tot=m.leaves.length;
+        const fpct=Math.round(tot/maxMF*100);
+        const rate=(tot/30).toFixed(1);
+        const mBatches=batches.filter(b=>b.monthKey===m.id);
+        return `<div class="month-group">
+          <div class="month-row">
+            <span class="month-label">${m.name}</span>
+            <span class="month-track">
+              <span class="month-fill" style="width:${fpct}%"></span>
+              <span class="month-core" style="width:${Math.round(core/maxMF*100)}%"></span>
+            </span>
+            <span class="month-meta">${tot.toLocaleString()}F · C${core} S${sup} · ${rate}/d</span>
+          </div>
+          <div class="batch-sub">
+            ${mBatches.map(b=>{
+              const bc=b.leaves.filter(p=>p.verdict==='core').length;
+              const bs=b.leaves.filter(p=>p.verdict==='support').length;
+              const bt=b.leaves.length;
+              const bw=Math.round(bt/maxBF*100);
+              const cw=Math.round(bc/maxBF*100);
+              return `<div class="batch-row" data-bk="${b.id}">
+                <span class="batch-id">${b.id.split('/').pop()}</span>
+                <span class="batch-bars">
+                  <span class="batch-bar drop" style="width:${bw}px"></span>
+                  <span class="batch-bar core" style="width:${cw}px;position:absolute;left:0;top:0"></span>
+                </span>
+                <span class="batch-cnt">C<b style="color:var(--acc)">${bc}</b> S<b style="color:#ffb000">${bs}</b> <b style="color:var(--g3)">${bt}</b>F</span>
+              </div>`;
+            }).join('')}
+          </div>
+        </div>`;
+      }).join('')}
+    </div>
+    <!-- 오른쪽: 차트 3종 -->
+    <div id="sectorCharts" style="flex:1;display:flex;flex-direction:column;gap:0;overflow:hidden;"></div>
   </div>`;
+
   el.querySelectorAll('.batch-row').forEach(r=>r.onclick=()=>{
     const b=D.byBatch[r.dataset.bk];
     if(b){ setScanPhoto(b.leaves[0]&&(b.leaves[0].filename||b.leaves[0].url)||'');
            log('NODE',false,'BATCH: '+r.dataset.bk); }
+  });
+
+  const chartsEl=el.querySelector('#sectorCharts');
+  const CAT_C={SPACE:'#00dd55',OBJECT:'#ffb000',FIGURE:'#ff5533',FIGUREBG:'#3399ff',UNJUDGE:'#aa55ff',OTHER:'#557755'};
+  const CAT_MAP={
+    HRZLAY:'SPACE',WNDGLO:'SPACE',SPTISO:'SPACE',VANSRC:'SPACE',FUNREV:'SPACE',
+    FOGDIS:'SPACE',EQREP:'SPACE',ISOOBJ:'SPACE',URBREFL:'SPACE',ARTNAT:'SPACE',
+    LGTPAT:'SPACE',UNIDIST:'SPACE',FUNSAT:'SPACE',MATCOV:'SPACE',
+    MONOLITH:'SPACE',STRATA:'SPACE',DISSOLVE:'SPACE',LITGRID:'SPACE',VANISH:'SPACE',
+    MIRRORSURF:'SPACE',PEEL:'SPACE',SNOWFILL:'SPACE',OXIDE:'SPACE',ADWRAP:'SPACE',
+    ROADCLASH:'SPACE',WALLTXT:'SPACE',OVERGROW:'SPACE',
+    DMGPAT:'OBJECT',TONEDIS:'OBJECT',HETOBJ:'OBJECT',DOCAGE:'OBJECT',LGTSTR:'OBJECT',OBJREP:'OBJECT',
+    ISOLATE:'OBJECT',RUPTURE:'OBJECT',GRID:'OBJECT',CLUSTER:'OBJECT',FLOAT:'OBJECT',
+    SKELETON:'OBJECT',BLOOM:'OBJECT',WRAP:'OBJECT',SURFACE:'OBJECT',
+    FACBLK:'FIGURE',HANDEXT:'FIGURE',FOOTEXT:'FIGURE',HRZPAS:'FIGURE',DRKSPOT:'FIGURE',
+    GROUPREP:'FIGURE',BGDOM:'FIGURE',DUALSPC:'FIGURE',PLNTENV:'FIGURE',GENPORT:'FIGURE',
+    NONSUBS:'FIGURE',BACKPOSE:'FIGURE',DRESSIDENT:'FIGURE',LIMBACT:'FIGURE',
+    DUALFRAME:'FIGURE',HEADOBJ:'FIGURE',DUALFIG:'FIGURE',DIPTYCH:'FIGURE',
+    FGBG:'FIGURE',COLORISO:'FIGURE',SKINREP:'FIGURE',BODYTXT:'FIGURE',
+    REPDOM:'FIGUREBG',REFLMED:'FIGUREBG',SMOKLYR:'FIGUREBG',OPTFUSE:'FIGUREBG',
+    PARTINTR:'FIGUREBG',OBJCOVR:'FIGUREBG',ARCHOP:'FIGUREBG',GLASMED:'FIGUREBG',
+    ATMOSOLV:'FIGUREBG',SCLFIG:'FIGUREBG',HORZERO:'FIGUREBG',
+    BGPAT:'FIGUREBG',SCALE:'FIGUREBG',ATMOFUSE:'FIGUREBG',GLASSDUAL:'FIGUREBG',
+    AEROFLT:'FIGUREBG',ARCHCAP:'FIGUREBG',BACKLIT:'FIGUREBG',
+  };
+
+  function mkChartBlock(label, flexVal){
+    const wrap=document.createElement('div');
+    wrap.style.cssText=`flex:${flexVal};display:flex;flex-direction:column;padding:10px 12px 8px;border-bottom:1px solid rgba(0,221,85,0.1);min-height:0;`;
+    const lbl=document.createElement('div');
+    lbl.style.cssText='font-size:6px;color:var(--g3);letter-spacing:2px;margin-bottom:4px;flex-shrink:0;font-family:"VT323",monospace;';
+    lbl.textContent=label;
+    const cv=document.createElement('canvas');
+    cv.style.cssText='flex:1;width:100%;min-height:0;display:block;';
+    wrap.appendChild(lbl);wrap.appendChild(cv);
+    chartsEl.appendChild(wrap);
+    return cv;
+  }
+
+  const mCanvas=mkChartBlock('MONTHLY TREND — FRAMES · CORE',1);
+  const vCanvas=mkChartBlock('VERDICT DISTRIBUTION',1);
+  const dCanvas=mkChartBlock('TOP DIRS — FREQUENCY',2);
+
+  requestAnimationFrame(()=>{
+    const dpr=window.devicePixelRatio||1;
+
+    // A. Monthly Trend
+    (()=>{
+      const W=mCanvas.offsetWidth,H=mCanvas.offsetHeight;
+      if(!W||!H) return;
+      mCanvas.width=W*dpr;mCanvas.height=H*dpr;
+      const ctx=mCanvas.getContext('2d');
+      ctx.scale(dpr,dpr);
+      ctx.fillStyle='#000301';ctx.fillRect(0,0,W,H);
+      const pad={l:28,r:8,t:6,b:18};
+      const cW=W-pad.l-pad.r,cH=H-pad.t-pad.b;
+      const maxF=Math.max(...months.map(m=>m.leaves.length),1);
+      const bW=Math.max(2,Math.floor(cW/months.length)-2);
+      months.forEach((m,i)=>{
+        const x=pad.l+i*(cW/months.length);
+        const tot=m.leaves.length;
+        const core=m.leaves.filter(p=>p.verdict==='core').length;
+        const sup=m.leaves.filter(p=>p.verdict==='support').length;
+        const fH=Math.round((tot/maxF)*cH);
+        const cH2=Math.round((core/maxF)*cH);
+        ctx.fillStyle='#0a1a0a';ctx.fillRect(x,pad.t,bW,cH);
+        ctx.fillStyle='#1a3a1a';ctx.fillRect(x,pad.t+cH-fH,bW,fH);
+        ctx.fillStyle='#00dd55';ctx.fillRect(x,pad.t+cH-cH2,bW,cH2);
+        const sH=Math.round((sup/maxF)*cH);
+        ctx.fillStyle='#ffb00066';ctx.fillRect(x,pad.t+cH-cH2-sH,bW,sH);
+        if(i%2===0||months.length<=6){
+          ctx.fillStyle='#00dd5577';
+          ctx.font='10px "VT323",monospace';
+          ctx.textAlign='center';
+          ctx.fillText(m.name.slice(2),x+bW/2,H-pad.b+9);
+        }
+      });
+      ctx.strokeStyle='#00dd5533';ctx.lineWidth=1;
+      ctx.beginPath();ctx.moveTo(pad.l,pad.t);ctx.lineTo(pad.l,pad.t+cH);ctx.stroke();
+      ctx.beginPath();ctx.strokeStyle='#00ffaa';ctx.lineWidth=1.5;
+      months.forEach((m,i)=>{
+        const x=pad.l+i*(cW/months.length)+bW/2;
+        const rate=m.leaves.length?m.leaves.filter(p=>p.verdict==='core').length/m.leaves.length:0;
+        const y=pad.t+cH-rate*cH;
+        if(i===0)ctx.moveTo(x,y);else ctx.lineTo(x,y);
+      });
+      ctx.stroke();
+    })();
+
+    // B. Verdict donut
+    (()=>{
+      const W=vCanvas.offsetWidth,H=vCanvas.offsetHeight;
+      if(!W||!H) return;
+      vCanvas.width=W*dpr;vCanvas.height=H*dpr;
+      const ctx=vCanvas.getContext('2d');
+      ctx.scale(dpr,dpr);
+      ctx.fillStyle='#000301';ctx.fillRect(0,0,W,H);
+      const tot=D.leaves.length;
+      const core=D.leaves.filter(p=>p.verdict==='core').length;
+      const sup=D.leaves.filter(p=>p.verdict==='support').length;
+      const drop=tot-core-sup;
+      const r=Math.min(H,W/2)*0.5-4;
+      const cx=r+8,cy=H/2,IR=r*0.55;
+      let start=-Math.PI/2;
+      [[core,'#00dd55'],[sup,'#ffb000'],[drop,'#1a2a1a']].forEach(([cnt,col])=>{
+        const sweep=tot?(cnt/tot)*Math.PI*2:0;
+        ctx.beginPath();ctx.moveTo(cx,cy);
+        ctx.arc(cx,cy,r,start,start+sweep);
+        ctx.closePath();ctx.fillStyle=col;ctx.fill();
+        ctx.beginPath();ctx.arc(cx,cy,IR,0,Math.PI*2);
+        ctx.fillStyle='#000301';ctx.fill();
+        start+=sweep;
+      });
+      ctx.fillStyle='#00dd55';ctx.font='13px "VT323",monospace';
+      ctx.textAlign='center';ctx.textBaseline='middle';
+      ctx.fillText('TOTAL',cx,cy-5);
+      ctx.fillStyle='#eeffee';ctx.font='16px "VT323",monospace';
+      ctx.fillText(tot.toLocaleString(),cx,cy+5);
+      const lx=cx+r+14,ly=H/2-22;
+      [[`CORE`,core,'#00dd55'],[`SUP`,sup,'#ffb000'],[`DROP`,drop,'#334433']].forEach(([lbl,cnt,col],i)=>{
+        ctx.fillStyle=col;ctx.fillRect(lx,ly+i*18,8,8);
+        ctx.fillStyle='#00dd5599';ctx.font='13px "VT323",monospace';
+        ctx.textAlign='left';ctx.textBaseline='top';
+        ctx.fillText(`${lbl} ${cnt}`,lx+11,ly+i*18+1);
+      });
+    })();
+
+    // C. Top DIRs
+    (()=>{
+      const sorted=Object.entries(D.byDir).sort((a,b)=>b[1]-a[1]).slice(0,15);
+      const maxV=sorted[0]?sorted[0][1]:1;
+      const W=dCanvas.offsetWidth,H=dCanvas.offsetHeight;
+      if(!W||!H) return;
+      dCanvas.width=W*dpr;dCanvas.height=H*dpr;
+      const ctx=dCanvas.getContext('2d');
+      ctx.scale(dpr,dpr);
+      ctx.fillStyle='#000301';ctx.fillRect(0,0,W,H);
+      const rowH=H/sorted.length;
+      const labW=52,barMaxW=W-labW-30;
+      sorted.forEach(([id,cnt],i)=>{
+        const y=i*rowH;
+        const col=CAT_C[CAT_MAP[id]||'OTHER'];
+        const bW=Math.round((cnt/maxV)*barMaxW);
+        ctx.fillStyle='#0a1a0a';ctx.fillRect(labW,y+2,barMaxW,rowH-4);
+        ctx.fillStyle=col+'aa';ctx.fillRect(labW,y+2,bW,rowH-4);
+        ctx.fillStyle=col;ctx.font='10px "VT323",monospace';
+        ctx.textAlign='right';ctx.textBaseline='middle';
+        ctx.fillText(id,labW-3,y+rowH/2);
+        ctx.fillStyle='#ffffff88';ctx.textAlign='left';
+        ctx.fillText(cnt,labW+bW+3,y+rowH/2);
+      });
+    })();
   });
 }
 
@@ -1026,7 +1243,7 @@ function showVerdictLightbox(pool, startIdx){
     if(existing) existing.remove();
     const p = pool[idx];
     const pid = p.id||p.filename||p.url||'';
-    if(pid){ window._clickMap[pid]=(window._clickMap[pid]||0)+1; if(window._onPhotoClick) window._onPhotoClick(); }
+    if(pid){ window._clickMap[pid]=(window._clickMap[pid]||0)+1; window._saveClickMap(); if(window._onPhotoClick) window._onPhotoClick(); }
     const full = p.filename||p.url||'';
     const file = full.split('/').pop();
     const v = p.verdict||'drop';
@@ -1038,7 +1255,7 @@ function showVerdictLightbox(pool, startIdx){
       <div style="flex:1;display:flex;align-items:center;justify-content:center;padding:12px;min-height:0;width:100%">
         <img src="${full}" style="max-width:100%;max-height:100%;object-fit:contain;filter:none;" loading="eager">
       </div>
-      <div style="flex-shrink:0;width:100%;display:flex;align-items:center;gap:12px;padding:10px 18px;background:rgba(0,6,2,0.95);border-top:1px solid var(--g4);font-family:'Press Start 2P',monospace;font-size:6px;letter-spacing:1px">
+      <div style="flex-shrink:0;width:100%;display:flex;align-items:center;gap:12px;padding:10px 18px;background:rgba(0,6,2,0.95);border-top:1px solid var(--g4);font-family:'VT323',monospace;font-size:6px;letter-spacing:1px">
         <button id="vlPrev" style="background:none;border:1px solid var(--g4);color:var(--g);padding:4px 8px;cursor:pointer;font-family:inherit;font-size:6px">◄</button>
         <button id="vlNext" style="background:none;border:1px solid var(--g4);color:var(--g);padding:4px 8px;cursor:pointer;font-family:inherit;font-size:6px">►</button>
         <span style="color:var(--acc)">${file}</span>
@@ -1082,7 +1299,12 @@ function renderVerdict(el, D){
 
 /* ── FIELD: DIR network 3D sphere ── */
 let _fieldAnimId = null;
-window._clickMap = {}; // photo click tracking: id → count
+// photo click tracking: id → count — localStorage 영속
+(function(){
+  try{ window._clickMap=JSON.parse(localStorage.getItem('set_clickmap')||'{}'); }
+  catch(e){ window._clickMap={}; }
+  window._saveClickMap=function(){ try{ localStorage.setItem('set_clickmap',JSON.stringify(window._clickMap)); }catch(e){} };
+})();
 function renderField(el, D){
   if(_fieldAnimId){ cancelAnimationFrame(_fieldAnimId); _fieldAnimId=null; }
 
@@ -1148,24 +1370,30 @@ function renderField(el, D){
 
   const maxEdge=Math.max(...Object.values(edgeMap),1);
   const coEdges=Object.entries(edgeMap)
-    .filter(([,v])=>v>=1).sort((a,b)=>b[1]-a[1]).slice(0,120)
+    .filter(([,v])=>v>=1).sort((a,b)=>b[1]-a[1]).slice(0,400)
     .map(([k,v])=>{const[a,b]=k.split(':');return{s:nMap[a],t:nMap[b],w:v/maxEdge,isCo:true};})
     .filter(e=>e.s&&e.t);
 
-  // Within-category topology edges for visual sphere density
+  // Within-category topology edges — 더 촘촘한 연결
   const catNodes={};
   nodes.forEach(n=>{if(!catNodes[n.cat])catNodes[n.cat]=[];catNodes[n.cat].push(n);});
   const taxEdges=[];
   Object.values(catNodes).forEach(list=>{
     for(let i=0;i<list.length;i++){
-      if(i+1<list.length) taxEdges.push({s:list[i],t:list[i+1],w:0.25,isCo:false});
-      if(i+2<list.length) taxEdges.push({s:list[i],t:list[i+2],w:0.15,isCo:false});
-      if(i+4<list.length) taxEdges.push({s:list[i],t:list[i+4],w:0.10,isCo:false});
+      if(i+1<list.length) taxEdges.push({s:list[i],t:list[i+1],w:0.30,isCo:false});
+      if(i+2<list.length) taxEdges.push({s:list[i],t:list[i+2],w:0.22,isCo:false});
+      if(i+3<list.length) taxEdges.push({s:list[i],t:list[i+3],w:0.16,isCo:false});
+      if(i+5<list.length) taxEdges.push({s:list[i],t:list[i+5],w:0.12,isCo:false});
+      if(i+8<list.length) taxEdges.push({s:list[i],t:list[i+8],w:0.08,isCo:false});
+      if(list.length>3){
+        const j=((i*7+3)%list.length);
+        if(j!==i&&j!==i+1) taxEdges.push({s:list[i],t:list[j],w:0.10,isCo:false});
+      }
     }
   });
   const edges=[...coEdges,...taxEdges];
 
-  let zoom=1.0;
+  let zoom=1.5;
 
   el.innerHTML=`
     <div style="display:flex;flex-direction:column;height:100%;padding:0;overflow:hidden">
@@ -1174,8 +1402,10 @@ function renderField(el, D){
         <span style="font-size:5px;color:var(--g3);letter-spacing:0">
           ${Object.entries(CCOLOR).map(([c,col])=>`<span style="color:${col}">◉ ${c}</span>`).join(' ')}
         </span>
+        <span style="font-size:5px;color:var(--g4);letter-spacing:0.5px">DRAG · SCROLL</span>
         <button id="gZoomIn"  style="background:none;border:1px solid var(--g3);color:var(--g);font-family:inherit;font-size:6px;padding:2px 6px;cursor:pointer;letter-spacing:1px">+</button>
         <button id="gZoomOut" style="background:none;border:1px solid var(--g3);color:var(--g);font-family:inherit;font-size:6px;padding:2px 6px;cursor:pointer;letter-spacing:1px">−</button>
+        <button id="gReset"   style="background:none;border:1px solid var(--g3);color:var(--g4);font-family:inherit;font-size:6px;padding:2px 6px;cursor:pointer;letter-spacing:1px">RST</button>
       </div>
       <div id="gWrap" style="flex:1;position:relative;min-height:0">
         <canvas id="dirGraph" style="position:absolute;inset:0;width:100%;height:100%"></canvas>
@@ -1194,18 +1424,22 @@ function renderField(el, D){
     cv.width=W*dpr; cv.height=H*dpr;
   }
 
-  // Fibonacci sphere: evenly distribute N points on unit sphere surface
+  // Fibonacci sphere + random perturbation
   function initPositions(){
     const N=nodes.length;
     const phi=(1+Math.sqrt(5))/2;
+    function seed(n){ let h=0; for(let c of n.id) h=(h*31+c.charCodeAt(0))>>>0; return h; }
     nodes.forEach((n,i)=>{
       const cosP=1-2*(i+0.5)/N;
       const sinP=Math.sqrt(Math.max(0,1-cosP*cosP));
       const theta=2*Math.PI*i/phi;
-      n.sx=sinP*Math.cos(theta);
-      n.sy=cosP;
-      n.sz=sinP*Math.sin(theta);
+      const s=seed(n); const r1=((s*9301+49297)%233280)/233280; const r2=((s*6364+1013904223)%233280)/233280;
+      const jitter=0.28;
+      n.sx=(sinP*Math.cos(theta))*(1+jitter*(r1-0.5)*2);
+      n.sy=cosP*(1+jitter*(r2-0.5)*2);
+      n.sz=(sinP*Math.sin(theta))*(1+jitter*(r1*r2-0.25)*2);
       n.vx=0;n.vy=0;n.vz=0;
+      normSphere(n);
     });
   }
 
@@ -1222,11 +1456,11 @@ function renderField(el, D){
   let frame=0, forceDone=false;
 
   function tick(){
-    const alpha=forceDone?0:Math.max(0,1-frame/280);
-    if(!forceDone&&alpha<0.002){forceDone=true;}
-
+    const t=frame/300;
+    const ramp=Math.min(1,frame/30);
+    const alpha=forceDone?0:Math.max(0,(1-t))*ramp;
+    if(!forceDone&&frame>30&&alpha<0.002){forceDone=true;}
     if(!forceDone){
-      // Surface repulsion
       for(let i=0;i<nodes.length;i++){
         for(let j=i+1;j<nodes.length;j++){
           const a=nodes[i],b=nodes[j];
@@ -1238,7 +1472,6 @@ function renderField(el, D){
           b.vx+=f*dx;b.vy+=f*dy;b.vz+=f*dz;
         }
       }
-      // Edge spring
       edges.forEach(({s,t,w,isCo})=>{
         if(!s||!t) return;
         const dx=t.sx-s.sx,dy=t.sy-s.sy,dz=t.sz-s.sz;
@@ -1263,8 +1496,10 @@ function renderField(el, D){
     rotY+=0.004;
   }
 
+  let panX=0,panY=0;
+
   function project(){
-    const cx=W*0.5,cy=H*0.5;
+    const cx=W*0.5+panX,cy=H*0.5+panY;
     const R=Math.min(W,H)*0.40*zoom;
     const FOV=2.2;
     const cosY=Math.cos(rotY),sinY=Math.sin(rotY);
@@ -1280,7 +1515,38 @@ function renderField(el, D){
     nodes.sort((a,b)=>a.depth-b.depth);
   }
 
+  // 카테고리별 미니그래프 위치 (오각형 배치)
+  function initAnimPositions(){
+    // 캔버스 전체에 균등하게 흩어지게 — 결정론적 pseudo-random (seed 기반)
+    const pad=18;
+    nodes.forEach((n,i)=>{
+      // 각 노드마다 고정된 seed로 위치 결정 (매번 같은 자리)
+      let h=0; for(const c of n.id) h=(h*31+c.charCodeAt(0))>>>0;
+      const rx=((h*1664525+1013904223)>>>0)/0xFFFFFFFF;
+      const ry=((h*22695477+1)>>>0)/0xFFFFFFFF;
+      n.catX=pad + rx*(W-pad*2);
+      n.catY=pad + ry*(H-pad*2);
+    });
+  }
+
   function draw(){
+    const rev=Math.min(1,(Date.now()-REVEAL_START)/REVEAL_DUR_MS);
+
+    // ── 3단계 애니메이션 ──
+    // P1 (0→0.30): 점 — 화면 각지에서 노드 순차 등장
+    // P2 (0.30→0.70): 이동 — 모든 점이 날아와 하나의 큰 구로 합쳐짐
+    // P3 (0.70→1.0): 완성 — co-occurrence 엣지 + 라벨
+    const P1=0.30,P2=0.70;
+    function smst(t){return t<=0?0:t>=1?1:t*t*(3-2*t);}
+    function easeOutBack(t){if(t<=0)return 0;if(t>=1)return 1;const s=1.6;return 1+(s+1)*Math.pow(t-1,3)+s*Math.pow(t-1,2);}
+    const dotT   =smst(Math.min(1,rev/P1));
+    const rawMov =Math.max(0,Math.min(1,(rev-P1)/(P2-P1)));
+    const moveT  =easeOutBack(rawMov);
+    const finishT=smst(Math.max(0,Math.min(1,(rev-P2)/(1-P2))));
+
+    // 카테고리별 스태거
+    const CAT_STAG={SPACE:0,UNJUDGE:0.07,OBJECT:0.12,FIGUREBG:0.16,FIGURE:0.20,OTHER:0.09};
+
     const ctx=cv.getContext('2d');
     ctx.save();ctx.scale(dpr,dpr);
     ctx.clearRect(0,0,W,H);
@@ -1288,82 +1554,166 @@ function renderField(el, D){
 
     project();
 
-    // Edges
-    edges.forEach(({s,t,w,isCo})=>{
-      if(!s||!t) return;
-      const avgD=(s.depth+t.depth)*0.5;
-      const df=0.35+0.65*((avgD+1)*0.5);
-      const isHov=hov&&(s.id===hov.id||t.id===hov.id);
-      const col=CCOLOR[s.cat]||'#00dd55';
-      const a=isHov?0.95:(isCo?0.65+w*0.30:0.42)*df;
-      ctx.beginPath();ctx.moveTo(s.px,s.py);ctx.lineTo(t.px,t.py);
-      ctx.strokeStyle=col+Math.round(a*255).toString(16).padStart(2,'0');
-      ctx.lineWidth=isHov?2.2:isCo?1.0+w*1.0:0.7;
-      if(isHov){ctx.shadowBlur=6;ctx.shadowColor=col;}
-      ctx.stroke();
-      ctx.shadowBlur=0;
+    nodes.forEach(n=>{
+      const stag=CAT_STAG[n.cat]||0;
+      const span=1-stag;
+      const em=easeOutBack(Math.max(0,Math.min(1,(rawMov-stag)/span)));
+      n.em=em;
+      n.dpx=n.catX*(1-em)+n.px*em;
+      n.dpy=n.catY*(1-em)+n.py*em;
     });
 
-    // Nodes (back→front)
-    nodes.forEach(n=>{
+    // ── P2~P3: 비행 중 + 완성 엣지 ──
+    // taxEdges (같은 카테고리 내부) — 이동하면서 서서히 등장
+    if(rawMov>0.1){
+      const tA=smst(Math.min(1,(rawMov-0.1)/0.5))*(1-finishT*0.3);
+      taxEdges.forEach(({s,t,w})=>{
+        if(!s||!t)return;
+        const col=CCOLOR[s.cat]||'#00dd55';
+        const a=0.5*tA;
+        ctx.beginPath();ctx.moveTo(s.dpx,s.dpy);ctx.lineTo(t.dpx,t.dpy);
+        ctx.strokeStyle=col+Math.round(a*255).toString(16).padStart(2,'0');
+        ctx.lineWidth=0.8;ctx.stroke();
+      });
+    }
+    // coEdges (카테고리 간) — 완성 단계에서 등장
+    if(finishT>0){
+      const visCo=Math.floor(coEdges.length*Math.min(1,finishT*2.0));
+      coEdges.slice(0,visCo).forEach(({s,t,w},ei)=>{
+        if(!s||!t)return;
+        const df=0.4+0.6*((s.depth+t.depth)*0.25+0.5);
+        const isHov=hov&&(s.id===hov.id||t.id===hov.id);
+        const col=CCOLOR[s.cat]||'#00dd55';
+        const eFade=Math.min(1,(visCo-ei)*2);
+        const a=(isHov?0.95:(0.75+w*0.25)*df)*eFade*finishT;
+        ctx.beginPath();ctx.moveTo(s.dpx,s.dpy);ctx.lineTo(t.dpx,t.dpy);
+        ctx.strokeStyle=col+Math.round(a*255).toString(16).padStart(2,'0');
+        ctx.lineWidth=isHov?2.2:1.2+w*0.8;
+        if(isHov){ctx.shadowBlur=6;ctx.shadowColor=col;}
+        ctx.stroke();ctx.shadowBlur=0;
+      });
+    }
+
+    // ── P1~: 노드 + 혜성 꼬리 ──
+    nodes.forEach((n,i)=>{
+      const nodeT=Math.max(0,Math.min(1,(dotT-i/nodes.length)*nodes.length));
+      if(nodeT<=0)return;
       const col=CCOLOR[n.cat]||'#557755';
       const isHov=hov&&hov.id===n.id;
-      const df=0.2+0.8*((n.depth+1)*0.5);
-      const r=isHov?5:1+Math.pow(n.count/maxCount,0.5)*2.5;
+      const df=n.em>0.5?(0.2+0.8*((n.depth+1)*0.5)):1;
+      const baseR=0.8+Math.pow(n.count/maxCount,0.5)*2.0;
 
-      ctx.beginPath();ctx.arc(n.px,n.py,r,0,Math.PI*2);
-      const fa=(isHov?0.95:0.55)*df;
+      // 혜성 꼬리
+      const flying=n.em>0.02&&n.em<0.97;
+      if(flying){
+        const stag=CAT_STAG[n.cat]||0;
+        const span=1-stag;
+        [0.14,0.26,0.40].forEach((off,ti)=>{
+          const em2=easeOutBack(Math.max(0,Math.min(1,(rawMov-stag-off*span)/span)));
+          const tx=n.catX*(1-em2)+n.px*em2;
+          const ty=n.catY*(1-em2)+n.py*em2;
+          const flyFrac=Math.sin(n.em*Math.PI);
+          const ta=(0.40-ti*0.12)*flyFrac*nodeT;
+          if(ta<0.01)return;
+          ctx.beginPath();ctx.arc(tx,ty,baseR*(0.8-ti*0.2),0,Math.PI*2);
+          ctx.fillStyle=col+Math.round(ta*255).toString(16).padStart(2,'0');
+          ctx.fill();
+        });
+      }
+
+      const popBounce=nodeT<0.4?Math.sin(nodeT/0.4*Math.PI)*0.6+1:1.0;
+      const r=(isHov?5:baseR)*Math.sqrt(nodeT)*popBounce;
+      ctx.beginPath();ctx.arc(n.dpx,n.dpy,r,0,Math.PI*2);
+      const fa=(isHov?0.95:0.65)*df*nodeT;
       ctx.fillStyle=col+Math.round(fa*255).toString(16).padStart(2,'0');
-      ctx.shadowBlur=isHov?24:n.depth>0.2?10:3;
-      ctx.shadowColor=col;
-      ctx.fill();
-      ctx.shadowBlur=0;
+      const glowR=isHov?24:(flying?20:(n.em>0&&n.depth>0.2?10:4));
+      ctx.shadowBlur=glowR;ctx.shadowColor=col;ctx.fill();ctx.shadowBlur=0;
 
       if(isHov){
         ctx.strokeStyle='#eeffee88';ctx.lineWidth=1;ctx.stroke();
-        ctx.fillStyle='#eeffee';
-        ctx.font='6px "Press Start 2P",monospace';
+        ctx.fillStyle='#eeffee';ctx.font='14px "VT323",monospace';
         ctx.textAlign='center';ctx.textBaseline='bottom';
         ctx.shadowBlur=8;ctx.shadowColor=col;
-        ctx.fillText(n.id,n.px,n.py-r-3);
-        ctx.shadowBlur=0;
-      } else if(n.depth>0.4&&n.count>maxCount*0.12){
-        ctx.fillStyle=col+Math.round(df*0.65*255).toString(16).padStart(2,'0');
-        ctx.font='4px "Press Start 2P",monospace';
+        ctx.fillText(n.id,n.dpx,n.dpy-r-3);ctx.shadowBlur=0;
+      } else if(finishT>0.2){
+        // 모든 노드 이름 표시 — 완성도에 따라 페이드인
+        const lblA=Math.min(1,(finishT-0.2)/0.4)*df*0.75;
+        ctx.fillStyle=col+Math.round(lblA*255).toString(16).padStart(2,'0');
+        ctx.font='11px "VT323",monospace';
         ctx.textAlign='center';ctx.textBaseline='bottom';
-        ctx.fillText(n.id,n.px,n.py-r-1);
+        ctx.shadowBlur=4;ctx.shadowColor=col;
+        ctx.fillText(n.id,n.dpx,n.dpy-r-2);ctx.shadowBlur=0;
       }
     });
     ctx.restore();
   }
 
   let hov=null;
+  const REVEAL_START=Date.now();
+  const REVEAL_DUR_MS=12000;
   function canvasXY(e){const r=cv.getBoundingClientRect();return{x:e.clientX-r.left,y:e.clientY-r.top};}
   function nearest(px,py){
     let best=null,bd=Infinity;
     nodes.forEach(n=>{
       if(n.depth<-0.5) return;
       const r=1+Math.pow(n.count/maxCount,0.5)*2.5;
-      const d=Math.hypot(n.px-px,n.py-py);
-      if(d<r+10&&d<bd){bd=d;best=n;}
+      const d=Math.hypot((n.dpx||n.px)-px,(n.dpy||n.py)-py);
+      if(d<r+12&&d<bd){bd=d;best=n;}
     });
     return best;
   }
+
+  // ── 드래그 패닝 ──
+  let drag=false,dragX0=0,dragY0=0,panX0=0,panY0=0;
+  cv.onmousedown=ev=>{
+    drag=true;
+    dragX0=ev.clientX;dragY0=ev.clientY;
+    panX0=panX;panY0=panY;
+    cv.style.cursor='grabbing';
+  };
   cv.onmousemove=ev=>{
+    if(drag){
+      panX=panX0+(ev.clientX-dragX0);
+      panY=panY0+(ev.clientY-dragY0);
+      hov=null;tip.style.display='none';
+      return;
+    }
     const {x,y}=canvasXY(ev);
     hov=nearest(x,y);
     if(hov){
       cv.style.cursor='pointer';
       tip.style.display='block';
-      tip.style.left=Math.min(x+14,W-110)+'px';
+      tip.style.left=Math.min(x+14,W-120)+'px';
       tip.style.top=Math.max(y-36,4)+'px';
       const conn=coEdges.filter(e=>e.s.id===hov.id||e.t.id===hov.id).length;
       tip.innerHTML=`${hov.id}<br><span style="color:var(--g3)">${hov.cat} · ${hov.count}× · ${conn} links</span>`;
     } else {
-      cv.style.cursor='default';tip.style.display='none';
+      cv.style.cursor='grab';tip.style.display='none';
     }
   };
-  cv.onmouseleave=()=>{hov=null;tip.style.display='none';};
+  cv.onmouseup=ev=>{
+    // 드래그 거리 짧으면 hover 처리
+    if(drag&&Math.hypot(ev.clientX-dragX0,ev.clientY-dragY0)<4){
+      const {x,y}=canvasXY(ev);
+      hov=nearest(x,y);
+    }
+    drag=false;
+    cv.style.cursor=hov?'pointer':'grab';
+  };
+  cv.onmouseleave=()=>{drag=false;hov=null;tip.style.display='none';cv.style.cursor='grab';};
+
+  // ── 마우스 휠 줌 (커서 위치 기준) ──
+  cv.onwheel=ev=>{
+    ev.preventDefault();
+    const {x,y}=canvasXY(ev);
+    const before=zoom;
+    zoom=Math.max(0.3,Math.min(4.0,zoom*(ev.deltaY<0?1.12:0.89)));
+    // 커서 위치 고정 패닝 보정
+    const scale=zoom/before;
+    panX=x+(panX-x)*scale;
+    panY=y+(panY-y)*scale;
+  };
+  cv.style.cursor='grab';
 
   document.querySelectorAll('.mbtn').forEach(b=>{
     const prev=b.onclick;
@@ -1372,13 +1722,15 @@ function renderField(el, D){
 
   resize();
   initPositions();
-  new ResizeObserver(()=>resize()).observe(wrap);
-  el.querySelector('#gZoomIn').onclick=()=>{zoom=Math.min(zoom+0.15,3.0);};
-  el.querySelector('#gZoomOut').onclick=()=>{zoom=Math.max(zoom-0.15,0.3);};
+  for(let i=0;i<400;i++) tick();
+  initAnimPositions();
+  new ResizeObserver(()=>{resize();initAnimPositions();}).observe(wrap);
+  el.querySelector('#gZoomIn').onclick=()=>{zoom=Math.min(zoom+0.2,4.0);};
+  el.querySelector('#gZoomOut').onclick=()=>{zoom=Math.max(zoom-0.2,0.3);};
+  el.querySelector('#gReset').onclick=()=>{zoom=1.5;panX=0;panY=0;};
 
   function loop(){
-    const steps=forceDone?1:4;
-    for(let i=0;i<steps;i++)tick();
+    tick();
     draw();
     _fieldAnimId=requestAnimationFrame(loop);
   }
@@ -1615,8 +1967,9 @@ function renderPhotoMeta(p){
     `<span class="mk">DIR</span><span class="mv" title="${dirStr}" style="white-space:normal;line-height:1.6">${dirStr}</span>`;
   const vTab=document.getElementById('fiVerdict');
   if(vTab){ vTab.textContent=v; vTab.className='pnl-tab '+vCls; }
-  // SOURCE RECORD: DIR 지시문 표시
-  renderDirInstruction(p.dir);
+  // SOURCE RECORD: DIR 지시문 — CORE/SUPPORT만 표시
+  if(v==='CORE'||v==='SUPPORT') renderDirInstruction(p.dir);
+  else { const sd=document.getElementById('srcDoc'); if(sd){ sd.style.display='none'; sd.innerHTML=''; } }
   // SCAN 패널 이미지 업데이트
   const full=p.filename||p.url||'';
   if(full && typeof setScanPhoto==='function') setScanPhoto(full);
@@ -2063,16 +2416,37 @@ const DIR_INSTRUCTIONS={
 기각: 윤곽선이 일부라도 식별 가능한 경우 / 아웃포커스가 부분적이어서 선명한 구역이 남아 있는 경우 / 피사체 정체를 유추할 수 있는 색·형태 조합이 잔존하는 경우`,
 };
 
+// DIR 코드 별칭 매핑 (데이터에서 쓰는 약어 → DIR_INSTRUCTIONS 키)
+const DIR_ALIASES={
+  MIRROR:'MIRRORSURF',
+  GRIDLIGHT:'LITGRID',
+  MIRRORSURF:'MIRRORSURF',
+  LITGRID:'LITGRID',
+  INFIL:'OVERGROW',      // 침투·침식 계열
+  PRINTWALL:'WALLTXT',   // 인쇄 벽면 → WALLTXT
+  ROADGFX:'ROADCLASH',  // 노면 그래픽 → ROADCLASH
+  SURFILL:'SNOWFILL',    // 표면 충전 → SNOWFILL
+};
+
 function renderDirInstruction(dirCodes){
   const srcDoc=document.getElementById('srcDoc');
   const srcRef=document.getElementById('srcRef');
   if(!srcDoc) return;
-  const codes=String(dirCodes||'').split(/[\s,;·]+/)
-    .map(d=>d.replace(/^DIR-\d+-?/,'').toUpperCase()).filter(Boolean);
-  if(!codes.length){ srcRef.textContent='DIR —'; srcDoc.innerHTML='<span style="color:var(--g4)">DIR 없음</span>'; return; }
+  // 특수문자·오염 제거 파서: [[]], 백틱, ?, ↯, 괄호내용, + 구분자 등 처리
+  const raw=String(dirCodes||'')
+    .replace(/\[\[|\]\]/g,' ')  // [[ ]] 제거
+    .replace(/`/g,' ')           // 백틱 제거
+    .replace(/↯/g,' ')           // 특수기호 제거
+    .replace(/\([^)]*\)/g,' ')   // 괄호와 내용 제거 (광물), (손) 등
+    .replace(/\?/g,' ');         // ? 제거
+  const codes=raw.split(/[\s,;·+]+/)
+    .map(d=>d.replace(/^DIR-\d+-?/i,'').replace(/[^A-Za-z0-9]/g,'').toUpperCase())
+    .filter(d=>d && d.length>=3 && !/^G\d+$/.test(d) && !/^\d/.test(d));
+  if(!codes.length){ srcRef.textContent='DIR —'; srcDoc.innerHTML='<span style="color:var(--g4)">DIR 없음</span>'; srcDoc.style.display='block'; return; }
   srcRef.textContent=codes[0];
   const html=codes.map(code=>{
-    const instr=DIR_INSTRUCTIONS[code];
+    const resolved=DIR_ALIASES[code]||code;
+    const instr=DIR_INSTRUCTIONS[resolved];
     const instrHtml=instr
       ? instr.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>')
       : null;
@@ -2080,13 +2454,18 @@ function renderDirInstruction(dirCodes){
       (instrHtml?`<span class="quote" style="white-space:normal;line-height:1.7">${instrHtml}</span>`:`<span style="color:var(--g4)">지시문 없음</span>`);
   }).join('<br><br>');
   srcDoc.innerHTML=html;
+  srcDoc.style.display='block';
   srcDoc.style.overflowY='auto';
+  const srcPh=document.getElementById('srcPlaceholder');
+  if(srcPh) srcPh.style.display='none';
 }
 
 // ── SOURCE RECORD (원본) ──
 function renderSrc(d){
   document.getElementById('srcRef').textContent='#'+String(d.n).padStart(4,'0');
-  document.getElementById('srcDoc').innerHTML=
+  const sd=document.getElementById('srcDoc');
+  sd.style.display='block';
+  sd.innerHTML=
     `<span class="sk">REF:</span> ${d.file}<br>`+
     `<span class="sk">BRIEF:</span><span class="quote">"${BRIEFS[d.scene]||'관찰 기록'}"</span>`+
     `<span class="sk">TAGS:</span> ${d.tags.join(' · ')}<br>`+
@@ -2232,18 +2611,18 @@ document.getElementById('exitBtn').onclick=()=>{ log('SYS',false,'EXIT REQUESTED
     function imgDiv(p, style, border){
       const url = p ? (p.filename||p.url||'') : '';
       const thumb = url.replace(/\/DSCF([^/]+)\.(jpg|JPG)$/,'/t/DSCF$1.jpg');
-      return `<div style="${style}overflow:hidden;background:#0d0d0d;${border!==undefined?border:'border:1px solid var(--g);'}">
-        ${url?`<img src="${thumb}" data-full="${url}" style="width:100%;height:100%;object-fit:cover;filter:brightness(0.6) saturate(0) sepia(1) hue-rotate(90deg);" onerror="if(!this._fb){this._fb=1;this.src=this.dataset.full}" alt="">`:''}</div>`;
+      return `<div style="${style}overflow:hidden;position:relative;background:#0d0d0d;${border!==undefined?border:'border:1px solid var(--g);'}">
+        ${url?`<img src="${thumb}" data-full="${url}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(0.6) saturate(0) sepia(1) hue-rotate(90deg);" onerror="if(!this._fb){this._fb=1;this.src=this.dataset.full}" alt="">`:''}</div>`;
     }
 
     const main = photos[0];
     const thumbs = photos.slice(1,6);
-    const THUMB_H=56, THUMB_W=Math.round(THUMB_H*3/2), THUMB_GAP=4;
+    const THUMB_H=53, THUMB_W=Math.round(THUMB_H*3/2), THUMB_GAP=4;
     const stripW = thumbs.length*THUMB_W+(thumbs.length-1)*THUMB_GAP+8;
 
     fpPhotos.innerHTML = `
       <div style="height:100%;display:flex;flex-direction:column;gap:4px;width:${stripW}px;flex-shrink:0;">
-        ${imgDiv(main,'flex:1;width:100%;')}
+        ${imgDiv(main,'aspect-ratio:3/2;width:100%;flex-shrink:0;')}
         <div style="height:${THUMB_H}px;flex-shrink:0;display:flex;gap:${THUMB_GAP}px;border:1px solid var(--g);padding:3px;">
           ${thumbs.map(p=>imgDiv(p,`width:${THUMB_W}px;height:100%;flex-shrink:0;`,'')). join('')}
         </div>
@@ -2251,58 +2630,58 @@ document.getElementById('exitBtn').onclick=()=>{ log('SYS',false,'EXIT REQUESTED
 
     const batchInfo = subs.map(s=>{
       const sc = fpCountStats(s);
-      return `<div style="display:flex;align-items:center;gap:6px;font-size:8px;">
-        <span style="color:var(--g3);width:36px;flex-shrink:0;">${s.id||''}</span>
+      return `<div style="display:flex;align-items:center;gap:4px;font-size:6px;">
+        <span style="color:var(--g3);width:28px;flex-shrink:0;">${s.id||''}</span>
         <div style="flex:1;height:2px;background:#0a0a0a;position:relative;">
           <div style="position:absolute;left:0;top:0;height:100%;width:${sc.total?+(sc.core/sc.total*100).toFixed(0):0}%;background:var(--g);"></div>
         </div>
-        <span style="color:var(--g3);font-size:7px;">${sc.total}</span>
+        <span style="color:var(--g3);font-size:6px;">${sc.total}</span>
       </div>`;
     }).join('');
 
     fpInfo.innerHTML = `
-      <div style="padding-bottom:6px;border-bottom:1px solid rgba(0,221,85,0.2);margin-bottom:8px;">
-        <div style="font-size:9px;letter-spacing:2px;color:var(--g);">${title}</div>
-        ${dateRange?`<div style="font-size:7px;color:var(--g3);letter-spacing:1px;margin-top:2px;">${dateRange} · ${subs.length} BATCH${subs.length>1?'ES':''}</div>`:''}
+      <div style="padding-bottom:6px;border-bottom:1px solid rgba(0,221,85,0.2);margin-bottom:10px;">
+        <div style="font-size:7px;letter-spacing:2px;color:var(--g);">${title}</div>
+        ${dateRange?`<div style="font-size:6px;color:var(--g3);letter-spacing:1px;margin-top:4px;">${dateRange} · ${subs.length} BATCH${subs.length>1?'ES':''}</div>`:''}
       </div>
-      <div style="margin-bottom:9px;">
-        <div style="font-size:9px;letter-spacing:2px;color:var(--g3);margin-bottom:4px;">A  VERDICT</div>
+      <div style="margin-bottom:10px;">
+        <div style="font-size:7px;letter-spacing:2px;color:var(--g3);margin-bottom:6px;">A  VERDICT</div>
         ${[['CORE',core,'var(--acc)',pC],['SUP',sup,'#ffb000',pS],['DROP',drop,'var(--g3)',pD]].map(([lbl,cnt,clr,pct])=>`
-        <div style="display:flex;align-items:center;gap:5px;font-size:9px;margin-bottom:3px;">
-          <span style="width:28px;color:${clr};letter-spacing:0.5px;">${lbl}</span>
-          <div style="flex:1;height:5px;background:#0a0a0a;border:1px solid #001a00;">
+        <div style="display:flex;align-items:center;gap:4px;font-size:7px;margin-bottom:5px;">
+          <span style="width:22px;color:${clr};letter-spacing:0.5px;">${lbl}</span>
+          <div style="flex:1;height:4px;background:#0a0a0a;border:1px solid #001a00;">
             <div style="width:${pct}%;height:100%;background:${clr};"></div>
           </div>
-          <span style="width:22px;text-align:right;color:${clr};">${cnt}</span>
-          <span style="width:28px;text-align:right;color:var(--g3);font-size:9px;">${pct}%</span>
+          <span style="width:18px;text-align:right;color:${clr};">${cnt}</span>
+          <span style="width:22px;text-align:right;color:var(--g3);font-size:7px;">${pct}%</span>
         </div>`).join('')}
-        <div style="font-size:9px;color:var(--g4);text-align:right;margin-top:1px;">TOTAL ${total}</div>
+        <div style="font-size:7px;color:var(--g4);text-align:right;margin-top:3px;">TOTAL ${total}</div>
       </div>
       ${subs.length?`
-      <div style="margin-bottom:9px;">
-        <div style="font-size:9px;letter-spacing:2px;color:var(--g3);margin-bottom:4px;">BATCHES</div>
-        <div style="display:flex;flex-direction:column;gap:2px;">${batchInfo}</div>
+      <div style="margin-bottom:10px;">
+        <div style="font-size:7px;letter-spacing:2px;color:var(--g3);margin-bottom:6px;">BATCHES</div>
+        <div style="display:flex;flex-direction:column;gap:5px;">${batchInfo}</div>
       </div>`:''}
       ${topDirs.length?`
-      <div style="margin-bottom:9px;">
-        <div style="font-size:9px;letter-spacing:2px;color:var(--g3);margin-bottom:4px;">B  DIR FREQUENCY</div>
-        <div style="display:flex;flex-wrap:wrap;gap:3px;">
+      <div style="margin-bottom:10px;">
+        <div style="font-size:7px;letter-spacing:2px;color:var(--g3);margin-bottom:6px;">B  DIR FREQUENCY</div>
+        <div style="display:flex;flex-wrap:wrap;gap:4px;">
           ${topDirs.map(([dir,cnt])=>{
             const op=(0.3+cnt/maxDir*0.7).toFixed(2);
-            return `<span style="font-size:9px;border:1px solid rgba(0,221,85,${op});color:rgba(0,221,85,${op});padding:1px 4px;letter-spacing:0.5px;white-space:nowrap;">${dir}<span style="opacity:0.5;"> ${cnt}</span></span>`;
+            return `<span style="font-size:7px;border:1px solid rgba(0,221,85,${op});color:rgba(0,221,85,${op});padding:1px 3px;letter-spacing:0.5px;white-space:nowrap;">${dir}<span style="opacity:0.5;"> ${cnt}</span></span>`;
           }).join('')}
         </div>
       </div>`:''}
       ${feed.length?`
       <div>
-        <div style="font-size:9px;letter-spacing:2px;color:var(--g3);margin-bottom:4px;">C  SELECTIONS</div>
-        <div style="display:flex;flex-direction:column;gap:3px;">
+        <div style="font-size:7px;letter-spacing:2px;color:var(--g3);margin-bottom:6px;">C  SELECTIONS</div>
+        <div style="display:flex;flex-direction:column;gap:5px;">
           ${feed.map(p=>{
             const clr=p.verdict==='core'?'var(--acc)':'#ffb000';
             const vid=p.verdict==='core'?'CORE':'SUP';
-            return `<div style="display:flex;align-items:baseline;gap:4px;font-size:9px;line-height:1.4;">
-              <div style="width:5px;height:5px;border-radius:50%;background:${clr};flex-shrink:0;margin-top:4px;"></div>
-              <span style="color:${clr};width:28px;flex-shrink:0;">${vid}</span>
+            return `<div style="display:flex;align-items:baseline;gap:3px;font-size:7px;line-height:2;">
+              <div style="width:4px;height:4px;border-radius:50%;background:${clr};flex-shrink:0;margin-top:3px;"></div>
+              <span style="color:${clr};width:22px;flex-shrink:0;">${vid}</span>
               <span style="color:var(--g3);flex-shrink:0;">${(p.id||'').toUpperCase()}</span>
               ${p.dir?`<span style="color:#ffb000;flex-shrink:0;"> ${p.dir}</span>`:''}
             </div>`;
@@ -2406,10 +2785,10 @@ document.getElementById('exitBtn').onclick=()=>{ log('SYS',false,'EXIT REQUESTED
       ">
         <div id="fpInner" style="display:flex;height:100%;padding:12px 14px;gap:0;width:100%;">
           <div id="fpPhotos" style="flex:0 0 auto;display:flex;overflow:hidden;"></div>
-          <div id="fpInfo" style="flex:1;min-width:0;border-left:1px solid rgba(0,221,85,0.15);padding:10px 14px;display:flex;flex-direction:column;overflow-y:auto;font-family:'Press Start 2P',monospace;"></div>
+          <div id="fpInfo" class="gs" style="flex:1;min-width:0;border-left:1px solid rgba(0,221,85,0.15);padding:10px 14px;display:flex;flex-direction:column;overflow-y:auto;font-family:'VT323',monospace;"></div>
         </div>
         <div id="fpEmpty2" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none;">
-          <span style="font-size:5px;font-family:'Press Start 2P',monospace;color:rgba(0,221,85,0.18);letter-spacing:3px;">— HOVER A FOLDER TO PREVIEW —</span>
+          <span style="font-size:5px;font-family:'VT323',monospace;color:rgba(0,221,85,0.18);letter-spacing:3px;">— HOVER A FOLDER TO PREVIEW —</span>
         </div>
       </div>` : ''}`;
 
@@ -2494,6 +2873,13 @@ document.getElementById('exitBtn').onclick=()=>{ log('SYS',false,'EXIT REQUESTED
       const p = galCurrentPhotos[idx];
       if(!p) return;
       if(p.type==='sheet'){
+        // CAPTURE REPORT: 배치 폴더 접속 시 보고서 로드 (id = 'YYYY/MM/MMDD')
+        const pid = p.id||'';
+        const pidParts = pid.split('/');
+        if(pidParts.length === 3){
+          const dateKey = pidParts[0] + pidParts[2]; // YYYYMMDD
+          renderCaptureReport(dateKey, pid);
+        }
         galNavStack.push({title: galNavStack.length===0?'ROOT':galCurrentPhotos._title||title, photos:galCurrentPhotos});
         renderLevel(p.children||[], p.title||p.id);
         return;
@@ -2525,7 +2911,7 @@ document.getElementById('exitBtn').onclick=()=>{ log('SYS',false,'EXIT REQUESTED
       const p = leaves[idx];
       // track click + METADATA 업데이트
       const pid = p.id || p.filename || p.url || '';
-      if(pid){ window._clickMap[pid]=(window._clickMap[pid]||0)+1; if(window._onPhotoClick) window._onPhotoClick(); }
+      if(pid){ window._clickMap[pid]=(window._clickMap[pid]||0)+1; window._saveClickMap(); if(window._onPhotoClick) window._onPhotoClick(); }
       if(typeof renderPhotoMeta==='function') renderPhotoMeta(p);
       const v = p.verdict||'drop';
       const full = p.filename||p.url||'';
@@ -2645,6 +3031,126 @@ document.getElementById('exitBtn').onclick=()=>{ log('SYS',false,'EXIT REQUESTED
 })();
 function tick(){ document.getElementById('clock').textContent=new Date().toTimeString().slice(0,8); }
 tick(); setInterval(tick,1000);
+
+// ── CAPTURE REPORT 보고서 파일 매핑 ──
+const REPORT_FILES = {
+  '20251011':'6.20251011 review.md',
+  '20251018':'4.20251018 review.md',
+  '20251025':'5.20251025 review.md',
+  '20251102':'7.20251102 review.md',
+  '20251104':'8.20251104 review.md',
+  '20251115':'9.20251115 review.md',
+  '20251122':'10.20251122 review.md',
+  '20251129':'11.20251129 review.md',
+  '20251206':'12.20251206 review.md',
+  '20251213':'13.20251213 review.md',
+  '20251227':'14.20251227 review.md',
+  '20260221':'2.20260221 review.md',
+  '20260227':'3.20260227 review.md',
+  '20260301':'4.20260301 review.md',
+  '20260304':'5.20260304 review.md',
+  '20260316':'6.20260316 review.md',
+};
+
+function mdToRepHtml(md){
+  const esc = s => s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  const fmt = s => s
+    .replace(/\*\*(.+?)\*\*/g,'<b style="color:var(--acc)">$1</b>')
+    .replace(/`([^`]+)`/g,'<span style="color:var(--acc);background:rgba(0,221,85,0.08);padding:0 3px">$1</span>')
+    .replace(/🟢/g,'<span class="rep-core">●CORE</span>')
+    .replace(/🟡/g,'<span class="rep-sup">●SUP</span>')
+    .replace(/🔴/g,'<span class="rep-drop">●DROP</span>')
+    .replace(/\[\[(.+?)\]\]/g,'<span style="color:var(--acc)">$1</span>');
+  const lines = md.split('\n');
+  let html = '';
+  let prevBlank = false;
+  let tableRowCount = 0;
+  for(let i=0;i<lines.length;i++){
+    const l = lines[i];
+    // 테이블 행
+    if(/^\|/.test(l)){
+      const cells = l.split('|').filter((_,j,a)=>j>0&&j<a.length-1).map(c=>c.trim());
+      if(cells.every(c=>/^[-:]+$/.test(c))){ tableRowCount++; continue; } // separator → thead 다음
+      const isHead = tableRowCount === 0; // separator 전 = 헤더
+      const cls = isHead ? 'rep-trow rep-thead' : 'rep-trow';
+      html += `<div class="${cls}">` + cells.map((c,ci)=>
+        `<span>${fmt(esc(c))}</span>`
+      ).join('') + '</div>';
+      if(isHead) tableRowCount = 0;
+      continue;
+    } else { tableRowCount = 0; }
+    // --- 구분선
+    if(/^---+$/.test(l.trim())){ html += '<hr class="rep-hr">'; prevBlank=false; continue; }
+    // ## 제목
+    if(/^## /.test(l)){ html += `<span class="rep-h2">▶ ${esc(l.slice(3))}</span>`; prevBlank=false; continue; }
+    // ### 제목
+    if(/^### /.test(l)){ html += `<span class="rep-h3">■ ${esc(l.slice(4))}</span>`; prevBlank=false; continue; }
+    // > abstract 블록
+    if(/^> /.test(l)){
+      const inner = l.slice(2);
+      if(/^\[!abstract\]/.test(inner)) continue;
+      if(!inner.trim()) continue;
+      html += `<span class="rep-meta">${fmt(esc(inner))}</span>`;
+      prevBlank=false; continue;
+    }
+    // 빈 줄 — 연속 빈 줄은 하나만
+    if(!l.trim()){
+      if(!prevBlank) html += '<div style="height:4px"></div>';
+      prevBlank=true; continue;
+    }
+    prevBlank=false;
+    html += `<span class="rep-p">${fmt(esc(l))}</span>`;
+  }
+  return html;
+}
+
+async function renderCaptureReport(dateKey, batchTitle){
+  const repContent = document.getElementById('repContent');
+  const repNo = document.getElementById('repNo');
+  if(!repContent) return;
+  const filename = REPORT_FILES[dateKey];
+  const label = dateKey.slice(0,4)+'.'+dateKey.slice(4,6)+'.'+dateKey.slice(6,8);
+  if(repNo) repNo.textContent = label;
+  if(!filename){
+    repContent.innerHTML = `<span style="color:var(--g4)">${label} — 보고서 없음</span>`;
+    return;
+  }
+  repContent.innerHTML = '<span style="color:var(--g4)">로딩 중…</span>';
+  const base = 'https://raw.githubusercontent.com/note-a/note-a-github/main/';
+  const urls = ['./reports/'+encodeURIComponent(filename), base+'reports/'+encodeURIComponent(filename)];
+  for(const url of urls){
+    try{
+      const res = await fetch(url);
+      if(!res.ok) continue;
+      const md = await res.text();
+      window._currentRepMd = md;
+      window._currentRepLabel = label;
+      repContent.innerHTML = mdToRepHtml(md);
+      const btn = document.getElementById('repFullBtn');
+      if(btn) btn.style.display = 'inline';
+      return;
+    }catch(e){}
+  }
+  repContent.innerHTML = '<span style="color:rgba(255,60,30,0.7)">보고서 로드 실패</span>';
+}
+
+function openRepModal(){
+  const modal = document.getElementById('repModal');
+  const body  = document.getElementById('repModalBody');
+  const title = document.getElementById('repModalTitle');
+  if(!modal || !window._currentRepMd) return;
+  body.innerHTML  = mdToRepHtml(window._currentRepMd);
+  if(title) title.textContent = window._currentRepLabel || '';
+  modal.style.display = 'flex';
+  document.addEventListener('keydown', _repModalEsc);
+}
+function closeRepModal(){
+  const modal = document.getElementById('repModal');
+  if(modal) modal.style.display = 'none';
+  document.removeEventListener('keydown', _repModalEsc);
+}
+function _repModalEsc(e){ if(e.key==='Escape') closeRepModal(); }
+// ESC 키로 모달 닫기 (closeRepModal / _repModalEsc 에서 처리)
 
 renderMapInfo(); renderRecent(); renderReport(); updateCtx(); setFrame(1);
 
