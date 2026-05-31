@@ -19,7 +19,7 @@
   --bd:      #00aa3a;
 }
 * { margin:0; padding:0; box-sizing:border-box; }
-html,body { width:100%; height:100%; min-width:1270px; overflow:auto; background:#000; font-family:'Space Mono',monospace; }
+html,body { width:100%; height:100%; min-width:1170px; overflow:auto; background:#000; font-family:'Space Mono',monospace; }
 
 /* ════ 전역 스크롤바 ════ */
 * { scrollbar-width:thin; scrollbar-color:#00cc44 #001a0a; }
@@ -59,10 +59,10 @@ html,body { width:100%; height:100%; min-width:1270px; overflow:auto; background
 }
 
 /* ════ 셸 / wrap ════ */
-#shell { position:fixed; inset:0; z-index:1; display:flex; align-items:center; justify-content:center; min-width:1270px; min-height:820px; }
+#shell { position:fixed; inset:0; z-index:1; display:flex; align-items:center; justify-content:center; min-width:1170px; min-height:750px; }
 #wrap {
-  width:1200px;
-  height:757px;
+  width:1100px;
+  height:694px;
   background:rgba(1,13,5,0.97);   /* 평면 */
   display:flex; flex-direction:column; gap:8px;
   position:relative; padding:10px;
@@ -167,14 +167,6 @@ html,body { width:100%; height:100%; min-width:1270px; overflow:auto; background
 #sysHd .chev { color:var(--acc); }
 #sysHd .sub { font-size:8px; color:var(--g3); letter-spacing:1px; }
 #sysHd #ctxLabel { margin-left:auto; font-size:8px; color:var(--acc); letter-spacing:1px; }
-#subTabs { display:flex; gap:5px; padding:0 12px 8px; }
-.stab {
-  font-size:8px; letter-spacing:1px; color:var(--g3); padding:5px 12px; cursor:pointer; user-select:none;
-  background:rgba(0,20,8,0.7); border:1px solid var(--g4);
-  clip-path:polygon(6px 0, 100% 0, calc(100% - 6px) 100%, 0 100%);
-}
-.stab:hover { color:var(--g2); }
-.stab.on { color:#000; background:var(--acc); border-color:var(--acc); }
 
 /* ── 갤러리 빈 영역 ── */
 #gallery {
@@ -471,7 +463,7 @@ html,body { width:100%; height:100%; min-width:1270px; overflow:auto; background
   background:var(--acc); transform:rotate(45deg); }
 
 /* ════ 하단 행 ════ */
-#botRow { height:148px; flex-shrink:0; display:flex; gap:8px; }
+#botRow { height:136px; flex-shrink:0; display:flex; gap:8px; }
 #logPnl { flex:1; } #logPnl .pnl-in { height:100%; }
 #repContent::-webkit-scrollbar { width:3px; }
 #repContent::-webkit-scrollbar-thumb { background:rgba(0,255,0,0.35); }
@@ -653,13 +645,6 @@ html,body { width:100%; height:100%; min-width:1270px; overflow:auto; background
     <div id="centerCol">
       <div class="pnl"><div class="pnl-in">
         <div id="sysHd"><span class="chev">»</span> ARCHIVE: SET_NULL_CH <span class="sub">· 5,900 RECORDS</span><span id="ctxLabel">CONTACT SHEET · ALL</span></div>
-        <div id="subTabs">
-          <div class="stab on" data-view="CONTACT SHEET">CONTACT SHEET</div>
-          <div class="stab" data-view="LIGHTBOX">LIGHTBOX</div>
-          <div class="stab" data-view="TIMELINE">TIMELINE</div>
-          <div class="stab" data-view="GRID">GRID</div>
-          <div class="stab" data-view="LIST">LIST</div>
-        </div>
         <!-- 갤러리 빈 영역 -->
         <div id="gallery">
           <div id="gallery-grid"></div>
@@ -800,8 +785,9 @@ html,body { width:100%; height:100%; min-width:1270px; overflow:auto; background
 
   </div>
 
-  <!-- 보고서 원문 모달 (소형 팝업, 오버레이 없음) -->
-  <div id="repModal" style="display:none;position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);z-index:9999;width:min(360px,calc(100vw-80px));height:440px;background:#020e05;border:1px solid var(--g);flex-direction:column;box-shadow:0 0 60px rgba(0,0,0,0.95),0 0 2px rgba(0,221,85,0.4);">
+  <!-- 보고서 원문 모달 (wrap 내부 absolute) -->
+  <div id="repBackdrop" onclick="closeRepModal()" style="display:none;position:absolute;inset:0;background:rgba(0,0,0,0.80);z-index:200;"></div>
+  <div id="repModal" style="display:none;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);z-index:201;width:500px;height:540px;background:#020e05;border:1px solid var(--g);flex-direction:column;box-shadow:0 0 0 1px rgba(0,221,85,0.3),0 0 60px rgba(0,0,0,0.98);">
     <div style="display:flex;align-items:center;padding:10px 16px;border-bottom:1px solid var(--g4);flex-shrink:0;">
       <span style="font-size:10px;color:var(--acc);letter-spacing:2px">◆ CAPTURE REPORT · 원문</span>
       <span id="repModalTitle" style="font-size:9px;color:var(--g3);margin-left:12px"></span>
@@ -950,17 +936,13 @@ document.querySelectorAll('.ttab').forEach(t=>t.onclick=()=>{
   t.classList.add('on'); S.top=t.dataset.top;
   log('SYS',false,'TAB · '+S.top);
 });
-// 뷰 서브탭
-document.querySelectorAll('.stab').forEach(t=>t.onclick=()=>{
-  document.querySelectorAll('.stab').forEach(x=>x.classList.remove('on'));
-  t.classList.add('on'); S.view=t.dataset.view; updateCtx();
-  log('SYS',false,'VIEW · '+S.view);
-});
 // 세로 메뉴
 document.querySelectorAll('.mbtn').forEach(b=>b.onclick=()=>{
   document.querySelectorAll('.mbtn').forEach(x=>x.classList.remove('on'));
   b.classList.add('on'); S.sec=b.dataset.sec; renderMapInfo(); updateCtx();
   renderSection(S.sec);
+  // GALLERY 클릭 시 루트로 리셋
+  if(S.sec==='GALLERY' && window._galRenderRoot) window._galRenderRoot();
   log('SYS',false,'SECTION · '+S.sec);
 });
 
@@ -1844,13 +1826,8 @@ function renderOptions(el){
 }
 // HOME → 이 페이지 메인 (갤러리 루트)
 document.getElementById('homeBtn').onclick=()=>{
-  document.querySelectorAll('.mbtn').forEach(x=>x.classList.remove('on'));
-  document.querySelector('.mbtn[data-sec="GALLERY"]').classList.add('on');
-  S.sec='GALLERY'; renderMapInfo(); updateCtx();
-  document.getElementById('gallery-inner').style.display='flex';
-  document.getElementById('emptyState').style.display='none';
-  if(window._galRenderRoot) window._galRenderRoot();
-  log('SYS',false,'→ ROOT');
+  log('SYS',false,'→ PORTFOLIO');
+  window.location.href='portfolio.html';
 };
 
 // SPOTLIGHT 패널 — 가장 많이 클릭된 사진 우선
@@ -2505,7 +2482,7 @@ document.querySelectorAll('.rel-mode').forEach(m=>m.onclick=()=>{
 });
 
 // EXIT
-document.getElementById('exitBtn').onclick=()=>{ log('SYS',false,'EXIT REQUESTED · DENIED (READ-ONLY)'); };
+document.getElementById('exitBtn').onclick=()=>{ log('SYS',false,'EXIT · REDIRECTING'); window.location.href='index.html'; };
 
 // ── SCAN 애니메이션: 타겟 이동 + % 카운터 ──
 (function scanAnim(){
@@ -3150,18 +3127,22 @@ async function renderCaptureReport(dateKey, batchTitle){
 }
 
 function openRepModal(){
-  const modal = document.getElementById('repModal');
-  const body  = document.getElementById('repModalBody');
-  const title = document.getElementById('repModalTitle');
+  const modal    = document.getElementById('repModal');
+  const backdrop = document.getElementById('repBackdrop');
+  const body     = document.getElementById('repModalBody');
+  const title    = document.getElementById('repModalTitle');
   if(!modal || !window._currentRepMd) return;
-  body.innerHTML  = mdToRepHtml(window._currentRepMd);
+  body.innerHTML = mdToRepHtml(window._currentRepMd);
   if(title) title.textContent = window._currentRepLabel || '';
-  modal.style.display = 'flex';
+  modal.style.display    = 'flex';
+  backdrop.style.display = 'block';
   document.addEventListener('keydown', _repModalEsc);
 }
 function closeRepModal(){
-  const modal = document.getElementById('repModal');
-  if(modal) modal.style.display = 'none';
+  const modal    = document.getElementById('repModal');
+  const backdrop = document.getElementById('repBackdrop');
+  if(modal)    modal.style.display    = 'none';
+  if(backdrop) backdrop.style.display = 'none';
   document.removeEventListener('keydown', _repModalEsc);
 }
 function _repModalEsc(e){ if(e.key==='Escape') closeRepModal(); }
