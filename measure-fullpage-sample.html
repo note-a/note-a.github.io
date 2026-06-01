@@ -8,11 +8,11 @@
   <style>
     * { margin:0; padding:0; box-sizing:border-box; }
     html, body {
-      height:100%; background:#000099; color:#a6a6b8;
-      font-family:'Galmuri11',monospace; overflow:hidden;
+      min-height:100%; background:#000099; color:#a6a6b8;
+      font-family:'Galmuri11',monospace; overflow-x:hidden;
       -webkit-text-stroke:0.4px currentColor; text-stroke:0.4px currentColor;
     }
-    body { display:flex; align-items:center; justify-content:center; padding:14px; }
+    body { display:flex; align-items:safe center; justify-content:center; padding:14px; min-height:100vh; }
 
     /* ── 전체 HUD 그리드 ── */
     #hud {
