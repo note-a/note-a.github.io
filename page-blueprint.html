@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>S.E.T. — LOG // 자료함</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;700&family=IBM+Plex+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0a0506;          /* near-black, red-tinted */
+  --ln:#ff2d2d;          /* schematic line (red) */
+  --dim:#8c2222;         /* dim red line/label */
+  --lbl:#d65555;         /* label red */
+  --red:#ff4d4d;         /* input terminal */
+  --blue:#ff9a6b;        /* output terminal (warm accent) */
+  --hot:#ff7676;         /* hover */
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{
+  min-height:100vh;background:var(--bg);color:var(--ln);
+  font-family:'Chakra Petch','IBM Plex Sans KR',monospace;
+  overflow-x:hidden;animation:fadein .5s ease-out forwards;
+}
+@keyframes fadein{from{opacity:0;}to{opacity:1;}}
+@keyframes crt-off{0%{clip-path:inset(0 0 0 0);filter:brightness(1);}40%{clip-path:inset(48% 0 48% 0);filter:brightness(3);}72%{clip-path:inset(49.5% 12% 49.5% 12%);filter:brightness(5);}100%{clip-path:inset(50% 50% 50% 50%);filter:brightness(0);}}
+body.leaving{animation:crt-off .45s ease-in forwards !important;}
+
+body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:60;
+  background:radial-gradient(130% 120% at 50% 45%,transparent 58%,rgba(0,0,0,.7) 100%);}
+
+.topbar{position:relative;z-index:5;display:flex;justify-content:space-between;align-items:center;
+  padding:16px 24px;font-size:11px;letter-spacing:3px;color:var(--dim);}
+.exit{border:1.3px solid var(--ln);background:transparent;color:var(--ln);
+  font-family:'Chakra Petch',monospace;font-size:11px;letter-spacing:2px;padding:7px 14px;cursor:pointer;transition:.15s;}
+.exit:hover{background:var(--ln);color:var(--bg);}
+
+.stage{position:relative;z-index:5;width:100%;max-width:1180px;margin:0 auto;padding:4px 14px 56px;}
+svg{width:100%;height:auto;display:block;}
+
+/* ---- schematic primitives ---- */
+.w{fill:none;stroke:var(--ln);stroke-width:1.3;stroke-linecap:square;}
+.wd{fill:none;stroke:var(--dim);stroke-width:1.1;}
+.sym{fill:none;stroke:var(--ln);stroke-width:1.3;}
+.symf{fill:var(--ln);stroke:var(--ln);stroke-width:1.3;}
+text{fill:var(--lbl);font-family:'Chakra Petch',monospace;}
+.t{font-size:11px;letter-spacing:.5px;}
+.ts{font-size:9px;fill:var(--dim);}
+.node{fill:var(--ln);}
+
+/* clickable chips (= posts) */
+.chip{cursor:pointer;}
+.chip .body{fill:rgba(255,255,255,.015);stroke:var(--ln);stroke-width:1.4;transition:.16s;}
+.chip .pin{stroke:var(--ln);stroke-width:1.3;}
+.chip .pdot{fill:var(--ln);}
+.chip .num{font-size:22px;fill:var(--ln);font-family:'Chakra Petch',monospace;letter-spacing:1px;}
+.chip .kind{font-size:9px;fill:var(--lbl);letter-spacing:2px;}
+.chip .spec{font-size:8px;fill:var(--dim);letter-spacing:1px;}
+.chip .pl{font-size:8px;fill:var(--dim);}
+.chip:hover .kind,.chip:hover .spec,.chip:hover .pl{fill:var(--hot);}
+.chip:hover .body{fill:rgba(255,45,45,.12);stroke:var(--hot);filter:drop-shadow(0 0 6px rgba(255,60,60,.7));}
+.chip:hover .num{fill:var(--hot);}
+.chip:hover .pin{stroke:var(--hot);}
+
+/* legend / title block */
+.box{fill:rgba(255,255,255,.012);stroke:var(--ln);stroke-width:1.3;}
+.bh{font-size:10px;fill:var(--ln);letter-spacing:2px;}
+.legrow{cursor:pointer;}
+.legrow rect{fill:transparent;}
+.legrow .lt{font-size:10px;fill:var(--lbl);}
+.legrow .ln{font-size:10px;fill:var(--dim);}
+.legrow .sp{font-size:7px;fill:var(--dim);}
+.legrow:hover .lt{fill:var(--hot);}
+.legrow:hover .sp{fill:var(--lbl);}
+.legrow:hover rect{fill:rgba(255,45,45,.1);}
+.dl{font-size:9px;fill:var(--lbl);letter-spacing:.5px;}
+
+/* dense detail: signal labels, module titles, connector refs */
+.wl{font-size:8px;fill:var(--dim);letter-spacing:.4px;}
+.mtitle{font-family:'IBM Plex Sans KR',monospace;font-size:9.5px;fill:var(--lbl);font-weight:500;}
+.cref circle{fill:var(--bg);stroke:var(--ln);stroke-width:1.2;}
+.cref text{font-size:8px;fill:var(--ln);text-anchor:middle;font-family:'Chakra Petch',monospace;}
+.title-main{font-family:'Chakra Petch',monospace;font-size:17px;fill:var(--ln);letter-spacing:3px;}
+.title-sub{font-family:'IBM Plex Sans KR',monospace;font-size:11px;fill:var(--lbl);letter-spacing:1px;}
+.relaybox rect{fill:rgba(255,255,255,.012);stroke:var(--ln);stroke-width:1.3;}
+
+/* ---- doc overlay (schematic dark) ---- */
+.modal{position:fixed;inset:0;z-index:300;display:none;align-items:flex-start;justify-content:center;
+  background:rgba(0,0,0,.85);backdrop-filter:blur(3px);overflow-y:auto;padding:54px 16px;}
+.modal.on{display:flex;}
+.doc{position:relative;width:100%;max-width:680px;background:#0a0506;
+  border:1.4px solid var(--ln);box-shadow:0 0 40px rgba(255,45,45,.28);animation:pop .25s ease-out;}
+@keyframes pop{from{opacity:0;transform:translateY(14px) scale(.98);}to{opacity:1;transform:none;}}
+.doc .dbr{position:absolute;width:16px;height:16px;border:2px solid var(--ln);}
+.doc .dbr.tl{top:-2px;left:-2px;border-right:none;border-bottom:none;}
+.doc .dbr.tr{top:-2px;right:-2px;border-left:none;border-bottom:none;}
+.doc .dbr.bl{bottom:-2px;left:-2px;border-right:none;border-top:none;}
+.doc .dbr.br2{bottom:-2px;right:-2px;border-left:none;border-top:none;}
+.dochead{padding:20px 24px 16px;border-bottom:1px solid var(--dim);position:relative;}
+.dochead .mod{font-size:10px;letter-spacing:3px;color:var(--dim);}
+.dochead h2{font-family:'IBM Plex Sans KR',monospace;font-weight:700;font-size:23px;color:#fff;margin:8px 0 6px;}
+.dochead .dmeta{font-size:10px;letter-spacing:2px;color:var(--dim);}
+.close{position:absolute;top:16px;right:18px;width:30px;height:30px;border:1.3px solid var(--ln);
+  background:transparent;color:var(--ln);font-size:16px;cursor:pointer;line-height:1;}
+.close:hover{background:var(--ln);color:var(--bg);}
+.docbody{padding:22px 26px 30px;line-height:1.75;font-family:'IBM Plex Sans KR',monospace;font-size:14px;color:var(--ln);}
+.docbody h2{font-family:'Chakra Petch',monospace;font-size:15px;color:#fff;letter-spacing:2px;margin:22px 0 10px;padding-bottom:6px;border-bottom:1px dashed var(--dim);}
+.docbody h3{font-size:14px;color:#ff7676;letter-spacing:1px;margin:18px 0 8px;}
+.docbody p{margin:10px 0;}
+.docbody ul,.docbody ol{margin:10px 0 10px 22px;}
+.docbody li{margin:5px 0;}
+.docbody strong{color:#fff;}
+.docbody blockquote{border-left:3px solid var(--ln);background:rgba(255,255,255,.05);padding:10px 16px;margin:14px 0;color:var(--dim);}
+.docbody blockquote strong{color:#fff;}
+.docbody a{color:#fff;}
+</style>
+</head>
+<body>
+<div class="topbar">
+  <button class="exit" onclick="navigate('portfolio.html')">&larr; EXIT</button>
+  <span>S.E.T. // LOG SCHEMATIC // RULE-SET v2.3</span>
+  <span id="cnt">— NODES</span>
+</div>
+
+<div class="stage">
+<svg id="sch" preserveAspectRatio="xMidYMid meet"></svg>
+</div>
+
+<!-- DOC OVERLAY -->
+<div class="modal" id="modal" onclick="if(event.target===this)closeDoc()">
+  <div class="doc">
+    <span class="dbr tl"></span><span class="dbr tr"></span><span class="dbr bl"></span><span class="dbr br2"></span>
+    <button class="close" onclick="closeDoc()">&times;</button>
+    <div class="dochead">
+      <div class="mod" id="dMod">MOD-00</div>
+      <h2 id="dTitle">—</h2>
+      <div class="dmeta" id="dMeta">—</div>
+    </div>
+    <div class="docbody" id="dBody"></div>
+  </div>
+</div>
+
+<script>
+const SVGNS='http://www.w3.org/2000/svg';
+function navigate(url){document.body.classList.add('leaving');setTimeout(()=>{location.href=url;},450);}
+function pad(n){return String(n).padStart(2,'0');}
+const defaultItems=[{id:'-',title:'아카이브 로드 실패',year:'',category:'rule',status:'',preview:'<p>admin-contents.json 을 불러오지 못했습니다.</p>'}];
+let ITEMS=[];
+
+function esc(s){return String(s==null?'':s).replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));}
+function sysOf(t){t=(t||'').toLowerCase();
+  if(t.includes('sva'))return'SVA-PIPE';
+  if(t.includes('grammer')||t.includes('grammar')||t.includes('문법'))return'GRAMMAR';
+  if(t.includes('dir')||t.includes('지시문')||t.includes('변환'))return'DIR-GEN';
+  if(t.includes('dashboard')||t.includes('meeting')||t.includes('가이드')||t.includes('work')||t.includes('table')||t.includes('작업')||t.includes('direction'))return'OPS';
+  return'RULE';}
+function catOf(t){const o=(t||'').toLowerCase();
+  if(o.includes('공간')||o.includes('space'))return'SP';
+  if(o.includes('사물')||o.includes('objects'))return'OB';
+  if(o.includes('인물전면')||o.includes('figure forward'))return'FF';
+  if(o.includes('인물배경')||o.includes('figure background'))return'FB';
+  if(o.includes('판정불가')||o.includes('unjudg'))return'UJ';
+  return'';}
+function wrap(s,max,maxLines){s=String(s||'무제');const words=s.split(/\s+/);const lines=[];let cur='';
+  for(const w0 of words){let w=w0;
+    while(w.length>max){if(cur){lines.push(cur);cur='';}lines.push(w.slice(0,max));w=w.slice(max);}
+    if(!cur){cur=w;}else if((cur+' '+w).length<=max){cur+=' '+w;}else{lines.push(cur);cur=w;}}
+  if(cur)lines.push(cur);
+  if(lines.length>maxLines){const out=lines.slice(0,maxLines);out[maxLines-1]=out[maxLines-1].slice(0,max-1)+'…';return out;}
+  return lines;}
+
+const MW=200,MH=116,PITCHX=236,PITCHY=190,MX=110,MY=210;
+function build(items){
+  ITEMS=items;
+  const N=items.length;
+  document.getElementById('cnt').textContent=pad(N)+' NODES';
+  const cols=Math.min(5,Math.max(1,N));
+  const rows=Math.ceil(N/cols);
+  const W=MX*2+(cols-1)*PITCHX+MW;
+  const H=MY+(rows-1)*PITCHY+MH+90;
+  const pos=i=>{const r=Math.floor(i/cols),k=i%cols,c=(r%2===0)?k:(cols-1-k);return{r,c,x:MX+c*PITCHX,y:MY+r*PITCHY};};
+  let s='';
+  // header
+  s+='<text class="title-main" x="'+MX+'" y="64">LOG SIGNAL NETWORK</text>';
+  s+='<text class="title-sub" x="'+MX+'" y="84">S.E.T. // RULE-SET SCHEMATIC // '+pad(N)+' MODULES</text>';
+  // per-row VDD / GND buses
+  const busL=MX-34, busR=MX+(cols-1)*PITCHX+MW+34;
+  for(let r=0;r<rows;r++){
+    const ry=MY+r*PITCHY, vy=ry-34, gy=ry+MH+34;
+    s+='<line class="wd" x1="'+busL+'" y1="'+vy+'" x2="'+busR+'" y2="'+vy+'"/>';
+    s+='<text class="wl" x="'+(busL-4)+'" y="'+(vy-4)+'" text-anchor="end">VDD</text>';
+    s+='<line class="wd" x1="'+busL+'" y1="'+gy+'" x2="'+busR+'" y2="'+gy+'"/>';
+    s+='<text class="wl" x="'+(busL-4)+'" y="'+(gy+12)+'" text-anchor="end">GND</text>';
+  }
+  // inter-module signal chain
+  for(let i=0;i<N-1;i++){
+    const a=pos(i),b=pos(i+1);
+    const ay=a.y+MH/2, by=b.y+MH/2;
+    if(a.r===b.r){
+      let x1,x2;
+      if(b.c>a.c){x1=a.x+MW;x2=b.x;}else{x1=a.x;x2=b.x+MW;}
+      const mx=(x1+x2)/2;
+      s+='<line class="w" x1="'+x1+'" y1="'+ay+'" x2="'+(mx-13)+'" y2="'+ay+'"/>';
+      s+='<line class="w" x1="'+(mx+13)+'" y1="'+ay+'" x2="'+x2+'" y2="'+ay+'"/>';
+      s+='<rect class="sym" x="'+(mx-13)+'" y="'+(ay-6)+'" width="26" height="12"/>';
+      s+='<text class="wl" x="'+mx+'" y="'+(ay-9)+'" text-anchor="middle">N'+pad(i+1)+'</text>';
+    }else{
+      const cx1=a.x+MW/2, cx2=b.x+MW/2;
+      s+='<line class="w" x1="'+cx1+'" y1="'+(a.y+MH)+'" x2="'+cx1+'" y2="'+by+'"/>';
+      if(cx1!==cx2)s+='<line class="w" x1="'+cx1+'" y1="'+by+'" x2="'+cx2+'" y2="'+by+'"/>';
+      s+='<line class="w" x1="'+cx2+'" y1="'+by+'" x2="'+cx2+'" y2="'+b.y+'"/>';
+      s+='<circle class="node" cx="'+cx1+'" cy="'+(a.y+MH)+'" r="3"/>';
+    }
+  }
+  // IN / OUT terminals
+  const p0=pos(0), pn=pos(N-1);
+  s+='<circle cx="'+(p0.x-40)+'" cy="'+(p0.y+MH/2)+'" r="6" fill="var(--red)"/>';
+  s+='<line class="w" x1="'+(p0.x-40)+'" y1="'+(p0.y+MH/2)+'" x2="'+p0.x+'" y2="'+(p0.y+MH/2)+'"/>';
+  s+='<text class="ts" x="'+(p0.x-52)+'" y="'+(p0.y+MH/2-10)+'">IN</text>';
+  const oEdge=(pn.r%2===0||N===1)?pn.x+MW:pn.x;
+  const oOut=(pn.r%2===0||N===1)?oEdge+40:oEdge-40;
+  s+='<line class="w" x1="'+oEdge+'" y1="'+(pn.y+MH/2)+'" x2="'+oOut+'" y2="'+(pn.y+MH/2)+'"/>';
+  s+='<circle cx="'+oOut+'" cy="'+(pn.y+MH/2)+'" r="6" fill="none" stroke="var(--ln)" stroke-width="1.4"/>';
+  s+='<text class="ts" x="'+oOut+'" y="'+(pn.y+MH/2-10)+'" text-anchor="middle">OUT</text>';
+  // modules
+  for(let i=0;i<N;i++){
+    const it=items[i], p=pos(i), x=p.x, y=p.y, my=y+MH/2;
+    const sys=sysOf(it.title), cat=catOf(it.title);
+    const tl=wrap(it.title,15,3);
+    // VDD / GND stubs
+    const vy=p.y-34, gy=p.y+MH+34, vx=x+30, gx=x+MW-30;
+    s+='<line class="wd" x1="'+vx+'" y1="'+vy+'" x2="'+vx+'" y2="'+y+'"/><circle class="node" cx="'+vx+'" cy="'+vy+'" r="3"/>';
+    s+='<line class="wd" x1="'+gx+'" y1="'+(y+MH)+'" x2="'+gx+'" y2="'+gy+'"/>';
+    // GND symbol on bus
+    s+='<line class="w" x1="'+(gx-9)+'" y1="'+gy+'" x2="'+(gx+9)+'" y2="'+gy+'"/><line class="w" x1="'+(gx-6)+'" y1="'+(gy+4)+'" x2="'+(gx+6)+'" y2="'+(gy+4)+'"/><line class="w" x1="'+(gx-3)+'" y1="'+(gy+8)+'" x2="'+(gx+3)+'" y2="'+(gy+8)+'"/>';
+    // chip
+    s+='<g class="chip" onclick="openDoc('+i+')">';
+    s+='<rect class="body" x="'+x+'" y="'+y+'" width="'+MW+'" height="'+MH+'" rx="3"/>';
+    s+='<circle class="pdot" cx="'+x+'" cy="'+my+'" r="3.2"/><circle class="pdot" cx="'+(x+MW)+'" cy="'+my+'" r="3.2"/>';
+    s+='<text class="num" x="'+(x+14)+'" y="'+(y+32)+'">'+pad(i+1)+'</text>';
+    s+='<text class="kind" x="'+(x+50)+'" y="'+(y+32)+'">'+sys+'</text>';
+    if(cat)s+='<text class="kind" x="'+(x+MW-12)+'" y="'+(y+24)+'" text-anchor="end">'+cat+'</text>';
+    tl.forEach((ln,k)=>{s+='<text class="mtitle" x="'+(x+MW/2)+'" y="'+(y+58+k*16)+'" text-anchor="middle">'+esc(ln)+'</text>';});
+    s+='<text class="spec" x="'+(x+14)+'" y="'+(y+MH-10)+'">'+esc((it.status||'STD').toUpperCase())+' · '+esc(it.year||'—')+'</text>';
+    s+='<text class="pl" x="'+(x+MW-12)+'" y="'+(y+MH-10)+'" text-anchor="end">ID'+esc(it.id||'—')+'</text>';
+    s+='</g>';
+  }
+  const svg=document.getElementById('sch');
+  svg.setAttribute('viewBox','0 0 '+W+' '+H);
+  svg.innerHTML=s;
+}
+function openDoc(i){
+  const it=ITEMS[i];if(!it)return;
+  document.getElementById('dMod').textContent='MOD-'+pad(i+1)+' // '+(it.category||'rule').toUpperCase();
+  document.getElementById('dTitle').textContent=it.title||'무제';
+  document.getElementById('dMeta').textContent='STATUS '+((it.status||'STD').toUpperCase())+'　·　'+(it.year||'—')+'　·　ID '+(it.id||'—');
+  document.getElementById('dBody').innerHTML=it.preview||'<p>내용 없음</p>';
+  const md=document.getElementById('modal');md.classList.add('on');md.scrollTop=0;document.body.style.overflow='hidden';
+}
+function closeDoc(){document.getElementById('modal').classList.remove('on');document.body.style.overflow='';}
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeDoc();});
+
+(function(){
+  const ts=Date.now();const base='https://raw.githubusercontent.com/note-a/note-a-github/main/';
+  const local=()=>{try{return JSON.parse(localStorage.getItem('adminContents')||'{}');}catch(e){return{};}};
+  const pick=d=>{const m=Object.assign({},d,local());return(m.rule&&m.rule.items&&m.rule.items.length)?m.rule.items:defaultItems;};
+  fetch(base+'admin-contents.json?t='+ts)
+    .then(r=>r.ok?r.json():Promise.reject())
+    .catch(()=>fetch('./admin-contents.json?t='+ts).then(r=>r.ok?r.json():{}))
+    .then(d=>build(pick(d||{})))
+    .catch(()=>build(pick({})));
+})();
+</script>
+</body>
+</html>
