@@ -214,6 +214,26 @@ table.sched td.cat{width:46px;text-align:center;font-weight:700;}
 .docbody blockquote strong{color:#fff;}
 .docbody a{color:#fff;}
 
+/* ============ LIVE / DYNAMIC MOTION ============ */
+#sch [stroke-dasharray]{animation:dashflow 16s linear infinite;}
+@keyframes dashflow{to{stroke-dashoffset:-240;}}
+.scanbar{position:fixed;left:0;right:0;top:0;height:170px;z-index:59;pointer-events:none;
+  background:linear-gradient(180deg,transparent,rgba(54,224,255,.10) 46%,rgba(255,61,240,.07) 56%,transparent);
+  transform:translateY(-180px);animation:sweepdown 7.5s linear infinite;}
+@keyframes sweepdown{from{transform:translateY(-180px);}to{transform:translateY(calc(100vh + 180px));}}
+#cad{animation:framepulse 5s ease-in-out infinite;}
+@keyframes framepulse{0%,100%{box-shadow:0 0 0 rgba(255,61,240,0);}50%{box-shadow:0 0 24px rgba(255,61,240,.22);}}
+.panelbox{animation:framepulse 6s ease-in-out infinite;}
+.ptitle{animation:tpulse 3.6s ease-in-out infinite;}
+@keyframes tpulse{0%,100%{filter:brightness(1);}50%{filter:brightness(1.22) drop-shadow(0 0 7px rgba(255,61,240,.5));}}
+.htitles h1{animation:flick 7s steps(1,end) infinite;}
+@keyframes flick{0%,96%,100%{opacity:1;}97%{opacity:.55;}98.5%{opacity:.9;}}
+.tocrow.cl:hover,table.sched tr.cl:hover td{transition:.12s;}
+.psigC{fill:rgba(54,224,255,.3);stroke:#9fefff;stroke-width:2;filter:drop-shadow(0 0 8px #36e0ff) drop-shadow(0 0 16px #1a7a9a);}
+.pnode .pbody{transition:.2s;}
+.pnode{animation:nodebreath 4.5s ease-in-out infinite;}
+@keyframes nodebreath{0%,100%{opacity:1;}50%{opacity:.82;}}
+
 /* ============ MOBILE RESPONSIVE ============ */
 @media (max-width:980px){
   body{zoom:1;}
@@ -272,6 +292,7 @@ table.sched td.cat{width:46px;text-align:center;font-weight:700;}
   <div class="panelbox" id="notesBox"></div>
 </aside>
 </div>
+<div class="scanbar"></div>
 
 <!-- DOC OVERLAY -->
 <div class="modal" id="modal" onclick="if(event.target===this)closeDoc()">
@@ -479,6 +500,11 @@ function build(items){
   s+='<path id="planflow" class="planroute" d="'+flowD+'"/>';
   s+='<rect class="psig2" x="-12" y="-12" width="24" height="24"><animateMotion dur="10s" begin="-0.5s" repeatCount="indefinite" rotate="auto"><mpath xlink:href="#planflow" href="#planflow"/></animateMotion></rect>';
   s+='<rect class="psig" x="-9" y="-9" width="18" height="18"><animateMotion dur="10s" repeatCount="indefinite" rotate="auto"><mpath xlink:href="#planflow" href="#planflow"/></animateMotion></rect>';
+  // second signal route (cyan) — counter direction
+  var flow2='M120 800 L300 800 L300 1010 L560 1010 L560 700 L668 700 L668 300 L484 300 L484 120';
+  s+='<path id="planflow2" class="planroute" style="stroke:#36e0ff" d="'+flow2+'"/>';
+  s+='<rect class="psigC" x="-8" y="-8" width="16" height="16"><animateMotion dur="13s" begin="-3s" repeatCount="indefinite" rotate="auto"><mpath xlink:href="#planflow2" href="#planflow2"/></animateMotion></rect>';
+  s+='<rect class="psigC" x="-6" y="-6" width="12" height="12" opacity=".5"><animateMotion dur="13s" begin="-3.6s" repeatCount="indefinite" rotate="auto"><mpath xlink:href="#planflow2" href="#planflow2"/></animateMotion></rect>';
   var svg=document.getElementById('sch'); svg.setAttribute('viewBox','0 0 '+W+' '+H); svg.innerHTML=s;
 
   /* ============ SCHEDULE TABLES ============ */
