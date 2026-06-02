@@ -19,17 +19,14 @@ body {
   align-items: center;
   min-height: 100%;
   position: relative;
-  overflow-x: hidden;
 }
 
 .t {
   font-size: 14px;
   line-height: 1.25;
   color: #00ff00;
-  width: 100%;
-  max-width: 832px;
+  width: 832px;
   zoom: 0.82;
-  overflow-x: hidden;
 }
 .ln { display: block; white-space: pre; text-shadow: 1.5px 0.8px rgba(255,0,0,0.35), -1.5px -0.8px rgba(0,255,255,0.28); }
 .i  { background: #00ff00; color: #000; text-shadow: 1.5px 0.8px rgba(255,0,0,0.38), -1.5px -0.8px rgba(0,255,255,0.3); }
@@ -203,35 +200,6 @@ body {
 @media (max-width: 750px) {
   body { align-items: flex-start; padding: 10px; }
   .t { width: 100%; zoom: 0.72; }
-
-  .table-row { flex-direction: column; gap: 0; width: 100%; }
-
-  .table-left {
-    font-size: 12px;
-    padding-top: 6px;
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-    max-width: 100%;
-  }
-
-  .logpanel {
-    flex: none;
-    width: 100%;
-    height: auto;
-    min-height: 28px;
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    align-self: auto;
-    padding: 3px 4px;
-    gap: 2px;
-  }
-  .log-item {
-    font-size: 11px;
-    padding: 2px 6px;
-    white-space: nowrap;
-    display: inline-block;
-  }
 }
 
 /* ── MOBILE ── */
@@ -344,7 +312,7 @@ body.leaving { animation: crt-off 0.45s ease-in forwards !important; }
 <span class="ln">| INPUT : <span class="cur"> </span>                                        |</span>
 </div>
 <div class="btns">
-  <button onclick="showConfirm('menu.html','ENTER','SET_WORLD/MENU')">  [ -&gt; ENTER ]  </button><button onclick="showConfirm('portfolio.html','BROWSE','SET_WORLD/PORTFOLIO')">  [ BROWSE -&gt; ]  </button>
+  <button onclick="showConfirm('set-os.html','ENTER','SET_WORLD/SET.OS')">  [ -&gt; ENTER ]  </button><button onclick="showConfirm('portfolio.html','BROWSE','SET_WORLD/PORTFOLIO')">  [ BROWSE -&gt; ]  </button>
 </div>
 
 </div>
