@@ -235,7 +235,7 @@
       <div class="lob-row"><span class="num">23</span>책 읽는 방</div>
       <div class="lob-row"><span class="num">24</span>게임 한판</div>
       <div class="lob-row"><span class="num">25</span>야구 좋아해</div>
-      <div class="lob-row"><span class="num">26</span>그림 그리는 사람</div>
+      <div class="lob-row"><span class="num">26</span>사진 찍는 사람</div>
     </div>
 
     <div class="lob-box">
@@ -287,7 +287,7 @@
   <!-- ── TOP ── -->
   <div id="top" class="panel">
     <div class="panel-h">
-      <span>◆ MEASURE.DB · 측정값 누적 단말 ── 외부망 접속중</span>
+      <span>◆ 단말기 ── 외부망 접속중</span>
       <span class="led"><b class="on"></b><b class="on"></b><b></b></span>
     </div>
   </div>
@@ -329,7 +329,7 @@
       <div id="photoGallery"></div>
     </div>
     <div class="search-sim">
-      <input type="text" id="searchInput" placeholder="무엇을 찾으십니까?  (예: crash, shadow, grid)">
+      <input type="text" id="searchInput" placeholder="무엇을 찾았습니까?  (예: crash, shadow, grid)">
       <button id="searchBtn">찾기</button>
     </div>
   </div>
@@ -358,7 +358,7 @@
   <div id="bottom" class="panel">
     <div class="panel-b">
       <span>상태 : <span style="color:#aaccff;">대기중</span> <span class="blink">_</span></span>
-      <span>측정한 것을, 기입하라.</span>
+      <span>무엇이든, 기입하라.</span>
       <span id="clock">--:--:--</span>
     </div>
   </div>
@@ -520,16 +520,17 @@ function initCanvas() {
     { en:'how have you been.', kr:'어떻게 지냈어?', sys:false, wait:47, typing:22 },
     { en:'the word you kept biting down on — it was in a photograph', kr:'네가 계속 깨물고 있던 그 단어는 사진 속에 있어.', sys:false, wait:36, typing:29 },
     { en:'taken before you had the name for it.', kr:'네가 그 단어의 이름을 알기 전에 찍힌 사진 말이야.', sys:false, wait:27, typing:27 },
-    { en:'they started keeping count.', kr:'그들은 세기 시작했어.', sys:false, wait:45, typing:22 },
+    { en:'they started keeping count.', kr:'나는 그걸 세기 시작했어.', sys:false, wait:45, typing:22 },
     { en:'not from fixation, but from a theory:', kr:'집착 때문이 아니라, 하나의 이론에서.', sys:false, wait:25, typing:24 },
     { en:'that what recurs without reason', kr:'이유 없이 반복되는 것은', sys:false, wait:22, typing:20 },
-    { en:'is evidence of a reason not yet named.', kr:'아직 이름 붙일 수 없는 어떤 이유의 증거라는 이론에서.', sys:false, wait:47, typing:29 },
+    { en:'is evidence of a reason not yet named.', kr:'아직 이름 붙일 수 없는 이유의 증거라는 이론에서.', sys:false, wait:47, typing:29 },
     { en:'the record reaches back, but experience does not accumulate.', kr:'기록은 거슬러 올라가지만, 경험은 축적되지 않아.', sys:false, wait:27, typing:27 },
     { en:'it does not know when it will stop.', kr:'언제 멈출지 알지 못해.', sys:false, wait:22, typing:20 },
+    { en:'So.', kr:'그러니까', sys:false, wait:22, typing:20 },
     { en:'what you swallowed without naming — bring it here.', kr:'네가 이름 붙이지 않고 삼킨 것, 여기로 가져와.', sys:false, wait:50, typing:27 },
-    { en:'the record will tell you how many times', kr:'기록은 네가 찾기 시작하기 전에 그것이 몇 번이나', sys:false, wait:25, typing:29 },
-    { en:'it had already arrived before you began to look.', kr:'왔는지 알려줄 거야.', sys:false, wait:22, typing:20 },
-    { en:'search for anything.', kr:'무엇이든 찾아봐.', sys:true, wait:68, typing:22 },
+    { en:'the record will tell you how many times', kr:'기록은 네가 찾기 시작하기 전에 시직됐어', sys:false, wait:25, typing:29 },
+    { en:'it had already arrived before you began to look.', kr:'그것이 몇 번이나 왔는지 알려줄 거야.', sys:false, wait:22, typing:20 },
+    { en:'search for anything.', kr:'여기서 무엇이든 찾아봐.', sys:true, wait:68, typing:22 },
   ];
   const TOP_H=28, BOT_H=34, HDR_H=6, EN_FS=13, KR_FS=13, EN_ROW=21, MSG_GAP=7, MENU_Y=16;
   const USER_X=10, EN_X=104;
