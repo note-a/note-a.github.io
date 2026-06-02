@@ -1238,11 +1238,11 @@ html,body{width:100%;min-height:100vh;overflow:hidden;background:#000;font-famil
   }
   #wrap::before,#wrap::after,.wc-bl,.wc-br{display:none;}
 
-  /* 페이지 이동과 무관한 장식 패널 전부 숨김 */
-  #top-row > .pnl:first-child,        /* SET.VIEW (갤러리/스캐터) */
+  /* 숨김: UP/EXIT/DOWN · gbar · VIEWER_LOG · ID카드 · 작업현황 · SET.TEXT · 상태바 부가 */
   #top-row > .pnl:last-child,         /* UP/EXIT/DOWN */
   #gbar,                              /* SET.OS 바 */
-  .bot-left,                          /* 입장/VIEWER_LOG/ID카드/작업현황 */
+  .bl-split > .pnl:nth-of-type(2),    /* VIEWER_LOG */
+  .bot-left > .pnl.dim,               /* ID카드 · 작업현황 */
   #bot-row > .pnl.dim,                /* SET.TEXT */
   #botbar .binfo,
   #botbar .activate,
@@ -1252,12 +1252,20 @@ html,body{width:100%;min-height:100vh;overflow:hidden;background:#000;font-famil
     display:none !important;
   }
 
-  /* HUD.XT2 폴더 = 메인 (각 폴더 → page-blueprint) */
-  #top-row{display:block;min-height:0;}
+  /* TOP ROW: 갤러리(SET.VIEW) + 폴더(HUD.XT2) 세로 스택 */
+  #top-row{display:flex;flex-direction:column;gap:10px;min-height:0;}
+  #top-row > .pnl{width:100%;right:auto !important;}
+  #top-row > .pnl:first-child .pnl-in{height:auto;}
+  #gly-1.view.active{min-height:280px;}
   #hud-pnl{width:100%;min-height:0;}
   #hud-pnl .pnl-in{height:auto;}
   .h-folders{max-height:none;overflow:visible;}
+
+  /* BOT ROW: 채팅 입장 버튼만 */
   #bot-row{display:block;min-height:0;}
+  .bot-left{display:block;min-height:0;}
+  .bl-split{display:block;min-height:0;}
+  .bl-split > .pnl:first-child{min-height:120px;}
 
   /* 하단 내비: SET / LOG / MEASURE 만 (다른 페이지로 이동) */
   #botbar{height:auto;padding:10px 6px;border-top:1px solid var(--g4);}
