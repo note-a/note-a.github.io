@@ -1,0 +1,1208 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>REFERENCE — Darkroom</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{height:100%;background:#0e0000;font-family:'IBM Plex Mono','Courier New',monospace;overflow:hidden;}
+body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:9999;
+  background:repeating-linear-gradient(0deg,transparent 0,transparent 3px,rgba(0,0,0,.05) 3px,rgba(0,0,0,.05) 4px);}
+
+/* ─── 바깥 배경 ─── */
+#outer{
+  position:fixed;inset:0;
+  display:flex;align-items:center;justify-content:center;
+  background:#060000;
+}
+#outer::before{
+  content:'';position:absolute;inset:0;pointer-events:none;
+  background-image:
+    linear-gradient(rgba(80,0,0,.04) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(80,0,0,.04) 1px,transparent 1px);
+  background-size:40px 40px;
+}
+
+/* ─── 70% 외곽 프레임 ─── */
+#page-frame{
+  position:relative;
+  width:70vw;height:82vh;
+  display:flex;flex-direction:column;
+  border:2px solid #c01000;
+  box-shadow:
+    0 0 0 1px rgba(60,2,0,.7),
+    0 0 60px rgba(200,8,0,.18),
+    0 0 120px rgba(160,4,0,.08),
+    inset 0 0 80px rgba(60,0,0,.25);
+  background:#080000;
+  overflow:hidden;
+}
+#page-frame::before{
+  content:'';position:absolute;inset:5px;
+  border:1px solid rgba(90,4,0,.3);
+  pointer-events:none;z-index:10;
+}
+#page-frame::after{
+  content:'';position:absolute;inset:0;pointer-events:none;z-index:11;
+  background:
+    linear-gradient(#cc1000,#cc1000) top    left  / 24px 2px no-repeat,
+    linear-gradient(#cc1000,#cc1000) top    left  / 2px 24px no-repeat,
+    linear-gradient(#cc1000,#cc1000) top    right / 24px 2px no-repeat,
+    linear-gradient(#cc1000,#cc1000) top    right / 2px 24px no-repeat,
+    linear-gradient(#cc1000,#cc1000) bottom left  / 24px 2px no-repeat,
+    linear-gradient(#cc1000,#cc1000) bottom left  / 2px 24px no-repeat,
+    linear-gradient(#cc1000,#cc1000) bottom right / 24px 2px no-repeat,
+    linear-gradient(#cc1000,#cc1000) bottom right / 2px 24px no-repeat;
+}
+
+/* ─── 상단 바 (프레임 밖 영역) ─── */
+#pf-top{
+  height:44px;flex-shrink:0;
+  display:flex;align-items:stretch;justify-content:center;
+  border-bottom:1px solid rgba(80,4,0,.35);
+  position:relative;z-index:1;
+}
+.pf-seg{
+  padding:0 18px;display:flex;align-items:center;
+  font-size:9px;letter-spacing:2px;color:#3a0808;
+  border-right:1px solid rgba(60,2,0,.28);
+}
+#pf-safelight{
+  width:7px;height:7px;border-radius:50%;margin-right:10px;flex-shrink:0;
+  background:rgba(200,8,0,.7);
+  box-shadow:0 0 6px 2px rgba(180,4,0,.4);
+  animation:safelight 3s ease-in-out infinite;
+}
+@keyframes safelight{0%,100%{opacity:.7}50%{opacity:1;box-shadow:0 0 10px 4px rgba(200,4,0,.5);}}
+#pf-count{color:#801010;border-right:none;border-left:1px solid rgba(60,2,0,.28);}
+.pff{
+  background:transparent;border:none;border-right:1px solid rgba(60,2,0,.22);
+  color:#280606;font-family:inherit;font-size:8px;letter-spacing:1.5px;
+  padding:0 14px;height:100%;cursor:pointer;transition:color .12s;
+}
+.pff:hover{color:#800a00;}
+.pff.on{color:#e02010;background:rgba(180,0,0,.05);}
+
+/* ─── 내부 캔버스 영역 ─── */
+#pf-inner-wrap{
+  flex:1;min-height:0;
+  padding:36px;
+  display:flex;
+}
+#inner-frame{
+  flex:1;position:relative;
+  border:1px solid #500800;
+  box-shadow:0 0 30px rgba(120,4,0,.1),inset 0 0 40px rgba(20,0,0,.4);
+  overflow:hidden;
+}
+#inner-frame::after{
+  content:'';position:absolute;inset:0;pointer-events:none;z-index:3;
+  background:
+    linear-gradient(#801000,#801000) top    left  / 14px 1px no-repeat,
+    linear-gradient(#801000,#801000) top    left  / 1px 14px no-repeat,
+    linear-gradient(#801000,#801000) top    right / 14px 1px no-repeat,
+    linear-gradient(#801000,#801000) top    right / 1px 14px no-repeat,
+    linear-gradient(#801000,#801000) bottom left  / 14px 1px no-repeat,
+    linear-gradient(#801000,#801000) bottom left  / 1px 14px no-repeat,
+    linear-gradient(#801000,#801000) bottom right / 14px 1px no-repeat,
+    linear-gradient(#801000,#801000) bottom right / 1px 14px no-repeat;
+}
+canvas#cv{
+  position:absolute;inset:0;width:100%;height:100%;
+  display:block;cursor:crosshair;
+}
+
+/* ─── 하단 바 (프레임 밖 영역) ─── */
+#pf-bottom{
+  height:52px;flex-shrink:0;
+  border-top:1px solid rgba(80,4,0,.3);
+  display:flex;align-items:center;
+  padding:0 16px;
+  overflow:hidden;
+  position:relative;z-index:1;
+}
+#pf-hint{font-size:6px;letter-spacing:1.5px;color:#2a0606;line-height:1.8;}
+#pf-sel{display:none;align-items:stretch;width:100%;gap:0;overflow:hidden;}
+.ps-seg{
+  display:flex;flex-direction:column;justify-content:center;
+  padding:0 12px;flex-shrink:0;
+  border-right:1px solid rgba(60,2,0,.22);
+}
+.ps-seg:first-child{padding-left:0;}
+.ps-id{font-size:5.5px;letter-spacing:1px;}
+.ps-type{font-size:5px;letter-spacing:2px;margin-top:2px;}
+.ps-title{font-size:11px;font-weight:600;white-space:nowrap;}
+.ps-sub{font-size:6px;color:#4a1010;letter-spacing:.3px;margin-top:3px;white-space:nowrap;}
+.ps-ex-seg{flex:1;min-width:0;padding:0 12px;display:flex;align-items:center;}
+.ps-ex{font-size:7px;color:#5a1a10;font-style:italic;line-height:1.6;
+  overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;}
+.ps-tags{flex-shrink:0;padding:0 0 0 12px;font-size:5px;color:#3a0e0e;letter-spacing:.5px;white-space:nowrap;}
+
+/* ════════════════════════════════════
+   팝업
+════════════════════════════════════ */
+#item-popup{
+  display:none;position:absolute;
+  top:6px;bottom:6px;
+  left:50%;transform:translateX(-50%);
+  width:800px;
+  z-index:200;
+  background:rgba(2,0,0,.97);
+  flex-direction:column;overflow:hidden;
+  border:1px solid rgba(160,16,0,.5);
+  box-shadow:0 0 40px rgba(0,0,0,.6);
+}
+#item-popup.open{display:flex;transform:translateX(-50%);}
+#popup-header{
+  flex-shrink:0;padding:22px 32px 18px;
+  border-bottom:1px solid rgba(180,20,0,.3);
+  display:flex;align-items:flex-start;gap:20px;
+}
+#popup-meta{flex:1;min-width:0;}
+#popup-status{font-size:7px;letter-spacing:2.5px;color:#801010;margin-bottom:8px;}
+#popup-title{font-size:16px;font-weight:600;color:#e02010;line-height:1.35;margin-bottom:6px;}
+#popup-sub{font-size:9px;color:#601010;letter-spacing:.4px;}
+#popup-close{
+  flex-shrink:0;background:transparent;border:1px solid rgba(160,10,0,.4);
+  color:#801010;font-family:inherit;font-size:8px;letter-spacing:1.5px;
+  padding:7px 16px;cursor:pointer;transition:all .12s;
+}
+#popup-close:hover{border-color:#c01000;color:#e02010;}
+#popup-body{
+  flex:1;overflow-y:auto;padding:24px 40px 36px;
+  line-height:2.1;font-size:11px;color:rgba(200,65,35,.88);
+  letter-spacing:.35px;
+}
+#popup-body::-webkit-scrollbar{width:3px;}
+#popup-body::-webkit-scrollbar-track{background:transparent;}
+#popup-body::-webkit-scrollbar-thumb{background:rgba(120,8,0,.4);}
+.pp-section{font-size:10px;font-weight:600;color:#c01800;
+  letter-spacing:1.2px;margin:24px 0 10px;padding-bottom:5px;
+  border-bottom:1px solid rgba(120,8,0,.25);}
+.pp-p{margin-bottom:14px;color:rgba(195,62,30,.85);}
+.pp-p:empty{display:none;}
+
+/* ════════════════════════════════════
+   인트로
+════════════════════════════════════ */
+#intro{
+  position:absolute;inset:0;z-index:500;
+  background:#000;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  cursor:pointer;
+  background-image:repeating-linear-gradient(
+    0deg,transparent 0,transparent 3px,rgba(0,0,0,.08) 3px,rgba(0,0,0,.08) 4px);
+}
+#intro::before{
+  content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);
+  width:100%;height:70%;
+  background:radial-gradient(ellipse 55% 55% at 50% 0%,
+    rgba(220,8,0,.55) 0%,rgba(140,4,0,.28) 35%,transparent 70%);
+  animation:sl-on 3s ease forwards;opacity:0;pointer-events:none;
+}
+@keyframes sl-on{
+  0%{opacity:0}
+  10%{opacity:.6}12%{opacity:.2}15%{opacity:.8}
+  17%{opacity:.3}20%{opacity:.95}
+  100%{opacity:1}
+}
+#intro-lamp{
+  position:absolute;top:0;left:50%;transform:translateX(-50%);
+  display:flex;flex-direction:column;align-items:center;
+  animation:sl-on 3s ease forwards;opacity:0;
+}
+.lamp-wire{width:1px;height:22px;background:rgba(120,6,0,.5);}
+.lamp-body{width:56px;height:16px;background:#150000;border:1px solid rgba(160,10,0,.5);
+  display:flex;align-items:center;justify-content:center;}
+.lamp-bulb{
+  width:22px;height:8px;border-radius:50%;
+  background:rgba(240,10,0,.9);
+  box-shadow:0 0 10px 3px rgba(220,6,0,.5),0 0 30px 8px rgba(160,4,0,.25);
+  animation:bulb-flicker 3s ease forwards;opacity:0;
+}
+@keyframes bulb-flicker{
+  0%{opacity:0}10%{opacity:.8}12%{opacity:.1}15%{opacity:.9}
+  17%{opacity:.2}20%{opacity:1}100%{opacity:1}
+}
+#intro-quote{
+  max-width:520px;margin-top:36px;
+  font-size:11px;font-weight:300;font-style:italic;
+  line-height:2.1;letter-spacing:.4px;
+  color:rgba(220,80,50,.9);text-align:center;
+  position:relative;z-index:1;
+  animation:fade-up 1.2s 1.2s both;
+  text-shadow:0 0 20px rgba(200,20,0,.3);
+}
+#intro-enter{
+  position:absolute;bottom:52px;
+  font-size:6.5px;letter-spacing:3px;
+  color:rgba(180,22,10,.55);
+  animation:fade-up .8s 4.4s both, blink 1.8s 5.2s ease-in-out infinite;
+}
+@keyframes fade-up{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+@keyframes blink{0%,100%{opacity:.25}50%{opacity:.8}}
+#intro.exit{
+  transform:translateY(-100%);
+  transition:transform .85s cubic-bezier(.76,0,.24,1);
+  pointer-events:none;
+}
+</style>
+</head>
+<body>
+
+<div id="outer">
+<div id="page-frame">
+
+  <!-- ══ 인트로 ══ -->
+  <div id="intro" onclick="enterMain()">
+    <div id="intro-lamp">
+      <div class="lamp-wire"></div>
+      <div class="lamp-body"></div>
+      <div class="lamp-bulb"></div>
+    </div>
+    <div id="intro-quote">너무 오래 보는 것은 은유가 아닙니다. 이는 문자 그대로의 조건입니다.<br>특정한 것을 찾도록 훈련된 눈은 때때로 그렇지 않은 곳에서 그런 것들을 발견할 수 있습니다.<br>눈은 너무 간절히 찾고 싶어하기 때문에 발명을 하지 못합니다.<br>발견하는 것과 발명하는 것에는 차이가 있습니다.<br>차이점은 철자는 정확해 보이지만 그렇지 않은 단어처럼<br>희미한 것에 대해 느끼는 일종의 잘못된 감정입니다.<br>뇌가 이해하기 전에 세 번 읽습니다.<br><br>아마도 그 중 일부도 여기 있을 것입니다. 옳아 보였지만 옳지 않았던 일들.<br>언젠가는 그것을 해결해야 할 것입니다.</div>
+    <div id="intro-enter">— click to enter —</div>
+  </div>
+
+  <!-- 상단 바: 제목 + 필터 + 카운트 (내부 프레임 바깥) -->
+  <div id="pf-top">
+    <div class="pf-seg">
+      <div id="pf-safelight"></div>
+      REFERENCE · DARKROOM
+    </div>
+    <button class="pff on" onclick="setF('all',this)">ALL</button>
+    <button class="pff" onclick="setF('book',this)">BOOK</button>
+    <button class="pff" onclick="setF('idea',this)">IDEA</button>
+    <button class="pff" onclick="setF('ref',this)">REF</button>
+    <button class="pff" onclick="setF('exhibit',this)">EXHIBIT</button>
+    <div class="pf-seg" id="pf-count">18 ITEMS</div>
+  </div>
+
+  <!-- 내부 프레임: 캔버스 (콘텐츠 영역) -->
+  <div id="pf-inner-wrap">
+    <div id="inner-frame">
+      <canvas id="cv"></canvas>
+    </div>
+  </div>
+
+  <!-- 팝업: 전체 내용 -->
+  <div id="item-popup">
+    <div id="popup-header">
+      <div id="popup-meta">
+        <div id="popup-status"></div>
+        <div id="popup-title"></div>
+        <div id="popup-sub"></div>
+      </div>
+      <button id="popup-close" onclick="closePopup()">× CLOSE</button>
+    </div>
+    <div id="popup-body"></div>
+  </div>
+
+  <!-- 하단 바: 선택 아이템 정보 (내부 프레임 바깥) -->
+  <div id="pf-bottom">
+    <div id="pf-hint">LOUPE → 확대 · CLICK → 선택 &nbsp;·&nbsp; BOOK · IDEA · REF · EXHIBIT</div>
+    <div id="pf-sel">
+      <!-- JS로 채워짐 -->
+    </div>
+  </div>
+
+</div><!-- /page-frame -->
+</div><!-- /outer -->
+
+<script>
+/* ════════════════════
+   DATA
+════════════════════ */
+const ITEMS=[
+  {id:0,type:'book',title:'밝은 방',sub:'Roland Barthes · 1980',
+   ex:'punctum — 찌름. studium이 아닌 것, 그것이 나를 쏜다.',tags:['photography','theory']},
+  {id:1,type:'book',title:'사진에 관하여',sub:'Susan Sontag · 1977',
+   ex:'사진 찍는 행위는 세계를 소유하는 것이다.',tags:['photography','theory']},
+  {id:2,type:'book',title:'눈의 문법',sub:'John Szarkowski · 1966',
+   ex:'가장자리, 디테일, 평면, 시간, 사물 자체의 것.',tags:['photography']},
+  {id:3,type:'book',title:'Ways of Seeing',sub:'John Berger · 1972',
+   ex:'보는 방식이 우리가 아는 것보다 먼저다.',tags:['theory']},
+  {id:4,type:'book',title:'The Ongoing Moment',sub:'Geoff Dyer · 2005',
+   ex:'이미지는 이미지를 낳는다. 사진가들은 서로의 그림자를 찍는다.',tags:['photography']},
+  {id:5,type:'book',title:'집합론',sub:'Georg Cantor · 1874',
+   ex:'부분이 전체와 같은 크기를 가질 수 있다.',tags:['set·math']},
+  {id:6,type:'book',title:'수학의 언어',sub:'Keith Devlin · 1998',
+   ex:'수학은 패턴의 과학이다.',tags:['set·math']},
+  {id:7,type:'book',title:'On Photography',sub:'Susan Sontag · 1977',
+   ex:'카메라는 세계를 해석한다.',tags:['photography','theory']},
+  {id:8,type:'idea',title:'선택과 배제',sub:'작업 메모 · 2026',
+   ex:'셀렉션은 배제의 행위다. 탈락한 것이 집합을 정의한다.',tags:['photography','set·math']},
+  {id:9,type:'idea',title:'프레임의 정치',sub:'작업 메모 · 2025',
+   ex:'무엇을 프레임 안에 넣는가는 권력의 문제다.',tags:['photography','theory']},
+  {id:10,type:'idea',title:'집합적 셀렉션',sub:'프로젝트 · 2026',
+   ex:'438장 → 부분집합. 셀렉션 과정을 집합론의 언어로.',tags:['set·math','photography']},
+  {id:11,type:'idea',title:'배제의 미학',sub:'메모 · 2026',
+   ex:'버린 사진들의 아카이브.',tags:['photography']},
+  {id:12,type:'idea',title:'측정과 기록',sub:'작업 방향 · 2026',
+   ex:'수치화 실패 자체가 작업이 된다.',tags:['set·math']},
+  {id:13,type:'ref',title:'New Topographics',sub:'William Jenkins · 1975',
+   ex:'평범한 것의 날카로움.',tags:['photography']},
+  {id:14,type:'ref',title:'Bernd & Hilla Becher',sub:'Typologien · 1963–2007',
+   ex:'유형학적 반복. 비교를 통해 형태가 드러난다.',tags:['photography']},
+  {id:15,type:'ref',title:'August Sander',sub:'Menschen des 20. Jahrhunderts',
+   ex:'유형으로서의 초상.',tags:['photography']},
+  {id:16,type:'exhibit',title:'한국 현대사진 60년',sub:'국립현대미술관 · 2017',
+   ex:'다큐멘터리에서 개념미술까지.',tags:['photography']},
+  {id:17,type:'exhibit',title:'The Family of Man',sub:'MoMA · 1955',
+   ex:'503점. 인류 보편의 서사. 동시에 냉전 시대의 이데올로기.',tags:['photography','theory']},
+];
+
+const TC={book:'#ff4020',idea:'#e0304c',ref:'#ff7030',exhibit:'#d0a040'};
+const TYPE_CODE={book:'B',idea:'I',ref:'R',exhibit:'E'};
+
+/* ════════════════════
+   STATE
+════════════════════ */
+let flt='all', sel=-1;
+let canvas, ctx, W=0, H=0;
+let mx=-1, my=-1;
+let t=0;
+
+const ZM=2.2, LOUPE_R=70;
+const LY_R=0.22, LY2_R=0.45;
+
+/* 플리커 */
+let flickerAlpha=1, flickerSeq=[], flickerCooldown=200+Math.random()*300;
+
+function tickFlicker(){
+  if(flickerSeq.length>0){
+    flickerAlpha=flickerSeq.shift();
+  } else {
+    flickerAlpha=1;
+    flickerCooldown--;
+    if(flickerCooldown<=0){
+      const len=4+Math.floor(Math.random()*8);
+      for(let i=0;i<len;i++)
+        flickerSeq.push(Math.random()>.45 ? .1+Math.random()*.35 : .9+Math.random()*.1);
+      flickerSeq.push(1);
+      flickerCooldown=150+Math.random()*400;
+    }
+  }
+}
+
+/* ════════════════════
+   HELPERS
+════════════════════ */
+function vis(){return flt==='all'?ITEMS:ITEMS.filter(b=>b.type===flt);}
+
+function getLineY(item){
+  return item.id%2===0 ? H*LY_R : H*LY2_R;
+}
+
+function gp(item){
+  const ly=getLineY(item);
+  const lineItems=vis().filter(b=>getLineY(b)===ly);
+  const idx=lineItems.indexOf(item);
+  const n=lineItems.length;
+  const margin=W*0.09;
+  const x=n>1 ? margin+(idx/(n-1))*(W-2*margin) : W*0.5;
+  return {x, y:ly};
+}
+
+function anim(item){
+  const ph=item.id*2.31;
+  const fr=0.4+(item.id%3)*0.12;
+  const dx=Math.sin(t*fr+ph)*(1.5+item.id%2);
+  const rot=Math.sin(t*fr*0.7+ph+1)*0.05;
+  return {dx, rot};
+}
+
+/* ════════════════════
+   DRAW ROOM
+════════════════════ */
+function drawRoom(){
+  // ── Background wall ──────────────────────────────────
+  const wallG=ctx.createLinearGradient(0,0,0,H);
+  wallG.addColorStop(0,'#070000');
+  wallG.addColorStop(.55,'#050000');
+  wallG.addColorStop(1,'#020000');
+  ctx.fillStyle=wallG;
+  ctx.fillRect(0,0,W,H);
+
+  // Vertical panel lines on wall
+  ctx.strokeStyle='rgba(80,8,0,.22)';
+  ctx.lineWidth=.8;
+  for(let i=1;i<7;i++){
+    ctx.beginPath(); ctx.moveTo(W*i/7,0); ctx.lineTo(W*i/7,H*.78); ctx.stroke();
+  }
+  // Ceiling line
+  ctx.strokeStyle='rgba(120,12,0,.35)';
+  ctx.lineWidth=1;
+  ctx.beginPath(); ctx.moveTo(0,H*.04); ctx.lineTo(W,H*.04); ctx.stroke();
+
+  // Corner vignette
+  [[0,0],[W,0],[0,H],[W,H]].forEach(([vx,vy])=>{
+    const vg=ctx.createRadialGradient(vx,vy,0,vx,vy,W*.38);
+    vg.addColorStop(0,'rgba(0,0,0,.42)');
+    vg.addColorStop(1,'transparent');
+    ctx.fillStyle=vg; ctx.fillRect(0,0,W,H);
+  });
+
+  // ── Safelight glow (flickerAlpha) ────────────────────
+  ctx.save();
+  ctx.globalAlpha=flickerAlpha;
+  const rg=ctx.createRadialGradient(W*.5,H*.055,0,W*.5,H*.055,W*.5);
+  rg.addColorStop(0,'rgba(200,20,0,.28)');
+  rg.addColorStop(.15,'rgba(160,8,0,.15)');
+  rg.addColorStop(.35,'rgba(100,3,0,.07)');
+  rg.addColorStop(.65,'rgba(50,1,0,.03)');
+  rg.addColorStop(1,'transparent');
+  ctx.fillStyle=rg;
+  ctx.fillRect(0,0,W,H*.75);
+  ctx.restore();
+
+
+  // ── Fluorescent tube ─────────────────────────────────
+  const tw=W*.42, tx=W*.5-tw/2, ty=H*.055;
+  ctx.save();
+  ctx.globalAlpha=flickerAlpha;
+  ctx.shadowColor='rgba(255,50,10,.9)';
+  ctx.shadowBlur=14;
+  ctx.fillStyle='rgba(255,70,15,.92)';
+  ctx.fillRect(tx,ty-3.5,tw,7);
+  ctx.restore();
+  ctx.fillStyle='rgba(110,6,0,.7)';
+  ctx.fillRect(tx-5,ty-4,5,8);
+  ctx.fillRect(tx+tw,ty-4,5,8);
+  ctx.strokeStyle='rgba(90,4,0,.5)';
+  ctx.lineWidth=.8;
+  ctx.beginPath();
+  ctx.moveTo(tx+15,0); ctx.lineTo(tx+15,ty-4);
+  ctx.moveTo(tx+tw-15,0); ctx.lineTo(tx+tw-15,ty-4);
+  ctx.stroke();
+
+  // ── Clotheslines + hanging prints/negatives ──────────
+  [LY_R, LY2_R].forEach((yR,li)=>{
+    const ly=H*yR;
+    ctx.save();
+    ctx.strokeStyle='rgba(90,12,0,.55)';
+    ctx.lineWidth=1.2;
+    ctx.beginPath();
+    ctx.moveTo(0,ly);
+    ctx.bezierCurveTo(W*.25,ly+5,W*.75,ly+5,W,ly);
+    ctx.stroke();
+    ctx.fillStyle='rgba(80,6,0,.6)';
+    ctx.beginPath(); ctx.arc(4,ly,3,0,Math.PI*2); ctx.fill();
+    ctx.beginPath(); ctx.arc(W-4,ly,3,0,Math.PI*2); ctx.fill();
+
+    ctx.restore();
+  });
+
+  // ── 가로선 사이 불규칙 세로선 ─────────────────────────────
+  {
+    const ly1=H*LY_R, ly2=H*LY2_R;
+    // 미리 시드 고정 위치로 불규칙 배치
+    const vlines=[
+      {x:.09, y1:ly1, y2:ly2,        a:.38, w:.8},
+      {x:.17, y1:ly1, y2:ly1+H*.18,  a:.22, w:.6},
+      {x:.24, y1:ly2, y2:H*.72,      a:.3,  w:.7},
+      {x:.33, y1:ly1, y2:ly2,        a:.25, w:.5},
+      {x:.41, y1:ly1+H*.04, y2:ly2,  a:.35, w:.9},
+      {x:.50, y1:ly1, y2:H*.68,      a:.2,  w:.6},
+      {x:.57, y1:ly2, y2:ly2+H*.22,  a:.32, w:.7},
+      {x:.64, y1:ly1, y2:ly2,        a:.28, w:.5},
+      {x:.72, y1:ly1+H*.02, y2:H*.7, a:.22, w:.8},
+      {x:.80, y1:ly1, y2:ly2,        a:.33, w:.6},
+    ];
+    vlines.forEach(vl=>{
+      ctx.save();
+      ctx.strokeStyle=`rgba(100,12,0,${vl.a})`;
+      ctx.lineWidth=vl.w;
+      ctx.beginPath();
+      ctx.moveTo(W*vl.x, vl.y1);
+      ctx.lineTo(W*vl.x + (Math.sin(vl.x*17)*3), vl.y2);
+      ctx.stroke();
+      ctx.restore();
+    });
+  }
+
+  // ── Counter ───────────────────────────────────────────
+  const cY=H*.78;
+  const cg=ctx.createLinearGradient(0,cY,0,H);
+  cg.addColorStop(0,'#0c0100');
+  cg.addColorStop(1,'#030000');
+  ctx.fillStyle=cg;
+  ctx.fillRect(0,cY,W,H-cY);
+
+  // 테이블 엣지 라인 (트레이/카운터와 독립적으로 위치)
+  const tY=H*.88;
+  const tg=ctx.createLinearGradient(0,tY,0,tY+10);
+  tg.addColorStop(0,'rgba(140,18,0,.55)');
+  tg.addColorStop(.4,'rgba(80,10,0,.3)');
+  tg.addColorStop(1,'rgba(30,4,0,.0)');
+  ctx.fillStyle=tg;
+  ctx.fillRect(0,tY,W,10);
+
+  const ef=ctx.createLinearGradient(0,tY,0,tY+14);
+  ef.addColorStop(0,'rgba(100,14,0,.9)');
+  ef.addColorStop(1,'rgba(45,6,0,.9)');
+  ctx.fillStyle=ef;
+  ctx.fillRect(0,tY,W,14);
+
+  ctx.strokeStyle='rgba(200,30,0,.7)';
+  ctx.lineWidth=1.5;
+  ctx.beginPath(); ctx.moveTo(0,tY); ctx.lineTo(W,tY); ctx.stroke();
+  ctx.strokeStyle='rgba(60,6,0,.5)';
+  ctx.lineWidth=.8;
+  ctx.beginPath(); ctx.moveTo(0,tY+14); ctx.lineTo(W,tY+14); ctx.stroke();
+
+  // Table surface fill below the line
+  const sfg=ctx.createLinearGradient(0,tY,0,H);
+  sfg.addColorStop(0,'rgba(140,18,0,.8)');
+  sfg.addColorStop(.35,'rgba(90,10,0,.6)');
+  sfg.addColorStop(1,'rgba(40,5,0,.35)');
+  ctx.fillStyle=sfg;
+  ctx.fillRect(0,tY,W,H-tY);
+
+  // Counter drawers
+  ctx.strokeStyle='rgba(55,5,0,.18)';
+  ctx.lineWidth=.5;
+  for(let i=0;i<5;i++){
+    const dx=W*(.04+i*.19), dw=W*.15;
+    const dy=cY+H*.13, dh=H*.04;
+    ctx.strokeRect(dx,dy,dw,dh);
+    ctx.fillStyle='rgba(65,5,0,.28)';
+    ctx.fillRect(dx+dw/2-7,dy+dh/2-1.5,14,3);
+  }
+
+  // ── Developing trays ──────────────────────────────────
+  ctx.save();
+  ctx.font="500 6px 'IBM Plex Mono'";
+  ctx.textAlign='center';
+  const trays=[
+    {x:W*.04,w:W*.18,label:'DEVELOPER'},
+    {x:W*.26,w:W*.15,label:'STOP BATH'},
+    {x:W*.45,w:W*.18,label:'FIXER'},
+    {x:W*.67,w:W*.15,label:'WASH'},
+  ];
+  trays.forEach(tr=>{
+    const ty2=cY+12, th=H*.1, rim=5;
+    ctx.fillStyle='rgba(0,0,0,.35)';
+    ctx.fillRect(tr.x+3,ty2+3,tr.w,th);
+    ctx.fillStyle='rgba(16,2,0,.9)';
+    ctx.beginPath();
+    ctx.moveTo(tr.x+tr.w,ty2);
+    ctx.lineTo(tr.x+tr.w+rim,ty2-rim);
+    ctx.lineTo(tr.x+tr.w+rim,ty2-rim+th);
+    ctx.lineTo(tr.x+tr.w,ty2+th);
+    ctx.closePath(); ctx.fill();
+    ctx.fillStyle='rgba(55,8,0,.88)';
+    ctx.beginPath();
+    ctx.moveTo(tr.x,ty2);
+    ctx.lineTo(tr.x+rim,ty2-rim);
+    ctx.lineTo(tr.x+tr.w+rim,ty2-rim);
+    ctx.lineTo(tr.x+tr.w,ty2);
+    ctx.closePath(); ctx.fill();
+    ctx.fillStyle='rgba(32,4,0,.93)';
+    ctx.fillRect(tr.x,ty2,tr.w,th);
+    ctx.strokeStyle='rgba(170,24,0,.7)';
+    ctx.lineWidth=1;
+    ctx.strokeRect(tr.x,ty2,tr.w,th);
+    ctx.beginPath();
+    ctx.moveTo(tr.x,ty2); ctx.lineTo(tr.x+rim,ty2-rim);
+    ctx.lineTo(tr.x+tr.w+rim,ty2-rim); ctx.lineTo(tr.x+tr.w,ty2);
+    ctx.moveTo(tr.x+tr.w+rim,ty2-rim);
+    ctx.lineTo(tr.x+tr.w+rim,ty2-rim+th);
+    ctx.lineTo(tr.x+tr.w,ty2+th);
+    ctx.stroke();
+    const pad=5;
+    ctx.fillStyle='rgba(8,0,0,.75)';
+    ctx.fillRect(tr.x+pad,ty2+pad,tr.w-pad*2,th-pad*2);
+    ctx.strokeStyle='rgba(70,6,0,.3)';
+    ctx.lineWidth=.5;
+    ctx.strokeRect(tr.x+pad,ty2+pad,tr.w-pad*2,th-pad*2);
+    const lg=ctx.createLinearGradient(0,ty2+pad,0,ty2+th-pad);
+    lg.addColorStop(0,'rgba(160,18,0,.45)');
+    lg.addColorStop(.5,'rgba(100,10,0,.28)');
+    lg.addColorStop(1,'rgba(40,4,0,.14)');
+    ctx.fillStyle=lg;
+    ctx.fillRect(tr.x+pad+1,ty2+pad+1,tr.w-pad*2-2,th-pad*2-2);
+    ctx.fillStyle='rgba(160,18,0,.1)';
+    ctx.fillRect(tr.x+pad+1,ty2+pad+1,tr.w-pad*2-2,2);
+    ctx.fillStyle='rgba(210,45,0,.88)';
+    ctx.fillText(tr.label,tr.x+tr.w/2,ty2+th/2+2);
+  });
+  ctx.restore();
+
+  // ── Enlargers (트레이 위에 그려야 앞에 보임) ───────────────
+  drawEnlarger(W*.9,H*.92);
+  drawEnlarger(W*.06,H*.92);
+
+  // ── Dust particles ────────────────────────────────────
+  for(let i=0;i<20;i++){
+    const px=((Math.sin(i*4.7+t*.25+i*.5)+1)/2)*W;
+    const py=((Math.sin(i*2.1+t*.18+i)+1)/2)*H*.65;
+    const a=Math.max(0.01,0.03+Math.sin(i*1.3+t)*.015);
+    ctx.fillStyle=`rgba(180,8,0,${a})`;
+    ctx.beginPath(); ctx.arc(px,py,.8,0,Math.PI*2); ctx.fill();
+  }
+}
+
+function drawEnlarger(cx,baseY){
+  const colH=H*.66, colW=6, colTop=baseY-colH;
+  const D=5; // 3D 깊이 오프셋
+
+  // 3D 헬퍼
+  function front(x,y,w,h,fc,sc){
+    ctx.fillStyle=fc; ctx.fillRect(x,y,w,h);
+    ctx.strokeStyle=sc; ctx.lineWidth=.7; ctx.strokeRect(x,y,w,h);
+  }
+  function sideR(x,y,w,h,fc){
+    ctx.fillStyle=fc;
+    ctx.beginPath();
+    ctx.moveTo(x+w,y); ctx.lineTo(x+w+D,y-D);
+    ctx.lineTo(x+w+D,y-D+h); ctx.lineTo(x+w,y+h);
+    ctx.closePath(); ctx.fill();
+    ctx.strokeStyle='rgba(80,8,0,.4)'; ctx.lineWidth=.5; ctx.stroke();
+  }
+  function topF(x,y,w,fc){
+    ctx.fillStyle=fc;
+    ctx.beginPath();
+    ctx.moveTo(x,y); ctx.lineTo(x+D,y-D);
+    ctx.lineTo(x+w+D,y-D); ctx.lineTo(x+w,y);
+    ctx.closePath(); ctx.fill();
+    ctx.strokeStyle='rgba(90,10,0,.4)'; ctx.lineWidth=.5; ctx.stroke();
+  }
+
+  // Ambient glow
+  ctx.save();
+  const eg=ctx.createRadialGradient(cx,baseY-H*.22,0,cx,baseY-H*.22,W*.13);
+  eg.addColorStop(0,'rgba(180,15,0,.2)');
+  eg.addColorStop(.5,'rgba(100,6,0,.07)');
+  eg.addColorStop(1,'transparent');
+  ctx.fillStyle=eg; ctx.fillRect(cx-W*.13,0,W*.26,baseY);
+  ctx.restore();
+
+  // ── Baseboard ──────────────────────────────────────
+  front(cx-36,baseY-8,72,8,'rgba(38,5,0,.97)','rgba(155,20,0,.55)');
+  sideR(cx-36,baseY-8,72,8,'rgba(22,3,0,.97)');
+  topF(cx-36,baseY-8,72,'rgba(60,9,0,.9)');
+  ctx.strokeStyle='rgba(110,13,0,.28)'; ctx.lineWidth=.4;
+  ctx.strokeRect(cx-24,baseY-6,48,3);
+
+  // ── Column ─────────────────────────────────────────
+  front(cx-colW/2,colTop,colW,colH,'rgba(42,6,0,.98)','rgba(175,22,0,.65)');
+  sideR(cx-colW/2,colTop,colW,colH,'rgba(24,3,0,.98)');
+  topF(cx-colW/2,colTop,colW,'rgba(65,9,0,.9)');
+  // Column highlight
+  ctx.fillStyle='rgba(110,12,0,.2)';
+  ctx.fillRect(cx-1,colTop,2,colH);
+  // Rack teeth
+  ctx.strokeStyle='rgba(130,15,0,.32)'; ctx.lineWidth=.4;
+  for(let i=0;i<22;i++){
+    const ry=colTop+i*(colH/22);
+    ctx.beginPath(); ctx.moveTo(cx+colW/2,ry); ctx.lineTo(cx+colW/2+3,ry); ctx.stroke();
+  }
+
+  // Top ceiling mount
+  front(cx-18,colTop-7,36,10,'rgba(50,7,0,.97)','rgba(160,20,0,.6)');
+  sideR(cx-18,colTop-7,36,10,'rgba(30,4,0,.97)');
+  topF(cx-18,colTop-7,36,'rgba(75,11,0,.9)');
+
+  // ── Head carrier arm ───────────────────────────────
+  const armY=baseY-H*.49;
+  front(cx-26,armY-5,52,9,'rgba(45,6,0,.96)','rgba(155,18,0,.55)');
+  sideR(cx-26,armY-5,52,9,'rgba(26,4,0,.96)');
+  topF(cx-26,armY-5,52,'rgba(68,10,0,.9)');
+
+  // ── Lamphouse ──────────────────────────────────────
+  const lhY=armY+5, lhW=46, lhH=28;
+  front(cx-lhW/2,lhY,lhW,lhH,'rgba(36,5,0,.97)','rgba(185,24,0,.72)');
+  sideR(cx-lhW/2,lhY,lhW,lhH,'rgba(20,3,0,.97)');
+  topF(cx-lhW/2,lhY,lhW,'rgba(58,8,0,.92)');
+  // Lamp housing cap
+  front(cx-20,lhY-9,40,11,'rgba(28,4,0,.97)','rgba(140,17,0,.5)');
+  sideR(cx-20,lhY-9,40,11,'rgba(16,2,0,.97)');
+  topF(cx-20,lhY-9,40,'rgba(50,7,0,.9)');
+  // Ventilation slits
+  ctx.strokeStyle='rgba(120,14,0,.4)'; ctx.lineWidth=.5;
+  for(let i=0;i<4;i++){
+    const sy=lhY+5+i*5;
+    ctx.beginPath(); ctx.moveTo(cx-lhW/2+3,sy); ctx.lineTo(cx-lhW/2+10,sy); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(cx+lhW/2-10,sy); ctx.lineTo(cx+lhW/2-3,sy); ctx.stroke();
+  }
+
+  // ── Negative stage ────────────────────────────────
+  const nsY=lhY+lhH, nsW=50, nsH=13;
+  front(cx-nsW/2,nsY,nsW,nsH,'rgba(40,5,0,.97)','rgba(170,22,0,.65)');
+  sideR(cx-nsW/2,nsY,nsW,nsH,'rgba(22,3,0,.97)');
+  topF(cx-nsW/2,nsY,nsW,'rgba(62,9,0,.9)');
+  ctx.strokeStyle='rgba(140,16,0,.42)'; ctx.lineWidth=.5;
+  ctx.strokeRect(cx-14,nsY+3,28,nsH-6);
+  // Carrier handle
+  front(cx+nsW/2,nsY+3,7,nsH-6,'rgba(125,15,0,.75)','rgba(170,22,0,.5)');
+  sideR(cx+nsW/2,nsY+3,7,nsH-6,'rgba(80,9,0,.75)');
+
+  // ── Bellows ────────────────────────────────────────
+  const bTop=nsY+nsH, bBot=bTop+26, bW0=18, bW1=13;
+  // Bellows right shadow face
+  ctx.fillStyle='rgba(18,2,0,.6)';
+  ctx.beginPath();
+  ctx.moveTo(cx+bW0,bTop); ctx.lineTo(cx+bW0+D,bTop-D);
+  ctx.lineTo(cx+bW1+D,bBot-D); ctx.lineTo(cx+bW1,bBot);
+  ctx.closePath(); ctx.fill();
+  // Bellows folds
+  ctx.strokeStyle='rgba(105,12,0,.78)'; ctx.lineWidth=.7;
+  for(let i=0;i<=11;i++){
+    const by=bTop+i*(26/11);
+    const hw=bW0+(bW1-bW0)*(i/11);
+    ctx.beginPath(); ctx.moveTo(cx-hw,by); ctx.lineTo(cx+hw,by); ctx.stroke();
+  }
+  ctx.strokeStyle='rgba(75,9,0,.48)'; ctx.lineWidth=.5;
+  ctx.beginPath();
+  ctx.moveTo(cx-bW0,bTop); ctx.lineTo(cx-bW1,bBot);
+  ctx.moveTo(cx+bW0,bTop); ctx.lineTo(cx+bW1,bBot);
+  ctx.stroke();
+
+  // ── Lens board ─────────────────────────────────────
+  const lbY=bBot, lbW=30, lbH=9;
+  front(cx-lbW/2,lbY,lbW,lbH,'rgba(32,4,0,.97)','rgba(160,20,0,.6)');
+  sideR(cx-lbW/2,lbY,lbW,lbH,'rgba(18,2,0,.97)');
+  topF(cx-lbW/2,lbY,lbW,'rgba(55,8,0,.9)');
+
+  // ── Lens box ────────────────────────────────────────
+  const lcy=lbY+lbH+2;
+  front(cx-13,lcy,26,18,'rgba(32,4,0,.97)','rgba(170,20,0,.62)');
+  sideR(cx-13,lcy,26,18,'rgba(18,2,0,.97)');
+  topF(cx-13,lcy,26,'rgba(52,7,0,.9)');
+  ctx.fillStyle='rgba(8,1,0,.95)';
+  ctx.fillRect(cx-8,lcy+3,16,12);
+  ctx.strokeStyle='rgba(120,14,0,.35)'; ctx.lineWidth=.4;
+  ctx.strokeRect(cx-8,lcy+3,16,12);
+  ctx.fillStyle='rgba(220,25,0,.1)';
+  ctx.fillRect(cx-6,lcy+4,5,2);
+
+  // ── Red filter swing arm ────────────────────────────
+  ctx.save();
+  ctx.strokeStyle='rgba(175,20,0,.6)'; ctx.lineWidth=.8;
+  ctx.beginPath(); ctx.moveTo(cx+11,lcy+14); ctx.lineTo(cx+24,lcy+22); ctx.stroke();
+  front(cx+22,lcy+18,16,10,'rgba(140,8,0,.6)','rgba(190,22,0,.5)');
+  sideR(cx+22,lcy+18,16,10,'rgba(90,5,0,.6)');
+  ctx.restore();
+
+  // ── Light cone ─────────────────────────────────────
+  ctx.save();
+  ctx.beginPath();
+  ctx.moveTo(cx-7,lcy+20); ctx.lineTo(cx-30,baseY-2);
+  ctx.lineTo(cx+30,baseY-2); ctx.lineTo(cx+7,lcy+14);
+  ctx.closePath();
+  const lc=ctx.createLinearGradient(0,lcy+14,0,baseY-2);
+  lc.addColorStop(0,'rgba(180,14,0,.1)');
+  lc.addColorStop(1,'rgba(100,8,0,.04)');
+  ctx.fillStyle=lc; ctx.fill();
+  ctx.restore();
+
+  // Baseboard light pool
+  ctx.save();
+  const pool=ctx.createRadialGradient(cx,baseY-2,0,cx,baseY-2,34);
+  pool.addColorStop(0,'rgba(170,14,0,.26)');
+  pool.addColorStop(1,'transparent');
+  ctx.fillStyle=pool; ctx.fillRect(cx-36,baseY-9,72,11);
+  ctx.restore();
+}
+
+function drawBottle(bx,by,bw,bh){
+  ctx.save();
+  const bg=ctx.createLinearGradient(bx,by,bx+bw,by);
+  bg.addColorStop(0,'rgba(55,8,0,.95)');
+  bg.addColorStop(.35,'rgba(80,12,0,.85)');
+  bg.addColorStop(1,'rgba(40,5,0,.95)');
+  ctx.fillStyle=bg;
+  ctx.fillRect(bx,by+bh*.15,bw,bh*.85);
+  ctx.fillStyle='rgba(65,9,0,.92)';
+  ctx.fillRect(bx+bw*.28,by,bw*.44,bh*.18);
+  ctx.fillStyle='rgba(160,20,0,.9)';
+  ctx.fillRect(bx+bw*.2,by-4,bw*.6,6);
+  ctx.strokeStyle='rgba(180,25,0,.6)';
+  ctx.lineWidth=.8;
+  ctx.strokeRect(bx,by+bh*.15,bw,bh*.85);
+  ctx.fillStyle='rgba(120,14,0,.45)';
+  ctx.fillRect(bx+1,by+bh*.42,bw-2,bh*.22);
+  ctx.fillStyle='rgba(200,25,0,.15)';
+  ctx.fillRect(bx+1.5,by+bh*.15,2,bh*.5);
+  ctx.restore();
+}
+
+function drawSafelightFixture(fx,fy,side){
+  ctx.save();
+  const d=side==='left'?1:-1;
+  // Wall glow — large, warm spread
+  const sg=ctx.createRadialGradient(fx+d*18,fy+10,0,fx+d*18,fy+10,90);
+  sg.addColorStop(0,`rgba(220,18,0,${.35*flickerAlpha})`);
+  sg.addColorStop(.3,`rgba(160,10,0,${.15*flickerAlpha})`);
+  sg.addColorStop(.6,`rgba(90,5,0,${.06*flickerAlpha})`);
+  sg.addColorStop(1,'transparent');
+  ctx.fillStyle=sg;
+  ctx.fillRect(side==='left'?0:fx-90,fy-40,110,130);
+  // Bracket arm
+  ctx.strokeStyle='rgba(140,18,0,.8)';
+  ctx.lineWidth=2;
+  ctx.beginPath();
+  ctx.moveTo(fx,fy); ctx.lineTo(fx+d*16,fy+4);
+  ctx.stroke();
+  // Conical shade — visible
+  ctx.fillStyle='rgba(50,7,0,.95)';
+  ctx.beginPath();
+  ctx.moveTo(fx+d*13,fy+2);
+  ctx.lineTo(fx+d*23,fy-9);
+  ctx.lineTo(fx+d*32,fy+18);
+  ctx.lineTo(fx+d*8,fy+20);
+  ctx.closePath(); ctx.fill();
+  ctx.strokeStyle='rgba(180,22,0,.65)';
+  ctx.lineWidth=.8; ctx.stroke();
+  // Inner shade highlight
+  ctx.fillStyle=`rgba(200,20,0,${.12*flickerAlpha})`;
+  ctx.beginPath();
+  ctx.moveTo(fx+d*13,fy+2);
+  ctx.lineTo(fx+d*23,fy-9);
+  ctx.lineTo(fx+d*32,fy+18);
+  ctx.lineTo(fx+d*8,fy+20);
+  ctx.closePath(); ctx.fill();
+  // Bulb
+  ctx.globalAlpha=flickerAlpha;
+  ctx.shadowColor='rgba(255,40,0,1)';
+  ctx.shadowBlur=20;
+  ctx.fillStyle='rgba(255,50,0,1)';
+  ctx.beginPath(); ctx.arc(fx+d*18,fy+7,5,0,Math.PI*2); ctx.fill();
+  ctx.restore();
+}
+
+/* ════════════════════
+   HELPERS
+════════════════════ */
+function getDisplayTitle(item){
+  const ft=item.fullTitle||item.title;
+  // "저자 - 제목" 형식에서 제목만 추출
+  const sep=ft.indexOf(' - ');
+  return sep>-1 ? ft.slice(sep+3) : ft;
+}
+
+/* ════════════════════
+   DRAW ITEM (loupe 내부에서만 호출)
+════════════════════ */
+function drawItem(item){
+  const {x,y}=gp(item);
+  const {dx,rot}=anim(item);
+  const iw=56, ih=42;
+  const tc=TC[item.type];
+
+  ctx.save();
+  ctx.translate(x+dx, y);
+  ctx.rotate(Math.sin(item.id*2.31)*0.12+rot);
+
+  // Thread
+  ctx.strokeStyle='rgba(90,14,0,.6)';
+  ctx.lineWidth=0.8;
+  ctx.beginPath(); ctx.moveTo(0,0); ctx.lineTo(0,8); ctx.stroke();
+
+  // Rect body
+  ctx.fillStyle='#0e0000';
+  ctx.fillRect(-iw/2,8,iw,ih);
+
+  // Colored border
+  ctx.strokeStyle=tc;
+  ctx.lineWidth=1.2;
+  ctx.strokeRect(-iw/2,8,iw,ih);
+
+  // 제목 표시 (2줄 분할)
+  ctx.save();
+  ctx.fillStyle=tc;
+  ctx.font="500 6px 'IBM Plex Mono'";
+  ctx.textAlign='center';
+  const disp=getDisplayTitle(item);
+  // 12자 초과 시 2줄로
+  if(disp.length>10){
+    const mid=Math.ceil(disp.length/2);
+    const l1=disp.slice(0,mid), l2=disp.slice(mid);
+    ctx.fillText(l1.length>10?l1.slice(0,9)+'…':l1, 0, 8+ih/2-3);
+    ctx.fillText(l2.length>10?l2.slice(0,9)+'…':l2, 0, 8+ih/2+8);
+  } else {
+    ctx.fillText(disp, 0, 8+ih/2+2.5);
+  }
+  ctx.restore();
+
+  // Selection glow
+  if(item.id===sel){
+    ctx.save();
+    ctx.shadowColor=tc; ctx.shadowBlur=16;
+    ctx.strokeStyle=tc; ctx.lineWidth=2;
+    ctx.strokeRect(-iw/2,8,iw,ih);
+    ctx.restore();
+  }
+
+  ctx.restore();
+}
+
+/* ════════════════════
+   DRAW LOUPE
+════════════════════ */
+function drawLoupe(lx,ly){
+  const R=LOUPE_R;
+
+  ctx.save();
+  ctx.beginPath();
+  ctx.arc(lx,ly,R,0,Math.PI*2);
+  ctx.clip();
+
+  // Magnification transform
+  ctx.translate(lx,ly);
+  ctx.scale(ZM,ZM);
+  ctx.translate(-lx,-ly);
+
+  // Redraw scene inside loupe (clipped + magnified)
+  drawRoom();
+  vis().forEach(item=>drawItem(item));
+
+  ctx.restore();
+
+  // Loupe ring
+  ctx.save();
+  ctx.shadowColor='rgba(180,8,0,.5)';
+  ctx.shadowBlur=8;
+  ctx.strokeStyle='rgba(210,22,0,.85)';
+  ctx.lineWidth=1.5;
+  ctx.beginPath(); ctx.arc(lx,ly,R,0,Math.PI*2); ctx.stroke();
+  ctx.shadowBlur=0;
+
+  ctx.strokeStyle='rgba(150,10,0,.3)';
+  ctx.lineWidth=0.8;
+  ctx.beginPath(); ctx.arc(lx,ly,R-4,0,Math.PI*2); ctx.stroke();
+
+  // Crosshairs
+  ctx.strokeStyle='rgba(180,18,0,.32)';
+  ctx.lineWidth=0.7;
+  ctx.setLineDash([3,4]);
+  ctx.beginPath();
+  ctx.moveTo(lx-R+8,ly); ctx.lineTo(lx+R-8,ly);
+  ctx.moveTo(lx,ly-R+8); ctx.lineTo(lx,ly+R-8);
+  ctx.stroke();
+  ctx.setLineDash([]);
+  ctx.restore();
+}
+
+/* ════════════════════
+   MAIN DRAW
+════════════════════ */
+function draw(){
+  if(!ctx||W===0||H===0) return;
+  ctx.clearRect(0,0,W,H);
+  drawRoom();
+  // 아이템은 루페 안에서만 보임 — drawLoupe() 내부에서 drawItem 호출
+  if(mx>=0&&mx<=W&&my>=0&&my<=H) drawLoupe(mx,my);
+}
+
+function loop(){
+  t+=0.016;
+  tickFlicker();
+  draw();
+  requestAnimationFrame(loop);
+}
+
+/* ════════════════════
+   RESIZE
+════════════════════ */
+function resize(){
+  const fr=document.getElementById('inner-frame');
+  if(!fr) return;
+  const r=fr.getBoundingClientRect();
+  W=r.width; H=r.height;
+  canvas.width=W; canvas.height=H;
+}
+
+/* ════════════════════
+   UI
+════════════════════ */
+function setF(f,el){
+  flt=f; sel=-1;
+  document.querySelectorAll('.pff').forEach(e=>e.classList.remove('on'));
+  el.classList.add('on');
+  document.getElementById('pf-count').textContent=vis().length+' ITEMS';
+  clearDetail();
+}
+
+function selectItem(item){
+  sel=item.id;
+  const tc=TC[item.type];
+  const idx=ITEMS.filter(b=>b.type===item.type).indexOf(item)+1;
+  const idStr=TYPE_CODE[item.type]+'·'+String(idx).padStart(3,'0');
+  document.getElementById('pf-hint').style.display='none';
+  const pfSel=document.getElementById('pf-sel');
+  pfSel.style.display='flex';
+  const displayTitle=item.fullTitle||item.title;
+  pfSel.innerHTML=
+    `<div class="ps-seg">
+       <div class="ps-id" style="color:${tc}">${idStr}</div>
+       <div class="ps-type" style="color:${tc}">[${item.type.toUpperCase()}]</div>
+     </div>
+     <div class="ps-seg" style="max-width:280px">
+       <div class="ps-title" style="color:${tc}">▶ ${displayTitle}</div>
+       <div class="ps-sub">${item.sub}</div>
+     </div>
+     <div class="ps-ex-seg">
+       <div class="ps-ex">"${item.ex}"</div>
+     </div>
+     <div class="ps-tags">${item.tags.map(g=>`[${g}]`).join(' ')}</div>`;
+}
+
+function clearDetail(){
+  sel=-1;
+  document.getElementById('pf-hint').style.display='block';
+  document.getElementById('pf-sel').style.display='none';
+}
+
+function openPopup(item){
+  sel=item.id;
+  const tc=TC[item.type];
+  document.getElementById('popup-status').textContent=
+    [item.status,item.type.toUpperCase()].filter(Boolean).join(' · ');
+  document.getElementById('popup-status').style.color=tc;
+  document.getElementById('popup-title').textContent=item.fullTitle||item.title;
+  document.getElementById('popup-title').style.color=tc;
+  document.getElementById('popup-sub').textContent=item.sub;
+
+  // preview → HTML 렌더링
+  const preview=(item.preview||item.ex||'내용 없음').trim();
+  const lines=preview.split('\n');
+  let html='';
+  lines.forEach(line=>{
+    const l=line.trim();
+    if(!l){html+=''; return;}
+    // 섹션 헤더: 숫자로 시작하거나 "제N장" 패턴
+    if(/^(제\d+장|\d+\.)/.test(l)||/^#+\s/.test(l)){
+      html+=`<div class="pp-section">${l.replace(/^#+\s*/,'')}</div>`;
+    } else {
+      html+=`<div class="pp-p">${l}</div>`;
+    }
+  });
+  document.getElementById('popup-body').innerHTML=html;
+  document.getElementById('popup-body').scrollTop=0;
+  document.getElementById('item-popup').classList.add('open');
+}
+
+function closePopup(){
+  document.getElementById('item-popup').classList.remove('open');
+}
+
+function enterMain(){
+  const intro=document.getElementById('intro');
+  intro.classList.add('exit');
+  intro.addEventListener('transitionend',()=>intro.remove(),{once:true});
+}
+
+/* ════════════════════
+   REMOTE DATA FETCH
+════════════════════ */
+async function fetchRemoteItems(){
+  const URL='https://raw.githubusercontent.com/note-a/note-a-github/main/admin-contents.json?t='+Date.now();
+  try{
+    const res=await fetch(URL);
+    if(!res.ok) throw new Error(res.status);
+    const data=await res.json();
+    const raw=data?.reference?.items;
+    if(!Array.isArray(raw)||raw.length===0) return;
+
+    const mapped=raw.map((item,i)=>{
+      // type 결정
+      const cat=(item.category||'').toLowerCase();
+      const st=(item.status||'').toLowerCase();
+      let type='book';
+      if(st==='contemporary') type='exhibit';
+      else if(cat.includes('language')||cat.includes('power')) type='idea';
+      else if(st==='foundational') type='ref';
+
+      // 캔버스 표시용 짧은 이름 (저자 성, 괄호 제거)
+      const authorClean=(item.author||'').replace(/\s*\(.*?\)/g,'').trim();
+      const authorParts=authorClean.split(' ').filter(Boolean);
+      const shortTitle=authorParts[authorParts.length-1]||item.id.slice(0,6);
+
+      // 발췌문: preview 첫 문장
+      const preview=(item.preview||'').trim();
+      const ex=preview.split('\n').filter(l=>l.trim()&&!l.match(/^\d+\.|^#/))[0]?.slice(0,100)||'';
+
+      return{
+        id:i,
+        type,
+        title:shortTitle,
+        fullTitle:item.id||shortTitle,
+        sub:[item.author,item.year].filter(Boolean).join(' · '),
+        ex,
+        preview:item.preview||'',
+        tags:item.category?[item.category]:[],
+        status:item.status||''
+      };
+    });
+
+    // ITEMS 교체
+    ITEMS.length=0;
+    mapped.forEach(m=>ITEMS.push(m));
+    sel=-1;
+    flt='all';
+    document.querySelectorAll('.pff').forEach(e=>e.classList.remove('on'));
+    document.querySelector('.pff')?.classList.add('on');
+    const cnt=document.getElementById('pf-count');
+    if(cnt) cnt.textContent=ITEMS.length+' ITEMS';
+    clearDetail();
+  }catch(e){
+    console.warn('Remote fetch failed, using local data:',e);
+  }
+}
+
+/* ════════════════════
+   INIT
+════════════════════ */
+function init(){
+  canvas=document.getElementById('cv');
+  ctx=canvas.getContext('2d');
+
+  resize();
+  window.addEventListener('resize',()=>{resize();});
+
+  canvas.addEventListener('mousemove',e=>{
+    const r=canvas.getBoundingClientRect();
+    mx=(e.clientX-r.left)*(W/r.width);
+    my=(e.clientY-r.top)*(H/r.height);
+  });
+  canvas.addEventListener('mouseleave',()=>{mx=-1;my=-1;});
+
+  canvas.addEventListener('click',e=>{
+    const r=canvas.getBoundingClientRect();
+    const cx=(e.clientX-r.left)*(W/r.width);
+    const cy=(e.clientY-r.top)*(H/r.height);
+    const items=vis();
+    let closest=null, minDist=Infinity;
+
+    if(mx>=0&&Math.hypot(cx-mx,cy-my)<LOUPE_R){
+      // 루페 안 클릭 → 가장 가까운 아이템 팝업
+      items.forEach(item=>{
+        const {x,y}=gp(item);
+        const {dx}=anim(item);
+        const d=Math.hypot(x+dx-mx,y-my);
+        if(d<minDist){minDist=d;closest=item;}
+      });
+      if(minDist<80/ZM&&closest) openPopup(closest);
+    } else {
+      // Direct click
+      items.forEach(item=>{
+        const {x,y}=gp(item);
+        const {dx}=anim(item);
+        const d=Math.hypot(x+dx-cx,y-cy);
+        if(d<minDist){minDist=d;closest=item;}
+      });
+      if(minDist<55&&closest) selectItem(closest);
+    }
+  });
+
+  loop();
+  fetchRemoteItems();
+}
+
+init();
+</script>
+</body>
+</html>
