@@ -1818,7 +1818,7 @@ html,body{width:100%;min-height:100vh;overflow:hidden;background:#000;font-famil
     <div class="mode-row">
       <button class="mb on" onclick="location.href='gallery1.html'"><span class="k">S</span>SET</button>
       <button class="mb" data-sec="inclusion"><span class="k">I</span>INCLUSION</button>
-      <button class="mb" onclick="location.href='page-blueprint.html'"><span class="k">L</span>LOG</button>
+      <button class="mb" onclick="location.href='page-log.html'"><span class="k">L</span>LOG</button>
       <button class="mb" data-sec="ref"><span class="k">R</span>REF</button>
       <button class="mb" onclick="location.href='measure.html'"><span class="k">M</span>MEASURE</button>
       <button class="mb" data-sec="about"><span class="k">A</span>ABOUT</button>
@@ -3151,7 +3151,7 @@ function scrollHud(dir){
   var esc=function(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');};
   function openPost(p){
     var key=(p && (p.id||p.title))||'';
-    location.href='page-blueprint.html?post='+encodeURIComponent(key);
+    location.href='page-log.html?post='+encodeURIComponent(key);
   }
   function render(logs){
     if(!Array.isArray(logs)||!logs.length) return;
