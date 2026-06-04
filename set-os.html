@@ -19,29 +19,68 @@
   --hud-bg:#000000; --hud-bd:rgba(255,74,22,.18);
 }
 *{margin:0;padding:0;box-sizing:border-box;}
-html,body{width:100%;min-height:100vh;overflow:hidden;background:#0a0200;font-family:'Courier Prime','Galmuri11','Share Tech Mono',monospace;}
+html,body{width:100%;min-height:100vh;overflow:hidden;background:#080300;font-family:'Courier Prime','Galmuri11','Share Tech Mono',monospace;}
 .crt{position:fixed;inset:0;z-index:100;pointer-events:none;
   background:repeating-linear-gradient(0deg,transparent 0,transparent 3px,rgba(0,0,0,0.04) 3px,rgba(0,0,0,0.04) 4px);}
 
 /* ── BG ── */
-#bg{position:fixed;inset:-200px;z-index:-2;background:radial-gradient(ellipse 180% 200% at 50% 30%, rgba(48,20,4,.22) 0%, rgba(16,8,2,.16) 45%, rgba(2,1,0,.08) 100%);}
+#bg{position:fixed;inset:0;z-index:-3;background:#060200;}
 #bg-lights{display:none;}
+/* 블러 오브 레이어 */
+#bg-orbs{
+  position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden;
+}
+/* 움직임은 .orb(필터 없음), 블러는 .orb-i(transform 없음) — 분리해야 Safari에서 동작 */
+#bg-orbs .orb{position:absolute;}
+#bg-orbs .orb-i{
+  width:100%;height:100%;border-radius:50%;
+  background:radial-gradient(ellipse at center,var(--oc) 0%,transparent 70%);
+  filter:blur(var(--ob));
+}
+#bg-orbs .orb:nth-child(1){width:38vw;height:44vw;left:-8vw;  top:-12vh;}
+#bg-orbs .orb:nth-child(2){width:28vw;height:32vw;right:5vw;  top:18vh;}
+#bg-orbs .orb:nth-child(3){width:22vw;height:26vw;left:22vw;  bottom:-8vh;}
+#bg-orbs .orb:nth-child(4){width:32vw;height:28vw;right:-6vw; bottom:5vh;}
+#bg-orbs .orb:nth-child(5){width:18vw;height:22vw;left:8vw;   top:42vh;}
+#bg-orbs .orb:nth-child(6){width:24vw;height:18vw;right:22vw; top:-5vh;}
+#bg-orbs .orb:nth-child(7){width:20vw;height:24vw;left:48vw;  bottom:10vh;}
+#bg-orbs .orb:nth-child(1) .orb-i{--oc:rgba(160,42,4,.55);--ob:70px;}
+#bg-orbs .orb:nth-child(2) .orb-i{--oc:rgba(130,32,2,.50);--ob:80px;}
+#bg-orbs .orb:nth-child(3) .orb-i{--oc:rgba(150,38,3,.45);--ob:65px;}
+#bg-orbs .orb:nth-child(4) .orb-i{--oc:rgba(110,28,2,.42);--ob:90px;}
+#bg-orbs .orb:nth-child(5) .orb-i{--oc:rgba(140,36,3,.38);--ob:75px;}
+#bg-orbs .orb:nth-child(6) .orb-i{--oc:rgba(120,30,2,.35);--ob:85px;}
+#bg-orbs .orb:nth-child(7) .orb-i{--oc:rgba(100,25,1,.40);--ob:95px;}
 @keyframes bgdrift{0%{transform:scale(1) translate(0,0)}100%{transform:scale(1.12) translate(-25px,18px)}}
 #bg-grid{position:absolute;inset:-40px;
-  background-image:linear-gradient(rgba(255,74,22,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(255,74,22,.04) 1px,transparent 1px);
+  background-image:linear-gradient(rgba(255,74,22,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(255,74,22,.05) 1px,transparent 1px);
   background-size:56px 56px;}
-#bg-vignette{position:absolute;inset:0;background:radial-gradient(ellipse 72% 72% at 50% 50%,transparent 30%,rgba(0,0,0,.6) 75%,rgba(0,0,0,.92) 100%);}
+#bg-vignette{display:none;}
+#bg-depth{position:fixed;inset:0;z-index:-1;pointer-events:none;
+  background:
+    radial-gradient(ellipse 80% 35% at 50% 0%,   rgba(0,0,0,.55) 0%, transparent 60%),
+    radial-gradient(ellipse 80% 35% at 50% 100%,  rgba(0,0,0,.55) 0%, transparent 60%);}
 
 /* ── SHELL / WRAP ── */
-#shell{position:fixed;inset:0;z-index:1;display:flex;align-items:center;justify-content:center;background:#0a0200;}
+#shell{position:fixed;inset:0;z-index:1;display:flex;align-items:center;justify-content:center;background:transparent;}
 #shell::before{content:none;}
 #wrap{
   width:1140px;
   height:757px;
   flex:none;flex-shrink:0;
-  background:rgba(4,3,1,0.985);
+  background:rgba(4,3,1,0.88);
   border:1px solid var(--bd);
-  box-shadow:inset 0 1px 0 rgba(255,140,40,.14),0 0 0 1px rgba(0,0,0,0.95),0 0 90px rgba(255,74,22,0.16),0 28px 100px rgba(0,0,0,0.99);
+  box-shadow:
+    inset 0 1px 0 rgba(255,140,40,.18),
+    inset 0 -1px 0 rgba(0,0,0,.9),
+    inset 1px 0 0 rgba(255,100,20,.06),
+    inset -1px 0 0 rgba(0,0,0,.5),
+    0 0 0 1px rgba(0,0,0,0.97),
+    0 0 60px rgba(255,74,22,0.12),
+    0 0 120px rgba(255,60,10,0.08),
+    0 18px 60px rgba(0,0,0,0.85),
+    0 40px 120px rgba(0,0,0,0.99),
+    0 -6px 30px rgba(255,90,20,0.04);
   display:grid;grid-template-rows:1fr 84px 1fr 28px;
   padding:8px;gap:5px;
   position:relative;overflow:hidden;
@@ -162,7 +201,7 @@ html,body{width:100%;min-height:100vh;overflow:hidden;background:#0a0200;font-fa
 .pl-stat .dot{width:4px;height:4px;background:#ff4a16;animation:pbl .9s step-end infinite;}
 @keyframes pbl{50%{opacity:0}}
 .pl-stat .v{color:rgba(255,74,22,0.7);margin-left:auto;}
-.pl-goto{display:block;width:100%;padding:5px 7px;font-size:6.5px;letter-spacing:2px;
+.pl-goto{display:block;width:100%;padding:10px 7px;font-size:6.5px;letter-spacing:2px;
   text-align:center;cursor:pointer;border:0.1px solid var(--g);background:rgba(255,74,22,0.07);
   color:rgba(255,74,22,0.6);font-family:inherit;transition:.15s;
   pointer-events:auto!important;position:relative;z-index:10;}
@@ -1504,7 +1543,7 @@ body.crt-entering #shell{animation:crtOn .52s cubic-bezier(.2,.65,.3,1) forwards
   }
 })();
 </script>
-<div id="bg"><div id="bg-lights"></div><div id="bg-grid"></div><div id="bg-vignette"></div></div>
+<div id="bg"><div id="bg-lights"></div><div id="bg-grid"></div><div id="bg-vignette"></div></div><div id="bg-depth"></div><div id="bg-orbs"><div class="orb"><div class="orb-i"></div></div><div class="orb"><div class="orb-i"></div></div><div class="orb"><div class="orb-i"></div></div><div class="orb"><div class="orb-i"></div></div><div class="orb"><div class="orb-i"></div></div><div class="orb"><div class="orb-i"></div></div><div class="orb"><div class="orb-i"></div></div></div>
 <div class="crt"></div>
 
 <div id="shell">
@@ -3989,6 +4028,32 @@ document.querySelectorAll('.lr-h').forEach(h=>{
   });
 });
 </script>
-
+<script>
+/* ── BG ORB 애니메이션 (setInterval, 크로스브라우저 보장) ── */
+(function(){
+  var orbs = document.querySelectorAll('#bg-orbs .orb');
+  if(!orbs.length) return;
+  // [주기ms, x진폭px, y진폭px, x위상, y위상]
+  var cfg = [
+    [ 7500, 120, 140, 0.0, 1.1],
+    [ 9000, 140,  90, 2.2, 0.4],
+    [11000, 100, 160, 1.4, 3.0],
+    [ 8200, 130, 110, 3.7, 1.8],
+    [12500, 160,  80, 0.8, 2.5],
+    [10000, 110, 130, 2.9, 0.7],
+    [11500,  90, 120, 1.6, 3.3]
+  ];
+  var PI2 = Math.PI * 2;
+  setInterval(function(){
+    var t = Date.now();
+    orbs.forEach(function(orb, i){
+      var c = cfg[i];
+      var x = Math.sin(t / c[0] * PI2 + c[3]) * c[1];
+      var y = Math.cos(t / c[0] * PI2 + c[4]) * c[2];
+      orb.style.transform = 'translate(' + x.toFixed(1) + 'px,' + y.toFixed(1) + 'px)';
+    });
+  }, 33);
+})();
+</script>
 </body>
 </html>
