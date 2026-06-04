@@ -464,13 +464,12 @@ function selectPanel(sel, name){
   if(!root){ hdrPanel.textContent = 'NOT FOUND: ' + sel; return; }
 
   curSel = sel;
-  const rr = root.getBoundingClientRect();
 
+  // 원점 = iframe viewport (0,0) 기준
+  // → annotation 좌표 * curScale = iframe 위에 정확히 겹침
+  const origin = {left: 0, top: 0};
   allResults = [];
-  // #wrap 기준 origin 사용 (전체 페이지 좌표에서 위치 유지)
-  const wrapEl = doc.querySelector('#wrap') || doc.body;
-  const wrapRR = wrapEl.getBoundingClientRect();
-  walk(root, 0, wrapRR, win, allResults);
+  walk(root, 0, origin, win, allResults);
 
   hdrPanel.textContent = name;
   hdrSel.textContent   = sel;
