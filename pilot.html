@@ -3,26 +3,26 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SET-NULL.CHANNEL — pilot</title>
+  <title>PILOT CHANNEL — 이미지 실험소</title>
   <link href="https://cdn.jsdelivr.net/npm/galmuri/dist/galmuri.css" rel="stylesheet">
   <style>
     * { margin:0; padding:0; box-sizing:border-box; }
     html, body {
-      min-height:100%; background:#0f66aa; color:#a6a6b8;
+      min-height:100%; background:#000099; color:#a6a6b8;
       font-family:'Galmuri11',monospace; overflow-x:hidden;
       -webkit-text-stroke:0.4px currentColor; text-stroke:0.4px currentColor;
     }
     body { display:flex; align-items:safe center; justify-content:center; padding:20px; min-height:100vh; }
 
-    /* ── 스캔라인 오버레이 ── */
+    /* ── 스캔라인 ── */
     .scanlines::after {
       content:''; position:absolute; inset:0; pointer-events:none; z-index:100;
-      background:repeating-linear-gradient(to bottom, transparent 0, transparent 3px, rgba(0,96,192,0.05) 3px, rgba(0,96,192,0.05) 4px);
+      background:repeating-linear-gradient(to bottom, transparent 0, transparent 3px, rgba(64,96,192,0.05) 3px, rgba(64,96,192,0.05) 4px);
     }
 
-    /* ══ 로비 (인덱스) ══ */
+    /* ══ 로비 ══ */
     #lobby {
-      position:fixed; inset:0; z-index:200; background:#0f66aa;
+      position:fixed; inset:0; z-index:200; background:#000099;
       display:flex; align-items:safe center; justify-content:center;
       padding:20px; overflow-y:auto;
     }
@@ -40,89 +40,76 @@
     }
 
     .lob-top {
-      border:2px solid #999999; background:#0055aa;
+      border:3px solid #808080; background:#0000dd;
       padding:7px 14px; font-size:13px; letter-spacing:1px; color:#a6a6b8;
-      display:flex; justify-content:space-between;
-      box-shadow:inset -2px -2px 0 #003060,inset 2px 2px 0 #3a88ff;
+      display:flex; justify-content:space-between; align-items:center;
     }
 
     .lob-sections {
-      border:2px solid #999999; border-top:none; background:#b0b0bc;
-      box-shadow:inset -2px -2px 0 #888888,inset 2px 2px 0 #cccccc;
+      border:3px solid #808080; border-top:none; background:#b0b0bc;
+      box-shadow:4px 4px 0 rgba(0,0,20,0.55);
     }
 
     .sec-item {
       padding:18px 20px 16px;
-      border-bottom:1px solid #999999;
-      cursor:pointer;
-      transition:background 0.08s;
+      border-bottom:1px solid #808080;
+      cursor:pointer; background:#b0b0bc;
+      transition:background 0.06s;
     }
     .sec-item:last-child { border-bottom:none; }
     .sec-item:hover { background:#ffff55; }
-    .sec-item:hover .sec-name { color:#0f66aa; }
+    .sec-item:hover .sec-name { color:#000099; }
 
     .sec-name {
-      font-size:20px; letter-spacing:3px; color:#181820;
+      font-size:13px; letter-spacing:3px; color:#181820;
       margin-bottom:6px; line-height:1;
     }
-    .sec-desc {
-      font-size:11px; color:#334455; letter-spacing:1px; line-height:2.1;
-    }
+    .sec-desc { font-size:11px; color:#33335a; letter-spacing:1px; line-height:2.1; }
     .sec-tag {
-      display:inline-block; border:1px solid #556677;
-      padding:1px 5px; margin:0 4px 0 0; font-size:10px; color:#556677;
+      display:inline-block; border:1px solid #555588;
+      padding:1px 5px; margin:0 4px 0 0; font-size:10px; color:#33335a;
     }
 
     .lob-cmd {
-      border:2px solid #999999; border-top:none; background:#0055aa;
+      border:3px solid #808080; border-top:none; background:#0000dd;
       padding:8px 14px; font-size:11px; color:#a6a6b8; letter-spacing:0.5px; line-height:1.7;
-      box-shadow:inset -2px -2px 0 #003060,inset 2px 2px 0 #3a88ff;
     }
     .lob-cmd b { font-weight:normal; }
     .blink { animation:bl 0.8s infinite; }
     @keyframes bl { 0%,100%{opacity:1} 50%{opacity:0} }
 
-    /* ══ 메인 HUD ══ */
+    /* ══ HUD ══ */
     #hud {
       width:min(900px, 100%);
       display:grid;
       grid-template-rows: auto 1fr auto;
       grid-template-columns: 1fr 180px;
-      grid-template-areas:
-        "top  top"
-        "main side"
-        "bot  bot";
+      grid-template-areas: "top top" "main side" "bot bot";
       gap:10px;
     }
 
-    /* TOP BAR */
     #hud-top {
       grid-area:top;
-      border:2px solid #999999; background:#0055aa;
+      border:3px solid #808080; background:#0000dd;
       padding:7px 12px; font-size:11px; letter-spacing:0.5px; color:#a6a6b8;
       display:flex; justify-content:space-between; align-items:center;
-      box-shadow:inset -2px -2px 0 #003060,inset 2px 2px 0 #3a88ff;
     }
 
-    /* MAIN CONTENT */
     #hud-main {
       grid-area:main;
-      border:2px solid #999999; background:#b0b0bc;
+      border:3px solid #808080; background:#b0b0bc;
       display:flex; flex-direction:column;
-      box-shadow:inset -2px -2px 0 #888888,inset 2px 2px 0 #cccccc,4px 4px 0 rgba(0,0,40,0.35);
+      box-shadow:4px 4px 0 rgba(0,0,20,0.55);
       position:relative; overflow:hidden;
     }
     #hud-main.scanlines::after { z-index:10; }
     #main-header {
-      background:#0055aa; padding:5px 12px; font-size:11px; letter-spacing:0.5px;
-      color:#a6a6b8; border-bottom:2px solid #999999;
+      background:#0000dd; padding:5px 12px; font-size:11px; letter-spacing:0.5px;
+      color:#a6a6b8; border-bottom:2px solid #808080;
       display:flex; justify-content:space-between; align-items:center;
       flex-shrink:0;
-      box-shadow:inset -1px -1px 0 #003060,inset 1px 1px 0 #3a88ff;
     }
-    #back-btn {
-      cursor:pointer; font-size:11px; color:#667799; letter-spacing:1px;
-    }
+    #back-btn { cursor:pointer; font-size:11px; color:#666699; letter-spacing:1px; }
     #back-btn:hover { color:#ffff55; }
     #main-body {
       flex:1; overflow-y:auto; padding:9px;
@@ -130,40 +117,33 @@
       position:relative; z-index:2;
     }
 
-    /* SIDE */
-    #hud-side {
-      grid-area:side;
-      display:flex; flex-direction:column; gap:10px;
-    }
+    #hud-side { grid-area:side; display:flex; flex-direction:column; gap:10px; }
     .side-panel {
-      border:2px solid #999999; background:#b0b0bc;
-      box-shadow:inset -2px -2px 0 #888888,inset 2px 2px 0 #cccccc,4px 4px 0 rgba(0,0,40,0.35);
+      border:3px solid #808080; background:#b0b0bc;
+      box-shadow:4px 4px 0 rgba(0,0,20,0.55);
       flex:1; display:flex; flex-direction:column; overflow:hidden;
     }
     .side-h {
-      background:#0055aa; padding:5px 8px; font-size:10px; letter-spacing:0.5px;
-      color:#a6a6b8; border-bottom:1px solid #999999; flex-shrink:0;
+      background:#0000dd; padding:5px 8px; font-size:10px; letter-spacing:0.5px;
+      color:#a6a6b8; border-bottom:1px solid #808080; flex-shrink:0;
       display:flex; justify-content:space-between;
-      box-shadow:inset -1px -1px 0 #003060,inset 1px 1px 0 #3a88ff;
     }
     .side-b { padding:9px; font-size:11px; line-height:2; color:#181820; flex:1; overflow-y:auto; }
     .kv { display:flex; justify-content:space-between; gap:6px; }
-    .kv .k { color:#334455; }
-    .kv .v { color:#112233; }
+    .kv .k { color:#33335a; }
+    .kv .v { color:#15153a; }
 
-    /* BOTTOM BAR */
     #hud-bot {
       grid-area:bot;
-      border:2px solid #999999; background:#0055aa;
+      border:3px solid #808080; background:#0000dd;
       padding:7px 12px; font-size:11px; color:#a6a6b8; letter-spacing:0.5px;
       display:flex; justify-content:space-between; align-items:center;
-      box-shadow:inset -2px -2px 0 #003060,inset 2px 2px 0 #3a88ff;
     }
 
     /* ── 콘텐츠 공통 ── */
     .c-sec {
-      font-size:10px; color:#556677; letter-spacing:2px;
-      border-bottom:1px solid #778899; padding-bottom:3px; margin:12px 0 6px;
+      font-size:10px; color:#555588; letter-spacing:2px;
+      border-bottom:1px solid #808080; padding-bottom:3px; margin:12px 0 6px;
     }
     .c-sec:first-child { margin-top:0; }
     .c-row {
@@ -171,64 +151,64 @@
       border-bottom:1px dotted #777777; font-size:11px; line-height:1.7;
     }
     .c-row .ko { color:#0a6a6a; flex:1; }
-    .c-row .en { color:#334455; flex:1; }
+    .c-row .en { color:#33335a; flex:1; }
     .c-row.ind { padding-left:14px; }
     .c-row.ind2 { padding-left:28px; }
-    .c-hl { color:#cc00cc !important; }
+    .c-hl  { color:#cc00cc !important; }
     .c-hl2 { color:#1a7a1a !important; }
 
     /* ATTR.TEST */
     .dz {
-      border:2px solid #999999; background:#0f66aa;
+      border:2px solid #808080; background:#555566;
       padding:14px; text-align:center; cursor:pointer; margin:8px 0;
     }
-    .dz:hover { border-color:#0055aa; }
-    .dz pre { font-size:11px; color:#556677; line-height:1.4; }
+    .dz:hover { border-color:#0000dd; }
+    .dz pre { font-size:11px; color:#33335a; line-height:1.4; }
     .dz .dz-label { font-size:11px; color:#a6a6b8; margin-top:6px; letter-spacing:2px; }
-    .dz .dz-ext { font-size:10px; color:#667799; margin-top:2px; }
+    .dz .dz-ext { font-size:10px; color:#555588; margin-top:2px; }
     .term {
-      background:#181820; border:2px solid #999999;
+      background:#555566; border:2px solid #808080;
       padding:8px; font-size:11px; line-height:1.7;
       color:#a6a6b8; max-height:160px; overflow-y:auto; margin:6px 0;
     }
-    .t-p { color:#a6a6b8; }
-    .t-ok { color:#1a7a1a; }
-    .t-in { color:#0a6a6a; }
-    .t-wn { color:#9a6a00; }
-    .t-ou { color:#556677; }
-    .t-cursor { display:inline-block; width:7px; height:11px; background:#a6a6b8; vertical-align:text-bottom; animation:bl 1s step-end infinite; }
+    .t-p  { color:#ffffff; }
+    .t-ok { color:#88ff88; }
+    .t-in { color:#88ddff; }
+    .t-wn { color:#ffcc44; }
+    .t-ou { color:#cccccc; }
+    .t-cursor { display:inline-block; width:7px; height:11px; background:#ffffff; vertical-align:text-bottom; animation:bl 1s step-end infinite; }
     .res {
-      background:#181820; border:2px solid #999999;
+      background:#555566; border:2px solid #808080;
       padding:10px 12px; margin-top:6px;
     }
-    .res-code { font-size:16px; letter-spacing:3px; color:#a6a6b8; font-weight:700; }
-    .res-code.anom { color:#cc00cc; }
-    .res-desc { font-size:10px; color:#667799; margin-top:4px; }
-    .res-vals { font-size:10px; color:#556677; margin-top:2px; }
+    .res-code { font-size:16px; letter-spacing:3px; color:#ffffff; font-weight:700; }
+    .res-code.anom { color:#ff88ff; }
+    .res-desc { font-size:10px; color:#88ddff; margin-top:4px; }
+    .res-vals { font-size:10px; color:#cccccc; margin-top:2px; }
 
     /* NULL.LOG */
     .nl-header {
       display:flex; gap:8px; padding:4px 6px;
-      background:#0055aa; border-bottom:1px solid #999999;
+      background:#0000dd; border-bottom:1px solid #808080;
       font-size:10px; color:#a6a6b8; letter-spacing:1px; flex-shrink:0;
     }
-    .nl-col { flex-shrink:0; width:80px; }
-    .nl-grow { flex:1; width:auto; }
+    .nl-col   { flex-shrink:0; width:80px; }
+    .nl-grow  { flex:1; width:auto; }
     .nl-right { text-align:right; width:60px; }
     .nl-row {
       display:flex; gap:8px; padding:3px 6px;
       border-bottom:1px dotted #777777; font-size:10px;
-      color:#334455; cursor:default;
+      color:#33335a; cursor:default;
     }
-    .nl-row:hover { background:#ffff55; color:#181820; }
+    .nl-row:hover { background:#ffff55; color:#000099; }
     .nl-row.candidate { color:#cc00cc; }
-    .nl-tag { font-size:8px; border:1px solid currentColor; padding:0 3px; margin-left:4px; }
-    .nl-empty { padding:12px 6px; font-size:10px; color:#556677; letter-spacing:1px; }
-    .nl-foot { padding:8px 6px; font-size:10px; color:#556677; border-top:1px solid #778899; line-height:1.8; }
+    .nl-tag   { font-size:8px; border:1px solid currentColor; padding:0 3px; margin-left:4px; }
+    .nl-empty { padding:12px 6px; font-size:10px; color:#555588; letter-spacing:1px; }
+    .nl-foot  { padding:8px 6px; font-size:10px; color:#555588; border-top:1px solid #808080; line-height:1.8; }
 
     /* MANUAL.TXT */
     .m-row { display:flex; gap:16px; padding:4px 0; border-bottom:1px dotted #777777; font-size:11px; line-height:1.8; }
-    .m-k { color:#334455; min-width:100px; flex-shrink:0; }
+    .m-k { color:#33335a; min-width:100px; flex-shrink:0; }
     .m-v { color:#181820; }
   </style>
 </head>
@@ -238,8 +218,8 @@
 <div id="lobby">
   <div class="lob-inner">
     <div class="lob-top">
-      <span>SET-NULL.CHANNEL</span>
-      <span>귀속 불가 이미지 실험소</span>
+      <span>PILOT CHANNEL</span>
+      <span>이미지 실험소</span>
       <span id="lclock">--:--:--</span>
     </div>
     <div class="lob-sections">
@@ -247,10 +227,9 @@
       <div class="sec-item" onclick="enter('log')">
         <div class="sec-name">NULL.LOG</div>
         <div class="sec-desc">
-          <span class="sec-tag">기록</span>
-          <span class="sec-tag">측정</span>
-          &nbsp;MEASURE에서 아무것도 안 나왔던 단어들을 모아두는 공간입니다.<br>
-          &nbsp;같은 단어가 3번 이상 검색됐는데도 결과가 없으면 — 그 단어엔 뭔가 있다는 뜻이에요.
+          <span class="sec-tag">업로드</span>
+          <span class="sec-tag">Exclusion</span>
+          &nbsp;사진을 올리면 다음 작업 Exclusion의 데이터로 사용됩니다.
         </div>
       </div>
 
@@ -276,7 +255,7 @@
 
     </div>
     <div class="lob-cmd">
-      이동(<b>GO</b>) &nbsp;상위(<b>P</b>) &nbsp;처음(<b>T</b>) &nbsp;도움말(<b>H</b>) &nbsp;&gt;&gt; <span class="blink">_</span>
+      <span style="cursor:pointer;" onclick="window.location.href='https://note-a.github.io'">이동(<b>GO</b>)</span> &nbsp;상위(<b>P</b>) &nbsp;처음(<b>T</b>) &nbsp;도움말(<b>H</b>) &nbsp;&gt;&gt; <span class="blink">_</span>
     </div>
   </div>
 </div>
@@ -285,7 +264,7 @@
 <div id="hud">
 
   <div id="hud-top">
-    <span>◆ SET-NULL.CHANNEL &nbsp;—&nbsp; 귀속 불가 이미지 실험소</span>
+    <span>◆ PILOT CHANNEL &nbsp;—&nbsp; 이미지 실험소</span>
     <span id="hclock">--:--:--</span>
   </div>
 
@@ -294,38 +273,66 @@
       <span id="main-title">—</span>
       <span id="back-btn" style="display:none" onclick="goBack()">← 목록으로</span>
     </div>
-    <div id="main-body" style="display:flex;align-items:center;justify-content:center;color:#556677;letter-spacing:2px;">
-      SET-NULL.CHANNEL / EXP.v0.1
+    <div id="main-body" style="display:flex;align-items:center;justify-content:center;color:#88aaff;letter-spacing:2px;">
+      PILOT CHANNEL / EXP.v0.1
     </div>
   </div>
 
   <div id="hud-side">
     <div class="side-panel">
-      <div class="side-h"><span>수록 현황</span><span style="color:#aaccff;">●live</span></div>
+      <div class="side-h"><span>수록 현황</span><span style="color:#666699;">●live</span></div>
       <div class="side-b">
         <div class="kv"><span class="k">수록</span><span class="v">6 점</span></div>
         <div class="kv"><span class="k">GAP</span><span class="v" style="color:#cc00cc;">4</span></div>
         <div class="kv"><span class="k">WATCH</span><span class="v">2</span></div>
-        <div class="kv"><span class="k">귀속성공</span><span class="v" style="color:#aaaaaa;">0</span></div>
-        <div class="kv"><span class="k">분석완료</span><span class="v" style="color:#aaaaaa;">0</span></div>
+        <div class="kv"><span class="k">귀속성공</span><span class="v" style="color:#555588;">0</span></div>
+        <div class="kv"><span class="k">분석완료</span><span class="v" style="color:#555588;">0</span></div>
         <div class="kv"><span class="k">접속자</span><span class="v">1</span></div>
         <div class="kv"><span class="k">채널</span><span class="v">비공개</span></div>
       </div>
     </div>
     <div class="side-panel">
       <div class="side-h" style="color:#cc00cc;">경고</div>
-      <div class="side-b" style="color:#556677;line-height:2;">
-        귀속할 수 없는<br>이미지가 존재합니다<br><br>
+      <div class="side-b" style="display:flex;flex-direction:column;justify-content:center;align-items:center;gap:10px;">
         <span style="color:#cc00cc;" class="blink">● null detected</span>
+        <span onclick="document.getElementById('null-popup').style.display='flex'"
+          style="cursor:pointer;font-size:10px;color:#33335a;border:1px solid #808080;padding:3px 10px;letter-spacing:1px;">읽어보세요</span>
       </div>
     </div>
   </div>
 
   <div id="hud-bot">
-    <span>이동(<b>GO</b>) &nbsp;목록(<b>P</b>) &nbsp;처음(<b>T</b>) &nbsp;&gt;&gt; <span class="blink">_</span></span>
-    <span style="color:#556677;">이 집합에 속하지 않는 이미지는 없다 ∅</span>
+    <span><span style="cursor:pointer;" onclick="window.location.href='https://note-a.github.io'">이동(<b>GO</b>)</span> &nbsp;목록(<b>P</b>) &nbsp;처음(<b>T</b>) &nbsp;&gt;&gt; <span class="blink">_</span></span>
   </div>
 
+</div>
+
+<!-- ══ NULL 팝업 ══ -->
+<div id="null-popup" style="
+  display:none; position:fixed; inset:0; z-index:500;
+  background:rgba(0,0,0,0.72);
+  align-items:center; justify-content:center; padding:24px;
+" onclick="if(event.target===this)this.style.display='none'">
+  <div style="
+    background:#b0b0bc; border:3px solid #808080;
+    box-shadow:4px 4px 0 rgba(0,0,20,0.55);
+    max-width:540px; width:100%;
+    font-family:'Galmuri11',monospace;
+  ">
+    <div style="background:#0000dd;padding:6px 12px;font-size:10px;color:#a6a6b8;letter-spacing:1px;display:flex;justify-content:space-between;align-items:center;">
+      <span>// note</span>
+      <span onclick="document.getElementById('null-popup').style.display='none'" style="cursor:pointer;color:#a6a6b8;letter-spacing:1px;">✕</span>
+    </div>
+    <div style="padding:18px 20px;font-size:11px;line-height:2.2;color:#181820;">
+      <p style="margin-bottom:16px;">
+        Let me start again. You're walking somewhere — it doesn't matter where, it never matters where — and something catches. Not the thing itself. Something about the arrangement. The way it sits in relation to something else. The way the light happens to be falling at that particular moment on that particular surface in that particular place that you happen to be passing through, which you will never pass through again at exactly that time, which means the thing you're seeing is already disappearing even as you see it, which means the only question is whether you're going to do something about it or not.
+      </p>
+      <div style="border-top:1px solid #808080;margin-bottom:14px;"></div>
+      <p style="color:#33335a;">
+        다시 시작해 볼게요. 당신은 어딘가를 걷고 있어요 — 어디인지는 상관없어요, 어디인지는 언제나 상관없으니까요 — 그런데 무언가가 걸립니다. 그 사물 자체가 아니라, 배열 때문에. 그것이 다른 무언가와 맺는 관계 속에 놓여 있는 방식 때문에. 그 특정한 순간에 그 특정한 표면 위로 빛이 우연히 내려앉는 방식 때문에 — 당신이 마침 지나치고 있는 그 특정한 장소, 똑같은 시간에 다시는 지나치지 않을 그 장소. 그 말인즉, 당신이 보고 있는 것은 이미 보는 순간에도 사라지고 있다는 뜻이고, 그 말인즉, 유일한 질문은 당신이 그것에 대해 무언가를 할 것인지 아닌지라는 뜻입니다.
+      </p>
+    </div>
+  </div>
 </div>
 
 <script>
@@ -333,13 +340,24 @@ const PAGES = {
   log: {
     title: 'NULL.LOG',
     html: `
-      <div class="nl-header">
-        <span class="nl-col">DATE</span>
-        <span class="nl-col nl-grow">QUERY</span>
-        <span class="nl-col nl-right">COUNT</span>
+      <div class="c-sec">// 업로드 — Exclusion 데이터 등록</div>
+      <div class="dz" id="log-dz" onclick="document.getElementById('log-file-in').click()">
+        <pre>+-------------------+
+|                   |
+|   DROP FILE HERE  |
+|                   |
++-------------------+</pre>
+        <div class="dz-label">이미지 드래그 또는 클릭</div>
+        <div class="dz-ext">JPG / PNG / WEBP</div>
       </div>
-      <div id="nl-list"></div>
-      <div class="nl-foot">MEASURE에서 검색 결과가 없을 때 자동으로 기록됩니다. 같은 단어가 3회 이상이면 지시문 후보로 분류됩니다.</div>
+      <div style="font-size:10px;color:#33335a;margin-bottom:4px;letter-spacing:1px;">STATUS: <span id="log-stat" style="color:#1a7a1a;">READY</span></div>
+      <input type="file" id="log-file-in" accept="image/*" multiple style="display:none" onchange="Array.from(this.files).forEach(saveLogFile)">
+      <div class="c-sec" style="display:flex;justify-content:space-between;">
+        <span>// 등록된 이미지 &nbsp;<span id="log-count" style="color:#0a6a6a;">0</span></span>
+        <span id="log-clear-btn" style="cursor:pointer;color:#cc00cc;font-size:9px;letter-spacing:1px;" onclick="clearLogItems()">전체 삭제</span>
+      </div>
+      <div id="log-gallery"></div>
+      <div class="nl-foot">등록된 이미지는 다음 작업 Exclusion의 데이터로 전달됩니다.</div>
     `
   },
   attr: {
@@ -355,7 +373,7 @@ const PAGES = {
         <div class="dz-label">이미지 드래그 또는 클릭</div>
         <div class="dz-ext">JPG / PNG / WEBP</div>
       </div>
-      <div style="font-size:10px;color:#334455;margin-bottom:4px;letter-spacing:1px;">STATUS: <span id="drop-stat" style="color:#1a7a1a;">READY</span></div>
+      <div style="font-size:10px;color:#33335a;margin-bottom:4px;letter-spacing:1px;">STATUS: <span id="drop-stat" style="color:#1a7a1a;">READY</span></div>
       <input type="file" id="file-in" accept="image/*" style="display:none" onchange="handleFile(this.files[0])">
       <div class="c-sec">// stdout</div>
       <div class="term" id="term-out">
@@ -368,17 +386,17 @@ const PAGES = {
       </div>
       <div class="c-sec">// result</div>
       <div class="res" id="result-box">
-        <div style="color:#334455;font-size:11px;letter-spacing:2px;">— 분석 대기 중 —</div>
+        <div style="color:#cccccc;font-size:11px;letter-spacing:2px;">— 분석 대기 중 —</div>
       </div>
     `
   },
   manual: {
     title: 'MANUAL.TXT',
     html: `
-      <div class="c-sec">① NULL.LOG — 공집합 로그</div>
-      <div class="m-row"><span class="m-k">이게 뭔가요?</span><span class="m-v">MEASURE(사진 검색)에서 아무것도 안 나왔던 단어들을 모아두는 공간이에요.</span></div>
-      <div class="m-row"><span class="m-k">어떻게 쌓여요?</span><span class="m-v">따로 입력할 필요 없이, 검색 결과가 없을 때 자동으로 여기 기록돼요.</span></div>
-      <div class="m-row"><span class="m-k">지시문 후보란?</span><span class="m-v">같은 단어가 3번 이상 검색됐는데도 계속 결과가 없으면 — 그 단어엔 뭔가 있다는 뜻이에요.</span></div>
+      <div class="c-sec">① NULL.LOG — Exclusion 데이터 등록</div>
+      <div class="m-row"><span class="m-k">이게 뭔가요?</span><span class="m-v">사진을 올리면 다음 작업 Exclusion의 데이터로 사용되는 공간이에요.</span></div>
+      <div class="m-row"><span class="m-k">어떻게 써요?</span><span class="m-v">이미지를 업로드하면 목록에 추가되고, Exclusion 데이터로 전달돼요.</span></div>
+      <div class="m-row"><span class="m-k">Exclusion이란?</span><span class="m-v">여기서 등록된 이미지들이 다음 작업의 기준 데이터가 됩니다.</span></div>
       <div class="c-sec">② ATTR.TEST — 이미지 귀속 테스트</div>
       <div class="m-row"><span class="m-k">이게 뭔가요?</span><span class="m-v">외부 이미지를 올리면, 이 사진이 SET의 어떤 문법에 가까운지 분석해줘요.</span></div>
       <div class="m-row"><span class="m-k">어떻게 써요?</span><span class="m-v">이미지를 드래그하거나 클릭해서 업로드하면 바로 분석이 시작돼요.</span></div>
@@ -401,21 +419,15 @@ function enter(tab) {
   document.getElementById('back-btn').style.display = 'inline';
 
   if (tab === 'log') {
-    const log = (() => { try { return JSON.parse(localStorage.getItem('set_null_log') || '{}'); } catch { return {}; } })();
-    const entries = Object.entries(log).sort((a,b) => b[1]-a[1]);
-    const list = document.getElementById('nl-list');
-    if (!list) return;
-    if (entries.length === 0) {
-      list.innerHTML = `<div class="nl-empty">— 기록 없음. MEASURE에서 결과 없는 검색어가 누적됩니다. <span class="blink">_</span></div>`;
-    } else {
-      list.innerHTML = entries.map(([word, count]) => {
-        const isCandidate = count >= 3;
-        return `<div class="nl-row${isCandidate ? ' candidate' : ''}">
-          <span class="nl-col">—</span>
-          <span class="nl-grow">${word}${isCandidate ? `<span class="nl-tag">지시문 후보</span>` : ''}</span>
-          <span class="nl-right">×${count}</span>
-        </div>`;
-      }).join('');
+    renderLogList();
+    const dz = document.getElementById('log-dz');
+    if (dz) {
+      dz.addEventListener('dragover', e => { e.preventDefault(); dz.style.borderColor = '#0000dd'; });
+      dz.addEventListener('dragleave', () => { dz.style.borderColor = ''; });
+      dz.addEventListener('drop', e => {
+        e.preventDefault(); dz.style.borderColor = '';
+        Array.from(e.dataTransfer.files).filter(f => f.type.startsWith('image/')).forEach(saveLogFile);
+      });
     }
   }
 
@@ -433,6 +445,69 @@ function enter(tab) {
   }
 }
 
+/* ── NULL.LOG / Exclusion 데이터 관리 ── */
+function getLogItems() {
+  try { return JSON.parse(localStorage.getItem('exclusion_log') || '[]'); } catch { return []; }
+}
+
+function renderLogList() {
+  const items = getLogItems();
+  const gallery = document.getElementById('log-gallery');
+  const countEl = document.getElementById('log-count');
+  if (!gallery) return;
+  if (countEl) countEl.textContent = items.length;
+  if (items.length === 0) {
+    gallery.innerHTML = `<div class="nl-empty">— 등록된 이미지 없음 <span class="blink">_</span></div>`;
+    return;
+  }
+  gallery.innerHTML = items.map((item, i) => `
+    <div class="nl-row" style="align-items:center;gap:8px;padding:4px 6px;">
+      <img src="${item.thumb}" style="width:36px;height:36px;object-fit:cover;flex-shrink:0;border:1px solid #808080;">
+      <span class="nl-grow" style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#33335a;">${item.name}</span>
+      <span style="color:#555588;font-size:9px;flex-shrink:0;">${item.date}</span>
+      <span style="cursor:pointer;color:#cc00cc;font-size:11px;flex-shrink:0;padding:0 4px;" onclick="removeLogItem(${i})">×</span>
+    </div>
+  `).join('');
+}
+
+function saveLogFile(f) {
+  const stat = document.getElementById('log-stat');
+  if (stat) stat.textContent = '저장 중...';
+  const reader = new FileReader();
+  reader.onload = e => {
+    const img = new Image();
+    img.onload = () => {
+      const cv = document.createElement('canvas'); cv.width = cv.height = 56;
+      cv.getContext('2d').drawImage(img, 0, 0, 56, 56);
+      const thumb = cv.toDataURL('image/jpeg', 0.75);
+      const now = new Date();
+      const date = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}-${String(now.getDate()).padStart(2,'0')}`;
+      const items = getLogItems();
+      items.unshift({ name: f.name, date, thumb });
+      localStorage.setItem('exclusion_log', JSON.stringify(items));
+      renderLogList();
+      if (stat) stat.textContent = `${items.length}개 등록됨`;
+    };
+    img.src = e.target.result;
+  };
+  reader.readAsDataURL(f);
+}
+
+function removeLogItem(i) {
+  const items = getLogItems();
+  items.splice(i, 1);
+  localStorage.setItem('exclusion_log', JSON.stringify(items));
+  renderLogList();
+}
+
+function clearLogItems() {
+  if (!confirm('등록된 이미지를 모두 삭제할까요?')) return;
+  localStorage.removeItem('exclusion_log');
+  renderLogList();
+  const stat = document.getElementById('log-stat');
+  if (stat) stat.textContent = 'READY';
+}
+
 function goBack() {
   const lobby = document.getElementById('lobby');
   lobby.style.display = 'flex';
@@ -442,8 +517,8 @@ function goBack() {
   document.getElementById('back-btn').style.display = 'none';
   document.getElementById('main-title').textContent = '—';
   const body = document.getElementById('main-body');
-  body.innerHTML = 'SET-NULL.CHANNEL / EXP.v0.1';
-  body.style.cssText = 'display:flex;align-items:center;justify-content:center;color:#112233;letter-spacing:2px;';
+  body.innerHTML = 'PILOT CHANNEL / EXP.v0.1';
+  body.style.cssText = 'display:flex;align-items:center;justify-content:center;color:#555588;letter-spacing:2px;';
 }
 
 function handleFile(f) {
