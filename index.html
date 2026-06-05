@@ -142,6 +142,63 @@ body.flood{filter:sepia(1) saturate(3.6) hue-rotate(-22deg) brightness(1.06) con
 
 .foot{display:flex;justify-content:space-between;font-family:var(--mono);font-size:10px;color:var(--g3);letter-spacing:1px;padding:7px 16px;border-top:1px solid #fff;}
 .foot .live{color:var(--acc);}
+
+/* ── mobile ── */
+@media(max-width:767px){
+  html,body{overflow-x:hidden;overflow-y:auto;height:auto;align-items:stretch;justify-content:flex-start;}
+  body{display:block;}
+  #wrap{width:100%;max-width:100%;transform:none;max-height:none;border:none;border-radius:0;box-shadow:none;overflow-x:hidden;}
+  .tick{display:none;}
+
+  /* prevent any horizontal bleed */
+  *{max-width:100%;}
+  pre{white-space:pre-wrap;word-break:break-all;}
+
+  /* header — single line, hide non-essentials */
+  .head{flex-wrap:nowrap;gap:8px;padding:7px 12px;overflow:hidden;}
+  .head .brand{font-size:12px;flex-shrink:0;}
+  .head .meta{display:none;}
+  .head .led{display:none;}
+  .head .div{display:none;}
+  .head .rec{font-size:9px;flex-shrink:0;white-space:nowrap;}
+  .head .clk{font-size:12px;font-weight:600;flex-shrink:0;}
+
+  /* hero — compact, banner scaled down */
+  .hero{height:120px;overflow:hidden;}
+  .hero .banner{font-size:4.8px;line-height:4.8px;}
+  .hlab{font-size:7.5px;letter-spacing:.5px;}
+  .hlab.tl{left:8px;top:6px;} .hlab.tr{right:8px;top:6px;}
+  .hlab.bl{left:8px;bottom:6px;} .hlab.br{right:8px;bottom:6px;}
+
+  /* main — single column, INDEX first */
+  .main{grid-template-columns:1fr;display:flex;flex-direction:column;}
+  .spec{order:-1;min-height:unset;border-bottom:1px solid rgba(255,255,255,.35);}
+  .tx{border-right:none;border-bottom:1px solid rgba(255,255,255,.2);padding:16px 14px;}
+  .tx .lbl{font-size:7px;margin-bottom:10px;flex-wrap:wrap;gap:4px;}
+  .stream{font-size:11px;line-height:1.65;}
+  .stream p{margin-bottom:8px;}
+
+  /* index nav */
+  .spec .lbl{font-size:7px;padding:10px 14px 8px;}
+  .navlist{overflow:visible;padding:4px 14px 10px;}
+  .navitem{padding:10px 0;}
+  .navitem .nh{font-size:13px;}
+  .navitem .nd{font-size:10px;margin-top:3px;}
+  .teaminfo{padding:10px 14px 12px;}
+  .teaminfo .thd{font-size:7px;}
+  .teaminfo .tnd{font-size:10px;}
+
+  /* regstrip + footer */
+  .regstrip{overflow:hidden;}
+  .regstrip .h{display:none;}
+  .reg{font-size:12px;}
+  .foot{font-size:9px;padding:5px 12px;}
+  .foot span:first-child{display:none;}
+
+  /* enter button */
+  .enterwrap{margin-top:0;padding:16px 14px 20px;}
+  .enter{font-size:9px;padding:10px 28px;width:100%;text-align:center;display:block;}
+}
 </style>
 </head>
 <body>
