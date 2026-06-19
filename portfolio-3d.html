@@ -5,9 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <title>Portfolio · 3D</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800&display=swap" rel="stylesheet">
 <style>
 * { margin:0; padding:0; box-sizing:border-box; }
 html, body { width:100%; height:100%; overflow:hidden; background:#ffffff; }
@@ -24,30 +21,30 @@ canvas { display:block; }
 }
 .nav-left { display:flex; flex-direction:column; gap:1px; }
 #nav .logo {
-  font:800 13px "Plus Jakarta Sans",sans-serif;
+  font:800 13px "Helvetica Neue",Arial,sans-serif;
   letter-spacing:0.28em; color:#111; line-height:1;
 }
 #nav .logo span { color:#666; }
 .logo-sub {
-  font:400 7px "Plus Jakarta Sans",sans-serif;
+  font:400 7px "Helvetica Neue",Arial,sans-serif;
   letter-spacing:0.26em; color:#888;
 }
 #nav ul { display:flex; gap:0; list-style:none; }
 #nav ul li { position:relative; }
 #nav ul li a {
   display:block; padding:4px 11px;
-  font:500 10px "Plus Jakarta Sans",sans-serif;
+  font:500 10px "Helvetica Neue",Arial,sans-serif;
   letter-spacing:0.16em; color:#555;
   text-decoration:none; transition:color .15s;
 }
 #nav ul li a:hover, #nav ul li a.active { color:#111; }
 .nav-right { display:flex; align-items:center; gap:16px; }
 .nav-location {
-  font:400 9px "Plus Jakarta Sans",sans-serif;
+  font:400 9px "Helvetica Neue",Arial,sans-serif;
   letter-spacing:0.14em; color:#888;
 }
 #nav .contact-btn {
-  font:600 9px "Plus Jakarta Sans",sans-serif; letter-spacing:0.18em;
+  font:600 9px "Helvetica Neue",Arial,sans-serif; letter-spacing:0.18em;
   color:#111; padding:5px 13px;
   border:1.5px solid #111; border-radius:2px;
   background:transparent; cursor:pointer; transition:all .15s;
@@ -66,12 +63,12 @@ canvas { display:block; }
   display:flex; flex-direction:column; gap:2px;
 }
 #photo-info .num {
-  font:700 36px "Plus Jakarta Sans",sans-serif;
+  font:700 36px "Helvetica Neue",Arial,sans-serif;
   color:rgba(0,0,0,0.08);
   line-height:1; letter-spacing:-0.02em;
 }
 #photo-info .lbl {
-  font:400 10px "Plus Jakarta Sans",sans-serif;
+  font:400 10px "Helvetica Neue",Arial,sans-serif;
   letter-spacing:0.18em;
   color:rgba(0,0,0,0.3);
 }
@@ -81,7 +78,7 @@ canvas { display:block; }
 #zoom-controls button {
   width:36px; height:36px; border-radius:50%;
   border:none; cursor:pointer;
-  font:400 18px "Plus Jakarta Sans",sans-serif;
+  font:400 18px "Helvetica Neue",Arial,sans-serif;
   color:#fff; background:#d63a2a;
   display:flex; align-items:center; justify-content:center;
   box-shadow:0 2px 8px rgba(214,58,42,0.35);
@@ -136,13 +133,13 @@ canvas { display:block; }
 }
 .modal-close {
   position:absolute; top:16px; right:20px;
-  font:300 22px "Plus Jakarta Sans",sans-serif;
+  font:300 22px "Helvetica Neue",Arial,sans-serif;
   color:#888; cursor:pointer; line-height:1;
   border:none; background:none; transition:color .15s;
 }
 .modal-close:hover { color:#111; }
 .modal-title {
-  font:600 9px "Plus Jakarta Sans",sans-serif;
+  font:600 9px "Helvetica Neue",Arial,sans-serif;
   letter-spacing:0.3em; color:#888;
   margin-bottom:24px;
 }
@@ -158,12 +155,12 @@ canvas { display:block; }
 }
 /* BOOK */
 .modal-book-title {
-  font:700 15px "Plus Jakarta Sans",sans-serif;
+  font:700 15px "Helvetica Neue",Arial,sans-serif;
   letter-spacing:0.12em; color:#111;
   margin-bottom:6px;
 }
 .modal-book-sub {
-  font:400 9px "Plus Jakarta Sans",sans-serif;
+  font:400 9px "Helvetica Neue",Arial,sans-serif;
   letter-spacing:0.2em; color:#888;
   margin-bottom:28px;
 }
@@ -178,12 +175,12 @@ canvas { display:block; }
 .book-link:first-child { border-top:1px solid #ebebeb; }
 .book-link:hover .book-link-name { color:#111; }
 .book-link-name {
-  font:500 10px "Plus Jakarta Sans",sans-serif;
+  font:500 10px "Helvetica Neue",Arial,sans-serif;
   letter-spacing:0.18em; color:#555;
   transition:color .12s;
 }
 .book-link-arrow {
-  font:300 14px "Plus Jakarta Sans",sans-serif;
+  font:300 14px "Helvetica Neue",Arial,sans-serif;
   color:#bbb; transition:color .12s;
 }
 .book-link:hover .book-link-arrow { color:#111; }
@@ -206,8 +203,8 @@ canvas { display:block; }
     <li><a href="https://note-a.github.io/" target="_blank">NOTE GITHUB</a></li>
   </ul>
   <div class="nav-right" style="display:flex;align-items:center;gap:16px;">
-    <div style="font:400 9px "Plus Jakarta Sans",sans-serif;letter-spacing:0.14em;color:#888;">SEOUL, KR</div>
-    <div class="contact-btn" style="font:600 9px "Plus Jakarta Sans",sans-serif;letter-spacing:0.18em;color:#111;padding:5px 13px;border:1.5px solid #111;border-radius:2px;cursor:pointer;">CONTACT</div>
+    <div style="font:400 9px "Helvetica Neue",Arial,sans-serif;letter-spacing:0.14em;color:#888;">SEOUL, KR</div>
+    <div class="contact-btn" style="font:600 9px "Helvetica Neue",Arial,sans-serif;letter-spacing:0.18em;color:#111;padding:5px 13px;border:1.5px solid #111;border-radius:2px;cursor:pointer;">CONTACT</div>
   </div>
 </nav>
 
