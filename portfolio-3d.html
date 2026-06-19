@@ -206,6 +206,79 @@ canvas { display:block; }
 }
 #lb.on { display:flex; }
 #lb img { max-width:90vw; max-height:90vh; object-fit:contain; border-radius:4px; box-shadow:0 8px 60px rgba(0,0,0,0.5); }
+
+/* ══ 팝업 모달 ══ */
+.modal-overlay {
+  display:none; position:fixed; inset:0;
+  background:rgba(0,0,0,0.45);
+  z-index:10000; align-items:center; justify-content:center;
+  padding:24px;
+}
+.modal-overlay.on { display:flex; }
+.modal-box {
+  background:#fff;
+  border:1.5px solid #000;
+  max-width:560px; width:100%;
+  padding:40px 44px 36px;
+  position:relative;
+}
+.modal-close {
+  position:absolute; top:16px; right:20px;
+  font:300 22px "Helvetica Neue",Arial,sans-serif;
+  color:#888; cursor:pointer; line-height:1;
+  border:none; background:none; transition:color .15s;
+}
+.modal-close:hover { color:#111; }
+.modal-title {
+  font:600 9px "Helvetica Neue",Arial,sans-serif;
+  letter-spacing:0.3em; color:#888;
+  margin-bottom:24px;
+}
+/* ARTIST STATEMENT */
+.modal-statement p {
+  font:400 13.5px/1.95 "Helvetica Neue","Apple SD Gothic Neo","Noto Sans KR",Arial,sans-serif;
+  color:#111; word-break:keep-all;
+}
+.modal-statement em {
+  font-style:normal;
+  font-weight:600;
+  letter-spacing:0.06em;
+}
+/* BOOK */
+.modal-book-title {
+  font:700 15px "Helvetica Neue",Arial,sans-serif;
+  letter-spacing:0.12em; color:#111;
+  margin-bottom:6px;
+}
+.modal-book-sub {
+  font:400 9px "Helvetica Neue",Arial,sans-serif;
+  letter-spacing:0.2em; color:#888;
+  margin-bottom:28px;
+}
+.book-links { display:flex; flex-direction:column; gap:0; }
+.book-link {
+  display:flex; align-items:center; justify-content:space-between;
+  padding:13px 0;
+  border-bottom:1px solid #ebebeb;
+  text-decoration:none;
+  transition:background .12s;
+}
+.book-link:first-child { border-top:1px solid #ebebeb; }
+.book-link:hover .book-link-name { color:#111; }
+.book-link-name {
+  font:500 10px "Helvetica Neue",Arial,sans-serif;
+  letter-spacing:0.18em; color:#555;
+  transition:color .12s;
+}
+.book-link-arrow {
+  font:300 14px "Helvetica Neue",Arial,sans-serif;
+  color:#bbb; transition:color .12s;
+}
+.book-link:hover .book-link-arrow { color:#111; }
+@media (max-width:640px) {
+  .modal-box { padding:32px 24px 28px; }
+  .modal-statement p { font-size:13px; }
+}
 </style>
 </head>
 <body>
@@ -216,16 +289,60 @@ canvas { display:block; }
   </div>
   <ul>
     <li><a href="#" class="active">HOME</a></li>
-    <li><a href="#">BOOK</a></li>
-    <li><a href="#">ARTIST STATEMENT</a></li>
-    <li><a href="#">NOTE</a></li>
-    <li><a href="#">GITHUB</a></li>
+    <li><a href="#" id="nav-book">BOOK</a></li>
+    <li><a href="#" id="nav-statement">ARTIST STATEMENT</a></li>
+    <li><a href="https://note-a.github.io/" target="_blank">NOTE GITHUB</a></li>
   </ul>
   <div class="nav-right" style="display:flex;align-items:center;gap:16px;">
     <div style="font:400 9px Helvetica,Arial,sans-serif;letter-spacing:0.14em;color:#888;">SEOUL, KR</div>
     <div class="contact-btn" style="font:600 9px Helvetica,Arial,sans-serif;letter-spacing:0.18em;color:#111;padding:5px 13px;border:1.5px solid #111;border-radius:2px;cursor:pointer;">CONTACT</div>
   </div>
 </nav>
+
+<!-- ARTIST STATEMENT 모달 -->
+<div class="modal-overlay" id="modal-statement">
+  <div class="modal-box">
+    <button class="modal-close" data-modal="modal-statement">&#xd7;</button>
+    <div class="modal-title">ARTIST STATEMENT</div>
+    <div class="modal-statement">
+      <p><em>auto/mass</em>는 2014년부터 2023년까지의 촬영본과 노트를 수집하여 재배열 및 재구성한 작업이다. 어느 순간 사진은 결정이나 선택이 아닌 자동화된 반응에 가까워졌다. 이미지에 뒤늦게 언어를 부여하는 과정에서 발생하는 사유는 이미 굳어있던 사진에 대한 믿음에 균열을 만들었고, 사진이 축적될수록 주체의 피로는 누적되었다.</p>
+      <p style="margin-top:16px;">이 작업은 선택된 이미지보다 선택받지 못한 이미지들에 관한 기록이다. 버리지 못한 사진들을 마주하며 판단은 멈췄고, 사진을 찍는 행위와 그것을 언어로 해석하려는 시도는 끝내 마무리에 이르지 못한다.</p>
+      <p style="margin-top:16px;"><em>auto/mass</em>는 결과가 아닌, 멈추지 않는 상태의 기록이다.</p>
+    </div>
+  </div>
+</div>
+
+<!-- BOOK 모달 -->
+<div class="modal-overlay" id="modal-book">
+  <div class="modal-box">
+    <button class="modal-close" data-modal="modal-book">&#xd7;</button>
+    <div class="modal-title">BOOK</div>
+    <div class="modal-book-title">AUTO/MASS</div>
+    <div class="modal-book-sub">PURCHASE</div>
+    <div class="book-links">
+      <a class="book-link" href="https://www.ypbooks.co.kr/books/202603176899747714?idKey=45" target="_blank">
+        <span class="book-link-name">영풍문고</span>
+        <span class="book-link-arrow">→</span>
+      </a>
+      <a class="book-link" href="https://www.yes24.com/product/goods/176194625" target="_blank">
+        <span class="book-link-name">YES24 (예스24)</span>
+        <span class="book-link-arrow">→</span>
+      </a>
+      <a class="book-link" href="https://www.aladin.co.kr/shop/wproduct.aspx?ItemId=386595489" target="_blank">
+        <span class="book-link-name">알라딘</span>
+        <span class="book-link-arrow">→</span>
+      </a>
+      <a class="book-link" href="https://orderbook.booxen.com/book/bookdetail.do" target="_blank">
+        <span class="book-link-name">북센</span>
+        <span class="book-link-arrow">→</span>
+      </a>
+      <a class="book-link" href="https://product.kyobobook.co.kr/detail/S000219930428" target="_blank">
+        <span class="book-link-name">교보문고</span>
+        <span class="book-link-arrow">→</span>
+      </a>
+    </div>
+  </div>
+</div>
 
 <div id="side-left" style="background:#ffffff;border:1.5px solid #d0d0d0;position:fixed;left:12px;top:50%;transform:translateY(-50%);width:34px;display:none;flex-direction:column;align-items:center;gap:16px;padding:14px 0;border-radius:4px;z-index:9999;">
   <div style="font:600 8px Helvetica,Arial,sans-serif;letter-spacing:0.2em;color:#444;writing-mode:vertical-rl;transform:rotate(180deg);">PORTFOLIO · 2024</div>
@@ -707,6 +824,31 @@ function _dotApply(idx) {
   _dotDots.forEach((s, i) => s.style.background = i === idx ? '#111' : '#bbb');
   _dotTarget = VIEW_PRESETS[idx];
 }
+
+// 모달 열기/닫기
+function _openModal(id) {
+  document.getElementById(id).classList.add('on');
+}
+function _closeModal(id) {
+  document.getElementById(id).classList.remove('on');
+}
+document.querySelectorAll('.modal-overlay').forEach(overlay => {
+  overlay.addEventListener('click', e => {
+    if (e.target === overlay) _closeModal(overlay.id);
+  });
+});
+document.querySelectorAll('.modal-close').forEach(btn => {
+  btn.addEventListener('click', () => _closeModal(btn.dataset.modal));
+});
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') document.querySelectorAll('.modal-overlay.on').forEach(m => m.classList.remove('on'));
+});
+document.getElementById('nav-statement').addEventListener('click', e => {
+  e.preventDefault(); _openModal('modal-statement');
+});
+document.getElementById('nav-book').addEventListener('click', e => {
+  e.preventDefault(); _openModal('modal-book');
+});
 
 document.getElementById('dot-nav').addEventListener('click', e => {
   const span = e.target.closest('span[data-view]');
