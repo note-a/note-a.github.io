@@ -401,6 +401,7 @@ const FOV = 520;
 let camZ = 0, camX = 0, camY = 0;
 let userRotY = 0, userRotX = 0;
 let userZoom = 1.0;
+let zoomTarget = 1.0;
 let velRotY = 0, velRotX = 0;
 
 function project(px, py, pz) {
@@ -523,6 +524,8 @@ function animate(ts) {
     userRotX += velRotX;
     userRotX = Math.max(-Math.PI * 0.48, Math.min(Math.PI * 0.48, userRotX));
   }
+  // 줌 부드럽게 lerp
+  userZoom += (zoomTarget - userZoom) * 0.1;
   draw(elapsed);
   requestAnimationFrame(animate);
 }
@@ -600,7 +603,7 @@ canvas.addEventListener('touchmove', e => {
     const dy = e.touches[0].clientY - e.touches[1].clientY;
     const dist = Math.hypot(dx, dy);
     if (_pinchDist > 0) {
-      userZoom = Math.max(0.25, Math.min(5.0, userZoom * (dist / _pinchDist)));
+      zoomTarget = Math.max(0.25, Math.min(5.0, zoomTarget * (dist / _pinchDist)));
     }
     _pinchDist = dist;
   }
@@ -614,8 +617,8 @@ canvas.addEventListener('touchend', e => {
 // ─── 스크롤 줌 ───────────────────────────────────────
 canvas.addEventListener('wheel', e => {
   e.preventDefault();
-  const delta = e.deltaY > 0 ? 0.95 : 1.05;
-  userZoom = Math.max(0.25, Math.min(5.0, userZoom * delta));
+  const delta = e.deltaY > 0 ? 0.93 : 1.07;
+  zoomTarget = Math.max(0.25, Math.min(5.0, zoomTarget * delta));
 }, { passive: false });
 
 // ─── 리사이즈 ────────────────────────────────────
