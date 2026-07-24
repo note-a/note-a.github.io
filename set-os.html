@@ -1468,9 +1468,16 @@ html,body{width:100%;min-height:100vh;overflow:hidden;background:#080300;font-fa
 .mode-row .mb:nth-of-type(6){color:#ffa824;border-color:rgba(255,210,61,.5);}
 .mode-row .mb .k{opacity:.7;}
 
-#mob-nav-row,#mob-main,#mob-hdr,#mob-overlay,#mob-drawer{display:none;}
+#mob-nav-row,#mob-main,#mob-hdr,#mob-overlay,#mob-drawer,#mob-glow{display:none;}
 
 
+@keyframes mob-glow-drift{
+  0%  {transform:translate(10%, 20%);}
+  25% {transform:translate(-20%, 5%);}
+  50% {transform:translate(-15%,-40%);}
+  75% {transform:translate(20%,-10%);}
+  100%{transform:translate(10%, 20%);}
+}
 /* ════════════════════════════════════════
    모바일: 주요 패널 + 메뉴만
    SET.VIEW → HUD.XT2 → PILOT + sticky nav
@@ -1480,6 +1487,17 @@ html,body{width:100%;min-height:100vh;overflow:hidden;background:#080300;font-fa
   .crt,#bg-vignette{display:none;}
 
   /* ── shell ── */
+  html,body{overflow-x:hidden!important;overflow-y:auto!important;}
+  body{background:#080300!important;}
+  #mob-glow{
+    display:block!important;position:fixed;
+    top:-60vh;left:-60vw;right:-60vw;bottom:-60vh;
+    background:radial-gradient(ellipse 38% 28% at 50% 50%, rgba(255,90,20,.26), transparent 70%);
+    pointer-events:none;z-index:1;
+    will-change:transform;
+    animation:mob-glow-drift 14s ease-in-out infinite;
+  }
+
   #shell{
     position:static;display:flex!important;
     flex-direction:column!important;
@@ -1502,7 +1520,7 @@ html,body{width:100%;min-height:100vh;overflow:hidden;background:#080300;font-fa
     height:auto!important;
     margin-top:4px!important;
     transform:none!important;
-    z-index:1!important;
+    z-index:2!important;
     padding:0 48px 0 12px!important;
     box-sizing:border-box!important;
   }
@@ -1539,10 +1557,10 @@ html,body{width:100%;min-height:100vh;overflow:hidden;background:#080300;font-fa
   .lr-rail .lr-dp:nth-child(3) .lr-b{height:auto!important;}
   .lr-rail .lr-data{display:flex!important;flex-direction:column!important;gap:6px!important;}
   .lr-rail .lr-dcol:nth-child(n+3){display:none!important;}
-  .lr-rail .sh{font-size:8px!important;color:rgba(255,122,46,.5)!important;margin-bottom:3px!important;}
-  .lr-rail .tr{display:flex!important;gap:4px!important;font-size:9px!important;line-height:1.6!important;}
-  .lr-rail .k{color:rgba(255,122,46,.55)!important;}
-  .lr-rail .v{color:#ff7a2e!important;}
+  .lr-rail .sh{font-size:14px!important;color:rgba(255,122,46,.7)!important;margin-bottom:4px!important;font-family:'Courier Prime','Galmuri11','Share Tech Mono',monospace!important;}
+  .lr-rail .tr{display:flex!important;gap:4px!important;font-size:10px!important;line-height:1.6!important;font-family:'Courier Prime','Galmuri11','Share Tech Mono',monospace!important;}
+  .lr-rail .k{color:rgba(255,122,46,.55)!important;font-family:'Courier Prime','Galmuri11','Share Tech Mono',monospace!important;}
+  .lr-rail .v{color:#ff7a2e!important;font-family:'Courier Prime','Galmuri11','Share Tech Mono',monospace!important;}
   .lr-rail .v.hi{color:#fff!important;}
   #top-row{
     display:flex!important;
@@ -1566,29 +1584,15 @@ html,body{width:100%;min-height:100vh;overflow:hidden;background:#080300;font-fa
   #mob-main{
     display:block!important;
     width:100%!important;
-    padding:32px 24px 48px;
-    min-height:calc(100vh - 44px);
-    background:#000;
+    padding:32px 28px 64px;
+    background:transparent!important;
+    position:relative;z-index:2;
   }
-  .mm-lead{
-    font-size:11px;line-height:1.9;
-    color:#b84a0c;
-    letter-spacing:-.01em;
-    margin:0 0 16px;
-    word-break:keep-all;
-  }
-  #mob-main p{
-    font-size:11px;line-height:1.9;
-    color:#b84a0c;
-    letter-spacing:-.01em;
-    margin:0 0 16px;
-    word-break:keep-all;
-  }
-  .mm-tail{
-    font-size:11px!important;
-    color:#b84a0c!important;
-    margin-top:16px!important;
-  }
+  .mm-pair{display:none;}
+  .mm-lead,.mm-tail{display:none;}
+  .ll{margin:0;}
+  .ll .en{display:block;font-family:'Courier Prime','Galmuri11','Share Tech Mono',monospace;font-size:13px;line-height:1.6;color:#b84a0c;letter-spacing:-.01em;margin:0;word-break:break-word;overflow-wrap:anywhere;}
+  .ll .kr{display:block;font-family:'Courier Prime','Galmuri11','Share Tech Mono',monospace;font-size:10px;line-height:1.5;color:rgba(184,74,12,.28);letter-spacing:.01em;margin:1px 0 4px;word-break:break-word;overflow-wrap:anywhere;}
 
   #mob-nav-row-placeholder{display:none;}
   .mob-nav-btn-x{display:none;}
@@ -2183,7 +2187,7 @@ body.crt-entering #shell{animation:crtOn .52s cubic-bezier(.2,.65,.3,1) forwards
                 stroke="rgba(255,74,22,.45)" stroke-width="1"
                 stroke-dasharray="4 4"/>
               <rect id="gva-mdist-bg" width="0" height="7" fill="rgba(6,3,0,.85)" rx="1"/>
-              <text id="gva-mdist" font-family="'Courier Prime','Galmuri11','Share Tech Mono',monospace" font-size="8".5"
+              <text id="gva-mdist" font-family="Courier Prime,Galmuri11,Share Tech Mono,monospace" font-size="8".5"
                 fill="rgba(255,74,22,.9)" text-anchor="middle" dominant-baseline="middle"
                 style="letter-spacing:1px"></text>
             </svg>
@@ -2731,13 +2735,14 @@ body.crt-entering #shell{animation:crtOn .52s cubic-bezier(.2,.65,.3,1) forwards
 
 </div></div><!-- /wrap /shell -->
 
+<div id="mob-glow"></div>
 <!-- 모바일 메인 텍스트 (shell 바깥) -->
 <div id="mob-main">
-  <p class="mm-lead">세계를 측정하려면 세계 바깥에 서야 한다. 그 자리는 없다.</p>
-  <p>이 작업은 그 불가능한 전제에서 출발한다. 타인의 사진에서 반복되는 시각적 조건을 추출해 지시문으로 변환하고, 그 언어를 들고 직접 촬영에 나섰다. 지시문은 미적 판단이 아니라 구조적 조건을 명령한다. 피사체의 배치, 배경과의 관계, 공간이 작동하는 방식. 나는 그 언어가 현실에 존재하는 장면을 찾아다녔고, 조건이 온전히 작동한 사진을 가려냈다. 이 선택이 축적되어 문법이 된다.</p>
-  <p>SET는 타인의 사진에서 추출한 지시문으로, SET:Inclusion은 나 자신의 과거 사진에서 추출한 지시문으로 같은 과정을 반복한다. 출처는 반대 방향이지만 두 작업은 어느 지점에서 교집합을 이룬다. 그 교집합이 이 작업이 추적하는 것이다. 취향도 개인도 아닌, 시선을 작동시키는 보이지 않는 구조.</p>
-  <p>사진은 결과물이 아니다. 촬영하고 선택하고 기록하는 과정 전체가 온라인에 공개되며, 관객은 MEASURE를 통해 지시문의 언어를 직접 입력할 수 있다. 코드를 검색하면 날짜를 가로질러 그 조건을 충족한 사진들이 모인다. 교집합은 미리 완성되어 있지 않다. 관객의 검색이 교집합을 만들고, 그 기록은 작업 안에 누적된다. 측정하는 자도 측정된다. 탈출은 없었다. 지시문을 어기는 순간이 지시문에 가장 충실했고, 저항은 수행이 되었다. 나는 그 역설을 끝내지 않기로 했다.</p>
-  <p class="mm-tail">이 작업의 이름은 유예다.</p>
+  <div class="ll"><span class="en">Let me start again. You're walking somewhere — it doesn't matter where, it never matters where — and something catches.</span><span class="kr">다시 시작해보자. 당신은 어딘가를 걷고 있다 — 어디든 상관없다, 어디인지는 결코 상관없다 — 그리고 무언가가 걸린다.</span></div>
+  <div class="ll"><span class="en">Not the thing itself. Something about the arrangement. The way it sits in relation to something else.</span><span class="kr">사물 자체가 아니다. 배치에 관한 무언가. 그것이 다른 무언가와의 관계 속에 자리 잡는 방식.</span></div>
+  <div class="ll"><span class="en">The way the light happens to be falling at that particular moment on that particular surface in that particular place that you happen to be passing through,</span><span class="kr">빛이 마침 그 특정한 순간에, 당신이 지나가는 그 특정한 장소의 그 특정한 표면 위에 내리쬐고 있는 방식,</span></div>
+  <div class="ll"><span class="en">which you will never pass through again at exactly that time, which means the thing you're seeing is already disappearing even as you see it,</span><span class="kr">정확히 그 시각에는 다시는 지나가지 못할, 당신이 지금 보고 있는 것이 그것을 보는 순간에도 이미 사라지고 있다는 것을 뜻하며,</span></div>
+  <div class="ll"><span class="en">which means the only question is whether you're going to do something about it or not.</span><span class="kr">유일한 질문은 그것에 대해 무언가를 할 것인지 아닌지뿐이라는 것이다.</span></div>
 </div>
 
 <!-- STATEMENT MODAL -->
@@ -3754,8 +3759,8 @@ function buildScatter(){
   html+=`<line x1="${PAD}" y1="${H-PAD}" x2="${W-PAD}" y2="${H-PAD}" stroke="rgba(255,74,22,.18)" stroke-width="1"/>`;
   html+=`<line x1="${PAD}" y1="${PAD}" x2="${PAD}" y2="${H-PAD}" stroke="rgba(255,74,22,.18)" stroke-width="1"/>`;
   // axis labels
-  html+=`<text x="${W/2}" y="${H-4}" font-family="'Courier Prime','Galmuri11','Share Tech Mono',monospace" font-size="9" fill="rgba(255,74,22,.28)" text-anchor="middle">TEMPORAL AXIS →</text>`;
-  html+=`<text x="9" y="${H/2}" font-family="'Courier Prime','Galmuri11','Share Tech Mono',monospace" font-size="9" fill="rgba(255,74,22,.28)" text-anchor="middle" transform="rotate(-90,9,${H/2})">FORMAL DEPTH</text>`;
+  html+=`<text x="${W/2}" y="${H-4}" font-family="Courier Prime,Galmuri11,Share Tech Mono,monospace" font-size="9" fill="rgba(255,74,22,.28)" text-anchor="middle">TEMPORAL AXIS →</text>`;
+  html+=`<text x="9" y="${H/2}" font-family="Courier Prime,Galmuri11,Share Tech Mono,monospace" font-size="9" fill="rgba(255,74,22,.28)" text-anchor="middle" transform="rotate(-90,9,${H/2})">FORMAL DEPTH</text>`;
 
   // dots per dir
   dirData.forEach((d,di)=>{
@@ -3777,7 +3782,7 @@ function buildScatter(){
     html+=`<circle cx="${cx.toFixed(1)}" cy="${cy.toFixed(1)}" r="${(spread*.55).toFixed(1)}" fill="none" stroke="${col}" stroke-width=".5" opacity=".2" stroke-dasharray="3 3"/>`;
     // label
     const lblY=(cy-spread-5).toFixed(1);
-    html+=`<text x="${cx.toFixed(1)}" y="${lblY}" font-family="'Courier Prime','Galmuri11','Share Tech Mono',monospace" font-size="9".5" fill="${col}" text-anchor="middle" opacity=".85">${d.code}</text>`;
+    html+=`<text x="${cx.toFixed(1)}" y="${lblY}" font-family="Courier Prime,Galmuri11,Share Tech Mono,monospace" font-size="9".5" fill="${col}" text-anchor="middle" opacity=".85">${d.code}</text>`;
   });
 
   svg.innerHTML=html;
@@ -4439,7 +4444,7 @@ document.addEventListener('keydown',function(e){
     const svg=$('svg-set');let grid='';
     for(let x=20;x<=200;x+=20)grid+='<line x1="'+x+'" y1="14" x2="'+x+'" y2="186" stroke="rgba(255,74,22,.05)" stroke-width="0.5"/>';
     for(let y=20;y<=180;y+=20)grid+='<line x1="14" y1="'+y+'" x2="206" y2="'+y+'" stroke="rgba(255,74,22,.05)" stroke-width="0.5"/>';
-    let axt='';for(let x=20;x<=200;x+=40)axt+='<text x="'+(x-3)+'" y="194" fill="rgba(255,74,22,.35)" font-size="7" font-family="Courier Prime,Galmuri11,Share Tech Mono">'+((x-100)/2)+'</text>';
+    let axt='';for(let x=20;x<=200;x+=40)axt+='<text x="'+(x-3)+'" y="194" fill="rgba(255,74,22,.35)" font-size="7" font-family="Courier Prime,Galmuri11,Share Tech Mono,monospace">'+((x-100)/2)+'</text>';
     svg.innerHTML=`<defs>
       <radialGradient id="lrig" cx="50%" cy="50%" r="60%"><stop offset="0%" stop-color="rgba(255,122,46,.34)"/><stop offset="100%" stop-color="rgba(255,122,46,0)"/></radialGradient>
       <pattern id="lrhatch" width="5" height="5" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="5" stroke="rgba(255,122,46,.25)" stroke-width="0.5"/></pattern></defs>
@@ -4452,15 +4457,15 @@ document.addEventListener('keydown',function(e){
       <circle id="lrcB" cx="122" cy="100" r="50" fill="none" stroke="#b07bff" stroke-width="1.1" stroke-dasharray="3 4"/>
       <circle cx="84" cy="100" r="1.6" fill="#ff7a2e"/><circle cx="122" cy="100" r="1.6" fill="#b07bff"/>
       <line id="lrdimA" x1="84" y1="100" x2="34" y2="100" stroke="#ff7a2e" stroke-width="0.5" opacity=".6"/>
-      <text id="lrdimAt" x="40" y="96" fill="#ff7a2e" font-size="8" font-family="Courier Prime,Galmuri11,Share Tech Mono">r=50</text>
-      <text x="34" y="42" fill="#ff7a2e" font-size="9" font-family="Share Tech Mono,Galmuri11,monospace">SET (A)</text>
-      <text x="128" y="168" fill="#b07bff" font-size="9" font-family="Share Tech Mono,Galmuri11,monospace">INCL (B)</text>
+      <text id="lrdimAt" x="40" y="96" fill="#ff7a2e" font-size="8" font-family="Courier Prime,Galmuri11,Share Tech Mono,monospace">r=50</text>
+      <text x="34" y="42" fill="#ff7a2e" font-size="9" font-family="Courier Prime,Galmuri11,Share Tech Mono,monospace">SET (A)</text>
+      <text x="128" y="168" fill="#b07bff" font-size="9" font-family="Courier Prime,Galmuri11,Share Tech Mono,monospace">INCL (B)</text>
       <line x1="103" y1="100" x2="160" y2="60" stroke="rgba(255,122,46,.5)" stroke-width="0.5"/>
       <circle cx="103" cy="100" r="1.6" fill="#ff7a2e"/>
-      <text x="162" y="58" fill="#ff7a2e" font-size="9" font-family="Share Tech Mono,Galmuri11,monospace">A∩B = 32</text>
-      <text x="34" y="118" fill="rgba(255,122,46,.5)" font-size="7" font-family="Courier Prime,Galmuri11,Share Tech Mono">A\\B</text>
+      <text x="162" y="58" fill="#ff7a2e" font-size="9" font-family="Courier Prime,Galmuri11,Share Tech Mono,monospace">A∩B = 32</text>
+      <text x="34" y="118" fill="rgba(255,122,46,.5)" font-size="7" font-family="Courier Prime,Galmuri11,Share Tech Mono,monospace">A\\B</text>
       <circle id="lrtrace" r="2.4" fill="#ff7a2e"><animate attributeName="opacity" values="1;.3;1" dur="1.3s" repeatCount="indefinite"/></circle>
-      <text id="lrtraceXY" fill="#ff7a2e" font-size="8".5" font-family="Courier Prime,Galmuri11,Share Tech Mono"></text>`;
+      <text id="lrtraceXY" fill="#ff7a2e" font-size="8".5" font-family="Courier Prime,Galmuri11,Share Tech Mono,monospace"></text>`;
     const q=s=>svg.querySelector(s);const cA=q('#lrcA'),cB=q('#lrcB'),hA=q('#lrhA'),trace=q('#lrtrace'),tXY=q('#lrtraceXY'),dimA=q('#lrdimA'),dimAt=q('#lrdimAt');
     let t=0,pm=314.2,intc=32;
     setInterval(()=>{t+=0.05;
@@ -4485,12 +4490,12 @@ document.addEventListener('keydown',function(e){
     function buildPaths(t){let p='';for(let i=0;i<NC;i++){const r=10+i*9.5,op=(0.55-i*0.03).toFixed(2),sw=(i%3===0)?1.0:0.6;
       p+='<path d="'+blob(r,i*0.9,t)+'" fill="none" stroke="rgba(255,106,30,'+op+')" stroke-width="'+sw+'"/>';}return p;}
     let labels='';for(let i=0;i<NC;i++){if(i%3===0&&i>0){const r=10+i*9.5;
-      labels+='<text x="'+(cx-2)+'" y="'+(cy-r*0.9+2)+'" fill="rgba(255,106,30,.55)" font-size="8".5" font-family="Courier Prime,Galmuri11,Share Tech Mono">+'+(i*12)+'</text>';elevs.push(i*12);}}
+      labels+='<text x="'+(cx-2)+'" y="'+(cy-r*0.9+2)+'" fill="rgba(255,106,30,.55)" font-size="8".5" font-family="Courier Prime,Galmuri11,Share Tech Mono,monospace">+'+(i*12)+'</text>';elevs.push(i*12);}}
     let ticks='';for(let x=20;x<=200;x+=30)ticks+='<line x1="'+x+'" y1="186" x2="'+x+'" y2="190" stroke="rgba(255,74,22,.3)" stroke-width="0.6"/>';
     for(let y=20;y<=170;y+=30)ticks+='<line x1="4" y1="'+y+'" x2="8" y2="'+y+'" stroke="rgba(255,74,22,.3)" stroke-width="0.6"/>';
     svg.innerHTML=`<g id="lrcg">${buildPaths(0)}</g><g>${labels}</g><g>${ticks}</g>
-      <g><line x1="${cx-4}" y1="${cy}" x2="${cx+4}" y2="${cy}" stroke="#ffcf4a" stroke-width="0.8"/><line x1="${cx}" y1="${cy-4}" x2="${cx}" y2="${cy+4}" stroke="#ffcf4a" stroke-width="0.8"/><text x="${cx+6}" y="${cy-4}" fill="#ffcf4a" font-size="8" font-family="Share Tech Mono,Galmuri11,monospace">PK +148</text></g>
-      <g transform="translate(198,24)"><line x1="0" y1="8" x2="0" y2="-8" stroke="rgba(255,74,22,.5)" stroke-width="0.7"/><path d="M0,-8 L-2.5,-3 L2.5,-3 Z" fill="rgba(255,74,22,.7)"/><text x="-2.5" y="-10" fill="rgba(255,74,22,.6)" font-size="8" font-family="Courier Prime,Galmuri11,Share Tech Mono">N</text></g>
+      <g><line x1="${cx-4}" y1="${cy}" x2="${cx+4}" y2="${cy}" stroke="#ffcf4a" stroke-width="0.8"/><line x1="${cx}" y1="${cy-4}" x2="${cx}" y2="${cy+4}" stroke="#ffcf4a" stroke-width="0.8"/><text x="${cx+6}" y="${cy-4}" fill="#ffcf4a" font-size="8" font-family="Courier Prime,Galmuri11,Share Tech Mono,monospace">PK +148</text></g>
+      <g transform="translate(198,24)"><line x1="0" y1="8" x2="0" y2="-8" stroke="rgba(255,74,22,.5)" stroke-width="0.7"/><path d="M0,-8 L-2.5,-3 L2.5,-3 Z" fill="rgba(255,74,22,.7)"/><text x="-2.5" y="-10" fill="rgba(255,74,22,.6)" font-size="8" font-family="Courier Prime,Galmuri11,Share Tech Mono,monospace">N</text></g>
       <line id="lrcscan" x1="0" y1="40" x2="220" y2="40" stroke="rgba(255,207,74,.5)" stroke-width="0.8"/>`;
     $('cont-bands').innerHTML=elevs.map((e,i)=>'<div class="tr"><span class="k">+'+e+'</span><span class="v" style="color:rgba(255,106,30,'+(0.9-i*0.12)+')">▓▓</span></div>').join('');
     const pf=$('svg-prof');
@@ -4535,11 +4540,11 @@ document.addEventListener('keydown',function(e){
     const ang=i=>-Math.PI/2+i*Math.PI/2;const depth={x:13,y:-12};
     let rings='';for(let k=1;k<=4;k++){let p='';for(let i=0;i<4;i++)p+=(cx+Math.cos(ang(i))*R*k/4).toFixed(1)+','+(cy+Math.sin(ang(i))*R*k/4).toFixed(1)+' ';
       rings+='<polygon points="'+p+'" fill="none" stroke="rgba(255,74,22,.12)" stroke-width="0.6"/>';
-      rings+='<text x="'+(cx+2)+'" y="'+(cy-R*k/4+3).toFixed(1)+'" fill="rgba(255,74,22,.35)" font-size="7" font-family="Courier Prime,Galmuri11,Share Tech Mono">'+(k/4).toFixed(2)+'</text>';}
+      rings+='<text x="'+(cx+2)+'" y="'+(cy-R*k/4+3).toFixed(1)+'" fill="rgba(255,74,22,.35)" font-size="7" font-family="Courier Prime,Galmuri11,Share Tech Mono,monospace">'+(k/4).toFixed(2)+'</text>';}
     let spokes='',labels='';for(let i=0;i<4;i++){const a=ang(i);
       spokes+='<line x1="'+cx+'" y1="'+cy+'" x2="'+(cx+Math.cos(a)*R).toFixed(1)+'" y2="'+(cy+Math.sin(a)*R).toFixed(1)+'" stroke="rgba(255,74,22,.18)" stroke-width="0.6"/>';
-      labels+='<text x="'+(cx+Math.cos(a)*(R+12)).toFixed(1)+'" y="'+(cy+Math.sin(a)*(R+12)).toFixed(1)+'" fill="#ff7a2e" font-size="9" font-family="Share Tech Mono,Galmuri11,monospace" text-anchor="middle">'+axes[i][0]+'</text>';
-      labels+='<text x="'+(cx+Math.cos(a)*(R+12)).toFixed(1)+'" y="'+(cy+Math.sin(a)*(R+12)+7).toFixed(1)+'" fill="rgba(255,122,46,.5)" font-size="7".5" font-family="Courier Prime,Galmuri11,Share Tech Mono" text-anchor="middle">'+axes[i][1]+'</text>';}
+      labels+='<text x="'+(cx+Math.cos(a)*(R+12)).toFixed(1)+'" y="'+(cy+Math.sin(a)*(R+12)).toFixed(1)+'" fill="#ff7a2e" font-size="9" font-family="Courier Prime,Galmuri11,Share Tech Mono,monospace" text-anchor="middle">'+axes[i][0]+'</text>';
+      labels+='<text x="'+(cx+Math.cos(a)*(R+12)).toFixed(1)+'" y="'+(cy+Math.sin(a)*(R+12)+7).toFixed(1)+'" fill="rgba(255,122,46,.5)" font-size="7".5" font-family="Courier Prime,Galmuri11,Share Tech Mono,monospace" text-anchor="middle">'+axes[i][1]+'</text>';}
     svg.innerHTML=rings+spokes+labels
       +'<circle cx="'+cx+'" cy="'+cy+'" r="1.5" fill="rgba(255,74,22,.4)"/>'
       +'<polygon id="rr-ghost" fill="none" stroke="rgba(255,122,46,.22)" stroke-width="0.8" stroke-dasharray="2 2"/>'
@@ -4561,7 +4566,7 @@ document.addEventListener('keydown',function(e){
       box.innerHTML=s;
       let d='';for(let i=0;i<4;i++){const a=ang(i),x=f[i][0],y=f[i][1];
         d+='<circle cx="'+x.toFixed(1)+'" cy="'+y.toFixed(1)+'" r="2.2" fill="#ff7a2e"/>';
-        d+='<text x="'+(x+Math.cos(a)*7).toFixed(1)+'" y="'+(y+Math.sin(a)*7+2).toFixed(1)+'" fill="#ff7a2e" font-size="7" font-family="Courier Prime,Galmuri11,Share Tech Mono" text-anchor="middle">'+cur[i].toFixed(2)+'</text>';}
+        d+='<text x="'+(x+Math.cos(a)*7).toFixed(1)+'" y="'+(y+Math.sin(a)*7+2).toFixed(1)+'" fill="#ff7a2e" font-size="7" font-family="Courier Prime,Galmuri11,Share Tech Mono,monospace" text-anchor="middle">'+cur[i].toFixed(2)+'</text>';}
       dots.innerHTML=d;
       const score=(cur[0]*0.2+cur[1]*0.2+cur[2]*0.25+cur[3]*0.35);
       $('rr-id').textContent=id;$('rr-rnd').textContent=rnd;$('rr-n').textContent=String(n).padStart(3,'0')+'/438';
