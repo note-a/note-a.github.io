@@ -473,12 +473,14 @@ window.addEventListener('mousemove', e => {
 window.addEventListener('mouseup', () => { isDrag = false; });
 
 window.addEventListener('touchstart', e => {
-  isDrag = true; mx = e.touches[0].clientX; my = e.touches[0].clientY;
+  isDrag = true; hasDragged = false;
+  mx = e.touches[0].clientX; my = e.touches[0].clientY;
   velX = 0; velY = 0;
 }, { passive: true });
 window.addEventListener('touchmove', e => {
   if (!isDrag) return;
   const dx = e.touches[0].clientX - mx, dy = e.touches[0].clientY - my;
+  if (Math.abs(dx) > 4 || Math.abs(dy) > 4) hasDragged = true;
   velX = dx * 0.025;
   velY = dy * 0.012;
   offX = Math.max(-10, Math.min(10, offX + velX));
