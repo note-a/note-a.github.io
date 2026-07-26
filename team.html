@@ -1044,11 +1044,17 @@
       #col-left, #col-right { display: none !important; }
       #team-menubar { overflow-x: auto; white-space: nowrap; -webkit-overflow-scrolling: touch; }
       #team-menubar::-webkit-scrollbar { display: none; }
-      #col-center { min-height: 460px; width: calc(100vw - 12px) !important; min-width: 0 !important; max-width: calc(100vw - 12px) !important; overflow: hidden !important; }
-      #col-center .panel { width: 100% !important; min-width: 0 !important; max-width: 100% !important; overflow: hidden !important; }
-      #introView { width: 100% !important; min-width: 0 !important; overflow: hidden !important; }
-      #boardView, #detailView, #noticeView, #galleryView, #chatView, #memoView, #writeView { min-height: 0 !important; }
-      #statement-section { max-height: 140px !important; }
+      #team-menubar [data-cat="calendar"],
+      #team-menubar [data-cat="criteria"] { display: none !important; }
+      #team-menubar span { padding: 0 16px !important; }
+      #titlebar, #titlebar *, #col-center, #col-center * { font-size: 13px !important; }
+      #statement-section, #statement-section * { font-family: 'Space Mono', monospace !important; }
+      #col-center { min-height: 0; width: calc(100vw - 12px) !important; min-width: 0 !important; max-width: calc(100vw - 12px) !important; overflow: visible !important; }
+      #col-center .panel { width: 100% !important; min-width: 0 !important; max-width: 100% !important; overflow: visible !important; height: auto !important; }
+      #introView { width: 100% !important; min-width: 0 !important; overflow: visible !important; height: auto !important; }
+      #boardView, #detailView, #noticeView, #galleryView, #chatView, #memoView, #writeView { height: auto !important; min-height: 60vh; overflow: visible !important; }
+      #board-feed, #gallery-grid-wrap, .detail-body-wrap, #chat-feed, #memo-feed, #notice-feed { max-height: none !important; overflow: visible !important; height: auto !important; }
+      #statement-section { max-height: none !important; overflow: visible !important; }
       .kp-grid { width: 100% !important; min-width: 0 !important; }
       #app { border: none !important; }
       #gallery-grid-wrap { grid-template-columns: repeat(2, 1fr) !important; }
@@ -1285,7 +1291,7 @@
             <div style="padding:6px 10px;border-bottom:1px solid rgba(0,255,136,0.08);flex-shrink:0;display:flex;align-items:center;gap:7px;">
               <span style="font-size:11px;font-weight:700;color:#00ff88;letter-spacing:3px;">K</span>
               <span style="display:inline-block;width:5px;height:5px;border-radius:50%;background:#00ff88;box-shadow:0 0 5px #00ff88;"></span>
-              <span style="font-size:7px;color:rgba(0,255,136,.45);letter-spacing:1px;">ONLINE · ISOOBJ</span>
+              <span style="font-size:7px;color:rgba(0,255,136,.45);letter-spacing:1px;">ONLINE</span>
             </div>
             <div id="kfeed" style="flex:1;overflow-y:auto;padding:6px 10px;display:flex;flex-direction:column;gap:3px;"></div>
             <div style="padding:5px 8px;border-top:1px solid rgba(0,255,136,0.07);display:flex;gap:4px;flex-shrink:0;">
@@ -1305,7 +1311,7 @@
             <div style="padding:6px 10px;border-bottom:1px solid rgba(0,255,136,0.08);flex-shrink:0;display:flex;align-items:center;gap:7px;">
               <span style="font-size:11px;font-weight:700;color:#44ccff;letter-spacing:3px;">P</span>
               <span style="display:inline-block;width:5px;height:5px;border-radius:50%;background:rgba(0,204,255,0.35);"></span>
-              <span style="font-size:7px;color:rgba(0,204,255,.4);letter-spacing:1px;">STANDBY</span>
+              <span style="font-size:7px;color:rgba(0,204,255,.4);letter-spacing:1px;">OFFLINE</span>
             </div>
             <div id="pfeed" style="flex:1;overflow-y:auto;padding:6px 10px;display:flex;flex-direction:column;gap:3px;"></div>
             <div style="padding:5px 8px;border-top:1px solid rgba(0,255,136,0.07);display:flex;gap:4px;flex-shrink:0;">
@@ -1817,18 +1823,18 @@ let _handoverLoaded = false;
 function loadHandoverData(){
   if(_handoverLoaded) return Promise.resolve();
   return Promise.all([
-    fetch('./published-posts.json').then(r=>r.ok?r.json():[]).catch(()=>[]),
+    fetch('./handover-posts.json').then(r=>r.ok?r.json():[]).catch(()=>[]),
     fetch('./admin-contents.json').then(r=>r.ok?r.json():{}).catch(()=>{})
   ]).then(([posts, ac]) => {
     const ruleItems = (ac&&ac.rule&&ac.rule.items)||[];
-    const logItems = Array.isArray(posts) ? posts.filter(p=>p&&(p.publishedSection==='rule'||p.section==='rule')) : [];
+    const logItems = Array.isArray(posts) ? posts : [];
     const all = [...ruleItems, ...logItems];
     BOARD_DATA.handover = all.map((it,i) => ({
       id: 9000+i,
       author: it.author || 'RULE',
       title: it.title || it.name || '',
       ago: it.year || it.date || '2025',
-      body: it.text || it.preview || '',
+      body: it.preview || '',
       imgs: []
     }));
     if(all.length > 0) _handoverLoaded = true;
@@ -1919,16 +1925,15 @@ function loadGalleryGrid(){
 }
 
 let _detailMonth = null;
-let _detailSheets = [];
+let _detailPhotos = [];
 let detailPage = 0;
-const DETAIL_PAGE_SIZE = 1; // 1 sheet per page
+const DETAIL_PAGE_SIZE = 12;
 
 function showMonthDetail(month){
   _detailMonth = month;
-  _detailSheets = (month.children || []).map(s => ({
-    name: (s.title || s.id || '').replace(/\//g,'/'),
-    photos: (s.type==='sheet' ? (s.children||[]) : [s]).filter(p => p.filename||p.url)
-  })).filter(s => s.photos.length > 0);
+  _detailPhotos = (month.children || [])
+    .flatMap(s => s.type==='sheet' ? (s.children||[]) : [s])
+    .filter(p => p.filename || p.url);
   detailPage = 0;
   renderDetailPage();
   showView('detailView');
@@ -1936,23 +1941,23 @@ function showMonthDetail(month){
 
 function renderDetailPage(){
   const month = _detailMonth;
-  const sheets = _detailSheets;
   if(!month) return;
 
   const name = (month.title || month.id || '').toUpperCase().replace(/\./g,'/');
-  const allCount = sheets.reduce((n,s)=>n+s.photos.length, 0);
-  const totalPages = Math.max(1, sheets.length);
-
+  const all = _detailPhotos;
+  const totalPages = Math.max(1, Math.ceil(all.length / DETAIL_PAGE_SIZE));
   if(detailPage >= totalPages) detailPage = totalPages - 1;
   if(detailPage < 0) detailPage = 0;
+
+  const slice = all.slice(detailPage * DETAIL_PAGE_SIZE, (detailPage + 1) * DETAIL_PAGE_SIZE);
+  const showPager = all.length > DETAIL_PAGE_SIZE;
 
   const prevBtn = document.getElementById('detail-prev');
   const nextBtn = document.getElementById('detail-next');
   const meta = document.getElementById('detailMeta');
-  const showPager = totalPages > 1;
   if(prevBtn){ prevBtn.style.display = showPager ? '' : 'none'; prevBtn.disabled = detailPage===0; prevBtn.style.opacity = detailPage===0 ? '0.3' : '1'; }
   if(nextBtn){ nextBtn.style.display = showPager ? '' : 'none'; nextBtn.disabled = detailPage>=totalPages-1; nextBtn.style.opacity = detailPage>=totalPages-1 ? '0.3' : '1'; }
-  if(meta) meta.textContent = showPager ? `${detailPage+1} / ${totalPages}` : `${allCount} PHOTOS`;
+  if(meta) meta.textContent = showPager ? `${detailPage+1} / ${totalPages}` : `${all.length} PHOTOS`;
 
   const dh = document.getElementById('detailHeader');
   const db = document.getElementById('detailBody');
@@ -1961,17 +1966,14 @@ function renderDetailPage(){
   if(dh) dh.innerHTML = `
     <span class="mbadge" style="color:#00ff88;border-color:rgba(0,255,136,0.3);">STATUS</span>
     <span style="color:#00ff88;font-size:11px;font-weight:700;">${name}</span>
-    <span style="color:rgba(0,255,136,0.4);font-size:9px;margin-left:auto;">${allCount} PHOTOS</span>`;
+    <span style="color:rgba(0,255,136,0.4);font-size:9px;margin-left:auto;">${all.length} PHOTOS</span>`;
 
   if(db){
-    if(!sheets.length){
+    if(!slice.length){
       db.innerHTML = '<div style="color:rgba(0,255,136,0.3);font-size:10px;padding:20px;">// NO PHOTOS</div>';
     } else {
-      const sheet = sheets[detailPage];
-      let html = `<div style="margin-bottom:16px;">
-        <div style="font-size:8px;color:rgba(0,255,136,0.4);letter-spacing:2px;margin-bottom:6px;padding-bottom:4px;border-bottom:1px solid rgba(0,255,136,0.08);">${sheet.name} · ${sheet.photos.length}장</div>
-        <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:3px;">`;
-      sheet.photos.forEach(p => {
+      let html = '<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:3px;">';
+      slice.forEach(p => {
         const full = p.filename || p.url || '';
         const thumb = full ? full.replace(/\/DSCF([^/]+)\.(jpg|JPG)$/, '/t/DSCF$1.jpg') : '';
         html += `<div onclick="openLightbox('${full}')" style="aspect-ratio:3/2;overflow:hidden;background:#000;border:1px solid rgba(0,221,85,0.15);cursor:pointer;">
@@ -1981,9 +1983,9 @@ function renderDetailPage(){
             onmouseout="this.style.filter='brightness(0.6) saturate(0) sepia(1) hue-rotate(90deg)'">
         </div>`;
       });
-      html += `</div></div>`;
+      html += '</div>';
       db.innerHTML = html;
-      db.closest('.detail-body-wrap') ? db.closest('.detail-body-wrap').scrollTop = 0 : db.scrollTop = 0;
+      db.scrollTop = 0;
     }
   }
 }
@@ -2057,8 +2059,9 @@ function renderBoard(cat, page){
     if(titleEl) titleEl.textContent = '◆ ' + (CAT_LABELS[cat]||cat).toUpperCase();
   }
 
-  const slice = posts.slice(boardPage * PAGE_SIZE, (boardPage + 1) * PAGE_SIZE);
-  const showPager = posts.length > PAGE_SIZE;
+  const noPage = (cat === 'handover');
+  const slice = noPage ? posts : posts.slice(boardPage * PAGE_SIZE, (boardPage + 1) * PAGE_SIZE);
+  const showPager = !noPage && posts.length > PAGE_SIZE;
 
   if(prevBtn){ prevBtn.style.display = showPager ? '' : 'none'; prevBtn.disabled = boardPage === 0; prevBtn.style.opacity = boardPage === 0 ? '0.3' : '1'; }
   if(nextBtn){ nextBtn.style.display = showPager ? '' : 'none'; nextBtn.disabled = boardPage >= totalPages-1; nextBtn.style.opacity = boardPage >= totalPages-1 ? '0.3' : '1'; }
