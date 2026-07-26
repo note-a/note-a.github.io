@@ -1895,7 +1895,7 @@ function goBoard(spanEl){
   if(cat==='notice'){   showNoticeView(); return; }
 
   if(cat==='handover'){
-    loadHandoverData().then(()=>renderBoard(cat));
+    loadHandoverData().then(()=>renderBoard(cat)).catch(()=>renderBoard(cat));
     return;
   }
 
