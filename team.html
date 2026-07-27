@@ -3594,7 +3594,7 @@ function daySetAuthor(who){
   dayAuthor=who;
   const a='font-size:9px;font-weight:700;padding:2px 8px;cursor:pointer;font-family:Space Mono,monospace;';
   document.getElementById('day-btn-k').style.cssText=a+(who==='K'?'background:rgba(0,255,136,0.15);border:1px solid rgba(0,255,136,0.5);color:#00ff88;':'background:transparent;border:1px solid rgba(0,255,136,0.2);color:rgba(0,255,136,0.35);');
-  document.getElementById('day-btn-p').style.cssText=a+(who==='S'?'background:rgba(0,255,136,0.15);border:1px solid rgba(0,255,136,0.5);color:#00ff88;':'background:transparent;border:1px solid rgba(0,255,136,0.2);color:rgba(0,255,136,0.35);');
+  document.getElementById('day-btn-p').style.cssText=a+(who==='P'?'background:rgba(0,255,136,0.15);border:1px solid rgba(0,255,136,0.5);color:#00ff88;':'background:transparent;border:1px solid rgba(0,255,136,0.2);color:rgba(0,255,136,0.35);');
 }
 
 function saveDayEntry(){
@@ -3627,7 +3627,7 @@ function chatSetAuthor(who){
   chatAuthor=who;
   const a='font-size:9px;font-weight:700;padding:2px 8px;cursor:pointer;font-family:Space Mono,monospace;';
   document.getElementById('chat-btn-k').style.cssText=a+(who==='K'?'background:rgba(0,255,136,0.15);border:1px solid rgba(0,255,136,0.5);color:#00ff88;':'background:transparent;border:1px solid rgba(0,255,136,0.2);color:rgba(0,255,136,0.35);');
-  document.getElementById('chat-btn-p').style.cssText=a+(who==='S'?'background:rgba(0,255,136,0.15);border:1px solid rgba(0,255,136,0.5);color:#00ff88;':'background:transparent;border:1px solid rgba(0,255,136,0.2);color:rgba(0,255,136,0.35);');
+  document.getElementById('chat-btn-p').style.cssText=a+(who==='P'?'background:rgba(0,255,136,0.15);border:1px solid rgba(0,255,136,0.5);color:#00ff88;':'background:transparent;border:1px solid rgba(0,255,136,0.2);color:rgba(0,255,136,0.35);');
 }
 
 function sendChat(){
@@ -3720,7 +3720,7 @@ function memoSetAuthor(who){
     (who==='K'?'background:rgba(0,255,136,0.15);border:1px solid rgba(0,255,136,0.5);color:#00ff88;'
               :'background:transparent;border:1px solid rgba(0,255,136,0.2);color:rgba(0,255,136,0.35);');
   document.getElementById('memo-btn-p').style.cssText=ak+
-    (who==='S'?'background:rgba(0,255,136,0.15);border:1px solid rgba(0,255,136,0.5);color:#00ff88;'
+    (who==='P'?'background:rgba(0,255,136,0.15);border:1px solid rgba(0,255,136,0.5);color:#00ff88;'
               :'background:transparent;border:1px solid rgba(0,255,136,0.2);color:rgba(0,255,136,0.35);');
 }
 
@@ -3815,9 +3815,9 @@ function editFeedItem(id){
       <button id="fi-au-K-${id}" onclick="fiBtnAuthor(${id},'K')"
         style="font-size:8px;letter-spacing:1px;padding:1px 7px;cursor:pointer;font-family:'Space Mono',monospace;
                background:${isK?'rgba(0,255,136,0.15)':'transparent'};border:1px solid ${isK?'rgba(0,255,136,0.6)':'rgba(0,255,136,0.2)'};color:${isK?'#00ff88':'rgba(0,255,136,0.35)'};">K</button>
-      <button id="fi-au-S-${id}" onclick="fiBtnAuthor(${id},'S')"
+      <button id="fi-au-P-${id}" onclick="fiBtnAuthor(${id},'P')"
         style="font-size:8px;letter-spacing:1px;padding:1px 7px;cursor:pointer;font-family:'Space Mono',monospace;
-               background:${!isK?'rgba(0,204,255,0.12)':'transparent'};border:1px solid ${!isK?'rgba(0,204,255,0.5)':'rgba(0,204,255,0.2)'};color:${!isK?'#44ccff':'rgba(0,204,255,0.3)'};">S</button>
+               background:${!isK?'rgba(0,204,255,0.12)':'transparent'};border:1px solid ${!isK?'rgba(0,204,255,0.5)':'rgba(0,204,255,0.2)'};color:${!isK?'#44ccff':'rgba(0,204,255,0.3)'};">P</button>
       <input id="fi-au-${id}" type="hidden" value="${item.author}">
     </div>
     <textarea id="fi-edit-${id}" rows="3"
@@ -3834,9 +3834,9 @@ function editFeedItem(id){
 function fiBtnAuthor(id, who){
   document.getElementById('fi-au-'+id).value = who;
   const bK = document.getElementById('fi-au-K-'+id);
-  const bS = document.getElementById('fi-au-S-'+id);
+  const bS = document.getElementById('fi-au-P-'+id);
   if(bK){ bK.style.background=who==='K'?'rgba(0,255,136,0.15)':'transparent'; bK.style.borderColor=who==='K'?'rgba(0,255,136,0.6)':'rgba(0,255,136,0.2)'; bK.style.color=who==='K'?'#00ff88':'rgba(0,255,136,0.35)'; }
-  if(bS){ bS.style.background=who==='S'?'rgba(0,204,255,0.12)':'transparent'; bS.style.borderColor=who==='S'?'rgba(0,204,255,0.5)':'rgba(0,204,255,0.2)'; bS.style.color=who==='S'?'#44ccff':'rgba(0,204,255,0.3)'; }
+  if(bS){ bS.style.background=who==='P'?'rgba(0,204,255,0.12)':'transparent'; bS.style.borderColor=who==='P'?'rgba(0,204,255,0.5)':'rgba(0,204,255,0.2)'; bS.style.color=who==='P'?'#44ccff':'rgba(0,204,255,0.3)'; }
 }
 
 function saveFeedEdit(id){
@@ -3855,7 +3855,12 @@ function saveFeedEdit(id){
 }
 
 function renderFeeds(){
-  const feed = JSON.parse(localStorage.getItem('team_feed')||'[]');
+  let feed = JSON.parse(localStorage.getItem('team_feed')||'[]');
+  // migrate legacy 'S' author → 'P'
+  if(feed.some(f=>f.author==='S')){
+    feed = feed.map(f=>f.author==='S'?{...f,author:'P'}:f);
+    localStorage.setItem('team_feed',JSON.stringify(feed));
+  }
   const kEl = document.getElementById('kfeed');
   const pEl = document.getElementById('sfeed');
   if(!kEl||!pEl) return;
@@ -3920,7 +3925,7 @@ function setAuthor(who){
     (who==='K'?active:idle);
   document.getElementById('btn-author-p').style.cssText=
     'font-family:Space Mono,monospace;font-size:11px;font-weight:700;padding:5px 18px;cursor:pointer;letter-spacing:2px;'+
-    (who==='S'?active:idle);
+    (who==='P'?active:idle);
 }
 
 /* ── TIMELINE ── */
