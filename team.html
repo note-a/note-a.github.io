@@ -2138,22 +2138,17 @@ let _detailPhotos = [];
 let detailPage = 0;
 const DETAIL_PAGE_SIZE = 12;
 
-async function showMonthDetail(month){
+function showMonthDetail(month){
   _detailMonth = month;
   const allPhotos = (month.children || [])
     .flatMap(s => s.type==='sheet' ? (s.children||[]) : [s])
     .filter(p => p.filename || p.url);
+  _detailPhotos = allPhotos.filter(p =>
+    !p.verdict || p.verdict==='core' || p.verdict==='support'
+  );
   detailPage = 0;
-  showView('detailView');
-  const sel = await _loadSelecData();
-  _detailPhotos = allPhotos.filter(p => {
-    const num = _selecNum(p.filename || p.url || '');
-    if(!num) return true;
-    const d = sel[num];
-    if(!d) return true;
-    return d.v==='core' || d.v==='support';
-  });
   renderDetailPage();
+  showView('detailView');
 }
 
 function renderDetailPage(){
@@ -4169,7 +4164,14 @@ function _fbInit(){
       _fbLoading = true;
       const _FB_ARR = new Set(['team_chat','team_memos','team_feed','tl-items']);
       _FB_KEYS.forEach(k => {
-        if(data[k] == null) return;
+        if(data[k] == null) {
+          // Firebase에 없고 로컬에 데이터 있으면 자동 업로드
+          const localRaw = localStorage.getItem(k);
+          if(localRaw && localRaw !== '[]' && localRaw !== '{}' && localRaw !== 'null'){
+            setTimeout(() => _fbSyncKey(k), 800 + Math.random()*400);
+          }
+          return;
+        }
         let val = data[k];
         if(k === 'team_cal' && val && typeof val === 'object'){
           if(Array.isArray(val)){
