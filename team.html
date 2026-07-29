@@ -1595,17 +1595,52 @@
       <!-- DEV PANEL VIEW -->
       <div id="devPanelView" style="display:none;flex-direction:column;flex:1;min-height:0;overflow-y:auto;-webkit-overflow-scrolling:touch;background:#000;">
 
-        <!-- S3: 로그 & 커밋 -->
-        <div class="dp-section">
-          <div class="dp-title" style="display:flex;align-items:center;gap:10px;">
-            <span>// LOG <span id="dp-log-count" style="color:rgba(0,255,136,0.4);font-size:9px;"></span></span>
-            <span style="color:rgba(0,255,136,0.2);">·</span>
-            <span>COMMITS <button class="dp-btn" style="padding:1px 7px;font-size:8px;margin-left:4px;" onclick="dpLoadCommits()">↺</button></span>
-            <span style="margin-left:auto;display:flex;gap:3px;"><span style="font-size:8px;letter-spacing:1px;border:1px solid rgba(0,255,136,0.25);color:rgba(0,255,136,0.45);padding:0 5px;">K</span><span style="font-size:8px;letter-spacing:1px;border:1px solid rgba(0,255,136,0.25);color:rgba(0,255,136,0.45);padding:0 5px;">S</span></span>
+        <!-- PROJECT STATUS + LOCALSTORAGE 2열 -->
+        <div style="display:flex;gap:0;align-items:stretch;min-height:380px;">
+
+          <div class="dp-section" style="flex:1;min-width:0;border-right:1px solid rgba(0,255,136,0.08);display:flex;flex-direction:column;">
+            <div class="dp-title" style="display:flex;align-items:center;gap:8px;">
+              <span>// PROJECT STATUS</span>
+              <span id="dp-monitor-clock" style="font-size:9px;color:rgba(0,255,136,0.28);font-family:'Space Mono',monospace;letter-spacing:1px;"></span>
+              <button class="dp-btn" style="padding:1px 7px;font-size:8px;margin-left:auto;" onclick="dpRenderProjectStatus()">↺</button>
+            </div>
+            <div id="dp-project-status" style="margin-top:8px;flex:1;overflow-y:auto;max-height:320px;"></div>
           </div>
-          <div style="font-size:9px;color:rgba(0,255,136,0.28);letter-spacing:.5px;margin-bottom:8px;">앱 동작 실시간 기록 · GitHub 최근 커밋</div>
-          <div id="dp-log" style="max-height:130px;overflow-y:auto;font-size:10px;line-height:1.8;letter-spacing:.5px;margin-bottom:10px;"></div>
-          <div id="dp-commits"><span style="font-size:10px;color:rgba(0,255,136,0.3);">로딩 중…</span></div>
+
+          <div class="dp-section" style="flex:1;min-width:0;display:flex;flex-direction:column;">
+            <div class="dp-title" style="display:flex;align-items:center;justify-content:space-between;">
+              <span>// ERROR MONITOR <span id="dp-err-count" style="color:rgba(255,80,80,0.6);font-size:9px;"></span></span>
+              <button class="dp-btn" style="padding:1px 7px;font-size:8px;" onclick="dpClearErrors()">clear</button>
+            </div>
+            <div style="font-size:9px;color:rgba(0,255,136,0.28);letter-spacing:.5px;margin-bottom:8px;">JS 에러 실시간 캡처</div>
+            <div id="dp-errors" style="flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:3px;">
+              <span style="font-size:10px;color:rgba(0,255,136,0.2);letter-spacing:.5px;">에러 없음</span>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- LOG + LOCALSTORAGE 2열 -->
+        <div style="display:flex;gap:0;align-items:stretch;">
+
+          <div class="dp-section" style="flex:1;min-width:0;border-right:1px solid rgba(0,255,136,0.08);display:flex;flex-direction:column;">
+            <div class="dp-title" style="display:flex;align-items:center;gap:10px;">
+              <span>// LOG <span id="dp-log-count" style="color:rgba(0,255,136,0.4);font-size:9px;"></span></span>
+              <span style="margin-left:auto;display:flex;gap:3px;"><span style="font-size:8px;letter-spacing:1px;border:1px solid rgba(0,255,136,0.25);color:rgba(0,255,136,0.45);padding:0 5px;">K</span><span style="font-size:8px;letter-spacing:1px;border:1px solid rgba(0,255,136,0.25);color:rgba(0,255,136,0.45);padding:0 5px;">S</span></span>
+            </div>
+            <div style="font-size:9px;color:rgba(0,255,136,0.28);letter-spacing:.5px;margin-bottom:8px;">앱 동작 실시간 기록</div>
+            <div id="dp-log" style="flex:1;overflow-y:auto;font-size:10px;line-height:1.8;letter-spacing:.5px;"></div>
+          </div>
+
+          <div class="dp-section" style="flex:1;min-width:0;display:flex;flex-direction:column;">
+            <div class="dp-title" style="display:flex;align-items:center;justify-content:space-between;">
+              <span>// LOCALSTORAGE</span>
+              <button class="dp-btn" style="padding:1px 8px;font-size:8px;" onclick="dpRenderLsEditor()">↺</button>
+            </div>
+            <div style="font-size:9px;color:rgba(0,255,136,0.28);letter-spacing:.5px;margin-bottom:8px;">저장된 키 조회·편집·삭제</div>
+            <div id="dp-ls-editor" style="flex:1;display:flex;flex-direction:column;gap:4px;overflow-y:auto;"></div>
+          </div>
+
         </div>
 
         <!-- CSS VAR EDITOR -->
@@ -1616,16 +1651,6 @@
           </div>
           <div style="font-size:9px;color:rgba(0,255,136,0.28);letter-spacing:.5px;margin-bottom:8px;">:root 변수 실시간 편집 — 색상은 컬러피커 지원</div>
           <div id="dp-css-vars" style="display:flex;flex-direction:column;gap:3px;"></div>
-        </div>
-
-        <!-- LOCALSTORAGE EDITOR -->
-        <div class="dp-section">
-          <div class="dp-title" style="display:flex;align-items:center;justify-content:space-between;">
-            <span>// LOCALSTORAGE</span>
-            <button class="dp-btn" style="padding:1px 8px;font-size:8px;" onclick="dpRenderLsEditor()">↺</button>
-          </div>
-          <div style="font-size:9px;color:rgba(0,255,136,0.28);letter-spacing:.5px;margin-bottom:8px;">저장된 키 조회·편집·삭제 — 클릭해서 JSON 열기</div>
-          <div id="dp-ls-editor" style="display:flex;flex-direction:column;gap:4px;"></div>
         </div>
 
         <!-- LIVE CODE PAD -->
@@ -1656,15 +1681,6 @@
         <div class="dp-section">
           <div class="dp-title">// DEV TOOLS</div>
           <div style="font-size:9px;color:rgba(0,255,136,0.28);letter-spacing:.5px;margin-bottom:10px;">JS 에러 자동 캡처 · 한 줄 표현식 실행</div>
-
-          <!-- 에러 모니터 -->
-          <div style="font-size:9px;color:rgba(0,255,136,0.4);letter-spacing:2px;margin-bottom:5px;">
-            ERROR MONITOR <span id="dp-err-count" style="color:rgba(255,80,80,0.6);"></span>
-            <button class="dp-btn" style="padding:1px 7px;font-size:8px;margin-left:8px;" onclick="dpClearErrors()">clear</button>
-          </div>
-          <div id="dp-errors" style="max-height:100px;overflow-y:auto;margin-bottom:14px;display:flex;flex-direction:column;gap:3px;">
-            <span style="font-size:10px;color:rgba(0,255,136,0.2);letter-spacing:.5px;">에러 없음</span>
-          </div>
 
           <!-- JS REPL -->
           <div style="font-size:9px;color:rgba(0,255,136,0.4);letter-spacing:2px;margin-bottom:5px;">JS REPL</div>
@@ -2088,7 +2104,9 @@ function renderGalleryPage(){
       const img = document.createElement('img');
       img.src = thumb || full;
       img.dataset.full = full;
-      img.style.cssText = 'width:100%;height:100%;object-fit:cover;display:block;filter:brightness(0.6) saturate(0) sepia(1) hue-rotate(90deg);';
+      img.style.cssText = 'width:100%;height:100%;object-fit:cover;display:block;filter:brightness(0.6) saturate(0) sepia(1) hue-rotate(90deg);transition:filter .3s;';
+      img.onmouseover = function(){ this.style.filter='none'; };
+      img.onmouseout = function(){ this.style.filter='brightness(0.6) saturate(0) sepia(1) hue-rotate(90deg)'; };
       img.onerror = function(){ if(!this._fb){ this._fb=1; this.src=this.dataset.full; } };
       thumbDiv.appendChild(img);
     }
@@ -2330,8 +2348,18 @@ function goBoard(spanEl){
 
   if(cat==='idea'){    showMemoView(); return; }
   if(cat==='chat'){    showChatView(); return; }
-  if(cat==='calendar'){ showView('calendarView'); renderCalendar(); return; }
-  if(cat==='status'){   showView('galleryView'); loadGalleryGrid(); return; }
+  if(cat==='calendar'){
+    showView('calendarView'); renderCalendar();
+    const ph=document.getElementById('center-ph');
+    if(ph){const t=ph.querySelector('.panel-title');if(t)t.textContent='◆ SCHEDULE';}
+    return;
+  }
+  if(cat==='status'){
+    showView('galleryView'); loadGalleryGrid();
+    const ph=document.getElementById('center-ph');
+    if(ph){const t=ph.querySelector('.panel-title');if(t)t.textContent='◆ STATUS';}
+    return;
+  }
   if(cat==='notice'){   showNoticeView(); return; }
 
   if(cat==='handover'){
@@ -2649,7 +2677,14 @@ function submitPost(){
   const cat = currentCat;
   if(!BOARD_DATA[cat]) BOARD_DATA[cat]=[];
   const id = Date.now();
-  BOARD_DATA[cat].unshift({ id, author, title, body, ago:'방금', imgs: _writeImgs.slice() });
+  const newPost = { id, cat, author, title, body, ago:'방금', ts: id, imgs: _writeImgs.slice() };
+  BOARD_DATA[cat].unshift(newPost);
+  // localStorage + Firebase 저장
+  const userPosts = JSON.parse(localStorage.getItem('team_user_posts')||'[]');
+  userPosts.unshift(newPost);
+  localStorage.setItem('team_user_posts', JSON.stringify(userPosts.slice(0,200)));
+  clearTimeout(_fbSyncTimers['team_user_posts']);
+  _fbSyncKey('team_user_posts');
   _writeImgs=[];
   goBoard(null);
 }
@@ -2756,6 +2791,8 @@ function showDevPanel(){
   dpInitClaudeKey();
   dpInitGhToken();
   showView('devPanelView');
+  dpRenderProjectStatus();
+  _dpStartMonitor();
 }
 
 function dpRefresh(){ showDevPanel(); }
@@ -2957,22 +2994,34 @@ function dpInitGhToken(){
 const _dpErrors = [];
 function _dpAddError(msg, src, line){
   const ts = new Date().toTimeString().slice(0,8);
-  _dpErrors.unshift({ts, msg: String(msg), src: src?String(src).split('/').pop():'', line});
+  const srcShort = src ? String(src).split('/').pop() : '';
+  _dpErrors.unshift({ts, msg: String(msg), src: srcShort, line});
   if(_dpErrors.length > 20) _dpErrors.pop();
   _dpFlushErrors();
+  if(window._sysLog) _sysLog(`[ERR] ${String(msg).slice(0,80)}${srcShort?' · '+srcShort+(line?':'+line:''):''}`, 'warn');
 }
 function _dpFlushErrors(){
   const el = document.getElementById('dp-errors');
   const cnt = document.getElementById('dp-err-count');
   if(!el) return;
-  if(!_dpErrors.length){ el.innerHTML='<span style="font-size:10px;color:rgba(0,255,136,0.2);letter-spacing:.5px;">에러 없음</span>'; if(cnt) cnt.textContent=''; return; }
-  if(cnt) cnt.textContent = `(${_dpErrors.length})`;
-  el.innerHTML = _dpErrors.map(e=>`
+  const errHtml = _dpErrors.length ? _dpErrors.map(e=>`
     <div style="padding:3px 7px;background:rgba(255,60,60,0.06);border:1px solid rgba(255,60,60,0.2);line-height:1.6;">
       <span style="color:rgba(0,255,136,0.3);font-size:9px;">${e.ts}</span>
       ${e.src?`<span style="color:rgba(255,180,0,0.7);font-size:9px;margin-left:6px;">${e.src}:${e.line||''}</span>`:''}
       <div style="color:rgba(255,100,100,0.85);font-size:10px;margin-top:1px;">${String(e.msg).replace(/</g,'&lt;').slice(0,200)}</div>
-    </div>`).join('');
+    </div>`).join('') : '';
+  if(cnt) cnt.textContent = _dpErrors.length ? `(${_dpErrors.length})` : '';
+  // 에러 없으면 최근 로그 표시
+  if(!_dpErrors.length){
+    const logs = (typeof _dpLogs !== 'undefined' ? _dpLogs : []).slice(0,12);
+    el.innerHTML = logs.length ? logs.map(l=>`
+      <div class="dp-log-line">
+        <span class="dp-log-ts">${l.ts}</span>
+        <span class="dp-log-msg" style="color:${l.col}">${l.msg}</span>
+      </div>`).join('') : '<span style="font-size:10px;color:rgba(0,255,136,0.2);">로그 없음</span>';
+  } else {
+    el.innerHTML = errHtml;
+  }
 }
 function dpClearErrors(){ _dpErrors.length=0; _dpFlushErrors(); }
 window.onerror = function(msg,src,line){ _dpAddError(msg,src,line); };
@@ -3177,26 +3226,250 @@ function dpCodeClear(){
   if(_dpCodeMode==='css') _dpInjectCSS('');
 }
 
+function _escSvg(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
 function dpLoadCommits(){
   const el = document.getElementById('dp-commits');
   if(!el) return;
   el.innerHTML = '<span style="font-size:10px;color:rgba(0,255,136,0.3);">로딩 중…</span>';
-  fetch('https://api.github.com/repos/note-a/note-a-github/commits?per_page=7')
+  fetch('https://api.github.com/repos/note-a/note-a.github.io/commits?per_page=10')
     .then(r=>r.json())
     .then(data=>{
-      if(!Array.isArray(data)){ el.innerHTML='<span style="font-size:10px;color:rgba(255,68,68,0.6);">접근 불가 (private 또는 저장소명 불일치)</span>'; return; }
-      el.innerHTML = data.map(c=>{
-        const msg = (c.commit.message||'').split('\n')[0].slice(0,52);
-        const date = (c.commit.author.date||'').slice(0,10);
-        const sha = (c.sha||'').slice(0,7);
-        return `<div style="display:flex;gap:8px;padding:6px 0;border-bottom:1px solid rgba(0,255,136,0.08);align-items:flex-start;">
-          <span style="font-size:9px;color:rgba(0,255,136,0.35);flex-shrink:0;margin-top:1px;">${date}</span>
-          <span style="font-size:10px;color:rgba(0,255,136,0.7);flex:1;line-height:1.5;">${msg}</span>
-          <span style="font-size:9px;color:rgba(0,255,136,0.25);flex-shrink:0;">${sha}</span>
-        </div>`;
+      if(!Array.isArray(data)){ el.innerHTML='<span style="font-size:10px;color:rgba(255,68,68,0.6);">접근 불가</span>'; return; }
+      const lineH = 46;
+      const svgH = data.length * lineH + 8;
+      const rows = data.map((c, i)=>{
+        const msg = _escSvg((c.commit.message||'').split('\n')[0].slice(0,44));
+        const date = (c.commit.author.date||'').slice(5,10);
+        const sha = _escSvg((c.sha||'').slice(0,7));
+        const y = i * lineH + 20;
+        const isFirst = i === 0;
+        const dotR = isFirst ? 5 : 3;
+        const dotFill = isFirst ? '#00ff88' : 'rgba(0,255,136,0.45)';
+        const dotStroke = isFirst ? 'rgba(0,255,136,0.4)' : 'none';
+        const msgFill = isFirst ? 'rgba(0,255,136,0.92)' : 'rgba(0,255,136,0.55)';
+        const metaFill = isFirst ? 'rgba(0,255,136,0.4)' : 'rgba(0,255,136,0.28)';
+        const lineY2 = y + lineH - 8;
+        return `
+          ${i < data.length-1 ? `<line x1="13" y1="${y+dotR+2}" x2="13" y2="${lineY2}" stroke="rgba(0,255,136,0.14)" stroke-width="1" stroke-dasharray="${isFirst?'none':'3,2'}"/>` : ''}
+          <circle cx="13" cy="${y}" r="${dotR}" fill="${dotFill}" stroke="${dotStroke}" stroke-width="${isFirst?1.5:0}"/>
+          ${isFirst ? `<circle cx="13" cy="${y}" r="${dotR+4}" fill="none" stroke="rgba(0,255,136,0.18)" stroke-width="1"/>` : ''}
+          <text x="27" y="${y-5}" font-family="'Space Mono',monospace" font-size="8" fill="${metaFill}" letter-spacing="0.3">${date}  ${sha}</text>
+          <text x="27" y="${y+8}" font-family="'Space Mono',monospace" font-size="9.5" fill="${msgFill}">${msg}</text>
+        `;
       }).join('');
+      el.innerHTML = `<div style="position:relative;padding-left:22px;">${rows}</div>`;
     })
     .catch(()=>{ el.innerHTML='<span style="font-size:10px;color:rgba(255,68,68,0.5);">네트워크 오류</span>'; });
+}
+
+const _DP_STATUS_DEFAULTS = [
+  { key:'THREAD',   label:'채팅 / 스레드',   design:2, impl:85 },
+  { key:'STATUS',   label:'사진 현황',        design:2, impl:80 },
+  { key:'SCHEDULE', label:'일정 관리',        design:1, impl:75 },
+  { key:'EXHIBIT',  label:'전시 게시판',      design:1, impl:70 },
+  { key:'GUIDE',    label:'가이드 공지',      design:2, impl:70 },
+  { key:'IDEA',     label:'아이디어 메모',    design:0, impl:50 },
+  { key:'DEV',      label:'개발 대시보드',    design:1, impl:60 },
+  { key:'FIREBASE', label:'DB 동기화',        design:2, impl:90 },
+];
+
+function _dpGetProgress(){
+  try { return JSON.parse(localStorage.getItem('team_dev_progress')||'null') || _DP_STATUS_DEFAULTS.map(d=>({...d})); }
+  catch(e){ return _DP_STATUS_DEFAULTS.map(d=>({...d})); }
+}
+function _dpSaveProgress(rows){ localStorage.setItem('team_dev_progress', JSON.stringify(rows)); }
+
+function dpAdjustImpl(key, delta){
+  const rows = _dpGetProgress();
+  const r = rows.find(x=>x.key===key);
+  if(!r) return;
+  r.impl = Math.max(0, Math.min(100, r.impl + delta));
+  _dpSaveProgress(rows);
+  dpRenderProjectStatus();
+}
+function dpCycleDesign(key){
+  const rows = _dpGetProgress();
+  const r = rows.find(x=>x.key===key);
+  if(!r) return;
+  r.design = (r.design + 1) % 3;
+  _dpSaveProgress(rows);
+  dpRenderProjectStatus();
+}
+
+function dpRenderProjectStatus(){
+  const el = document.getElementById('dp-project-status');
+  if(!el) return;
+  const rows = _dpGetProgress();
+
+  const ls = (k, isObj)=>{ try{ const v=JSON.parse(localStorage.getItem(k)||'null'); if(v==null) return 0; return isObj?Object.keys(v).length:(Array.isArray(v)?v.length:1); }catch(e){ return 0; } };
+  const liveData = {
+    THREAD:   ls('team_chat') + ' msg',
+    STATUS:   '438 files',
+    SCHEDULE: ls('team_cal', true) + ' 일',
+    EXHIBIT:  ls('team_user_posts') + ' posts',
+    GUIDE:    localStorage.getItem('team_notice') ? '공지 있음' : '—',
+    IDEA:     ls('team_memos') + ' 개',
+    DEV:      (typeof _dpErrors!=='undefined'?_dpErrors.length:0) + ' err',
+    FIREBASE: (()=>{ const e=document.getElementById('dp-gh-status'); return e&&e.textContent.includes('연결')? 'ONLINE':'OFFLINE'; })(),
+  };
+
+  const designIcon = d => ['○','◐','●'][d] || '○';
+  const designColor = d => ['rgba(0,255,136,0.2)','rgba(0,255,136,0.55)','rgba(0,255,136,0.9)'][d] || 'rgba(0,255,136,0.2)';
+
+  const gauge = (pct, w=14)=>{
+    const f = Math.round(pct/100*w);
+    return `<span style="letter-spacing:-0.5px;color:rgba(0,255,136,0.75);">${'█'.repeat(f)}</span><span style="letter-spacing:-0.5px;color:rgba(0,255,136,0.12);">${'░'.repeat(w-f)}</span>`;
+  };
+
+  const fbEl = document.getElementById('dp-gh-status');
+  const fbTxt = fbEl ? fbEl.textContent : '';
+  const fbOk = fbTxt.includes('연결됨') || fbTxt.includes('동기화') || fbTxt.includes('OK');
+  const errCount = (typeof _dpErrors !== 'undefined') ? _dpErrors.length : 0;
+  let lsBytes = 0;
+  try { for(const k in localStorage){ if(Object.prototype.hasOwnProperty.call(localStorage,k)) lsBytes += (localStorage[k]||'').length*2; } } catch(e){}
+  const lsKb = (lsBytes/1024).toFixed(1);
+  const lsPct = Math.min(100, lsBytes/(5*1024*1024)*100);
+  const sGauge = (pct,w=10)=>`<span style="color:rgba(0,255,136,0.72);">${'█'.repeat(Math.round(pct/100*w))}</span><span style="color:rgba(0,255,136,0.14);">${'░'.repeat(w-Math.round(pct/100*w))}</span>`;
+  const sDot = on=>`<span style="color:${on?'#00ff88':'rgba(255,80,80,0.85)'};">●</span>`;
+
+  el.innerHTML = `
+    <div style="font-family:'Space Mono',monospace;font-size:9px;">
+      <!-- 시스템 상태 3줄 -->
+      <div style="font-size:10px;line-height:2;margin-bottom:10px;border-bottom:1px solid rgba(0,255,136,0.08);padding-bottom:8px;">
+        <div style="display:flex;align-items:center;gap:8px;">
+          ${sDot(fbOk)}
+          <span style="color:rgba(0,255,136,0.38);width:68px;font-size:8.5px;letter-spacing:1px;">FIREBASE</span>
+          <span style="color:${fbOk?'rgba(0,255,136,0.75)':'rgba(255,80,80,0.75)'};font-size:9px;">${fbOk?'CONNECTED':'OFFLINE'}</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;">
+          ${sDot(errCount===0)}
+          <span style="color:rgba(0,255,136,0.38);width:68px;font-size:8.5px;letter-spacing:1px;">ERRORS</span>
+          <span style="color:${errCount>0?'rgba(255,80,80,0.8)':'rgba(0,255,136,0.45)'};font-size:9px;">${errCount>0?errCount+' FOUND':'CLEAR'}</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;">
+          <span style="color:rgba(0,255,136,0.18);">●</span>
+          <span style="color:rgba(0,255,136,0.38);width:68px;font-size:8.5px;letter-spacing:1px;">STORAGE</span>
+          <span style="font-size:10px;">${sGauge(lsPct)}</span>
+          <span style="color:rgba(0,255,136,0.5);font-size:9px;margin-left:4px;">${lsKb} KB</span>
+        </div>
+      </div>
+      <!-- 행 -->
+      ${rows.map(r=>{
+        const data = liveData[r.key] || '—';
+        return `
+        <div style="display:flex;align-items:center;gap:6px;padding:4px 0;border-bottom:1px solid rgba(0,255,136,0.05);">
+          <span style="color:rgba(0,255,136,0.65);font-size:8.5px;letter-spacing:1px;width:60px;flex-shrink:0;">${r.key}</span>
+          <span style="cursor:pointer;font-size:10px;color:${designColor(r.design)};flex-shrink:0;"
+                onclick="dpCycleDesign('${r.key}')">${designIcon(r.design)}</span>
+          <div style="flex:1;height:2px;background:rgba(0,255,136,0.08);position:relative;">
+            <div style="position:absolute;left:0;top:0;height:100%;width:${r.impl}%;background:rgba(0,255,136,0.55);"></div>
+          </div>
+          <span style="color:rgba(0,255,136,0.4);font-size:8px;width:22px;text-align:right;flex-shrink:0;">${r.impl}%</span>
+          <button onclick="dpAdjustImpl('${r.key}',-10)" style="background:none;border:1px solid rgba(0,255,136,0.15);color:rgba(0,255,136,0.35);font-size:8px;padding:0 4px;cursor:pointer;line-height:1.6;font-family:'Space Mono',monospace;flex-shrink:0;">-</button>
+          <button onclick="dpAdjustImpl('${r.key}',10)"  style="background:none;border:1px solid rgba(0,255,136,0.15);color:rgba(0,255,136,0.35);font-size:8px;padding:0 4px;cursor:pointer;line-height:1.6;font-family:'Space Mono',monospace;flex-shrink:0;">+</button>
+          <span style="color:rgba(0,255,136,0.35);font-size:8px;width:55px;text-align:right;flex-shrink:0;">${data}</span>
+        </div>`;
+      }).join('')}
+      <div style="font-size:7.5px;color:rgba(0,255,136,0.18);margin-top:6px;letter-spacing:.5px;">
+        설계 ○미착수 ◐진행 ●완료 &nbsp;·&nbsp; 완성도 +/- 10% 조정 &nbsp;·&nbsp; localStorage 저장
+      </div>
+    </div>
+  `;
+}
+
+function dpRenderLiveMonitor(){
+  const el = document.getElementById('dp-live-monitor');
+  if(!el) return;
+
+  // Firebase 연결 상태
+  const fbEl = document.getElementById('dp-gh-status');
+  const fbTxt = fbEl ? fbEl.textContent : '';
+  const fbOk = fbTxt.includes('연결됨') || fbTxt.includes('동기화') || fbTxt.includes('OK');
+
+  // 에러 수
+  const errCount = (typeof _dpErrors !== 'undefined') ? _dpErrors.length : 0;
+
+  // localStorage 사용량
+  let lsBytes = 0;
+  try { for(const k in localStorage){ if(Object.prototype.hasOwnProperty.call(localStorage,k)) lsBytes += (localStorage[k]||'').length * 2; } } catch(e){}
+  const lsKb = (lsBytes / 1024).toFixed(1);
+  const lsPct = Math.min(100, lsBytes / (5*1024*1024) * 100);
+
+  // 모듈별 카운트
+  const ls = (k, isObj)=>{ try{ const v=JSON.parse(localStorage.getItem(k)||'null'); if(!v) return 0; return isObj?Object.keys(v).length:v.length; }catch(e){ return 0; } };
+  const modules = [
+    { label:'THREAD', val: ls('team_chat'),       unit:'msg' },
+    { label:'MEMO',   val: ls('team_memos'),       unit:'개'  },
+    { label:'SCHED',  val: ls('team_cal', true),   unit:'일'  },
+    { label:'POSTS',  val: ls('team_user_posts'),  unit:'개'  },
+    { label:'LOG',    val: (typeof _dpLogs!=='undefined'?_dpLogs.length:0), unit:'줄' },
+    { label:'ERR',    val: errCount, unit:'개', alert: errCount > 0 },
+  ];
+
+  // ASCII 게이지 바
+  const gauge = (pct, w=10)=>{
+    const f = Math.round(pct/100*w);
+    return `<span style="color:rgba(0,255,136,0.72);">${'█'.repeat(f)}</span><span style="color:rgba(0,255,136,0.14);">${'░'.repeat(w-f)}</span>`;
+  };
+  const dot = on => `<span style="font-size:11px;color:${on?'#00ff88':'rgba(255,80,80,0.85)'};">●</span>`;
+
+  el.innerHTML = `
+    <div style="font-family:'Space Mono',monospace;">
+      <!-- 상태 줄 -->
+      <div style="font-size:10px;line-height:2.1;margin-bottom:8px;">
+        <div style="display:flex;align-items:center;gap:8px;">
+          ${dot(fbOk)}
+          <span style="color:rgba(0,255,136,0.38);font-size:8.5px;letter-spacing:1.2px;width:64px;">FIREBASE</span>
+          <span style="color:${fbOk?'rgba(0,255,136,0.75)':'rgba(255,80,80,0.75)'};font-size:9px;">${fbOk?'CONNECTED':'OFFLINE'}</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;">
+          ${dot(errCount===0)}
+          <span style="color:rgba(0,255,136,0.38);font-size:8.5px;letter-spacing:1.2px;width:64px;">ERRORS</span>
+          <span style="color:${errCount>0?'rgba(255,80,80,0.8)':'rgba(0,255,136,0.45)'};font-size:9px;">${errCount>0?errCount+' FOUND':'CLEAR'}</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;">
+          <span style="color:rgba(0,255,136,0.18);font-size:11px;">●</span>
+          <span style="color:rgba(0,255,136,0.38);font-size:8.5px;letter-spacing:1.2px;width:64px;">STORAGE</span>
+          <span style="font-size:10px;">${gauge(lsPct)}</span>
+          <span style="color:rgba(0,255,136,0.5);font-size:9px;">${lsKb} KB</span>
+        </div>
+      </div>
+      <!-- 구분선 -->
+      <div style="border-top:1px solid rgba(0,255,136,0.08);margin-bottom:8px;"></div>
+      <!-- 모듈 그리드 -->
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:3px;">
+        ${modules.map(m=>`
+          <div style="border:1px solid rgba(0,255,136,${m.alert?'0.45':'0.1'});padding:6px 8px;background:rgba(0,255,136,${m.alert?'0.06':'0.02'});position:relative;">
+            <div style="font-size:7.5px;color:rgba(0,255,136,0.35);letter-spacing:1.5px;margin-bottom:3px;">${m.label}</div>
+            <div style="font-size:18px;font-weight:normal;color:rgba(0,255,136,${m.alert?1:0.78});line-height:1;">${m.val}</div>
+            <div style="font-size:7px;color:rgba(0,255,136,0.25);margin-top:2px;">${m.unit}</div>
+          </div>
+        `).join('')}
+      </div>
+      <div style="font-size:8px;color:rgba(0,255,136,0.16);text-align:right;margin-top:6px;letter-spacing:.5px;">5s auto-refresh</div>
+    </div>
+  `;
+}
+
+let _dpMonitorTimer = null;
+function _dpStartMonitor(){
+  dpRenderLiveMonitor();
+  _dpMonitorTick();
+  if(_dpMonitorTimer) clearInterval(_dpMonitorTimer);
+  _dpMonitorTimer = setInterval(()=>{
+    const v = document.getElementById('devPanelView');
+    if(v && v.style.display !== 'none') dpRenderLiveMonitor();
+    else { clearInterval(_dpMonitorTimer); _dpMonitorTimer = null; }
+  }, 5000);
+}
+function _dpMonitorTick(){
+  const el = document.getElementById('dp-monitor-clock');
+  const v = document.getElementById('devPanelView');
+  if(!el || !v || v.style.display === 'none') return;
+  const n = new Date();
+  el.textContent = n.toTimeString().slice(0,8);
+  setTimeout(_dpMonitorTick, 1000);
 }
 
 function dpActionMsg(msg, ok=true){
@@ -3699,7 +3972,7 @@ function renderCalendar(){
       </div>`;
     }).join('') : '';
     html+=`<div onclick="openDay('${key}',${d})"
-      style="min-height:36px;padding:2px;border:1px solid ${isToday?'rgba(0,255,136,0.4)':'rgba(0,255,136,0.06)'};
+      style="min-height:54px;padding:2px;border:1px solid ${isToday?'rgba(0,255,136,0.4)':'rgba(0,255,136,0.06)'};
              background:${isToday?'rgba(0,255,136,0.06)':hasEntry?'rgba(0,255,136,0.03)':'transparent'};
              cursor:pointer;display:flex;flex-direction:column;align-items:flex-start;
              transition:background 0.15s;overflow:hidden;"
@@ -3739,17 +4012,54 @@ function renderDayEntries(){
     el.innerHTML='<div style="font-size:10px;color:rgba(0,255,136,.2);padding:8px 0;letter-spacing:1px;">// 기록 없음</div>';
     return;
   }
-  el.innerHTML=list.map((e,i)=>`
-    <div style="display:flex;gap:6px;align-items:flex-start;padding:4px 0;border-bottom:1px solid rgba(0,255,136,0.05);">
-      <span style="font-size:9px;font-weight:700;color:${e.author==='K'?'#00ff88':'#44ccff'};border:1px solid ${e.author==='K'?'rgba(0,255,136,.4)':'rgba(68,204,255,.4)'};padding:0 4px;flex-shrink:0;line-height:1.5;">${e.author}</span>
-      <span style="flex:1;font-size:10px;color:rgba(0,255,136,.8);line-height:1.7;white-space:pre-wrap;">${(e.text||'').replace(/[\[\]]/g,'')}</span>
-      <div style="display:flex;flex-direction:column;align-items:flex-end;gap:2px;">
-        <span style="font-size:8px;color:rgba(0,255,136,.2);">${e.ts||''}</span>
-        <button onclick="editDayEntry(${i})" style="font-size:11px;color:rgba(0,255,136,.6);background:none;border:1px solid rgba(0,255,136,.25);cursor:pointer;padding:2px 7px;letter-spacing:1px;font-family:inherit;" onmouseover="this.style.color='#00ff88';this.style.borderColor='rgba(0,255,136,.6)'" onmouseout="this.style.color='rgba(0,255,136,.6)';this.style.borderColor='rgba(0,255,136,.25)'">EDIT</button>
-        <button onclick="deleteDayEntry(${i})" style="font-size:11px;color:rgba(255,80,80,.7);background:none;border:1px solid rgba(255,80,80,.3);cursor:pointer;padding:2px 7px;letter-spacing:1px;font-family:inherit;" onmouseover="this.style.color='#ff5050';this.style.borderColor='rgba(255,80,80,.7)'" onmouseout="this.style.color='rgba(255,80,80,.7)';this.style.borderColor='rgba(255,80,80,.3)'">DEL</button>
+  const _tagS={'진행중':{c:'rgba(0,255,136,.9)',b:'rgba(0,255,136,.3)'},'완료':{c:'rgba(0,200,255,.9)',b:'rgba(0,200,255,.3)'},'보류':{c:'rgba(255,180,0,.9)',b:'rgba(255,180,0,.35)'},'검토요청':{c:'rgba(0,180,255,.9)',b:'rgba(0,180,255,.35)'},'예정':{c:'rgba(180,100,255,.9)',b:'rgba(180,100,255,.35)'}};
+  const tagKeys=Object.keys(_tagS);
+  el.innerHTML=list.map((e,i)=>{
+    const raw=(e.text||'').replace(/[\[\]]/g,'');
+    const curTag=tagKeys.find(t=>raw.includes(t))||'';
+    const bodyText=raw.replace(/진행중|완료|보류|검토요청|예정/g,'').trim();
+    const tagBtns=tagKeys.map(t=>{
+      const s=_tagS[t];
+      const active=t===curTag;
+      return `<button onclick="changeDayEntryTag(${i},'${t}')" style="font-size:8px;padding:1px 5px;cursor:pointer;font-family:inherit;letter-spacing:.5px;transition:all .15s;${active?`background:rgba(0,0,0,.3);border:1px solid ${s.b};color:${s.c};`:'background:none;border:1px solid rgba(0,255,136,.1);color:rgba(0,255,136,.25);'}">${t}</button>`;
+    }).join('');
+    return `
+    <div style="display:flex;flex-direction:column;gap:3px;padding:5px 0;border-bottom:1px solid rgba(0,255,136,0.05);">
+      <div style="display:flex;gap:6px;align-items:flex-start;">
+        <span style="font-size:9px;font-weight:700;color:${e.author==='K'?'#00ff88':'#44ccff'};border:1px solid ${e.author==='K'?'rgba(0,255,136,.4)':'rgba(68,204,255,.4)'};padding:0 4px;flex-shrink:0;line-height:1.5;">${e.author}</span>
+        <span style="flex:1;font-size:10px;color:rgba(0,255,136,.8);line-height:1.7;white-space:pre-wrap;">${bodyText}</span>
+        <div style="display:flex;flex-direction:column;align-items:flex-end;gap:2px;">
+          <span style="font-size:8px;color:rgba(0,255,136,.2);">${e.ts||''}</span>
+          <button onclick="editDayEntry(${i})" style="font-size:11px;color:rgba(0,255,136,.6);background:none;border:1px solid rgba(0,255,136,.25);cursor:pointer;padding:2px 7px;letter-spacing:1px;font-family:inherit;">EDIT</button>
+          <button onclick="deleteDayEntry(${i})" style="font-size:11px;color:rgba(255,80,80,.7);background:none;border:1px solid rgba(255,80,80,.3);cursor:pointer;padding:2px 7px;letter-spacing:1px;font-family:inherit;">DEL</button>
+        </div>
       </div>
-    </div>`).join('');
+      <div style="display:flex;gap:3px;padding-left:22px;">${tagBtns}</div>
+    </div>`;
+  }).join('');
   el.scrollTop=el.scrollHeight;
+}
+
+function changeDayEntryTag(idx, newTag){
+  let all=JSON.parse(localStorage.getItem('team_cal')||'{}');
+  if(typeof all!=='object'||Array.isArray(all)) all={};
+  const list=all[currentDayKey]||[];
+  if(!list[idx]) return;
+  const tags=['진행중','완료','보류','검토요청','예정'];
+  let text=list[idx].text||'';
+  const curTag=tags.find(t=>text.includes(t));
+  if(curTag===newTag){ // 같은 태그 클릭하면 태그 제거
+    tags.forEach(t=>{text=text.replace(new RegExp(t+'\\s*','g'),'').trim();});
+  } else {
+    tags.forEach(t=>{text=text.replace(new RegExp(t+'\\s*','g'),'').trim();});
+    text=newTag+' '+text;
+  }
+  list[idx].text=text.trim();
+  all[currentDayKey]=list;
+  localStorage.setItem('team_cal',JSON.stringify(all));
+  clearTimeout(_fbSyncTimers['team_cal']);
+  _fbSyncKey('team_cal');
+  renderDayEntries();
 }
 
 function daySetAuthor(who){
@@ -4128,7 +4438,7 @@ function loadNotice(){
 // GitHub Sync
 // ══════════════════════════════════════════════════
 // ── Firebase Realtime Database Sync ──
-const _FB_KEYS = ['team_cal','team_chat','team_memos','team_feed','team_post_edits','team_post_deleted','tl-items','ds-data','team_notice','team_notice_ts'];
+const _FB_KEYS = ['team_cal','team_chat','team_memos','team_feed','team_post_edits','team_post_deleted','tl-items','ds-data','team_notice','team_notice_ts','team_user_posts'];
 let _fbDb = null, _fbLoading = false;
 const _fbSyncTimers = {};
 
@@ -4200,6 +4510,7 @@ function _fbInit(){
         _origSetItem(k, JSON.stringify(val));
       });
       _fbLoading = false;
+      try{ _loadUserPosts(); }catch(e){}
       try{ renderFeeds(); }catch(e){}
       try{ renderMemos(); }catch(e){}
       try{ renderChat(); }catch(e){}
@@ -4226,7 +4537,20 @@ function _fbSyncKey(key){
   }catch(e){}
 }
 
+function _loadUserPosts(){
+  try{
+    const posts = JSON.parse(localStorage.getItem('team_user_posts')||'[]');
+    const deleted = JSON.parse(localStorage.getItem('team_post_deleted')||'[]');
+    posts.forEach(p=>{
+      if(!p.cat||!p.id||deleted.includes(p.id)) return;
+      if(!BOARD_DATA[p.cat]) BOARD_DATA[p.cat]=[];
+      if(!BOARD_DATA[p.cat].find(x=>x.id===p.id)) BOARD_DATA[p.cat].unshift(p);
+    });
+  }catch(e){}
+}
+
 document.addEventListener('DOMContentLoaded', function(){
+  _loadUserPosts();
   renderFeeds();
   loadNotice();
   _fbInit();
