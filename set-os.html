@@ -4399,7 +4399,11 @@ document.addEventListener('keydown',function(e){
   window.__hudScale=function(){
     var w=window.innerWidth;
     var coarse=window.matchMedia&&window.matchMedia('(pointer:coarse)').matches;
-    var railsFit = (w>=768 && w<=1024) || (coarse && w>=768 && w<=1560);
+    // 레일이 보이는 폭(≥768 & 25~1560 숨김 대역 제외, 그리고 1560 초과)에서는
+    // 레일까지 한 화면에 들어오도록 기준값을 1800으로 확대.
+    // 특히 w>1560(예: 16" 노트북 1728px)에서 레일이 다시 표시되지만
+    // #wrap(1140px) 양옆 여백이 부족해 레일이 잘리던 문제를 해결.
+    var railsFit = (w>=768 && w<=1024) || (coarse && w>=768 && w<=1560) || (w>1560);
     var base = railsFit ? 1800 : 1140;
     return Math.min(w/base, window.innerHeight/757, 1);
   };
