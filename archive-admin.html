@@ -598,7 +598,7 @@ html, body { background: #000; color: #39dc00; font-family: 'Courier New', monos
         const ts = Date.now();
         const safeName = file.name.replace(/[^a-zA-Z0-9._-]/g, '_');
         const uploadPath = `uploads/${ts}_${safeName}`;
-        const repo = 'note-a/note-a-github';
+        const repo = 'note-a/note-a.github.io';
 
         const res = await fetch(`https://api.github.com/repos/${repo}/contents/${uploadPath}`, {
           method: 'PUT',
@@ -997,7 +997,7 @@ html, body { background: #000; color: #39dc00; font-family: 'Courier New', monos
     let _dataSource = 'none';
     async function loadPortfolioData() {
       try {
-        const response = await fetch('https://raw.githubusercontent.com/note-a/note-a-github/main/admin-contents.json?t=' + Date.now());
+        const response = await fetch('https://raw.githubusercontent.com/note-a/note-a.github.io/main/admin-contents.json?t=' + Date.now());
         if (response.ok) {
           const data = await response.json();
           _dataSource = 'github';
@@ -1902,7 +1902,7 @@ html, body { background: #000; color: #39dc00; font-family: 'Courier New', monos
 
       // Push to GitHub so all devices see the change
       const token = localStorage.getItem('githubToken');
-      const repo = 'note-a/note-a-github';
+      const repo = 'note-a/note-a.github.io';
       const filePath = 'admin-contents.json';
       const content = btoa(unescape(encodeURIComponent(JSON.stringify(portfolioEditData, null, 2))));
 
@@ -1935,7 +1935,7 @@ html, body { background: #000; color: #39dc00; font-family: 'Courier New', monos
       const token = localStorage.getItem('githubToken');
       if (!token) return; // 토큰 없으면 스킵
 
-      const repo = 'note-a/note-a-github';
+      const repo = 'note-a/note-a.github.io';
       const filePath = 'published-posts.json';
 
       // publishedSection이 있는 completed 글만 추려서 동기화
