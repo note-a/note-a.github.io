@@ -392,8 +392,8 @@
       먼저 이미지 파일을 R2에 올린 뒤, 그 파일명을 아래에 적어요.<br>
       <a href="https://dash.cloudflare.com/b1818c12cc831ca8fed0a712bdad50d5/r2/default/buckets/set-photos" target="_blank" rel="noopener" style="color:var(--ink);font-weight:700;text-decoration:underline;">📤 R2 버킷(set-photos) 열기 ↗</a>
     </div>
-    <div class="frow"><label>추가할 시트(폴더)</label><select id="bulkSheet"></select></div>
-    <div class="frow"><label>R2 날짜 폴더</label><input type="text" id="bulkDate" placeholder="2026/03/0316"></div>
+    <div class="frow"><label>추가할 시트 — 기본 <b>자동</b>(아래 날짜로 만들어짐). 기존 시트에 넣고 싶으면 직접 선택</label><select id="bulkSheet"></select></div>
+    <div class="frow"><label>R2 날짜 폴더 (시트도 이 날짜로 자동 생성)</label><input type="text" id="bulkDate" placeholder="2026/03/0322"></div>
     <div class="frow"><label>기본 판정 (전부 이 값으로 시작 — 나중에 하나씩 바꾸면 됨)</label>
       <select id="bulkVerdict">
         <option value="hold">hold (보류 — 판정 대기용 추천)</option>
@@ -493,7 +493,8 @@ function renderStats(count){
 function renderSheetOptions(){
   $('fSheet').innerHTML = '<option value="">전체</option>' +
     SHEETS.map(s=>`<option value="${esc(s.label)}">${esc(s.label)}</option>`).join('');
-  $('bulkSheet').innerHTML = SHEETS.map((s,i)=>`<option value="${i}">${esc(s.label)}</option>`).join('');
+  $('bulkSheet').innerHTML = '<option value="auto">◆ 날짜 폴더로 자동 (없으면 새로 만듦)</option>' +
+    SHEETS.map((s,i)=>`<option value="${i}">${esc(s.label)}</option>`).join('');
 }
 
 // ── 그리드 렌더 (균일 격자 + 페이지네이션) ──
@@ -631,24 +632,48 @@ function bulkPreview(){
 }
 function openBulk(){
   if(!SHEETS.length){ alert('먼저 데이터를 불러오세요.'); return; }
-  $('bulkDate').value=''; $('bulkDir').value=''; $('bulkList').value=''; $('bulkVerdict').value='hold';
+  $('bulkDate').value=''; $('bulkDir').value=''; $('bulkList').value=''; $('bulkVerdict').value='hold'; $('bulkSheet').value='auto';
   bulkPreview(); $('bulkOverlay').classList.add('on'); $('bulkDate').focus();
 }
+// 날짜 폴더(2026/03/0322)로 월(2026.03)·일(0322) 시트를 찾거나 없으면 새로 만듦
+function findOrCreateDateSheet(dateFolder){
+  const parts = dateFolder.split('/').filter(Boolean);   // [2026, 03, 0322]
+  if(parts.length < 3) return null;
+  const monthTitle = parts[0]+'.'+parts[1];              // 2026.03
+  const dayTitle = parts[2];                             // 0322
+  const photos = DATA.project.photos;
+  let month = photos.find(s=>s && s.type==='sheet' && s.title===monthTitle);
+  if(!month){ month={type:'sheet', id:monthTitle, title:monthTitle, children:[]}; photos.push(month); }
+  month.children = month.children||[];
+  let day = month.children.find(s=>s && s.type==='sheet' && s.title===dayTitle);
+  if(!day){ day={type:'sheet', id:monthTitle+'/'+dayTitle, title:dayTitle, children:[]}; month.children.push(day); }
+  day.children = day.children||[];
+  return { node:day, label:monthTitle+' / '+dayTitle };
+}
 function confirmBulk(){
-  const sheet = SHEETS[parseInt($('bulkSheet').value)];
-  if(!sheet || !sheet.children){ alert('시트(폴더)를 선택하세요.'); return; }
   const date = $('bulkDate').value.trim().replace(/^\/+|\/+$/g,'');
-  if(!date){ alert('R2 날짜 폴더를 입력하세요. 예: 2026/03/0316'); return; }
+  if(!date){ alert('R2 날짜 폴더를 입력하세요. 예: 2026/03/0322'); return; }
   const names = bulkNames();
   if(!names.length){ alert('파일명을 한 줄에 하나씩 입력하세요.'); return; }
+  const sel = $('bulkSheet').value;
+  let target, label;
+  if(sel==='auto'){
+    const ds = findOrCreateDateSheet(date);
+    if(!ds){ alert('날짜 폴더 형식이 맞지 않아요. 예: 2026/03/0322'); return; }
+    target = ds.node.children; label = ds.label;
+  } else {
+    const s = SHEETS[parseInt(sel)];
+    if(!s || !s.children){ alert('시트(폴더)를 선택하세요.'); return; }
+    target = s.children; label = s.label;
+  }
   const v = $('bulkVerdict').value, dir = $('bulkDir').value.trim();
   names.forEach(nm=>{
-    sheet.children.push({ id: nm.replace(/\.[^.]+$/,''), filename: R2_BASE+date+'/'+nm, verdict:v, dir, author:worker });
+    target.push({ id: nm.replace(/\.[^.]+$/,''), filename: R2_BASE+date+'/'+nm, verdict:v, dir, author:worker });
   });
   rebuild(); _uidmap = UIDMAP(); renderSheetOptions();
   $('bulkOverlay').classList.remove('on');
-  $('q').value=''; $('fVerdict').value=v; $('fSheet').value=sheet.label; $('fAuthor').value=''; page=0; render(); markDirty();
-  alert(names.length+'장 추가됐어요! (판정: '+v+') — 다운로드 후 GitHub 업로드하면 반영돼요.');
+  $('q').value=''; $('fVerdict').value=v; $('fSheet').value=label; $('fAuthor').value=''; page=0; render(); markDirty();
+  alert(names.length+'장 추가됐어요! (판정: '+v+' · 시트: '+label+') — 다운로드 후 GitHub 업로드하면 반영돼요.');
 }
 
 // ── 이벤트 ──
