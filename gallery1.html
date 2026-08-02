@@ -1428,13 +1428,13 @@ function renderVerdict(el, D){
   el.innerHTML=`<div class="sec-wrap">
     <div class="sec-hd">CORE FRAMES · <b>${core.length} SELECTED</b> · ${(core.length/tot*100).toFixed(1)}% OF ${tot.toLocaleString()}</div>
     <div class="verd-grid">${core.map((p,i)=>{
-      const url=(p.filename||p.url||'').replace(/\/DSCF([^/]+)\.(jpg|JPG)$/,'/t/DSCF$1.jpg');
-      return `<div class="verd-cell" data-vi="${i}" style="cursor:pointer" title="${(p.filename||'').split('/').pop()}"><img src="${url}" onerror="this.style.display='none'"></div>`;
+      const full=(p.filename||p.url||''); const url=full.replace(/\/DSCF([^/]+)\.(jpg|JPG)$/,'/t/DSCF$1.jpg');
+      return `<div class="verd-cell" data-vi="${i}" style="cursor:pointer" title="${(p.filename||'').split('/').pop()}"><img src="${url}" data-full="${full}" onerror="if(!this._fb){this._fb=1;this.src=this.dataset.full}else{this.style.display='none'}"></div>`;
     }).join('')}</div>
     <div class="sec-hd" style="margin-top:6px">SUPPORT · <b>${sup.length}</b> · ${(sup.length/tot*100).toFixed(1)}%</div>
     <div class="verd-grid" style="opacity:0.55">${sup.slice(0,48).map((p,i)=>{
-      const url=(p.filename||p.url||'').replace(/\/DSCF([^/]+)\.(jpg|JPG)$/,'/t/DSCF$1.jpg');
-      return `<div class="verd-cell" data-vi="${core.length+i}" style="cursor:pointer"><img src="${url}" onerror="this.style.display='none'"></div>`;
+      const full=(p.filename||p.url||''); const url=full.replace(/\/DSCF([^/]+)\.(jpg|JPG)$/,'/t/DSCF$1.jpg');
+      return `<div class="verd-cell" data-vi="${core.length+i}" style="cursor:pointer"><img src="${url}" data-full="${full}" onerror="if(!this._fb){this._fb=1;this.src=this.dataset.full}else{this.style.display='none'}"></div>`;
     }).join('')}</div>
   </div>`;
   el.querySelectorAll('.verd-cell[data-vi]').forEach(cell=>{
@@ -2054,8 +2054,10 @@ function initSpotlight(){
     const file=(p.filename||p.url||'').split('/').pop();
     const dirs=String(p.dir||'').split(/[\s,;]+/).filter(d=>d&&d!=='/'&&/[A-Za-z]/.test(d))
       .map(d=>d.replace(/^DIR-\d+-?/,'').toUpperCase()).filter(Boolean).slice(0,6);
-    document.getElementById('spThumb').src=url;
-    document.getElementById('spThumb').style.display='';
+    const _spT=document.getElementById('spThumb');
+    _spT.onerror=()=>{ _spT.onerror=null; _spT.src=(p.filename||p.url||''); };
+    _spT.src=url;
+    _spT.style.display='';
     document.getElementById('spFile').textContent=file;
     document.getElementById('spBatch').textContent=(p.batchKey||'—')+' · '+(p.monthKey||'—');
     document.getElementById('spVerdict').innerHTML=`<span style="color:var(--acc)">◉ CORE</span>`;
