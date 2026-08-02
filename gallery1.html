@@ -2794,7 +2794,8 @@ document.getElementById('exitBtn').onclick=()=>{ log('SYS',false,'EXIT · REDIRE
     const THUMB_H=53, THUMB_W=Math.round(THUMB_H*3/2), THUMB_GAP=4;
     // 사진이 1장이어도 다른 폴더와 레이아웃이 완전히 같게: 스트립엔 최소 그 사진이라도 표시
     const stripThumbs = thumbs.length ? thumbs : (main ? [main] : []);
-    const stripW = Math.max(stripThumbs.length*THUMB_W+(stripThumbs.length-1)*THUMB_GAP+8, THUMB_W*4);
+    // 이미지 영역 폭을 고정(5장 기준) → 모든 폴더에서 사진 크기·비율 동일
+    const stripW = 5*THUMB_W + 4*THUMB_GAP + 8;
 
     fpPhotos.innerHTML = `
       <div style="height:100%;display:flex;flex-direction:column;gap:4px;width:${stripW}px;flex-shrink:0;">
