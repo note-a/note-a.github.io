@@ -2792,17 +2792,18 @@ document.getElementById('exitBtn').onclick=()=>{ log('SYS',false,'EXIT · REDIRE
     const main = photos[0];
     const thumbs = photos.slice(1,6);
     const THUMB_H=53, THUMB_W=Math.round(THUMB_H*3/2), THUMB_GAP=4;
-    // 사진이 적어도(1~2장) 이미지 영역이 쪼그라들지 않게 최소 폭 보장
-    const stripW = Math.max(thumbs.length*THUMB_W+(thumbs.length-1)*THUMB_GAP+8, THUMB_W*4);
+    // 사진이 1장이어도 다른 폴더와 레이아웃이 완전히 같게: 스트립엔 최소 그 사진이라도 표시
+    const stripThumbs = thumbs.length ? thumbs : (main ? [main] : []);
+    const stripW = Math.max(stripThumbs.length*THUMB_W+(stripThumbs.length-1)*THUMB_GAP+8, THUMB_W*4);
 
     fpPhotos.innerHTML = `
       <div style="height:100%;display:flex;flex-direction:column;gap:4px;width:${stripW}px;flex-shrink:0;">
         <div id="fpMainImg" style="flex:1;min-height:0;width:100%;cursor:pointer;position:relative;overflow:hidden;background:#0d0d0d;border:1px solid var(--g);">
           ${main ? `<img src="${(main.filename||main.url||'').replace(/\/DSCF([^/]+)\.(jpg|JPG)$/,'/t/DSCF$1.jpg')}" data-full="${main.filename||main.url||''}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(0.6) saturate(0) sepia(1) hue-rotate(90deg);" onerror="if(!this._fb){this._fb=1;this.src=this.dataset.full}" alt="">` : ''}
         </div>
-        ${thumbs.length ? `<div style="height:${THUMB_H}px;flex-shrink:0;display:flex;gap:${THUMB_GAP}px;border:1px solid var(--g);padding:3px;">
-          ${thumbs.map(p=>imgDiv(p,`width:${THUMB_W}px;height:100%;flex-shrink:0;`,'')). join('')}
-        </div>` : ''}
+        <div style="height:${THUMB_H}px;flex-shrink:0;display:flex;gap:${THUMB_GAP}px;border:1px solid var(--g);padding:3px;">
+          ${stripThumbs.map(p=>imgDiv(p,`width:${THUMB_W}px;height:100%;flex-shrink:0;`,'')). join('')}
+        </div>
       </div>`;
     document.getElementById('fpMainImg').addEventListener('click', ()=>{
       galNavStack.push({title: galNavStack.length===0?'ROOT':galCurrentPhotos._title||'', photos:galCurrentPhotos});
