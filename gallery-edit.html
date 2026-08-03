@@ -69,6 +69,8 @@
   .stat.clk{cursor:pointer;user-select:none;transition:background .12s,color .12s,border-color .12s,box-shadow .12s,transform .1s;}
   .stat.clk:hover{background:var(--bg2);border-color:var(--line3);transform:translateY(-1px);box-shadow:var(--shadow-md);}
   .stat.clk.active{background:var(--ink);color:#fff;border-color:var(--ink);}
+  .stat.warn-chip{color:#b26b00;border-color:#e8c98a;}
+  .stat.warn-chip.active{background:#b26b00;color:#fff;border-color:#b26b00;}
   .stat.clk.active b{color:#fff;}
   .stat.clk.active::before{background:#fff!important;border-color:#fff!important;}
 
@@ -154,7 +156,10 @@
   .dd-item b{font-family:var(--mono);font-size:12px;color:var(--ink);min-width:82px;flex-shrink:0;}
   .dd-item span{font-size:11px;color:var(--ink2);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
   .dir-match{font-size:10px;font-weight:400;margin-left:6px;letter-spacing:0;}
-  .dir-match .ok{color:#1c7a3f;margin-right:5px;} .dir-match .no{color:#c0392b;margin-right:5px;}
+  .dir-match .ok{color:#1c7a3f;margin-right:5px;} .dir-match .no{color:#c0392b;margin-right:5px;} .dir-match .memo{color:#9a6b00;margin-right:5px;}
+  .dd-block.memo{color:#7a5c00;background:#fdf7e8;border:1px solid #e8d9a8;border-radius:8px;padding:9px 11px;}
+  .dir-match .warn{color:#b26b00;font-weight:700;margin-right:5px;}
+  .dd-block.warn{color:#8a5200;background:#fff4e0;border:1px solid #e8c98a;border-radius:8px;padding:9px 11px;}
   .dir-detail:empty{display:none;}
   .dir-detail{margin-bottom:13px;}
   .dd-block{font-size:11px;line-height:1.6;margin-bottom:8px;}
@@ -355,7 +360,7 @@
       <ul>
         <li><b>맨 윗줄</b> — 왼쪽에 제목·현재 상태, 오른쪽에 <code>❓사용법</code> <code>↻라이브 로드</code> <code>📁파일 열기</code> <code>📋셀렉 가져오기</code> <code>⬇다운로드</code> 버튼.</li>
         <li><b>둘째 줄(도구 막대)</b> — <b>작업자(K/P)</b> · <b>검색</b>칸 · <b>판정·시트·글쓴이</b> 고르기 · <code>+ 사진 등록</code> · <code>🗑 일괄 삭제</code>.</li>
-        <li><b>셋째 줄(통계 칩)</b> — 전체·core·support·hold·drop·K·P 개수. <b>칩을 누르면 그 종류만 모아서</b> 볼 수 있어요.</li>
+        <li><b>셋째 줄(통계 칩)</b> — 전체·core·support·hold·drop·K·P 개수. <b>칩을 누르면 그 종류만 모아서</b> 볼 수 있어요. <b>⚠ DIR없음(뽑음)</b> 칩은 <b>뽑았는데(core·support) DIR을 안 채운 사진</b>만 모아줘요 — 눌러서 하나씩 DIR 채우면 돼요.</li>
         <li><b>가운데</b> — 사진 카드들. 카드 아래마다 <b>CORE·SUP·HOLD·DROP</b> 버튼, 좌상단에 누가 정했는지 <b>K/P 뱃지</b>.</li>
       </ul>
     </div>
@@ -382,7 +387,7 @@
     <div class="hsec"><span class="hnum">1</span><div><b>먼저 “내가 누구인지” 고르기 (작업자)</b><br>도구 막대 왼쪽 <b>작업자</b>에서 <b>K</b> 또는 <b>P</b>를 누르세요. 지금부터 내가 매기는 판정이 그 사람 이름으로 기록됩니다. <br><span style="color:var(--ink3)">※ 지금까지 된 작업은 전부 K로 되어 있어요.</span></div></div>
     <div class="hsec"><span class="hnum">2</span><div><b>볼 사진 고르기 (모아 보기)</b><br>· <b>통계 칩</b>을 누르면 그것만 모여요. 예) <code>hold</code> 칩을 누르면 <b>아직 못 정한 보류 사진</b>만 나와요. 한 번 더 누르면 전체로 돌아가요.<br>· <b>검색</b>칸에 파일명·폴더·이유를 적으면 그것만 나와요.<br>· <b>판정·시트·글쓴이</b> 고르기로도 좁힐 수 있어요.</div></div>
     <div class="hsec"><span class="hnum">3</span><div><b>판정 매기기</b><br>사진 아래 <b>CORE · SUP · HOLD · DROP</b> 중 하나를 누르면 그 판정이 됩니다(고른 건 검게 채워짐). 사진 좌상단에 내 이름(<b>K/P</b>) 뱃지가 붙어요.</div></div>
-    <div class="hsec"><span class="hnum">4</span><div><b>사진 자세히 보기 · 셀렉사유/DIR 직접 입력 · 삭제</b><br>사진의 <b>이미지·글자 부분</b>(버튼 말고)을 누르면 오른쪽에 그 사진 패널이 떠요.<br>· 거기서 <b>셀렉 사유</b>와 <b>DIR</b>을 <b>직접 입력(복붙 OK)</b>하고 <b>💾 저장</b>을 누르면 그 사진에 기록돼요. <span style="color:var(--ink3)">(셀렉 파일이 없을 때 한 장씩 손으로 넣는 용도. 셀렉 파일이 있으면 위 <b>📋 셀렉 가져오기</b>가 훨씬 빨라요.)</span><br>· <b>DIR 자동완성</b> — DIR 칸에 몇 글자만 치면 맞는 <b>코드가 목록으로</b> 떠요(클릭해 입력). 코드를 넣으면 바로 아래에 그 <b>원본문법·지시문 전문</b>이 뜨고, 라벨 옆 <b>✓/✗</b>로 유효한 코드인지(=갤러리에서 원본문법이 뜨는지) 표시돼요. 여러 개는 <code>/</code>로 구분. <span style="color:var(--ink3)">(코드 목록은 gallery1의 원본문법 사전에서 자동으로 가져와요.)</span><br>· 아래엔 <b>원본 데이터(JSON)</b>도 보여요(전체 확인용). 닫을 땐 <code>×</code> 또는 <b>Esc</b>.<br>· 맨 아래 <b>🗑 이 사진 삭제</b>로 목록에서 뺄 수 있어요. <span style="color:var(--ink3)">(R2 이미지는 안 지워지고 목록에서만 빠져요. 다운로드→GitHub 업로드해야 실제 반영.)</span></div></div>
+    <div class="hsec"><span class="hnum">4</span><div><b>사진 자세히 보기 · 셀렉사유/DIR 직접 입력 · 삭제</b><br>사진의 <b>이미지·글자 부분</b>(버튼 말고)을 누르면 오른쪽에 그 사진 패널이 떠요.<br>· 거기서 <b>셀렉 사유</b>와 <b>DIR</b>을 <b>직접 입력(복붙 OK)</b>하고 <b>💾 저장</b>을 누르면 그 사진에 기록돼요. <span style="color:var(--ink3)">(셀렉 파일이 없을 때 한 장씩 손으로 넣는 용도. 셀렉 파일이 있으면 위 <b>📋 셀렉 가져오기</b>가 훨씬 빨라요.)</span><br>· <b>DIR 자동완성</b> — DIR 칸에 몇 글자만 치면 맞는 <b>코드가 목록으로</b> 떠요(클릭해 입력). 코드를 넣으면 바로 아래에 그 <b>원본문법·지시문 전문</b>이 뜨고, 라벨 옆 <b>✓/✗</b>로 유효한 코드인지(=갤러리에서 원본문법이 뜨는지) 표시돼요. 여러 개는 <code>/</code>로 구분. <span style="color:var(--ink3)">(코드 목록은 gallery1의 원본문법 사전에서 자동으로 가져와요.)</span><br>· <b>판정에 따라 다르게 안내</b> — <b>뽑은 사진(core·support)</b>인데 DIR이 비었으면 <b>⚠ DIR 미입력</b>(채우라고), <b>버린 사진(drop)</b>의 코드 아닌 값(<code>MIRROR 기각</code> 등)은 <b>✎ 기각 메모</b>로 표시돼요(오류 아님, 정상). 통계칩 <b>⚠ DIR없음(뽑음)</b>으로 채울 사진만 모아볼 수 있어요.<br>· 아래엔 <b>원본 데이터(JSON)</b>도 보여요(전체 확인용). 닫을 땐 <code>×</code> 또는 <b>Esc</b>.<br>· 맨 아래 <b>🗑 이 사진 삭제</b>로 목록에서 뺄 수 있어요. <span style="color:var(--ink3)">(R2 이미지는 안 지워지고 목록에서만 빠져요. 다운로드→GitHub 업로드해야 실제 반영.)</span></div></div>
     <div class="hsec"><span class="hnum">5</span><div><b>저장하기 — 이걸 해야 실제로 반영돼요!</b><br>판정을 바꾸면 맨 위에 <b>“● 수정됨”</b>이 떠요. 아직은 <b>내 화면(브라우저)에만</b> 있는 상태예요.<br>① 오른쪽 위 <code>⬇ 다운로드</code>를 누르면 <code>admin-contents.json</code> 파일이 컴퓨터에 받아져요.<br>② <b>github.com/note-a/note-a.github.io</b> 접속 → 그 저장소의 <code>admin-contents.json</code>을 연 뒤 → <b>Add file ▸ Upload files</b> 화면에 방금 받은 파일을 끌어다 놓아요 → 아래 <b>Commit changes</b> 클릭.<br>③ 1~2분 뒤 실제 갤러리에 반영됩니다.</div></div>
 
     <div class="hnote"><b>⚠️ 꼭 기억할 점</b>
@@ -422,7 +427,6 @@
       </div>
       <div class="hsec" style="margin-top:9px;"><span class="hnum">A</span><div><b>이미지는 Cloudflare R2에 올리기</b><br>날짜 폴더 규칙대로 업로드 → <code>연도/월/월일/파일명.jpg</code><br>예: <code>2026/03/0316/DSCF1234.jpg</code> · 썸네일(<code>/t/</code>)은 R2가 자동 생성해요.<br><a href="https://dash.cloudflare.com/b1818c12cc831ca8fed0a712bdad50d5/r2/default/buckets/set-photos" target="_blank" rel="noopener" style="color:var(--ink);font-weight:700;text-decoration:underline;">📤 R2 버킷(set-photos) 열기 ↗</a></div></div>
       <div class="hsec"><span class="hnum">B</span><div><b>목록에 등록 — 한 장이든 여러 장이든</b><br>상단 <code>+ 사진 등록</code> → <b>시트 · 날짜 폴더 · 판정</b>을 고르고, <b>파일명을 한 줄에 하나씩</b> 붙여넣으세요(한 장이면 한 줄만). R2 주소가 자동으로 만들어져 전부 한 번에 추가돼요. 기본 판정은 <code>hold</code>(보류) 추천, 확장자 빠뜨리면 <code>.jpg</code> 자동.</div></div>
-      <div class="hsec"><span class="hnum">C</span><div><b>일괄 삭제 — 여러 장 한 번에 빼기</b><br>도구 막대 <code>🗑 일괄 삭제</code>를 누르면 두 가지 방법이 있어요.<br>· <b>방법 1</b> — 상단 <b>검색·판정·시트·글쓴이</b>로 먼저 좁힌 뒤 <b>“이 필터 결과 전부 삭제”</b>. (예: 시트 하나 골라 그 폴더 통째로) <span style="color:var(--ink3)">‘전체(필터 없음)’이면 전부 지워지니 주의 — 이땐 한 번 더 물어봐요.</span><br>· <b>방법 2</b> — <b>파일명 목록</b>을 한 줄에 하나씩 붙여넣고 <b>“목록 삭제”</b>.<br><span style="color:var(--ink3)">※ 개별 삭제와 똑같이 <b>목록에서만</b> 빠지고 <b>R2 이미지는 그대로</b>예요. 다운로드→GitHub 업로드해야 실제 반영.</span></div></div>
       <div class="hsec"><span class="hnum">C</span><div><b>저장</b><br><b>⬇ 다운로드 → GitHub(note-a.github.io) 업로드</b>(위 5번과 동일). GitHub엔 이 목록 파일만 올라가요.</div></div>
       <div style="margin:10px 0 2px;padding:10px 12px;background:#fff;border:1px solid var(--line2);font-size:12px;color:var(--ink2);line-height:1.65;">
         ❗ <b>파일명은 R2에 실제로 올린 파일과 “똑같이”</b> 적어야 해요 (대소문자·확장자 포함). 편집기는 주소만 만들 뿐 <b>사진이 진짜 있는지 확인하지 않아요</b> — 이름이 틀리면 갤러리에서 <b>깨진 이미지</b>로 나와요.<br>👉 순서: <b>① R2에 사진 먼저 올리기 → ② 그 파일명 그대로 등록.</b>
@@ -430,6 +434,18 @@
       <div style="margin-top:10px;font-size:12px;color:var(--ink2);line-height:1.7;padding:10px 12px;background:var(--bg2);border:1px solid var(--line);">
         💡 <b>팁 — 사진이 많으면 Claude에게 맡기기</b><br>
         직접 하나씩 붙여넣기 번거로우면, <b>날짜 폴더 + 파일명 목록</b>(또는 “8001~8100” 같은 범위)만 Claude에게 주세요. admin-contents.json에 전부 등록해 <b>완성 파일</b>로 돌려줘요 — 그럼 GitHub에 올리기만 하면 끝. (사진 이미지는 R2에 먼저 올려둬야 해요.)
+      </div>
+    </div>
+
+    <div class="hnote">
+      <b>🗑 일괄 삭제 — 여러 장 한 번에 빼기</b>
+      <div style="margin-top:8px;font-size:12.5px;line-height:1.8;">
+        도구 막대 <code>🗑 일괄 삭제</code>를 누르면 두 가지 방법이 있어요.
+        <ul style="margin:8px 0 0;padding-left:18px;line-height:1.9;">
+          <li><b>방법 1 · 필터 결과 전부</b> — 상단 <b>검색·판정·시트·글쓴이</b>로 먼저 좁힌 뒤 <b>“이 필터 결과 전부 삭제”</b> (예: 시트 하나 골라 그 폴더 통째로). <span style="color:var(--ink3)">‘전체(필터 없음)’이면 전부 지워지니 주의 — 이땐 한 번 더 물어봐요.</span></li>
+          <li><b>방법 2 · 파일명 목록</b> — DSCF번호를 한 줄에 하나씩 붙여넣고 <b>“목록 삭제”</b>.</li>
+        </ul>
+        <div style="margin-top:7px;color:var(--ink3);">※ 개별 삭제와 똑같이 <b>목록에서만</b> 빠지고 <b>R2 이미지는 그대로</b>예요. 다운로드→GitHub 업로드해야 실제 반영.</div>
       </div>
     </div>
 
@@ -564,11 +580,17 @@ function rebuild(){
 }
 
 // ── 필터 ──
+let _special = '';   // 특수 필터: '' | 'seldirless'(뽑았는데 DIR 없음)
 function filtered(){
   const q = $('q').value.trim().toLowerCase();
   const fv = $('fVerdict').value, fs = $('fSheet').value, fa = $('fAuthor').value;
   return LEAVES.filter(L=>{
     const n = L.node;
+    if(_special==='seldirless'){
+      const v=(n.verdict||'').toLowerCase();
+      if(!(v==='core'||v==='support')) return false;
+      if((n.dir||'').trim()) return false;
+    }
     if(fv && (n.verdict||'')!==fv) return false;
     if(fs && L.sheet!==fs) return false;
     if(fa && authorOf(n)!==fa) return false;
@@ -582,16 +604,18 @@ function filtered(){
 
 // ── 통계 ──
 function renderStats(count){
-  const c={core:0,support:0,drop:0,hold:0}; let kN=0,pN=0;
-  LEAVES.forEach(L=>{ const v=L.node.verdict; if(c[v]!=null)c[v]++; (authorOf(L.node)==='P'?pN++:kN++); });
+  const c={core:0,support:0,drop:0,hold:0}; let kN=0,pN=0,selDirless=0;
+  LEAVES.forEach(L=>{ const v=L.node.verdict; if(c[v]!=null)c[v]++; (authorOf(L.node)==='P'?pN++:kN++);
+    const lv=(v||'').toLowerCase(); if((lv==='core'||lv==='support') && !(L.node.dir||'').trim()) selDirless++; });
   const fv=$('fVerdict').value, fa=$('fAuthor').value;
   const va=x=>(fv===x?' active':''), aa=x=>(fa===x?' active':'');
   $('stats').innerHTML =
-    `<span class="stat clk${fv===''?' active':''}" data-act="allv">전체 <b>${LEAVES.length.toLocaleString()}</b></span>`+
+    `<span class="stat clk${(fv===''&&!_special)?' active':''}" data-act="allv">전체 <b>${LEAVES.length.toLocaleString()}</b></span>`+
     `<span class="stat clk core${va('core')}" data-v="core">core <b>${c.core}</b></span>`+
     `<span class="stat clk support${va('support')}" data-v="support">support <b>${c.support}</b></span>`+
     `<span class="stat clk hold${va('hold')}" data-v="hold">hold <b>${c.hold}</b></span>`+
     `<span class="stat clk drop${va('drop')}" data-v="drop">drop <b>${c.drop}</b></span>`+
+    `<span class="stat clk warn-chip${_special==='seldirless'?' active':''}" data-act="seldirless" title="뽑았는데(core·support) DIR이 비어있는 사진">⚠ DIR없음(뽑음) <b>${selDirless}</b></span>`+
     `<span class="stat clk k${aa('K')}" data-a="K">K <b>${kN.toLocaleString()}</b></span>`+
     `<span class="stat clk p${aa('P')}" data-a="P">P <b>${pN.toLocaleString()}</b></span>`+
     `<span class="stat">필터결과 <b>${count.toLocaleString()}</b></span>`;
@@ -723,15 +747,29 @@ function dirTokens(v){ return String(v||'').split('/').map(s=>s.trim()).filter(B
 function updateDirUI(){
   const toks = dirTokens($('inspDir').value);
   const mEl = $('dirMatch'), dEl = $('dirDetail');
-  if(!DIR_READY || !toks.length){ mEl.innerHTML=''; dEl.innerHTML=''; return; }
-  mEl.innerHTML = toks.map(t => dirText(t)
-    ? `<span class="ok">✓ ${t.toUpperCase()}</span>`
-    : `<span class="no">✗ ${t.toUpperCase()}</span>`).join('');
+  const L = _uidmap[_selUid];
+  const v = L ? String(L.node.verdict||'').toLowerCase() : '';
+  const isDrop = v==='drop';
+  const isSel  = v==='core' || v==='support';
+  if(!toks.length){
+    // 뽑은 사진(core·support)인데 dir 비었으면 채우라고 안내
+    if(isSel){
+      mEl.innerHTML = `<span class="warn">⚠ DIR 미입력</span>`;
+      dEl.innerHTML = `<div class="dd-block warn">⚠ <b>DIR 미입력</b> — 뽑은 사진(${v})인데 분류 코드가 비어있어요. 위 칸에 몇 글자 쳐서 코드를 채워주세요.</div>`;
+    } else { mEl.innerHTML=''; dEl.innerHTML=''; }
+    return;
+  }
+  if(!DIR_READY){ mEl.innerHTML=''; dEl.innerHTML=''; return; }
+  mEl.innerHTML = toks.map(t => {
+    if(dirText(t)) return `<span class="ok">✓ ${t.toUpperCase()}</span>`;
+    if(isDrop)     return `<span class="memo">✎ 기각 메모</span>`;
+    return `<span class="no">✗ ${t.toUpperCase()}</span>`;
+  }).join('');
   dEl.innerHTML = toks.map(t => {
     const txt = dirText(t);
-    return txt
-      ? `<div class="dd-block"><b>${dirResolve(t)}</b><pre>${escH(txt)}</pre></div>`
-      : `<div class="dd-block no">✗ <b>${t.toUpperCase()}</b> — 원본문법 사전에 없는 코드예요. 오타이거나 미등록 → 갤러리에서 원본문법이 안 떠요.</div>`;
+    if(txt)    return `<div class="dd-block"><b>${dirResolve(t)}</b><pre>${escH(txt)}</pre></div>`;
+    if(isDrop) return `<div class="dd-block memo">✎ <b>기각 메모</b> — 버린 사진(drop)이라 이 DIR은 분류 코드가 아니라 “${escH(t)}” 같은 <b>기각 기록</b>이에요. 정상이에요.</div>`;
+    return `<div class="dd-block no">✗ <b>${t.toUpperCase()}</b> — 원본문법 사전에 없는 코드예요. 오타이거나 미등록 → 갤러리에서 원본문법이 안 떠요.</div>`;
   }).join('');
 }
 function showDirDrop(){
@@ -1080,9 +1118,10 @@ $('fSheet').addEventListener('change', ()=>{ page=0; render(); });
 $('fAuthor').addEventListener('change', ()=>{ page=0; render(); });
 $('stats').addEventListener('click', e=>{
   const chip = e.target.closest('.clk'); if(!chip) return;
-  if(chip.dataset.act==='allv'){ $('fVerdict').value=''; }
-  else if(chip.dataset.v!==undefined){ $('fVerdict').value = ($('fVerdict').value===chip.dataset.v)?'':chip.dataset.v; }
-  else if(chip.dataset.a!==undefined){ $('fAuthor').value = ($('fAuthor').value===chip.dataset.a)?'':chip.dataset.a; }
+  if(chip.dataset.act==='allv'){ $('fVerdict').value=''; _special=''; }
+  else if(chip.dataset.act==='seldirless'){ _special = (_special==='seldirless')?'':'seldirless'; if(_special) $('fVerdict').value=''; }
+  else if(chip.dataset.v!==undefined){ _special=''; $('fVerdict').value = ($('fVerdict').value===chip.dataset.v)?'':chip.dataset.v; }
+  else if(chip.dataset.a!==undefined){ _special=''; $('fAuthor').value = ($('fAuthor').value===chip.dataset.a)?'':chip.dataset.a; }
   page=0; window.scrollTo(0,0); render();
 });
 $('wsel').addEventListener('click', e=>{
