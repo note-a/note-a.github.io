@@ -295,6 +295,7 @@
     <span class="tlabel">글쓴이</span>
     <select id="fAuthor"><option value="">전체</option><option value="K">K</option><option value="P">P</option></select>
     <button class="hbtn" id="btnBulk" style="margin-left:auto;">+ 사진 등록</button>
+    <button class="hbtn" id="btnDelete" title="일괄 삭제" style="color:#c0392b;border-color:#e6b4ad;">🗑 일괄 삭제</button>
   </div>
 </header>
 
@@ -331,7 +332,7 @@
     <div class="hnote"><b>🗺 화면 구성 (어디에 뭐가 있나요)</b>
       <ul>
         <li><b>맨 윗줄</b> — 왼쪽에 제목·현재 상태, 오른쪽에 <code>❓사용법</code> <code>↻라이브 로드</code> <code>📁파일 열기</code> <code>📋셀렉 가져오기</code> <code>⬇다운로드</code> 버튼.</li>
-        <li><b>둘째 줄(도구 막대)</b> — <b>작업자(K/P)</b> · <b>검색</b>칸 · <b>판정·시트·글쓴이</b> 고르기 · <code>+ 사진 추가</code>.</li>
+        <li><b>둘째 줄(도구 막대)</b> — <b>작업자(K/P)</b> · <b>검색</b>칸 · <b>판정·시트·글쓴이</b> 고르기 · <code>+ 사진 등록</code> · <code>🗑 일괄 삭제</code>.</li>
         <li><b>셋째 줄(통계 칩)</b> — 전체·core·support·hold·drop·K·P 개수. <b>칩을 누르면 그 종류만 모아서</b> 볼 수 있어요.</li>
         <li><b>가운데</b> — 사진 카드들. 카드 아래마다 <b>CORE·SUP·HOLD·DROP</b> 버튼, 좌상단에 누가 정했는지 <b>K/P 뱃지</b>.</li>
       </ul>
@@ -399,6 +400,7 @@
       </div>
       <div class="hsec" style="margin-top:9px;"><span class="hnum">A</span><div><b>이미지는 Cloudflare R2에 올리기</b><br>날짜 폴더 규칙대로 업로드 → <code>연도/월/월일/파일명.jpg</code><br>예: <code>2026/03/0316/DSCF1234.jpg</code> · 썸네일(<code>/t/</code>)은 R2가 자동 생성해요.<br><a href="https://dash.cloudflare.com/b1818c12cc831ca8fed0a712bdad50d5/r2/default/buckets/set-photos" target="_blank" rel="noopener" style="color:var(--ink);font-weight:700;text-decoration:underline;">📤 R2 버킷(set-photos) 열기 ↗</a></div></div>
       <div class="hsec"><span class="hnum">B</span><div><b>목록에 등록 — 한 장이든 여러 장이든</b><br>상단 <code>+ 사진 등록</code> → <b>시트 · 날짜 폴더 · 판정</b>을 고르고, <b>파일명을 한 줄에 하나씩</b> 붙여넣으세요(한 장이면 한 줄만). R2 주소가 자동으로 만들어져 전부 한 번에 추가돼요. 기본 판정은 <code>hold</code>(보류) 추천, 확장자 빠뜨리면 <code>.jpg</code> 자동.</div></div>
+      <div class="hsec"><span class="hnum">C</span><div><b>일괄 삭제 — 여러 장 한 번에 빼기</b><br>도구 막대 <code>🗑 일괄 삭제</code>를 누르면 두 가지 방법이 있어요.<br>· <b>방법 1</b> — 상단 <b>검색·판정·시트·글쓴이</b>로 먼저 좁힌 뒤 <b>“이 필터 결과 전부 삭제”</b>. (예: 시트 하나 골라 그 폴더 통째로) <span style="color:var(--ink3)">‘전체(필터 없음)’이면 전부 지워지니 주의 — 이땐 한 번 더 물어봐요.</span><br>· <b>방법 2</b> — <b>파일명 목록</b>을 한 줄에 하나씩 붙여넣고 <b>“목록 삭제”</b>.<br><span style="color:var(--ink3)">※ 개별 삭제와 똑같이 <b>목록에서만</b> 빠지고 <b>R2 이미지는 그대로</b>예요. 다운로드→GitHub 업로드해야 실제 반영.</span></div></div>
       <div class="hsec"><span class="hnum">C</span><div><b>저장</b><br><b>⬇ 다운로드 → GitHub(note-a.github.io) 업로드</b>(위 5번과 동일). GitHub엔 이 목록 파일만 올라가요.</div></div>
       <div style="margin:10px 0 2px;padding:10px 12px;background:#fff;border:1px solid var(--line2);font-size:12px;color:var(--ink2);line-height:1.65;">
         ❗ <b>파일명은 R2에 실제로 올린 파일과 “똑같이”</b> 적어야 해요 (대소문자·확장자 포함). 편집기는 주소만 만들 뿐 <b>사진이 진짜 있는지 확인하지 않아요</b> — 이름이 틀리면 갤러리에서 <b>깨진 이미지</b>로 나와요.<br>👉 순서: <b>① R2에 사진 먼저 올리기 → ② 그 파일명 그대로 등록.</b>
@@ -465,6 +467,31 @@
     <div class="modal-actions">
       <button class="hbtn" id="importCancel">취소</button>
       <button class="hbtn primary" id="importConfirm">가져오기</button>
+    </div>
+  </div>
+</div>
+
+<!-- 일괄 삭제 모달 -->
+<div class="overlay" id="delOverlay">
+  <div class="modal">
+    <h3>🗑 일괄 삭제</h3>
+    <div style="font-size:12px;color:var(--ink2);line-height:1.7;margin-bottom:14px;padding:10px 12px;background:#fdf0ee;border:1px solid #e6b4ad;">
+      선택한 사진들을 <b>목록에서</b> 한 번에 빼요. <b>R2 이미지 파일은 그대로 남고</b>, 목록에서만 빠집니다.<br>
+      <span style="color:var(--ink3)">⬇ 다운로드→GitHub 업로드해야 실제 반영. (업로드 전이면 새로고침으로 되돌릴 수 있어요.)</span>
+    </div>
+    <div class="frow" style="padding:12px;background:var(--bg2);border:1px solid var(--line2);border-radius:8px;">
+      <label style="margin-bottom:6px;">방법 1 · 지금 화면(필터) 결과 전부</label>
+      <div style="font-size:12.5px;color:var(--ink2);margin-bottom:9px;">현재 조건: <b id="delFilterDesc">전체</b> → <b id="delFilterCount" style="color:#c0392b;">0</b>장</div>
+      <button class="hbtn" id="delFilterBtn" style="background:#c0392b;color:#fff;border-color:#c0392b;">이 필터 결과 전부 삭제</button>
+      <div style="color:var(--ink3);font-size:11px;margin-top:7px;">※ 상단 <b>검색·판정·시트·글쓴이</b>로 먼저 좁힌 뒤 누르세요. <b>‘전체(필터 없음)’이면 전부 지워지니 주의!</b></div>
+    </div>
+    <div class="frow" style="margin-top:14px;">
+      <label>방법 2 · 파일명 목록으로 (한 줄에 하나) — 인식 <b id="delListCount">0</b>개</label>
+      <textarea id="delList" rows="6" placeholder="DSCF1234&#10;DSCF1235&#10;DSCF1236"></textarea>
+    </div>
+    <div class="modal-actions">
+      <button class="hbtn" id="delCancel">닫기</button>
+      <button class="hbtn" id="delListBtn" style="background:#c0392b;color:#fff;border-color:#c0392b;">목록 삭제</button>
     </div>
   </div>
 </div>
@@ -888,6 +915,60 @@ $('importFile').addEventListener('change', e=>{
   rd.onload = ()=>{ $('importText').value = rd.result; updateImportPreview(); };
   rd.readAsText(f);
 });
+
+// ── 일괄 삭제 — 목록에서만 제거(R2 이미지 유지), 다운로드→업로드해야 반영 ──
+function deleteLeaves(list){
+  // 같은 parent 배열에서 여러 개 splice 시 인덱스 꼬임 방지: parent별로 모아 뒤에서부터 제거
+  const byParent = new Map();
+  list.forEach(L=>{ if(!L||!L.parent)return; if(!byParent.has(L.parent)) byParent.set(L.parent,new Set()); byParent.get(L.parent).add(L.node); });
+  let n=0;
+  byParent.forEach((nodes,arr)=>{ for(let i=arr.length-1;i>=0;i--){ if(nodes.has(arr[i])){ arr.splice(i,1); n++; } } });
+  return n;
+}
+function afterDelete(n){
+  pruneEmptySheets((DATA.project && DATA.project.photos) || []);
+  rebuild(); _uidmap = UIDMAP(); renderSheetOptions(); closeInspector();
+  page=0; render(); markDirty();
+  $('delOverlay').classList.remove('on');
+  alert(`✅ ${n}장 목록에서 삭제했어요.\n\n※ R2 이미지는 그대로 남아있어요.\n⬇ 다운로드→GitHub 업로드해야 실제 반영돼요.`);
+}
+function delNames(){
+  return $('delList').value.split(/[\n,]+/).map(s=>s.trim().replace(/\.[^.]+$/,'').toUpperCase()).filter(Boolean);
+}
+function updateDeletePreview(){
+  $('delFilterCount').textContent = _lastList.length;
+  const q=$('q').value.trim(), v=$('fVerdict').value, sh=$('fSheet').value, au=$('fAuthor').value;
+  const parts=[]; if(q)parts.push('검색"'+q+'"'); if(v)parts.push('판정='+v); if(sh)parts.push('시트 선택'); if(au)parts.push('글쓴이='+au);
+  $('delFilterDesc').textContent = parts.length ? parts.join(' · ') : '전체(필터 없음)';
+  $('delListCount').textContent = delNames().length;
+}
+function openDelete(){ $('delList').value=''; updateDeletePreview(); $('delOverlay').classList.add('on'); }
+function confirmDeleteFilter(){
+  const list = _lastList.slice();
+  if(!list.length){ alert('삭제할 사진이 없어요.'); return; }
+  const q=$('q').value.trim(), v=$('fVerdict').value, sh=$('fSheet').value, au=$('fAuthor').value;
+  const noFilter = !q && !v && !sh && !au;
+  let msg = `지금 필터 결과 ${list.length}장을 목록에서 삭제할까요?`;
+  if(noFilter) msg = `⚠️ 지금 '전체'라서 ${list.length}장(거의 모든 사진)이 삭제돼요! 정말 할까요?`;
+  msg += `\n\n※ R2 이미지는 그대로, 목록에서만 빠져요.\n※ 다운로드→GitHub 업로드해야 실제 반영.`;
+  if(!confirm(msg)) return;
+  if(noFilter && !confirm(`한 번 더 확인 — 정말 ${list.length}장 전부 삭제할까요?`)) return;
+  afterDelete(deleteLeaves(list));
+}
+function confirmDeleteList(){
+  const names = delNames();
+  if(!names.length){ alert('파일명을 붙여넣어 주세요.'); return; }
+  const set = new Set(names);
+  const list = LEAVES.filter(L=> set.has((L.node.id||'').toUpperCase()));
+  if(!list.length){ alert('일치하는 사진이 없어요. (파일명·확장자 확인)'); return; }
+  if(!confirm(`${list.length}장을 목록에서 삭제할까요?  (입력 ${names.length}개 중 일치 ${list.length}개)\n\n※ R2 이미지는 그대로, 목록에서만 빠져요.\n※ 다운로드→GitHub 업로드해야 실제 반영.`)) return;
+  afterDelete(deleteLeaves(list));
+}
+$('btnDelete').addEventListener('click', openDelete);
+$('delCancel').addEventListener('click', ()=>$('delOverlay').classList.remove('on'));
+$('delFilterBtn').addEventListener('click', confirmDeleteFilter);
+$('delListBtn').addEventListener('click', confirmDeleteList);
+$('delList').addEventListener('input', updateDeletePreview);
 
 // ── 이벤트 ──
 $('q').addEventListener('input', ()=>{ page=0; render(); });
