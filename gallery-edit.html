@@ -144,6 +144,24 @@
     font-weight:700;font-size:13px;cursor:pointer;transition:.12s;margin-bottom:6px;}
   .insp-save:hover{background:#000;}
   .insp-save.ok{background:#1c7a3f;border-color:#1c7a3f;}
+  /* DIR 자동완성 */
+  .dir-wrap{position:relative;margin-bottom:13px;}
+  .dir-drop{position:absolute;left:0;right:0;top:100%;z-index:30;background:#fff;border:1px solid var(--line2);border-top:none;
+    border-radius:0 0 8px 8px;box-shadow:0 10px 24px rgba(24,26,31,.14);max-height:250px;overflow:auto;display:none;}
+  .dd-item{display:flex;gap:9px;align-items:baseline;padding:8px 11px;cursor:pointer;border-bottom:1px solid var(--line);}
+  .dd-item:last-child{border-bottom:none;}
+  .dd-item:hover{background:var(--bg2);}
+  .dd-item b{font-family:var(--mono);font-size:12px;color:var(--ink);min-width:82px;flex-shrink:0;}
+  .dd-item span{font-size:11px;color:var(--ink2);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+  .dir-match{font-size:10px;font-weight:400;margin-left:6px;letter-spacing:0;}
+  .dir-match .ok{color:#1c7a3f;margin-right:5px;} .dir-match .no{color:#c0392b;margin-right:5px;}
+  .dir-detail:empty{display:none;}
+  .dir-detail{margin-bottom:13px;}
+  .dd-block{font-size:11px;line-height:1.6;margin-bottom:8px;}
+  .dd-block>b{font-family:var(--mono);font-size:12px;color:var(--ink);}
+  .dd-block pre{white-space:pre-wrap;word-break:break-word;font-family:var(--mono);font-size:11px;line-height:1.68;color:var(--ink2);
+    background:var(--bg2);border:1px solid var(--line);border-radius:8px;padding:10px 12px;margin:5px 0 0;max-height:260px;overflow:auto;}
+  .dd-block.no{color:#c0392b;background:#fdf0ee;border:1px solid #e6b4ad;border-radius:8px;padding:9px 11px;}
 
   /* ── modal ── */
   .overlay{position:fixed;inset:0;background:rgba(20,20,22,.45);z-index:100;display:none;
@@ -314,8 +332,12 @@
   <div class="insp-body">
     <div class="insp-label">셀렉 사유 · SELECT REASON</div>
     <textarea class="insp-input" id="inspReason" rows="5" placeholder="이 사진을 왜 골랐는지 입력 (복붙 OK)"></textarea>
-    <div class="insp-label">DIR · 분류</div>
-    <input class="insp-input" id="inspDir" placeholder="예: SURFACE / URBREFL">
+    <div class="insp-label">DIR · 분류 <span class="dir-match" id="dirMatch"></span></div>
+    <div class="dir-wrap">
+      <input class="insp-input" id="inspDir" placeholder="예: SURFACE / URBREFL" autocomplete="off" style="margin-bottom:0;">
+      <div class="dir-drop" id="dirDrop"></div>
+    </div>
+    <div class="dir-detail" id="dirDetail"></div>
     <button class="insp-save" id="inspSave">💾 저장 (셀렉사유 · DIR)</button>
     <div class="insp-label" style="margin-top:14px">원본 데이터 (JSON)</div>
     <pre class="insp-json" id="inspJson"></pre>
@@ -360,7 +382,7 @@
     <div class="hsec"><span class="hnum">1</span><div><b>먼저 “내가 누구인지” 고르기 (작업자)</b><br>도구 막대 왼쪽 <b>작업자</b>에서 <b>K</b> 또는 <b>P</b>를 누르세요. 지금부터 내가 매기는 판정이 그 사람 이름으로 기록됩니다. <br><span style="color:var(--ink3)">※ 지금까지 된 작업은 전부 K로 되어 있어요.</span></div></div>
     <div class="hsec"><span class="hnum">2</span><div><b>볼 사진 고르기 (모아 보기)</b><br>· <b>통계 칩</b>을 누르면 그것만 모여요. 예) <code>hold</code> 칩을 누르면 <b>아직 못 정한 보류 사진</b>만 나와요. 한 번 더 누르면 전체로 돌아가요.<br>· <b>검색</b>칸에 파일명·폴더·이유를 적으면 그것만 나와요.<br>· <b>판정·시트·글쓴이</b> 고르기로도 좁힐 수 있어요.</div></div>
     <div class="hsec"><span class="hnum">3</span><div><b>판정 매기기</b><br>사진 아래 <b>CORE · SUP · HOLD · DROP</b> 중 하나를 누르면 그 판정이 됩니다(고른 건 검게 채워짐). 사진 좌상단에 내 이름(<b>K/P</b>) 뱃지가 붙어요.</div></div>
-    <div class="hsec"><span class="hnum">4</span><div><b>사진 자세히 보기 · 셀렉사유/DIR 직접 입력 · 삭제</b><br>사진의 <b>이미지·글자 부분</b>(버튼 말고)을 누르면 오른쪽에 그 사진 패널이 떠요.<br>· 거기서 <b>셀렉 사유</b>와 <b>DIR</b>을 <b>직접 입력(복붙 OK)</b>하고 <b>💾 저장</b>을 누르면 그 사진에 기록돼요. <span style="color:var(--ink3)">(셀렉 파일이 없을 때 한 장씩 손으로 넣는 용도. 셀렉 파일이 있으면 위 <b>📋 셀렉 가져오기</b>가 훨씬 빨라요.)</span><br>· 아래엔 <b>원본 데이터(JSON)</b>도 보여요(전체 확인용). 닫을 땐 <code>×</code> 또는 <b>Esc</b>.<br>· 맨 아래 <b>🗑 이 사진 삭제</b>로 목록에서 뺄 수 있어요. <span style="color:var(--ink3)">(R2 이미지는 안 지워지고 목록에서만 빠져요. 다운로드→GitHub 업로드해야 실제 반영.)</span></div></div>
+    <div class="hsec"><span class="hnum">4</span><div><b>사진 자세히 보기 · 셀렉사유/DIR 직접 입력 · 삭제</b><br>사진의 <b>이미지·글자 부분</b>(버튼 말고)을 누르면 오른쪽에 그 사진 패널이 떠요.<br>· 거기서 <b>셀렉 사유</b>와 <b>DIR</b>을 <b>직접 입력(복붙 OK)</b>하고 <b>💾 저장</b>을 누르면 그 사진에 기록돼요. <span style="color:var(--ink3)">(셀렉 파일이 없을 때 한 장씩 손으로 넣는 용도. 셀렉 파일이 있으면 위 <b>📋 셀렉 가져오기</b>가 훨씬 빨라요.)</span><br>· <b>DIR 자동완성</b> — DIR 칸에 몇 글자만 치면 맞는 <b>코드가 목록으로</b> 떠요(클릭해 입력). 코드를 넣으면 바로 아래에 그 <b>원본문법·지시문 전문</b>이 뜨고, 라벨 옆 <b>✓/✗</b>로 유효한 코드인지(=갤러리에서 원본문법이 뜨는지) 표시돼요. 여러 개는 <code>/</code>로 구분. <span style="color:var(--ink3)">(코드 목록은 gallery1의 원본문법 사전에서 자동으로 가져와요.)</span><br>· 아래엔 <b>원본 데이터(JSON)</b>도 보여요(전체 확인용). 닫을 땐 <code>×</code> 또는 <b>Esc</b>.<br>· 맨 아래 <b>🗑 이 사진 삭제</b>로 목록에서 뺄 수 있어요. <span style="color:var(--ink3)">(R2 이미지는 안 지워지고 목록에서만 빠져요. 다운로드→GitHub 업로드해야 실제 반영.)</span></div></div>
     <div class="hsec"><span class="hnum">5</span><div><b>저장하기 — 이걸 해야 실제로 반영돼요!</b><br>판정을 바꾸면 맨 위에 <b>“● 수정됨”</b>이 떠요. 아직은 <b>내 화면(브라우저)에만</b> 있는 상태예요.<br>① 오른쪽 위 <code>⬇ 다운로드</code>를 누르면 <code>admin-contents.json</code> 파일이 컴퓨터에 받아져요.<br>② <b>github.com/note-a/note-a.github.io</b> 접속 → 그 저장소의 <code>admin-contents.json</code>을 연 뒤 → <b>Add file ▸ Upload files</b> 화면에 방금 받은 파일을 끌어다 놓아요 → 아래 <b>Commit changes</b> 클릭.<br>③ 1~2분 뒤 실제 갤러리에 반영됩니다.</div></div>
 
     <div class="hnote"><b>⚠️ 꼭 기억할 점</b>
@@ -640,6 +662,8 @@ function showInspector(L){
   $('inspThumb').src = thumbURL(L.node.filename) || '';
   $('inspReason').value = L.node.reason || '';
   $('inspDir').value = L.node.dir || '';
+  if(typeof updateDirUI==='function') updateDirUI();
+  $('dirDrop').style.display='none';
   $('inspJson').textContent = JSON.stringify(L.node, null, 2);
   $('inspector').classList.add('on');
 }
@@ -662,7 +686,86 @@ function saveInspector(){
   setTimeout(()=>{ btn.classList.remove('ok'); btn.textContent = t; }, 1400);
 }
 $('inspSave').addEventListener('click', saveInspector);
-$('inspDir').addEventListener('keydown', e=>{ if(e.key==='Enter'){ e.preventDefault(); saveInspector(); } });
+// ── DIR 자동완성 : gallery1.html의 DIR_INSTRUCTIONS(84개 전문)을 읽어와 목록·지시문·원본문법 표시 ──
+let DIR_DICT = {};      // { CODE: 전문(원본문법+지시문+기각) }
+let DIR_ALIAS = {};     // { ALIAS: CANON }
+let DIR_READY = false;
+const escH = s => String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+async function loadDirDict(){
+  const urls = ['https://raw.githubusercontent.com/note-a/note-a.github.io/main/gallery1.html', './gallery1.html'];
+  for(const u of urls){
+    try{
+      const res = await fetch(u + '?t=' + Date.now()); if(!res.ok) continue;
+      const html = await res.text();
+      const s = html.indexOf('DIR_INSTRUCTIONS={'); if(s < 0) continue;
+      const e = html.indexOf('DIR_ALIASES=', s);
+      const block = html.slice(s, e > s ? e : s + 130000);
+      const re = /([A-Z][A-Z0-9]{2,})\s*:\s*`([^`]*)`/g; let m; const dict = {};
+      while((m = re.exec(block))) dict[m[1]] = m[2];
+      if(!Object.keys(dict).length) continue;
+      DIR_DICT = dict;
+      if(e > 0){
+        const ab = html.slice(e, html.indexOf('}', e) + 1);
+        const ar = /([A-Za-z0-9]+)\s*:\s*'([^']+)'/g; let a;
+        while((a = ar.exec(ab))) DIR_ALIAS[a[1].toUpperCase()] = a[2].toUpperCase();
+      }
+      DIR_READY = true;
+      updateDirUI();
+      return;
+    }catch(err){}
+  }
+}
+loadDirDict();
+function dirResolve(c){ c = String(c||'').toUpperCase(); return DIR_ALIAS[c] || c; }
+function dirText(c){ return DIR_DICT[dirResolve(c)] || null; }
+function dirLabel(c){ const t = dirText(c); if(!t) return ''; return t.split('\n')[0].replace(/^원본\s*문법[^:]*:\s*/,'').slice(0,42); }
+function dirTokens(v){ return String(v||'').split('/').map(s=>s.trim()).filter(Boolean); }
+function updateDirUI(){
+  const toks = dirTokens($('inspDir').value);
+  const mEl = $('dirMatch'), dEl = $('dirDetail');
+  if(!DIR_READY || !toks.length){ mEl.innerHTML=''; dEl.innerHTML=''; return; }
+  mEl.innerHTML = toks.map(t => dirText(t)
+    ? `<span class="ok">✓ ${t.toUpperCase()}</span>`
+    : `<span class="no">✗ ${t.toUpperCase()}</span>`).join('');
+  dEl.innerHTML = toks.map(t => {
+    const txt = dirText(t);
+    return txt
+      ? `<div class="dd-block"><b>${dirResolve(t)}</b><pre>${escH(txt)}</pre></div>`
+      : `<div class="dd-block no">✗ <b>${t.toUpperCase()}</b> — 원본문법 사전에 없는 코드예요. 오타이거나 미등록 → 갤러리에서 원본문법이 안 떠요.</div>`;
+  }).join('');
+}
+function showDirDrop(){
+  const input = $('inspDir'), drop = $('dirDrop');
+  const parts = input.value.split('/');
+  const cur = parts[parts.length-1].trim().toUpperCase();
+  if(!DIR_READY || !cur){ drop.style.display='none'; return; }
+  const codes = Object.keys(DIR_DICT)
+    .filter(c => c.indexOf(cur) >= 0)
+    .sort((a,b) => (a.startsWith(cur)?0:1) - (b.startsWith(cur)?0:1) || a.localeCompare(b))
+    .slice(0, 10);
+  if(!codes.length){ drop.style.display='none'; return; }
+  drop.innerHTML = codes.map(c => `<div class="dd-item" data-code="${c}"><b>${c}</b><span>${escH(dirLabel(c))}</span></div>`).join('');
+  drop.style.display = 'block';
+}
+function pickDir(code){
+  const input = $('inspDir');
+  const parts = input.value.split('/');
+  parts[parts.length-1] = code;
+  input.value = parts.map(s=>s.trim()).filter(Boolean).join(' / ');
+  $('dirDrop').style.display='none';
+  updateDirUI(); input.focus();
+}
+$('inspDir').addEventListener('input', ()=>{ showDirDrop(); updateDirUI(); });
+$('inspDir').addEventListener('focus', showDirDrop);
+$('inspDir').addEventListener('blur', ()=> setTimeout(()=>{ $('dirDrop').style.display='none'; }, 160));
+$('dirDrop').addEventListener('mousedown', e=>{ const it = e.target.closest('.dd-item'); if(it){ e.preventDefault(); pickDir(it.dataset.code); } });
+$('inspDir').addEventListener('keydown', e=>{
+  const drop = $('dirDrop');
+  if(e.key==='Enter'){
+    if(drop.style.display==='block'){ const first = drop.querySelector('.dd-item'); if(first){ e.preventDefault(); pickDir(first.dataset.code); return; } }
+    e.preventDefault(); saveInspector();
+  } else if(e.key==='Escape'){ drop.style.display='none'; }
+});
 function closeInspector(){
   $('inspector').classList.remove('on');
   document.querySelectorAll('.card.sel').forEach(c=>c.classList.remove('sel'));
