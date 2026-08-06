@@ -348,10 +348,10 @@
   @media(max-width:768px){
     .header-in{padding-top:11px!important;padding-bottom:11px!important;gap:6px 16px!important;flex-wrap:wrap!important;overflow:visible!important;justify-content:center!important;align-items:center!important;}
     .logo{flex:0 0 auto!important;}
-    .logo,.logo .lg2{font-size:27px!important;}
+    .logo,.logo .lg2{font-size:31px!important;}
     .logo .lg2::before{width:.5em!important;height:.5em!important;}
-    .header-in .hbtn{flex:0 0 auto!important;border-left:none!important;font-size:20px!important;padding:2px 0!important;font-weight:600!important;white-space:nowrap!important;letter-spacing:0!important;}
-    .header-in .hbtn.primary{flex:0 0 auto!important;background:none!important;color:#111!important;font-size:20px!important;font-weight:800!important;padding:2px 0!important;letter-spacing:0!important;}
+    .header-in .hbtn{flex:0 0 auto!important;border-left:none!important;font-size:24px!important;padding:2px 0!important;font-weight:600!important;white-space:nowrap!important;letter-spacing:0!important;}
+    .header-in .hbtn.primary{flex:0 0 auto!important;background:none!important;color:#111!important;font-size:24px!important;font-weight:800!important;padding:2px 0!important;letter-spacing:0!important;}
     #btnBulk,#btnDelete{display:none!important;}
     .toolbar{display:flex!important;flex-wrap:nowrap!important;overflow-x:auto!important;padding:7px 0!important;gap:6px 12px!important;align-items:center!important;-webkit-overflow-scrolling:touch;}
     .toolbar::-webkit-scrollbar{display:none;}
@@ -809,7 +809,7 @@ function renderSheetOptions(){
 }
 
 // ── 그리드 렌더 (균일 격자 + 페이지네이션) ──
-const PAGE_SIZE = 60;
+const PAGE_SIZE = (window.matchMedia && window.matchMedia('(max-width:768px)').matches) ? 10 : 60;
 let page = 0;
 
 function cardHTML(L){
