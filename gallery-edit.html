@@ -121,10 +121,10 @@
   .stat.k::before{background:#181a1f;} .stat.p::before{background:#fff;border:1.5px solid #181a1f;}
 
   /* ── 우측 인스펙터 (선택 사진 원본 JSON) ── */
-  .inspector{position:fixed;top:0;right:0;width:380px;max-width:90vw;height:100vh;z-index:80;
-    background:#fff;border-left:1px solid var(--line2);box-shadow:-10px 0 34px rgba(0,0,0,.13);
-    display:flex;flex-direction:column;transform:translateX(100%);transition:transform .18s ease;}
-  .inspector.on{transform:translateX(0);}
+  .inspector{position:fixed;top:50%;left:50%;width:540px;max-width:92vw;height:auto;max-height:88vh;z-index:80;
+    background:#fff;border:3px solid #111;box-shadow:0 24px 70px rgba(0,0,0,.35), 0 0 0 100vmax rgba(0,0,0,.5);
+    display:flex;flex-direction:column;transform:translate(-50%,-50%) scale(.96);opacity:0;visibility:hidden;transition:transform .17s ease,opacity .17s ease;}
+  .inspector.on{transform:translate(-50%,-50%) scale(1);opacity:1;visibility:visible;}
   .insp-hd{display:flex;align-items:center;gap:10px;padding:14px 16px;border-bottom:1px solid var(--line);}
   .insp-hd .t{font-family:var(--mono);font-size:13px;font-weight:700;color:var(--ink);flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
   .insp-close{background:#fff;border:1px solid var(--line2);border-radius:6px;font-size:17px;line-height:1;padding:3px 10px;color:var(--ink2);}
@@ -366,8 +366,8 @@
     .overlay .modal{max-width:100%!important;width:100%!important;padding:0 16px 18px!important;box-shadow:0 0 0 2px #111!important;max-height:90vh!important;}
     .overlay .modal h3{font-size:22px!important;padding:12px 16px!important;margin:0 -16px 16px!important;line-height:1.15!important;}
     .overlay .modal-actions .hbtn.primary{font-size:16px!important;}
-    .inspector{width:100%!important;max-width:100%!important;left:0!important;right:0!important;top:auto!important;bottom:0!important;height:82vh!important;border-left:none!important;border-top:3px solid #111!important;box-shadow:0 -10px 30px rgba(0,0,0,.25)!important;transform:translateY(100%)!important;}
-    .inspector.on{transform:translateY(0)!important;}
+    .inspector{width:92%!important;max-width:92%!important;left:50%!important;right:auto!important;top:50%!important;bottom:auto!important;height:auto!important;max-height:86vh!important;border:3px solid #111!important;box-shadow:0 20px 60px rgba(0,0,0,.45), 0 0 0 100vmax rgba(0,0,0,.5)!important;transform:translate(-50%,-50%) scale(.96)!important;opacity:0;visibility:hidden;transition:transform .16s ease,opacity .16s ease!important;}
+    .inspector.on{transform:translate(-50%,-50%) scale(1)!important;opacity:1;visibility:visible;}
   }
   /* 하단 페이지네이션 — 각진 검정 테두리 + DIN + 시안 호버 + 현재페이지 검정칩 */
   .pager{padding:40px 0 26px!important;gap:0!important;align-items:stretch!important;}
