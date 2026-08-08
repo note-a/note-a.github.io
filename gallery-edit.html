@@ -541,10 +541,35 @@
     <h3>📖 사용설명서 — 갤러리 판정 입력기</h3>
     <p class="hlead">이 도구는 촬영한 <b>사진 6천여 장</b>을 하나씩 보면서 <b>판정(core·support·hold·drop)</b>을 매기는 곳이에요. 프로그램 설치·코딩 필요 없이 <b>클릭 → 다운로드 → GitHub에 올리기</b> 3단계면 끝. 처음이어도 아래 순서대로만 하면 됩니다.</p>
 
+    <div class="hnote" style="border:2px solid var(--ink);background:#fbfbe6;">
+      <b>📦 데이터는 어디에 저장되나요? — admin-contents.json 한 파일</b>
+      <div style="margin-top:8px;font-size:12.5px;line-height:1.85;">
+        이 프로젝트의 <b>모든 사진 정보가 딱 한 파일</b>(<code>admin-contents.json</code>)에 들어있어요. 사진 6천여 장의 <b>목록 + 각 사진의 판정·DIR·셀렉사유·작성자</b>가 전부 여기 있고, <b>gallery1(전시)·gallery-edit(편집)</b> 둘 다 이 파일을 읽어서 화면에 뿌려요. 즉 <b>이게 원본이고, 페이지들은 그걸 보여주는 창</b>일 뿐이에요.
+        <ul style="margin:9px 0 0;padding-left:20px;line-height:1.9;">
+          <li><b>구조</b> — 년월(2026.03) ▸ 일(0322) ▸ 사진 <code>{id · R2 이미지주소 · 판정 · DIR · 사유 · 작성자}</code></li>
+          <li><b>이미지 파일 자체는 여기 없어요</b> — 실제 사진은 Cloudflare R2에만 있고, json엔 그 <b>주소만</b> 들어있어요(용량 절약).</li>
+        </ul>
+        <div style="margin-top:11px;"><b>🔄 불러오기 3종 차이</b></div>
+        <ul style="margin:5px 0 0;padding-left:20px;line-height:1.9;">
+          <li><code>Live Load</code> — GitHub의 <b>최신 json</b>을 불러옴 <span style="color:var(--ink3)">(평소엔 이것만 쓰면 됨)</span></li>
+          <li><code>Open File</code> — 내 컴퓨터에 <b>다운받아둔 json</b>을 열어 <b>이어서 편집</b>할 때</li>
+          <li><code>Import Select</code> — 판정 <b>.md 파일</b>을 넣어 DIR·판정·사유 채움 <b>(+ 없는 사진 자동 등록)</b></li>
+        </ul>
+        <div style="margin-top:11px;"><b>💾 편집 → 저장 흐름</b></div>
+        <ol style="margin:5px 0 0;padding-left:20px;line-height:1.95;">
+          <li><b>Live Load</b>로 최신 데이터 불러오기</li>
+          <li>판정·DIR·사유 편집 (또는 <b>Import Select</b>로 .md 일괄 입력)</li>
+          <li><b>Download</b> → 수정된 <code>admin-contents.json</code>이 컴퓨터에 저장됨 <span style="color:var(--ink3)">(여기까진 내 브라우저 안에만!)</span></li>
+          <li>그 파일을 <b>GitHub(note-a.github.io)에 업로드</b> → 1~2분 뒤 사이트에 실제 반영</li>
+        </ol>
+        <div style="margin-top:10px;color:#c0392b;font-weight:600;">⚠️ Download → GitHub 업로드를 안 하면, 새로고침할 때 수정이 전부 사라져요. json이 바뀌어야 사이트도 바뀝니다.</div>
+      </div>
+    </div>
+
     <div class="hnote"><b>🗺 화면 구성 (어디에 뭐가 있나요)</b>
       <ul>
-        <li><b>맨 윗줄</b> — 왼쪽에 제목·현재 상태, 오른쪽에 <code>❓사용법</code> <code>↻라이브 로드</code> <code>📁파일 열기</code> <code>📋셀렉 가져오기</code> <code>⬇다운로드</code> 버튼.</li>
-        <li><b>둘째 줄(도구 막대)</b> — <b>작업자(K/P)</b> · <b>검색</b>칸 · <b>판정·시트·글쓴이</b> 고르기 · <code>+ 사진 등록</code> · <code>🗑 일괄 삭제</code>.</li>
+        <li><b>맨 윗줄(헤더)</b> — <code>EDIT</code>(누르면 메인으로) · <code>Guide</code>(사용법) · <code>Live Load</code> · <code>Open File</code> · <code>Import Select</code> · <code>Download</code> · <code>Delete</code>(일괄 삭제).</li>
+        <li><b>둘째 줄(도구 막대)</b> — <b>작업자(K/P)</b> · <b>검색</b>칸 · <b>판정·시트·글쓴이</b> 고르기.</li>
         <li><b>셋째 줄(통계 칩)</b> — 전체·core·support·hold·drop·K·P 개수. <b>칩을 누르면 그 종류만 모아서</b> 볼 수 있어요. <b>⚠ DIR없음(뽑음)</b> 칩은 <b>뽑았는데(core·support) DIR을 안 채운 사진</b>만 모아줘요 — 눌러서 하나씩 DIR 채우면 돼요.</li>
         <li><b>가운데</b> — 사진 카드들. 카드 아래마다 <b>CORE·SUP·HOLD·DROP</b> 버튼, 좌상단에 누가 정했는지 <b>K/P 뱃지</b>.</li>
       </ul>
@@ -562,7 +587,7 @@
         </ol>
         <div style="margin-top:9px;color:var(--ink3);">
           · 아이콘 변환: 🟢→core · 🟡→support · 🔴→drop · 📝(비고)→drop · ❓(보류)→hold<br>
-          · <b>먼저 그 폴더 사진이 등록돼 있어야</b> 매칭돼요 (아래 “새 사진 등록” 참고). 셀렉 파일의 날짜(예: 2026/03/0316)로 <b>그 폴더만</b> 안전하게 채웁니다.<br>
+          · <b>목록에 없는 사진은 자동으로 등록</b>돼요 — 모달의 <code>☑ 목록에 없는 사진은 자동 등록</code> 체크(기본 켜짐)만 있으면, 사진을 따로 안 올려도 <b>.md 하나로 그 폴더가 통째로 생성+판정·DIR·사유 완성</b>. 셀렉 파일의 날짜(예: 2026/03/0316)로 <b>그 폴더만</b> 안전하게 채웁니다.<br>
           · <b>원본문법</b>은 DIR만 맞으면 갤러리에서 자동으로 떠요.<br>
           · 가져온 뒤 <b>⬇ 다운로드 → GitHub 업로드</b>해야 실제 반영돼요.
         </div>
