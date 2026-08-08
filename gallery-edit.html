@@ -479,7 +479,6 @@
     <button class="hbtn" id="btnImport" title="Auto-fill verdict·DIR·reason from select .md files">Import Select</button>
     <input type="file" id="fileInput" accept=".json" class="hidden">
     <button class="hbtn primary" id="btnDownload">Download</button>
-    <button class="hbtn" id="btnBulk">+ Add Photo</button>
     <button class="hbtn" id="btnDelete" title="Bulk delete" style="color:#c0392b;">Delete</button>
   </div>
   <div class="cw toolbar">
@@ -1336,7 +1335,7 @@ $('btnDownload').addEventListener('click', download);
 $('btnHelp').addEventListener('click', ()=>$('helpOverlay').classList.add('on'));
 $('helpClose').addEventListener('click', ()=>$('helpOverlay').classList.remove('on'));
 $('helpOverlay').addEventListener('click', e=>{ if(e.target===$('helpOverlay')) $('helpOverlay').classList.remove('on'); });
-$('btnBulk').addEventListener('click', openBulk);
+{ const _bb=$('btnBulk'); if(_bb) _bb.addEventListener('click', openBulk); }  // + Add Photo 버튼 제거됨(Import Select가 등록 겸함). 재추가 시 자동 연결.
 $('bulkCancel').addEventListener('click', ()=>$('bulkOverlay').classList.remove('on'));
 $('bulkConfirm').addEventListener('click', confirmBulk);
 $('bulkOverlay').addEventListener('click', e=>{ if(e.target===$('bulkOverlay')) $('bulkOverlay').classList.remove('on'); });
