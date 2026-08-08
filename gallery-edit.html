@@ -1163,6 +1163,25 @@ function confirmBulk(){
 
 // ── 셀렉 파일(.md) 가져오기 — 판정·DIR·사유 일괄 자동 입력 ──
 const VERDICT_EMOJI = {'🟢':'core','🟡':'support','🔴':'drop','📝':'drop','❓':'hold'};
+// 1차 원시코드(object-09) → 짧은코드(SURFACE) 변환표 (Archive 1 형식용)
+const DIR1_MAP = {
+  space:    ['','MONOLITH','STRATA','DISSOLVE','LITGRID','VANISH','MIRRORSURF','PEEL','SNOWFILL','OXIDE','ADWRAP','ROADCLASH','WALLTXT','OVERGROW'],
+  object:   ['','ISOLATE','RUPTURE','GRID','CLUSTER','FLOAT','SKELETON','BLOOM','WRAP','SURFACE'],
+  figure:   ['','DUALFRAME','HEADOBJ','BACKPOSE','DUALFIG','DIPTYCH','FGBG','COLORISO','SKINREP','BODYTXT'],
+  figurebg: ['','BGPAT','SCALE','ATMOFUSE','GLASSDUAL','AEROFLT','ARCHCAP','BACKLIT'],
+  unjudge:  ['','SURFILL','BLURABS']
+};
+function convertDir(raw){
+  if(!raw) return raw;
+  const codes=[];
+  raw.replace(/(space|object|figurebg|figure|unjudge)\s*-\s*(\d{1,2})/gi, (m,cat,num)=>{
+    const arr=DIR1_MAP[cat.toLowerCase()], n=parseInt(num,10);
+    if(arr && arr[n]) codes.push(arr[n]); return m;
+  });
+  if(!codes.length) return raw;                 // 원시코드 없음 → 이미 짧은코드거나 그대로
+  const seen={}, uniq=[]; codes.forEach(c=>{ if(!seen[c]){ seen[c]=1; uniq.push(c); } });
+  return uniq.join(' / ');
+}
 // md 표를 파싱해서 { ID: {verdict, dir, reason} } 로
 function parseSelectFile(md){
   const out = {};
@@ -1173,24 +1192,29 @@ function parseSelectFile(md){
     if(/^\|\s*:?-+/.test(line)) return;         // |---| 구분선
     const cells = line.split('|').slice(1,-1).map(c=>c.trim());
     if(cells.length < 3) return;
-    // 파일 id 찾기 (DSCF6491 / [[DSCF6491]])
+    // 파일 id 찾기 — DSCF6491 / [[DSCF6491]] / 번호만(6491, DSCF 없이 — Archive 1)
     let id=null, idIdx=-1;
     for(let i=0;i<cells.length;i++){
-      const m = cells[i].replace(/\[\[|\]\]/g,'').match(/([A-Za-z]{2,}\d{3,})/);
-      if(m){ id=m[1].toUpperCase(); idIdx=i; break; }
+      const m = cells[i].replace(/\[\[|\]\]/g,'').match(/DSCF\s*(\d{3,})/i);
+      if(m){ id='DSCF'+m[1]; idIdx=i; break; }
+    }
+    if(!id){                                    // DSCF 없이 번호만 쓰는 형식 → 첫 셀이 순수 숫자면 DSCF 자동 부착
+      const c0 = cells[0].replace(/\[\[|\]\]/g,'').replace(/\*/g,'').trim();
+      if(/^\d{3,5}$/.test(c0)){ id='DSCF'+c0; idIdx=0; }
     }
     if(!id) return;                             // 헤더행 등 스킵
     // 판정 이모지 (어느 셀이든)
     let verdict=null;
     for(const c of cells){ for(const e of EM){ if(c.indexOf(e)>=0){ verdict=VERDICT_EMOJI[e]; break; } } if(verdict) break; }
-    // DIR = id 뒤 첫 '대문자 코드' 셀 (마지막=사유, 이모지 셀 제외)
+    // DIR = id 뒤 첫 코드 셀 — 짧은코드(LGTPAT) / 원시코드(object-09·space-13, 백틱 감쌈) / 슬래시 조합
     let dir='';
     for(let i=idIdx+1;i<cells.length-1;i++){
-      const c = cells[i];
+      const c = cells[i].replace(/`/g,'').trim();
       if(!c || c==='—') continue;
       if(EM.some(e=>c.indexOf(e)>=0)) continue;
-      if(/^[A-Z][A-Z0-9]/.test(c.replace(/\s/g,''))){ dir=c; break; }
+      if(/^[A-Za-z][A-Za-z0-9]*(-\d+)?/.test(c)){ dir=c; break; }
     }
+    dir = convertDir(dir);                       // object-09 → SURFACE 등 짧은코드로 변환
     // 사유 = 마지막 셀
     let reason = cells[cells.length-1] || '';
     if(reason===id || reason==='—' || EM.some(e=>reason.indexOf(e)>=0)) reason='';
