@@ -3286,6 +3286,10 @@ function buildGlScatter(){
     return {g,angle,r,d};
   });
 
+  // 왼쪽 GALLERY 추적 박스가 LOCK 될 때 해당 DIR 삼각형을 찾아 반짝이도록 전역에 매핑 저장
+  window.__glTriMap={};
+  triEls.forEach(({g,d})=>{ window.__glTriMap[d.code]=g; });
+
   // 중심 허브
   const hub=document.createElementNS('http://www.w3.org/2000/svg','circle');
   hub.setAttribute('cx',cx); hub.setAttribute('cy',cy); hub.setAttribute('r','2.2');
@@ -3308,6 +3312,15 @@ function buildGlScatter(){
     glScatRaf=requestAnimationFrame(animScatter);
   }
   glScatRaf=requestAnimationFrame(animScatter);
+}
+
+// 왼쪽 GALLERY 추적 박스가 LOCK 될 때 DIST 방사형 다이어그램에서 해당 DIR 삼각형을 반짝임
+function flashDirTriangle(code){
+  const g=window.__glTriMap&&window.__glTriMap[code];
+  if(!g) return;
+  g.style.filter='brightness(2.4) drop-shadow(0 0 3px #fff)';
+  clearTimeout(g.__flashTimer);
+  g.__flashTimer=setTimeout(()=>{ g.style.filter=''; }, 1000);
 }
 
 function tick(){
@@ -3656,10 +3669,11 @@ function buildGvaRadar(){
   const lockMsg=document.getElementById('gva-lock-msg');
   let lockTimer=null;
 
-  function showLock(label){
+  function showLock(dirCode,statusRaw,label){
     const scLock=document.getElementById('sc-lock-msg');
     if(scLock){
-      scLock.textContent='LOCK ACQUIRED · '+label;
+      const statusTxt=statusRaw==='CORE'?'CORE':(statusRaw==='SUPPORT'||statusRaw==='SUP')?'SUP':statusRaw==='DROP'?'DROP':'—';
+      scLock.textContent='LOCK · '+dirCode+' · '+statusTxt+' · '+label;
       scLock.style.transition='none';
       scLock.style.opacity='0';
       void scLock.offsetWidth;
@@ -3667,6 +3681,7 @@ function buildGvaRadar(){
       scLock.style.opacity='1';
       setTimeout(()=>{ scLock.style.transition='opacity .6s ease'; scLock.style.opacity='0'; }, 1800);
     }
+    flashDirTriangle(dirCode);
   }
 
   function updateMeasure(){
@@ -3697,7 +3712,11 @@ function buildGvaRadar(){
     const dy=parseFloat(det2.style.top)+dh/2;
     if(isNaN(tx)||isNaN(dx)) return;
     const dist=(Math.sqrt((tx-dx)**2+(ty-dy)**2)*0.31).toFixed(1)+'m';
-    showLock(dist);
+    // 현재 GALLERY에 표시 중인 실제 사진의 DIR·상태를 그대로 가져와 DIST에 표시
+    const cur=(typeof GL_FRAMES!=='undefined'&&GL_FRAMES.length)?GL_FRAMES[glIdx]:null;
+    const dirCode=cur?(cur.dir||'—'):'—';
+    const statusRaw=cur?(cur.status||'').toUpperCase():'';
+    showLock(dirCode,statusRaw,dist);
   }
 
   function moveDet2(){
