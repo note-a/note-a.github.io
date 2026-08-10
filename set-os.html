@@ -1888,15 +1888,13 @@ html,body{ background:#050505!important; }
 #bg-depth{ display:none!important; }
 #bg-orbs{ display:none!important; }
 #bg-grid{ display:none!important; }
-/* 입체감: 패널 그룹(좌우 레일+메인)을 딱 감싸는 이어진 프레임(#hud-frame, JS 배치) + 은은한 비네트 */
-body::after{ content:''!important; position:fixed!important; inset:0!important; z-index:120!important; pointer-events:none!important;
-  box-shadow: inset 0 0 130px rgba(0,0,0,.5)!important; }
-#hud-frame{ position:fixed!important; z-index:0!important; pointer-events:none!important; display:none;
-  border:2px solid rgba(0,224,100,.72)!important; border-radius:10px!important;
-  box-shadow: 0 0 20px rgba(0,224,100,.4), inset 0 0 26px rgba(0,224,100,.06),
-    0 22px 60px rgba(0,0,0,.78), 0 50px 100px rgba(0,0,0,.55)!important; }
-#hud-frame::before{ content:''!important; position:absolute!important; inset:5px!important;
-  border:1px solid rgba(0,224,100,.22)!important; border-radius:6px!important; }
+/* 입체감: 배경 가장자리를 감싸는 프레임 선 */
+#hud-frame{ display:none!important; }
+body::after{ content:''!important; position:fixed!important; inset:7px!important; z-index:300!important; pointer-events:none!important;
+  border:2px solid rgba(0,224,100,.8)!important; border-radius:6px!important;
+  box-shadow: inset 0 0 0 1px rgba(0,0,0,.7), inset 0 1px 0 rgba(140,255,190,.25),
+    inset 0 0 42px rgba(0,0,0,.45), inset 0 0 95px rgba(0,218,64,.05),
+    0 0 14px rgba(0,224,100,.5), inset 0 0 14px rgba(0,224,100,.25), 0 0 0 7px #050505!important; }
 #wrap{ box-shadow: 0 6px 22px rgba(0,0,0,.55)!important; }
 
 /* ═══ 화면 전체 노이즈/글리치 오버레이 (또렷하게) ═══ */
@@ -4534,7 +4532,7 @@ document.addEventListener('keydown',function(e){
     // 모바일(≤767) 제외한 모든 폭에서 레일 표시 → 레일까지 한 화면에 들어오도록 기준 1800
     var railsFit = w>=768;
     var base = railsFit ? 1800 : 1140;
-    return Math.min(w/base, window.innerHeight/757, 1.28);
+    return Math.min(w/base, window.innerHeight/757, 1.5);
   };
   var wrap=document.getElementById('wrap');
   function fit(){
