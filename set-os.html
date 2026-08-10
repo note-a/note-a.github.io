@@ -1863,9 +1863,9 @@ body.crt-entering #shell{animation:crtOn .52s cubic-bezier(.2,.65,.3,1) forwards
 }
 
 /* ═══════ TWEAKS: 앰버/골드 포인트 컬러 + 배경 밝기 ═══════ */
-:root{ --pt:#ffbf3a; --red:#ffbf3a; }          /* alert/강조 계열 → 앰버(그린과 보색 대비) */
-/* 패널 곳곳의 강조 수치(.hi)·특수값(.vl) → 앰버 (중간중간 포인트) */
-.v.hi, .lr-tbl .tr .v.hi{ color:var(--pt)!important; text-shadow:0 0 7px rgba(255,191,58,.5)!important; }
+:root{ --pt:#ffbf3a; --red:#ffbf3a; --pt2:#ff4d9e; }   /* 앰버 + 핑크(2번째 포인트) */
+/* 강조 수치(.hi) → 핑크, 특수값(.vl) → 앰버 → 색 리듬 */
+.v.hi, .lr-tbl .tr .v.hi{ color:var(--pt2)!important; text-shadow:0 0 7px rgba(255,77,158,.55)!important; }
 .lr-tbl .tr .v.vl{ color:var(--pt)!important; }
 /* ACTIVATE: 꽉 찬 앰버 */
 .activate{ color:#0f0c02!important; background:var(--pt)!important; border-color:var(--pt)!important;
@@ -1884,7 +1884,7 @@ body.crt-entering #shell{animation:crtOn .52s cubic-bezier(.2,.65,.3,1) forwards
 html,body{ background:#050505!important; }
 #bg{ background:#050505!important; }
 #fx-static{ position:fixed!important; inset:0!important; width:100vw!important; height:100vh!important;
-  z-index:0!important; pointer-events:none!important; image-rendering:pixelated!important; opacity:.11!important; }
+  z-index:0!important; pointer-events:none!important; image-rendering:pixelated!important; opacity:.15!important; }
 #bg-depth{ display:none!important; }
 #bg-orbs{ display:none!important; }
 #bg-grid{ display:none!important; }
