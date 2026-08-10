@@ -1355,7 +1355,7 @@ html,body{width:100%;min-height:100vh;overflow:hidden;background:#080300;font-fa
   text-decoration:none;cursor:pointer;padding:5px 2px;border:1px solid transparent;
   transition:background .1s,border-color .1s;}
 .fld-item:hover{background:rgba(0,218,64,.07);border-color:rgba(0,218,64,.25);}
-.fld-ic{width:42px;height:36px;display:block;}
+.fld-ic{width:60px;height:50px;display:block;}
 .fld-ic .body{fill:rgba(0,35,27,.55);stroke:var(--fc,#00da40);stroke-width:1.4;}
 .fld-ic .ln{stroke:var(--fc,#00da40);opacity:.28;stroke-width:1;}
 .fld-item:hover .fld-ic .body{fill:rgba(0,76,51,.6);stroke:var(--fc,#00da40);filter:brightness(1.15);}
@@ -1888,9 +1888,16 @@ html,body{ background:#050505!important; }
 #bg-depth{ display:none!important; }
 #bg-orbs{ display:none!important; }
 #bg-grid{ display:none!important; }
-/* 밝은 배경 위에서 어색한 어두운 드롭섀도우 제거 (테두리는 유지) */
-#wrap{ box-shadow:none!important; }
-.pnl,.pnl-in,.lr-dp,.lr-rail .lr-dp,.rr-rail .lr-dp,.pilot-pnl{ box-shadow:none!important; }
+/* 입체감: 패널 그룹(좌우 레일+메인)을 딱 감싸는 이어진 프레임(#hud-frame, JS 배치) + 은은한 비네트 */
+body::after{ content:''!important; position:fixed!important; inset:0!important; z-index:120!important; pointer-events:none!important;
+  box-shadow: inset 0 0 130px rgba(0,0,0,.5)!important; }
+#hud-frame{ position:fixed!important; z-index:0!important; pointer-events:none!important; display:none;
+  border:2px solid rgba(0,224,100,.72)!important; border-radius:10px!important;
+  box-shadow: 0 0 20px rgba(0,224,100,.4), inset 0 0 26px rgba(0,224,100,.06),
+    0 22px 60px rgba(0,0,0,.78), 0 50px 100px rgba(0,0,0,.55)!important; }
+#hud-frame::before{ content:''!important; position:absolute!important; inset:5px!important;
+  border:1px solid rgba(0,224,100,.22)!important; border-radius:6px!important; }
+#wrap{ box-shadow: 0 6px 22px rgba(0,0,0,.55)!important; }
 
 /* ═══ 화면 전체 노이즈/글리치 오버레이 (또렷하게) ═══ */
 /* ① 필름 그레인 — 항상, 전체 화면 */
@@ -1927,6 +1934,31 @@ html,body{ background:#050505!important; }
 <div id="fx-grain"></div><div id="fx-sweep"></div>
 <div id="fx-glitch"></div>
 <canvas id="fx-static"></canvas>
+<div id="hud-frame"></div>
+<script>
+(function(){
+  var f=document.getElementById('hud-frame');
+  function place(){
+    var wrap=document.getElementById('wrap'); if(!wrap||!f) return;
+    var lr=document.querySelector('.lr-rail'), rr=document.querySelector('.rr-rail');
+    var w=wrap.getBoundingClientRect();
+    var boxes=[w];
+    if(lr && getComputedStyle(lr).display!=='none'){ var r=lr.getBoundingClientRect(); if(r.width>0) boxes.push(r); }
+    if(rr && getComputedStyle(rr).display!=='none'){ var r2=rr.getBoundingClientRect(); if(r2.width>0) boxes.push(r2); }
+    var top=Math.min.apply(null,boxes.map(function(b){return b.top;}));
+    var left=Math.min.apply(null,boxes.map(function(b){return b.left;}));
+    var right=Math.max.apply(null,boxes.map(function(b){return b.right;}));
+    var bottom=Math.max.apply(null,boxes.map(function(b){return b.bottom;}));
+    var pad=14;
+    f.style.top=(top-pad)+'px'; f.style.left=(left-pad)+'px';
+    f.style.width=(right-left+pad*2)+'px'; f.style.height=(bottom-top+pad*2)+'px';
+    f.style.display=(right>left && bottom>top)?'block':'none';
+  }
+  window.addEventListener('resize',place);
+  window.addEventListener('orientationchange',function(){setTimeout(place,200);});
+  setTimeout(place,0); setTimeout(place,150); setTimeout(place,500);
+})();
+</script>
 <script>
 (function(){
   var cv=document.getElementById('fx-static'); if(!cv) return;
@@ -4502,7 +4534,7 @@ document.addEventListener('keydown',function(e){
     // 모바일(≤767) 제외한 모든 폭에서 레일 표시 → 레일까지 한 화면에 들어오도록 기준 1800
     var railsFit = w>=768;
     var base = railsFit ? 1800 : 1140;
-    return Math.min(w/base, window.innerHeight/757, 1);
+    return Math.min(w/base, window.innerHeight/757, 1.28);
   };
   var wrap=document.getElementById('wrap');
   function fit(){
