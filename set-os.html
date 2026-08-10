@@ -3695,8 +3695,9 @@ function buildCs2Grid(){
   const grid=document.getElementById('cs2-grid');
   grid.dataset.built='1';
   grid.innerHTML='';
+  const CS_LIMIT=21;
   const hasReal=GL_FRAMES.length>0&&GL_FRAMES[0].src;
-  const frames=hasReal?GL_FRAMES:CS_DATA.map((f,i)=>({src:'https://picsum.photos/seed/'+f.seed+'/200/133',n:f.n,status:f.cls.toUpperCase()}));
+  const frames=(hasReal?GL_FRAMES:CS_DATA.map((f,i)=>({src:'https://picsum.photos/seed/'+f.seed+'/200/133',n:f.n,status:f.cls.toUpperCase()}))).slice(0,CS_LIMIT);
   frames.forEach(f=>{
     const v=(f.status||'').toUpperCase();
     const cls=v==='CORE'?'core':(v==='SUPPORT'||v==='SUP')?'sup':'drop';
