@@ -25,7 +25,7 @@ body{width:100%;min-height:100vh;background:#000;font-family:var(--mono);
 .corner.bl{bottom:3px;left:3px;border-bottom:1px solid var(--g);border-left:1px solid var(--g);}
 .corner.br{bottom:3px;right:3px;border-bottom:1px solid var(--g);border-right:1px solid var(--g);}
 
-.ttlwrap{flex:0 0 auto;display:flex;align-items:baseline;gap:10px;}
+.ttlwrap{flex:0 0 auto;display:flex;flex-direction:column;gap:2px;}
 .ttl{font-family:'Orbitron',sans-serif;font-weight:800;font-size:22px;letter-spacing:1.5px;color:#00f6e4;
   text-shadow:0 0 16px rgba(0,246,228,.65),0 0 5px rgba(0,246,228,.95);}
 .ttlsub{font-size:11px;letter-spacing:1px;color:var(--g3);}
@@ -57,7 +57,7 @@ body{width:100%;min-height:100vh;background:#000;font-family:var(--mono);
   <span class="corner tl"></span><span class="corner tr"></span><span class="corner bl"></span><span class="corner br"></span>
   <canvas id="bgcv"></canvas>
   <div class="stack">
-    <div class="ttlwrap"><div class="ttl">PROJECT SET</div><div class="ttlsub">ARCHIVE TERMINAL <b>v2.4</b></div></div>
+    <div class="ttlwrap"><div class="ttl">PROJECT SET</div><div class="ttlsub">ARCHIVE TERMINAL</div></div>
     <div class="sep"></div>
     <div id="kin"></div>
   </div>
