@@ -11,7 +11,7 @@
 <style>
 :root{
   --g:#00da40; --g2:rgba(0,218,64,0.7); --g3:rgba(0,218,64,0.4); --g4:rgba(0,218,64,0.14);
-  --acc:#00dc67; --ac2:#62ef00; --ac3:#00e48b; --ac4:#00e48b; --ac5:#35d7ef; --gl:#76f6a1; --gd:#008a42; --pnl:#000000; --hd:#000000; --bd:#00da40;
+  --acc:#00dc67; --ac2:#62ef00; --ac3:#00e48b; --ac4:#00e48b; --ac5:#5ff2ff; --gl:#76f6a1; --gd:#008a42; --pnl:#000000; --hd:#000000; --bd:#00da40;
   --amb:#00df78; --red:#27d900;
   --mono:'Courier Prime','Galmuri11','Share Tech Mono',monospace;
   --term:'Share Tech Mono','Galmuri11',monospace;
@@ -124,7 +124,7 @@ html,body{width:100%;min-height:100vh;overflow:hidden;background:#080300;font-fa
 .lr-tbl{padding:3px 6px;display:flex;flex-direction:column;gap:1px;}
 .lr-tbl .tr{display:flex;justify-content:space-between;font-size:8.5px;line-height:1.5;}
 .lr-tbl .tr .k{color:var(--g3);}.lr-tbl .tr .v{color:var(--g2);font-variant-numeric:tabular-nums;}
-.lr-tbl .tr .v.hi{color:#3cf8ff;}.lr-tbl .tr .v.tl{color:#00e48b;}.lr-tbl .tr .v.vl{color:#35d7ef;}
+.lr-tbl .tr .v.hi{color:#8afeff;}.lr-tbl .tr .v.tl{color:#00e48b;}.lr-tbl .tr .v.vl{color:#5ff2ff;}
 .lr-minibar{height:4px;margin:2px 6px;background:rgba(0,218,64,.08);border:1px solid var(--g4);position:relative;overflow:hidden;}
 .lr-minibar i{position:absolute;left:0;top:0;bottom:0;background:linear-gradient(90deg,var(--acc),var(--ac3));}
 .lr-slbl{font-size:8px;color:var(--g3);padding:0 6px;letter-spacing:.5px;}
@@ -168,11 +168,11 @@ html,body{width:100%;min-height:100vh;overflow:hidden;background:#080300;font-fa
 .pl-nl-head .gc{flex:0 0 42px;}.pl-nl-head .gq{flex:1;}.pl-nl-head .gn{text-align:right;flex:0 0 18px;}
 .pl-nl-row{display:flex;gap:4px;font-size:9px;padding:2px 0;
   border-bottom:1px solid rgba(0,218,64,0.06);color:rgba(0,218,64,0.7);}
-.pl-nl-row.cand{color:#3cf8ff;}
+.pl-nl-row.cand{color:#8afeff;}
 .pl-nl-row .gc{flex:0 0 42px;color:rgba(0,218,64,0.4);}
 .pl-nl-row .gq{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
 .pl-nl-row .gn{text-align:right;flex:0 0 18px;color:#00e48b;}
-.pl-cand-tag{font-size:8px;border:1px solid #3cf8ff;padding:0 2px;color:#3cf8ff;margin-left:3px;}
+.pl-cand-tag{font-size:8px;border:1px solid #8afeff;padding:0 2px;color:#8afeff;margin-left:3px;}
 .pl-nl-empty{color:rgba(0,218,64,0.35);font-size:9px;padding:8px 0;text-align:center;letter-spacing:1px;}
 .pl-nl-foot{font-size:8.5px;color:rgba(0,218,64,0.35);padding-top:4px;
   border-top:1px solid rgba(0,218,64,0.14);line-height:1.9;margin-top:3px;}
@@ -1451,22 +1451,22 @@ html,body{width:100%;min-height:100vh;overflow:hidden;background:#080300;font-fa
 
 /* ── 포인트 색 다양화 (varied orange accents) ── */
 .ph-wt{color:#00efcb !important;}                 /* SET.VIEW 타이틀 → 옐로골드 */
-.ph-arrow{color:#00f2d7 !important;}              /* ▶ → 옐로 */
-.ph-nav a:nth-of-type(1).on{color:#00f2d7 !important;border-bottom-color:#00f2d7 !important;}
-.ph-nav a:nth-of-type(2).on{color:#00edbf !important;border-bottom-color:#00edbf !important;}
+.ph-arrow{color:#4dffe8 !important;}              /* ▶ → 옐로 */
+.ph-nav a:nth-of-type(1).on{color:#4dffe8 !important;border-bottom-color:#4dffe8 !important;}
+.ph-nav a:nth-of-type(2).on{color:#3affe0 !important;border-bottom-color:#3affe0 !important;}
 .h-logo-main{color:#00efcb !important;}           /* HUD.XT2 → 옐로골드 */
-.h-logo-block::before{color:#00f2d7 !important;}
-.h-tab.on{color:#00f2d7 !important;}
-.h-tab.on::after{background:#00f2d7 !important;}
+.h-logo-block::before{color:#4dffe8 !important;}
+.h-tab.on{color:#4dffe8 !important;}
+.h-tab.on::after{background:#4dffe8 !important;}
 .stmt-scroll .lead{color:#00ae92 !important;}     /* 스테이트먼트 리드 → 다크 골드 */
-.binfo .lh{color:#00f2d7 !important;}
+.binfo .lh{color:#4dffe8 !important;}
 /* 하단 모드 버튼: 오렌지~옐로 섞기 */
 .mode-row .mb:nth-of-type(1){color:#00e073;border-color:rgba(0,224,115,.5);}
 .mode-row .mb:nth-of-type(2){color:#00efcb;border-color:rgba(60,252,255,.5);}
-.mode-row .mb:nth-of-type(3){color:#00edbf;border-color:rgba(0,237,191,.45);}
-.mode-row .mb:nth-of-type(4){color:#00f2d7;border-color:rgba(45,232,255,.5);}
+.mode-row .mb:nth-of-type(3){color:#3affe0;border-color:rgba(0,237,191,.45);}
+.mode-row .mb:nth-of-type(4){color:#4dffe8;border-color:rgba(45,232,255,.5);}
 .mode-row .mb:nth-of-type(5){color:#00e291;border-color:rgba(0,226,145,.45);}
-.mode-row .mb:nth-of-type(6){color:#00f2d7;border-color:rgba(0,242,255,.5);}
+.mode-row .mb:nth-of-type(6){color:#4dffe8;border-color:rgba(0,242,255,.5);}
 .mode-row .mb .k{opacity:.7;}
 
 #mob-nav-row,#mob-main,#mob-hdr,#mob-overlay,#mob-drawer,#mob-glow{display:none;}
@@ -1884,7 +1884,7 @@ body.crt-entering #shell{animation:crtOn .52s cubic-bezier(.2,.65,.3,1) forwards
 html,body{ background:#050505!important; }
 #bg{ background:#050505!important; }
 #fx-static{ position:fixed!important; inset:0!important; width:100vw!important; height:100vh!important;
-  z-index:0!important; pointer-events:none!important; image-rendering:pixelated!important; opacity:.15!important; }
+  z-index:0!important; pointer-events:none!important; image-rendering:pixelated!important; opacity:.24!important; }
 #bg-depth{ display:none!important; }
 #bg-orbs{ display:none!important; }
 #bg-grid{ display:none!important; }
@@ -3829,8 +3829,8 @@ function buildScatter(){
   const iW=W-PAD*2, iH=H-PAD*2;
 
   const DIR_COLORS=[
-    '#00da40','#00da40','#00eca7','#00eca7','#00df78',
-    '#00ddff','#00e35f','#00da40','#00e093','#00da40','#00eca7'
+    '#00da40','#00da40','#3affd0','#3affd0','#00df78',
+    '#00ddff','#00e35f','#00da40','#00e093','#00da40','#3affd0'
   ];
   const dirData=[
     {code:'FOGDIS',n:21,x:.12,y:.60},{code:'OBJREP',n:17,x:.70,y:.22},
@@ -4555,12 +4555,12 @@ document.addEventListener('keydown',function(e){
       <circle id="lrhA" cx="84" cy="100" r="50" fill="url(#lrhatch)" opacity=".5"/>
       <ellipse cx="103" cy="100" rx="22" ry="36" fill="url(#lrig)"/>
       <circle id="lrcA" cx="84" cy="100" r="50" fill="none" stroke="#00e48b" stroke-width="1.1" stroke-dasharray="3 4"/>
-      <circle id="lrcB" cx="122" cy="100" r="50" fill="none" stroke="#35d7ef" stroke-width="1.1" stroke-dasharray="3 4"/>
-      <circle cx="84" cy="100" r="1.6" fill="#00e48b"/><circle cx="122" cy="100" r="1.6" fill="#35d7ef"/>
+      <circle id="lrcB" cx="122" cy="100" r="50" fill="none" stroke="#5ff2ff" stroke-width="1.1" stroke-dasharray="3 4"/>
+      <circle cx="84" cy="100" r="1.6" fill="#00e48b"/><circle cx="122" cy="100" r="1.6" fill="#5ff2ff"/>
       <line id="lrdimA" x1="84" y1="100" x2="34" y2="100" stroke="#00e48b" stroke-width="0.5" opacity=".6"/>
       <text id="lrdimAt" x="40" y="96" fill="#00e48b" font-size="8" font-family="Courier Prime,Galmuri11,Share Tech Mono,monospace">r=50</text>
       <text x="34" y="42" fill="#00e48b" font-size="9" font-family="Courier Prime,Galmuri11,Share Tech Mono,monospace">SET (A)</text>
-      <text x="128" y="168" fill="#35d7ef" font-size="9" font-family="Courier Prime,Galmuri11,Share Tech Mono,monospace">INCL (B)</text>
+      <text x="128" y="168" fill="#5ff2ff" font-size="9" font-family="Courier Prime,Galmuri11,Share Tech Mono,monospace">INCL (B)</text>
       <line x1="103" y1="100" x2="160" y2="60" stroke="rgba(0,228,139,.5)" stroke-width="0.5"/>
       <circle cx="103" cy="100" r="1.6" fill="#00e48b"/>
       <text x="162" y="58" fill="#00e48b" font-size="9" font-family="Courier Prime,Galmuri11,Share Tech Mono,monospace">A∩B = 32</text>
@@ -4595,7 +4595,7 @@ document.addEventListener('keydown',function(e){
     let ticks='';for(let x=20;x<=200;x+=30)ticks+='<line x1="'+x+'" y1="186" x2="'+x+'" y2="190" stroke="rgba(0,218,64,.3)" stroke-width="0.6"/>';
     for(let y=20;y<=170;y+=30)ticks+='<line x1="4" y1="'+y+'" x2="8" y2="'+y+'" stroke="rgba(0,218,64,.3)" stroke-width="0.6"/>';
     svg.innerHTML=`<g id="lrcg">${buildPaths(0)}</g><g>${labels}</g><g>${ticks}</g>
-      <g><line x1="${cx-4}" y1="${cy}" x2="${cx+4}" y2="${cy}" stroke="#3cf8ff" stroke-width="0.8"/><line x1="${cx}" y1="${cy-4}" x2="${cx}" y2="${cy+4}" stroke="#3cf8ff" stroke-width="0.8"/><text x="${cx+6}" y="${cy-4}" fill="#3cf8ff" font-size="8" font-family="Courier Prime,Galmuri11,Share Tech Mono,monospace">PK +148</text></g>
+      <g><line x1="${cx-4}" y1="${cy}" x2="${cx+4}" y2="${cy}" stroke="#8afeff" stroke-width="0.8"/><line x1="${cx}" y1="${cy-4}" x2="${cx}" y2="${cy+4}" stroke="#8afeff" stroke-width="0.8"/><text x="${cx+6}" y="${cy-4}" fill="#8afeff" font-size="8" font-family="Courier Prime,Galmuri11,Share Tech Mono,monospace">PK +148</text></g>
       <g transform="translate(198,24)"><line x1="0" y1="8" x2="0" y2="-8" stroke="rgba(0,218,64,.5)" stroke-width="0.7"/><path d="M0,-8 L-2.5,-3 L2.5,-3 Z" fill="rgba(0,218,64,.7)"/><text x="-2.5" y="-10" fill="rgba(0,218,64,.6)" font-size="8" font-family="Courier Prime,Galmuri11,Share Tech Mono,monospace">N</text></g>
       <line id="lrcscan" x1="0" y1="40" x2="220" y2="40" stroke="rgba(60,248,255,.5)" stroke-width="0.8"/>`;
     $('cont-bands').innerHTML=elevs.map((e,i)=>'<div class="tr"><span class="k">+'+e+'</span><span class="v" style="color:rgba(0,223,120,'+(0.9-i*0.12)+')">▓▓</span></div>').join('');
