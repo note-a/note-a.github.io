@@ -3247,14 +3247,6 @@ function buildGlScatter(){
   const fieldGrp=document.createElementNS('http://www.w3.org/2000/svg','g');
   svg.appendChild(fieldGrp);
 
-  // 궤도 원
-  [0.4,0.7,1].forEach(f=>{
-    const orbit=document.createElementNS('http://www.w3.org/2000/svg','circle');
-    orbit.setAttribute('cx',cx); orbit.setAttribute('cy',cy); orbit.setAttribute('r',(radius*f).toFixed(1));
-    orbit.setAttribute('fill','none'); orbit.setAttribute('stroke','rgba(0,218,64,.08)'); orbit.setAttribute('stroke-width','.5');
-    fieldGrp.appendChild(orbit);
-  });
-
   const triEls=dirs.map((d,i)=>{
     const cls=dirCls(d.code,i);
     const col=clsColor[cls];
