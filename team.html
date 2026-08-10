@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>SET TEAM — CHANNEL</title>
   <link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Space+Grotesk:wght@400;500;600;700&family=Oswald:wght@500;600;700&family=Bricolage+Grotesque:opsz,wght@12..96,200..800&family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..700&family=Quicksand:wght@400;500;600;700&family=Varela+Round&family=Manrope:wght@200;300;400&family=Noto+Serif+KR:wght@400;500;600;700;900&family=Noto+Sans+KR:wght@400;500;700;900&family=Nanum+Gothic+Coding:wght@400;700&display=swap" rel="stylesheet">
   <style>
@@ -1314,9 +1314,15 @@
     cursor:pointer!important; animation:none!important; -webkit-text-stroke:0!important; text-shadow:none!important;
     position:static!important; left:auto!important; top:auto!important; transform:none!important; z-index:auto!important;
   }
-  #app .tb-center:hover .tb-search-text{ text-decoration:underline!important; }
+  #app .tb-center:hover .tb-search-text{ text-decoration:none!important; }
   #app .tb-search-ico{ display:none!important; }
-  #app .tb-search-text{ font-family:'Manrope','Noto Sans KR',sans-serif!important; font-size:23px!important; font-weight:200!important; font-style:normal!important; letter-spacing:1.3px!important; text-transform:uppercase!important; color:#e9f4fc!important; white-space:nowrap!important; overflow:visible!important; text-shadow:none!important; }
+  #app .tb-search-text{
+    font-family:'Manrope','Noto Sans KR',sans-serif!important; font-size:24px!important; font-weight:800!important; font-style:normal!important;
+    letter-spacing:1.6px!important; text-transform:uppercase!important; white-space:nowrap!important; overflow:visible!important;
+    background:linear-gradient(180deg, #ffffff 0%, #ffffff 45%, #cfeeff 55%, #9fd8f5 100%)!important;
+    -webkit-background-clip:text!important; background-clip:text!important; -webkit-text-fill-color:transparent!important; color:transparent!important;
+    filter:drop-shadow(0 2px 3px rgba(6,30,50,.3))!important;
+  }
   #app .tb-center{ letter-spacing:0!important; }
   @media (max-width:900px){
     #app .tb-center{ flex:1 1 auto!important; min-width:0!important; max-width:none!important; overflow:hidden!important; justify-content:center!important; }
@@ -1464,15 +1470,19 @@
     #introView{ flex:none!important; height:auto!important; overflow:visible!important; }
     #introView #statement-section{ flex:none!important; max-height:none!important; overflow:visible!important; -webkit-overflow-scrolling:auto!important; }
     body.is-intro-view #center-ph{ display:none!important; }
-    #app{ grid-template-rows:90px calc(100dvh - 90px)!important; grid-template-areas:"top" "center"!important; }
+    #app{ grid-template-rows:90px calc(100dvh - 90px - env(safe-area-inset-top,0px) - env(safe-area-inset-bottom,0px))!important; grid-template-areas:"top" "center"!important; }
     #team-menubar{ top:90px!important; }
     #col-center .panel{ border-top:none!important; border-bottom:none!important; box-shadow:none!important; }
     #app::before, #app::after{ display:none!important; }
     #cfg-trigger{ display:none!important; }
     html,body{ background-attachment:scroll!important; background-size:cover!important; }
     body::before{ position:absolute!important; }
-    #app{ border-radius:0!important; border:none!important; box-shadow:none!important; width:100vw!important; height:100dvh!important; }
-    #col-center{ height:calc(100dvh - 90px)!important; background:transparent!important; }
+    #app{
+      border-radius:0!important; border:none!important; box-shadow:none!important;
+      width:100vw!important; height:100dvh!important; box-sizing:border-box!important;
+      padding-top:env(safe-area-inset-top,0px)!important; padding-bottom:env(safe-area-inset-bottom,0px)!important;
+    }
+    #col-center{ height:calc(100dvh - 90px - env(safe-area-inset-top,0px) - env(safe-area-inset-bottom,0px))!important; background:transparent!important; }
 
     /* ── 모바일: 전체 글씨 크기 확대 ── */
     #app #introView, #app #introView *,
@@ -4272,6 +4282,7 @@ async function dpSendClaude(){
 
   window._mountDirGraph = function(cv, opts) {
     const _scale = (opts && opts.scale) || 1;
+    const _showLabels = !!(opts && opts.showLabels);
     const ctx = cv.getContext('2d');
     const DPR = window.devicePixelRatio||1;
     // 현재 공유 상태에서 이어받기
@@ -4344,19 +4355,19 @@ async function dpSendClaude(){
               ctx.textAlign='center';ctx.fillText(DIR_CODES[NOW],n.px,n.py-r-lsz*0.7);
             } else if(isDone){
               ctx.fillStyle=`rgba(233,244,252,${al})`;ctx.fill();
-              if(zoom>=2){
-                const lsz=Math.max(4,Math.min(9,zoom*2.2));
+              if(_showLabels){
+                const lsz=Math.max(10,Math.min(18,zoom*4));
                 ctx.font=`${lsz}px Space Mono`;
-                ctx.fillStyle=`rgba(233,244,252,${Math.min(1,al*(zoom-1.5))})`;
+                ctx.fillStyle=`rgba(233,244,252,.95)`;
                 ctx.textAlign='center';
                 ctx.fillText(DIR_CODES[n.i],n.px,n.py-r-lsz*0.6);
               }
             } else {
               ctx.strokeStyle=`rgba(233,244,252,${al*0.7})`;ctx.lineWidth=0.5;ctx.stroke();
-              if(zoom>=3){
-                const lsz=Math.max(4,Math.min(8,zoom*1.8));
+              if(_showLabels){
+                const lsz=Math.max(9,Math.min(16,zoom*3.5));
                 ctx.font=`${lsz}px Space Mono`;
-                ctx.fillStyle=`rgba(233,244,252,${Math.min(0.7,al*(zoom-2))})`;
+                ctx.fillStyle=`rgba(233,244,252,.8)`;
                 ctx.textAlign='center';
                 ctx.fillText(DIR_CODES[n.i],n.px,n.py-r-lsz*0.6);
               }
@@ -5404,7 +5415,7 @@ document.getElementById('cfg-tl-text')?.addEventListener('keydown', e=>{ if(e.ke
       cvWrap.appendChild(cvBg); cvWrap.appendChild(cvTint); cvWrap.appendChild(cv);
       wrap.appendChild(cvWrap);
       requestAnimationFrame(() => {
-        if(window._mountDirGraph) _dirPopupDestroy = window._mountDirGraph(cv, {scale: 1.3});
+        if(window._mountDirGraph) _dirPopupDestroy = window._mountDirGraph(cv, {scale: 1.3, showLabels: true});
       });
 
       // 오른쪽: 통계 + 목록
