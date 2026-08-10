@@ -1076,6 +1076,8 @@ html,body{width:100%;min-height:100vh;overflow:hidden;background:#080300;font-fa
 .pi-desc p{margin:0 0 10px;}
 .pi-desc .en{font-style:italic;color:rgba(0,218,64,.78);}
 .pi-head-btns{display:flex;gap:6px;flex-shrink:0;}
+#pi-edit-btn{display:none;}
+#pi-edit-btn.owner-on{display:flex;}
 .pi-desc[contenteditable="true"]{outline:1px dashed rgba(0,218,64,.5);padding:10px;background:rgba(0,218,64,.04);cursor:text;}
 .pi-editbar{display:none;flex-shrink:0;padding:8px 24px 14px;font-size:11px;color:rgba(0,218,64,.5);
   justify-content:space-between;align-items:center;gap:10px;border-top:1px solid var(--g4);}
@@ -4742,6 +4744,26 @@ document.addEventListener('keydown',function(e){
 </script>
 
 <script>
+// ── 소유자 전용 편집 잠금: ?owner=<TOKEN> 으로 한 번 접속하면 이 브라우저에서만 계속 편집 버튼이 보임 ──
+(function(){
+  const OWNER_KEY='set_os_owner';
+  const OWNER_TOKEN='setinclusion-only-me-2024';
+  const params=new URLSearchParams(location.search);
+  if(params.get('owner')===OWNER_TOKEN){
+    localStorage.setItem(OWNER_KEY,'1');
+    params.delete('owner');
+    const q=params.toString();
+    history.replaceState(null,'',location.pathname+(q?'?'+q:'')+location.hash);
+  }else if(params.get('owner')==='off'){
+    localStorage.removeItem(OWNER_KEY);
+    params.delete('owner');
+    const q=params.toString();
+    history.replaceState(null,'',location.pathname+(q?'?'+q:'')+location.hash);
+  }
+  window.__isPanelOwner=localStorage.getItem(OWNER_KEY)==='1';
+})();
+</script>
+<script>
 // ── 좌/우 패널 클릭 → 확대 팝업 (콘텐츠 + 설명) ──
 const PANEL_INFO={
   set:{
@@ -4827,10 +4849,12 @@ function openPanelInfo(key,panelEl){
   const editBtn=document.getElementById('pi-edit-btn');
   editBtn.textContent='✎';
   editBtn.title='설명 수정';
+  editBtn.classList.toggle('owner-on',!!window.__isPanelOwner);
   document.getElementById('pi-editbar').classList.remove('on');
   m.classList.add('on');
 }
 function togglePanelEdit(){
+  if(!window.__isPanelOwner)return;
   const desc=document.querySelector('#pi-body .pi-desc');
   const btn=document.getElementById('pi-edit-btn');
   const bar=document.getElementById('pi-editbar');
@@ -4851,7 +4875,7 @@ function togglePanelEdit(){
   }
 }
 function resetPanelDesc(){
-  if(!piCurrentKey)return;
+  if(!piCurrentKey||!window.__isPanelOwner)return;
   localStorage.removeItem(PI_STORE_PREFIX+piCurrentKey);
   const desc=document.querySelector('#pi-body .pi-desc');
   if(desc){
