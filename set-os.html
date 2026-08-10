@@ -3212,107 +3212,60 @@ function buildGlScatter(){
   svg.setAttribute('preserveAspectRatio','xMidYMid meet');
   svg.innerHTML='';
   const PAD=14;
-  const iW=W-PAD*2, iH=H-PAD*2;
-  let s=42; const rng=()=>{s=(s*16807)%2147483647;return(s-1)/2147483646;};
 
-  const dirs=ALL_DIRS.map(d=>({...d,x:rng(),y:rng(),phase:rng()*Math.PI*2,speed:rng()*.6+.3,drift:rng()*7+4}));
-  const maxN=Math.max(...dirs.map(d=>d.n));
+  const dirs=ALL_DIRS.map(d=>({...d}));
 
   // 상태별 색상
   const clsColor={
-    core:   {fill:'rgba(0,232,234,1)',   stroke:'rgba(0,232,234,.6)'},   // 골드
-    sup:    {fill:'rgba(0,228,20,1)',   stroke:'rgba(0,228,20,.55)'},  // 코랄
-    drop:   {fill:'rgba(64,170,0,1)',   stroke:'rgba(64,170,0,.5)'},   // 레드
-    pending:{fill:'rgba(180,180,180,.22)',stroke:'rgba(180,180,180,.1)'},// 그레이
+    core:{fill:'rgba(0,232,234,1)'},
+    sup: {fill:'rgba(0,228,20,1)'},
+    drop:{fill:'rgba(64,170,0,1)'},
   };
+  const statusTxtMap={core:'CORE',sup:'SUP',drop:'DROP'};
 
-  // 그리드
-  let gridHtml='';
-  for(let i=0;i<=4;i++){
-    const gx=(PAD+iW*i/4).toFixed(1);
-    const gy=(PAD+iH*i/4).toFixed(1);
-    gridHtml+=`<line x1="${gx}" y1="${PAD}" x2="${gx}" y2="${H-PAD}" stroke="rgba(0,218,64,.05)" stroke-width="1"/>`;
-    gridHtml+=`<line x1="${PAD}" y1="${gy}" x2="${W-PAD}" y2="${gy}" stroke="rgba(0,218,64,.05)" stroke-width="1"/>`;
+  function addText(x,y,txt,fill,size,anchor){
+    const t=document.createElementNS('http://www.w3.org/2000/svg','text');
+    t.setAttribute('x',x); t.setAttribute('y',y.toFixed(1));
+    t.setAttribute('font-family',"'Courier Prime','Galmuri11','Share Tech Mono',monospace");
+    t.setAttribute('font-size',size);
+    t.setAttribute('fill',fill);
+    if(anchor) t.setAttribute('text-anchor',anchor);
+    t.textContent=txt;
+    svg.appendChild(t);
+    return t;
   }
-  gridHtml+=`<line x1="${PAD}" y1="${H-PAD}" x2="${W-PAD}" y2="${H-PAD}" stroke="rgba(0,218,64,.12)" stroke-width=".5"/>`;
-  gridHtml+=`<line x1="${PAD}" y1="${PAD}" x2="${PAD}" y2="${H-PAD}" stroke="rgba(0,218,64,.12)" stroke-width=".5"/>`;
-  const gridEl=document.createElementNS('http://www.w3.org/2000/svg','g');
-  gridEl.innerHTML=gridHtml;
-  svg.appendChild(gridEl);
 
-  // 방사형 삼각형 필드 — "45 DIR(방향)" 개념 그대로, 45개 삼각형이 원 둘레를 따라 바깥을 향해 배치됨
-  const cx=W/2, cy=PAD+iH/2;
-  const radius=Math.min(iW,iH)/2-10;
-
-  const fieldGrp=document.createElementNS('http://www.w3.org/2000/svg','g');
-  svg.appendChild(fieldGrp);
-
-  const triEls=dirs.map((d,i)=>{
+  // 상태별 집계 — CORE/SUP/DROP 각각 몇 개 DIR, 몇 장의 이미지인지
+  const agg={core:{dirN:0,imgN:0},sup:{dirN:0,imgN:0},drop:{dirN:0,imgN:0}};
+  dirs.forEach((d,i)=>{
     const cls=dirCls(d.code,i);
-    const col=clsColor[cls];
-    const angle=(i/dirs.length)*Math.PI*2-Math.PI/2;
-    const px=cx+Math.cos(angle)*radius;
-    const py=cy+Math.sin(angle)*radius;
-    const r=1.8+ (d.n/maxN)*4.6;
-    const deg=(angle*180/Math.PI)+90;
-    const g=document.createElementNS('http://www.w3.org/2000/svg','g');
-    g.setAttribute('transform',`translate(${px.toFixed(2)},${py.toFixed(2)}) rotate(${deg.toFixed(1)})`);
-    const tri=document.createElementNS('http://www.w3.org/2000/svg','polygon');
-    tri.setAttribute('points',`0,${(-r).toFixed(1)} ${(r*0.87).toFixed(1)},${(r*0.5).toFixed(1)} ${(-r*0.87).toFixed(1)},${(r*0.5).toFixed(1)}`);
-    tri.setAttribute('fill',col.fill);
-    tri.setAttribute('stroke',col.stroke);
-    tri.setAttribute('stroke-width','.5');
-    g.appendChild(tri);
-    if(d.n>=9){
-      const lbl=document.createElementNS('http://www.w3.org/2000/svg','text');
-      lbl.setAttribute('font-family',"'Courier Prime','Galmuri11','Share Tech Mono',monospace");
-      lbl.setAttribute('font-size','3.4');
-      lbl.setAttribute('fill',col.fill);
-      lbl.setAttribute('text-anchor','middle');
-      lbl.setAttribute('transform',`rotate(${(-deg).toFixed(1)})`);
-      lbl.setAttribute('y',(r+5).toFixed(1));
-      lbl.textContent=d.code.slice(0,6);
-      g.appendChild(lbl);
-    }
-    fieldGrp.appendChild(g);
-    return {g,angle,r,d};
+    agg[cls].dirN++;
+    agg[cls].imgN+=d.n;
   });
 
-  // 왼쪽 GALLERY 추적 박스가 LOCK 될 때 해당 DIR 삼각형을 찾아 반짝이도록 전역에 매핑 저장
-  window.__glTriMap={};
-  triEls.forEach(({g,d})=>{ window.__glTriMap[d.code]=g; });
+  let y=PAD+8;
+  ['core','sup','drop'].forEach(cls=>{
+    addText(PAD,y,statusTxtMap[cls],clsColor[cls].fill,7);
+    addText(W-PAD,y,agg[cls].dirN+' DIR · '+agg[cls].imgN,clsColor[cls].fill,7,'end');
+    y+=13;
+  });
 
-  // 중심 허브
-  const hub=document.createElementNS('http://www.w3.org/2000/svg','circle');
-  hub.setAttribute('cx',cx); hub.setAttribute('cy',cy); hub.setAttribute('r','2.2');
-  hub.setAttribute('fill','none'); hub.setAttribute('stroke','rgba(0,218,64,.4)'); hub.setAttribute('stroke-width','.6');
-  fieldGrp.appendChild(hub);
+  y+=5;
+  const divLine=document.createElementNS('http://www.w3.org/2000/svg','line');
+  divLine.setAttribute('x1',PAD); divLine.setAttribute('x2',W-PAD);
+  divLine.setAttribute('y1',y.toFixed(1)); divLine.setAttribute('y2',y.toFixed(1));
+  divLine.setAttribute('stroke','rgba(0,218,64,.15)'); divLine.setAttribute('stroke-width','.6');
+  svg.appendChild(divLine);
+  y+=11;
 
-  // 애니메이션 — 필드 전체가 천천히 회전 + 삼각형이 개별 펄스
-  let glScatRaf=0;
-  function animScatter(t){
-    const ts=t*0.001;
-    const rot=(ts*4)%360;
-    fieldGrp.setAttribute('transform',`rotate(${rot.toFixed(2)} ${cx} ${cy})`);
-    triEls.forEach(({g,angle,r,d},i)=>{
-      const pulse=1+0.18*Math.sin(ts*1.4+i*0.6);
-      const px=cx+Math.cos(angle)*radius;
-      const py=cy+Math.sin(angle)*radius;
-      const deg=(angle*180/Math.PI)+90;
-      g.setAttribute('transform',`translate(${px.toFixed(2)},${py.toFixed(2)}) rotate(${deg.toFixed(1)}) scale(${pulse.toFixed(3)})`);
-    });
-    glScatRaf=requestAnimationFrame(animScatter);
-  }
-  glScatRaf=requestAnimationFrame(animScatter);
-}
-
-// 왼쪽 GALLERY 추적 박스가 LOCK 될 때 DIST 방사형 다이어그램에서 해당 DIR 삼각형을 반짝임
-function flashDirTriangle(code){
-  const g=window.__glTriMap&&window.__glTriMap[code];
-  if(!g) return;
-  g.style.filter='brightness(2.4) drop-shadow(0 0 3px #fff)';
-  clearTimeout(g.__flashTimer);
-  g.__flashTimer=setTimeout(()=>{ g.style.filter=''; }, 1000);
+  // 개수 상위 DIR 목록 — 순수 텍스트/숫자
+  const topDirs=dirs.map((d,i)=>({...d,cls:dirCls(d.code,i)})).sort((a,b)=>b.n-a.n).slice(0,14);
+  topDirs.forEach(d=>{
+    const fill=clsColor[d.cls].fill;
+    addText(PAD,y,d.code,fill,5.6);
+    addText(W-PAD,y,String(d.n),fill,5.6,'end');
+    y+=9.6;
+  });
 }
 
 function tick(){
@@ -3673,7 +3626,6 @@ function buildGvaRadar(){
       scLock.style.opacity='1';
       setTimeout(()=>{ scLock.style.transition='opacity .6s ease'; scLock.style.opacity='0'; }, 1800);
     }
-    flashDirTriangle(dirCode);
   }
 
   function updateMeasure(){
