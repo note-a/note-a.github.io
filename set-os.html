@@ -3635,14 +3635,7 @@ function buildGvaRadar(){
 
 let gvaAccessTimer=null;
 function gvaAccessGranted(){
-  const open=()=>window.open('https://note-a.github.io/gallery1.html','_blank');
-  const el=document.getElementById('gva-access');
-  if(!el){ open(); return; }
-  if(gvaAccessTimer) clearTimeout(gvaAccessTimer);
-  el.classList.remove('active');
-  void el.offsetWidth;
-  el.classList.add('active');
-  gvaAccessTimer=setTimeout(()=>{ el.classList.remove('active'); open(); }, 1500);
+  window.open('https://note-a.github.io/gallery1.html','_blank');
 }
 
 function gvaHoverIn(){
