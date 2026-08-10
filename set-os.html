@@ -3240,60 +3240,70 @@ function buildGlScatter(){
   gridEl.innerHTML=gridHtml;
   svg.appendChild(gridEl);
 
-  // 스캔라인
-  const scanLine=document.createElementNS('http://www.w3.org/2000/svg','line');
-  scanLine.setAttribute('x1',PAD); scanLine.setAttribute('x2',W-PAD);
-  scanLine.setAttribute('y1',PAD); scanLine.setAttribute('y2',PAD);
-  scanLine.setAttribute('stroke','rgba(0,218,64,.18)');
-  scanLine.setAttribute('stroke-width','1');
-  svg.appendChild(scanLine);
+  // 방사형 삼각형 필드 — "45 DIR(방향)" 개념 그대로, 45개 삼각형이 원 둘레를 따라 바깥을 향해 배치됨
+  const cx=W/2, cy=PAD+iH/2;
+  const radius=Math.min(iW,iH)/2-10;
 
-  // 점 생성
-  const dotEls=dirs.map((d,i)=>{
+  const fieldGrp=document.createElementNS('http://www.w3.org/2000/svg','g');
+  svg.appendChild(fieldGrp);
+
+  // 궤도 원
+  [0.4,0.7,1].forEach(f=>{
+    const orbit=document.createElementNS('http://www.w3.org/2000/svg','circle');
+    orbit.setAttribute('cx',cx); orbit.setAttribute('cy',cy); orbit.setAttribute('r',(radius*f).toFixed(1));
+    orbit.setAttribute('fill','none'); orbit.setAttribute('stroke','rgba(0,218,64,.08)'); orbit.setAttribute('stroke-width','.5');
+    fieldGrp.appendChild(orbit);
+  });
+
+  const triEls=dirs.map((d,i)=>{
     const cls=dirCls(d.code,i);
     const col=clsColor[cls];
-    const rad=Math.max(2.5,d.n/maxN*10);
+    const angle=(i/dirs.length)*Math.PI*2-Math.PI/2;
+    const px=cx+Math.cos(angle)*radius;
+    const py=cy+Math.sin(angle)*radius;
+    const r=1.8+ (d.n/maxN)*4.6;
+    const deg=(angle*180/Math.PI)+90;
     const g=document.createElementNS('http://www.w3.org/2000/svg','g');
-    const ring=document.createElementNS('http://www.w3.org/2000/svg','circle');
-    ring.setAttribute('r',(rad*1.9).toFixed(1));
-    ring.setAttribute('fill','none');
-    ring.setAttribute('stroke',col.stroke);
-    ring.setAttribute('stroke-width','.6');
-    ring.setAttribute('stroke-dasharray','2 3');
-    const dot=document.createElementNS('http://www.w3.org/2000/svg','circle');
-    dot.setAttribute('r',rad.toFixed(1));
-    dot.setAttribute('fill',col.fill);
-    dot.setAttribute('stroke',col.stroke);
-    dot.setAttribute('stroke-width','1');
-    g.appendChild(ring); g.appendChild(dot);
+    g.setAttribute('transform',`translate(${px.toFixed(2)},${py.toFixed(2)}) rotate(${deg.toFixed(1)})`);
+    const tri=document.createElementNS('http://www.w3.org/2000/svg','polygon');
+    tri.setAttribute('points',`0,${(-r).toFixed(1)} ${(r*0.87).toFixed(1)},${(r*0.5).toFixed(1)} ${(-r*0.87).toFixed(1)},${(r*0.5).toFixed(1)}`);
+    tri.setAttribute('fill',col.fill);
+    tri.setAttribute('stroke',col.stroke);
+    tri.setAttribute('stroke-width','.5');
+    g.appendChild(tri);
     if(d.n>=9){
       const lbl=document.createElementNS('http://www.w3.org/2000/svg','text');
       lbl.setAttribute('font-family',"'Courier Prime','Galmuri11','Share Tech Mono',monospace");
-      lbl.setAttribute('font-size','5');
+      lbl.setAttribute('font-size','3.4');
       lbl.setAttribute('fill',col.fill);
       lbl.setAttribute('text-anchor','middle');
-      lbl.setAttribute('dy',`-${(rad+3).toFixed(1)}`);
-      lbl.textContent=d.code;
+      lbl.setAttribute('transform',`rotate(${(-deg).toFixed(1)})`);
+      lbl.setAttribute('y',(r+5).toFixed(1));
+      lbl.textContent=d.code.slice(0,6);
       g.appendChild(lbl);
     }
-    svg.appendChild(g);
-    return {g, rad, d};
+    fieldGrp.appendChild(g);
+    return {g,angle,r,d};
   });
 
-  // 애니메이션
+  // 중심 허브
+  const hub=document.createElementNS('http://www.w3.org/2000/svg','circle');
+  hub.setAttribute('cx',cx); hub.setAttribute('cy',cy); hub.setAttribute('r','2.2');
+  hub.setAttribute('fill','none'); hub.setAttribute('stroke','rgba(0,218,64,.4)'); hub.setAttribute('stroke-width','.6');
+  fieldGrp.appendChild(hub);
+
+  // 애니메이션 — 필드 전체가 천천히 회전 + 삼각형이 개별 펄스
   let glScatRaf=0;
   function animScatter(t){
     const ts=t*0.001;
-    const sy=(PAD+((ts*55)%(iH))).toFixed(1);
-    scanLine.setAttribute('y1',sy); scanLine.setAttribute('y2',sy);
-    scanLine.setAttribute('opacity', 0.5+0.5*Math.sin(ts*6));
-    dotEls.forEach(({g,rad,d})=>{
-      const bx=PAD+d.x*iW;
-      const by=PAD+d.y*iH;
-      const dx=Math.sin(ts*d.speed*2.2+d.phase)*d.drift;
-      const dy=Math.cos(ts*d.speed*1.6+d.phase+1)*d.drift;
-      const pulse=1+0.15*Math.sin(ts*d.speed*4+d.phase);
-      g.setAttribute('transform',`translate(${(bx+dx).toFixed(2)},${(by+dy).toFixed(2)}) scale(${pulse.toFixed(3)})`);
+    const rot=(ts*4)%360;
+    fieldGrp.setAttribute('transform',`rotate(${rot.toFixed(2)} ${cx} ${cy})`);
+    triEls.forEach(({g,angle,r,d},i)=>{
+      const pulse=1+0.18*Math.sin(ts*1.4+i*0.6);
+      const px=cx+Math.cos(angle)*radius;
+      const py=cy+Math.sin(angle)*radius;
+      const deg=(angle*180/Math.PI)+90;
+      g.setAttribute('transform',`translate(${px.toFixed(2)},${py.toFixed(2)}) rotate(${deg.toFixed(1)}) scale(${pulse.toFixed(3)})`);
     });
     glScatRaf=requestAnimationFrame(animScatter);
   }
