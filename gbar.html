@@ -11,7 +11,7 @@
 html{height:100%;}
 body{width:100%;min-height:100vh;background:#000;font-family:var(--mono);
   display:flex;align-items:center;justify-content:center;}
-.bar{position:relative;width:100%;max-width:1200px;height:84px;overflow:hidden;background:#000;
+.bar{position:relative;width:100%;max-width:1200px;height:72px;overflow:hidden;background:#000;
   border:1px solid rgba(0,195,133,.34);box-shadow:0 0 0 1px rgba(0,0,0,.8),0 0 44px rgba(0,195,133,.12);}
 /* 제목+문구를 한 줄로 — 바 전체 기준 세로 중앙 정렬 */
 .stack{position:relative;z-index:4;height:100%;display:flex;flex-direction:row;align-items:center;
@@ -28,7 +28,7 @@ body{width:100%;min-height:100vh;background:#000;font-family:var(--mono);
 .ttlwrap{flex:0 0 auto;display:flex;flex-direction:column;gap:2px;}
 .ttl{font-family:'Orbitron',sans-serif;font-weight:800;font-size:22px;letter-spacing:1.5px;color:#00f6e4;
   text-shadow:0 0 16px rgba(0,246,228,.65),0 0 5px rgba(0,246,228,.95);}
-.ttlsub{font-size:11px;letter-spacing:1px;color:var(--g3);}
+.ttlsub{font-size:11px;letter-spacing:1px;color:var(--cy);}
 .ttlsub b{color:var(--cy);font-weight:600;}
 .stat{position:absolute;top:6px;right:16px;z-index:3;display:flex;align-items:center;gap:9px;
   font-size:9.5px;letter-spacing:1px;color:var(--g3);}
@@ -44,11 +44,11 @@ body{width:100%;min-height:100vh;background:#000;font-family:var(--mono);
 @keyframes p{0%,100%{opacity:1}50%{opacity:.3}}
 
 #bgcv{position:absolute;inset:0;z-index:1;opacity:.5;}
-#kin{flex:1 1 auto;min-width:0;font-size:14px;letter-spacing:.4px;white-space:nowrap;overflow:hidden;text-align:center;}
+#kin{flex:1 1 auto;min-width:0;font-size:15px;letter-spacing:.4px;white-space:nowrap;overflow:hidden;text-align:center;}
 #kin .rc{transition:color .05s;}
 #kin .cur{color:var(--cy);animation:blink .9s steps(1) infinite;}
 @keyframes blink{50%{opacity:0}}
-#krfix{flex:0 0 auto;margin-left:auto;padding-left:16px;padding-right:14px;font-family:var(--kr);font-size:13px;
+#krfix{flex:0 0 auto;margin-left:auto;padding-left:16px;padding-right:14px;font-family:var(--kr);font-size:14px;
   color:rgba(0,225,157,.65);white-space:nowrap;text-align:right;}
 </style>
 </head>
