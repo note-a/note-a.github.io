@@ -47,8 +47,9 @@ body{width:100%;min-height:100vh;background:#000;font-family:var(--mono);
 #kin{flex:1 1 auto;min-width:0;font-size:14px;letter-spacing:.4px;white-space:nowrap;overflow:hidden;text-align:left;}
 #kin .rc{transition:color .05s;}
 #kin .cur{color:var(--cy);animation:blink .9s steps(1) infinite;}
-#kin .krtxt{font-family:var(--kr);color:rgba(0,225,157,.6);margin-left:14px;}
 @keyframes blink{50%{opacity:0}}
+#krfix{flex:0 0 auto;margin-left:auto;padding-left:16px;font-family:var(--kr);font-size:12px;
+  color:rgba(0,225,157,.65);white-space:nowrap;text-align:right;}
 </style>
 </head>
 <body>
@@ -60,6 +61,7 @@ body{width:100%;min-height:100vh;background:#000;font-family:var(--mono);
     <div class="ttlwrap"><div class="ttl">PROJECT SET</div><div class="ttlsub">ARCHIVE TERMINAL</div></div>
     <div class="sep"></div>
     <div id="kin"></div>
+    <div id="krfix"></div>
   </div>
 </div>
 <script>
@@ -83,6 +85,7 @@ body{width:100%;min-height:100vh;background:#000;font-family:var(--mono);
 // ── 스크램블 타이포(영문) → 같은 줄에서 한글로 교체 → 다음 문장 ──
 (function(){
   var el=document.getElementById('kin');
+  var krEl=document.getElementById('krfix');
   var pairs=[
     ['Set is the world. I\'m measuring the perimeter of the set.', '집합은 세계다. 나는 집합의 둘레를 재고 있다.'],
     ['Instructions, coerced body, suspended gaze.', '지시문, 강제된 몸, 유예된 시선.'],
@@ -95,6 +98,7 @@ body{width:100%;min-height:100vh;background:#000;font-family:var(--mono);
 
   function scrambleTo(target, kr, done){
     var frame=0, revealed=0;
+    krEl.textContent = kr;
     function tick(){
       frame++;
       revealed = Math.max(0, frame-14);
@@ -109,7 +113,7 @@ body{width:100%;min-height:100vh;background:#000;font-family:var(--mono);
           html += '<span class="rc" style="color:'+c+'">'+CH[Math.floor(Math.random()*CH.length)]+'</span>';
         }
       }
-      html += '<span class="cur">_</span><span class="krtxt" id="krtxt">'+kr+'</span>';
+      html += '<span class="cur">_</span>';
       el.innerHTML = html;
       if(revealed < target.length){ requestAnimationFrame(tick); }
       else { setTimeout(done, 2000); }
