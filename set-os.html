@@ -1075,6 +1075,13 @@ html,body{width:100%;min-height:100vh;overflow:hidden;background:#080300;font-fa
 .pi-content.pi-tall{height:auto;min-height:220px;}
 .pi-desc p{margin:0 0 10px;}
 .pi-desc .en{font-style:italic;color:rgba(0,218,64,.78);}
+.pi-head-btns{display:flex;gap:6px;flex-shrink:0;}
+.pi-desc[contenteditable="true"]{outline:1px dashed rgba(0,218,64,.5);padding:10px;background:rgba(0,218,64,.04);cursor:text;}
+.pi-editbar{display:none;flex-shrink:0;padding:8px 24px 14px;font-size:11px;color:rgba(0,218,64,.5);
+  justify-content:space-between;align-items:center;gap:10px;border-top:1px solid var(--g4);}
+.pi-editbar.on{display:flex;}
+.pi-editbar a{color:rgba(0,246,228,.7);text-decoration:underline;flex-shrink:0;}
+.pi-editbar a:hover{color:#00f6e4;}
 .sm-more-btn{display:block;width:100%;margin-top:22px;padding:11px 0;
   background:transparent;border:1px solid rgba(0,218,64,.35);
   color:rgba(0,218,64,.7);font-family:var(--mono);font-size:11px;letter-spacing:2px;
@@ -3102,9 +3109,16 @@ DS: 중성 단색 배경 명시, 맥락 요소 부재
   <div class="sm-box" role="dialog" aria-modal="true" aria-label="패널 설명">
     <div class="sm-head">
       <span class="sm-title" id="pi-title">PANEL INFO</span>
-      <button class="sm-close" type="button" onclick="closePanelInfo()" aria-label="닫기">✕</button>
+      <div class="pi-head-btns">
+        <button class="sm-close" type="button" id="pi-edit-btn" onclick="togglePanelEdit()" aria-label="수정" title="설명 수정">✎</button>
+        <button class="sm-close" type="button" onclick="closePanelInfo()" aria-label="닫기">✕</button>
+      </div>
     </div>
     <div class="sm-body" id="pi-body"></div>
+    <div class="pi-editbar" id="pi-editbar">
+      <span id="pi-save-hint">수정 후 ✎(저장) 버튼을 다시 누르면 이 브라우저에 저장됩니다.</span>
+      <a href="javascript:void(0)" onclick="resetPanelDesc()">기본 설명으로 되돌리기</a>
+    </div>
   </div>
 </div>
 
@@ -4783,10 +4797,13 @@ const PANEL_INFO={
   }
 };
 let piMoved=[];
+let piCurrentKey=null;
+const PI_STORE_PREFIX='set_os_panel_desc_';
 function openPanelInfo(key,panelEl){
   const info=PANEL_INFO[key];
   const m=document.getElementById('panel-info-modal');
   if(!info||!m)return;
+  piCurrentKey=key;
   document.getElementById('pi-title').textContent=info.title;
   const b=document.getElementById('pi-body');
   b.innerHTML='';
@@ -4801,18 +4818,61 @@ function openPanelInfo(key,panelEl){
     });
     b.appendChild(wrap);
   }
+  const saved=localStorage.getItem(PI_STORE_PREFIX+key);
   const desc=document.createElement('div');
   desc.className='pi-desc';
-  desc.innerHTML=info.desc;
+  desc.innerHTML=(saved!==null)?saved:info.desc;
   b.appendChild(desc);
   b.scrollTop=0;
+  const editBtn=document.getElementById('pi-edit-btn');
+  editBtn.textContent='✎';
+  editBtn.title='설명 수정';
+  document.getElementById('pi-editbar').classList.remove('on');
   m.classList.add('on');
+}
+function togglePanelEdit(){
+  const desc=document.querySelector('#pi-body .pi-desc');
+  const btn=document.getElementById('pi-edit-btn');
+  const bar=document.getElementById('pi-editbar');
+  if(!desc||!piCurrentKey)return;
+  const editing=desc.getAttribute('contenteditable')==='true';
+  if(!editing){
+    desc.setAttribute('contenteditable','true');
+    desc.focus();
+    btn.textContent='💾';
+    btn.title='저장';
+    bar.classList.add('on');
+  }else{
+    desc.removeAttribute('contenteditable');
+    localStorage.setItem(PI_STORE_PREFIX+piCurrentKey,desc.innerHTML);
+    btn.textContent='✎';
+    btn.title='설명 수정';
+    bar.classList.remove('on');
+  }
+}
+function resetPanelDesc(){
+  if(!piCurrentKey)return;
+  localStorage.removeItem(PI_STORE_PREFIX+piCurrentKey);
+  const desc=document.querySelector('#pi-body .pi-desc');
+  if(desc){
+    desc.innerHTML=PANEL_INFO[piCurrentKey].desc;
+    desc.removeAttribute('contenteditable');
+  }
+  const btn=document.getElementById('pi-edit-btn');
+  btn.textContent='✎';
+  btn.title='설명 수정';
+  document.getElementById('pi-editbar').classList.remove('on');
 }
 function closePanelInfo(){
   const m=document.getElementById('panel-info-modal');
+  const desc=document.querySelector('#pi-body .pi-desc');
+  if(desc&&desc.getAttribute('contenteditable')==='true'&&piCurrentKey){
+    localStorage.setItem(PI_STORE_PREFIX+piCurrentKey,desc.innerHTML);
+  }
   if(m)m.classList.remove('on');
   piMoved.forEach(({node,parent,next})=>{ if(parent) parent.insertBefore(node,next); });
   piMoved=[];
+  piCurrentKey=null;
 }
 document.querySelectorAll('[data-panel]').forEach(dp=>{
   dp.addEventListener('click',e=>{
