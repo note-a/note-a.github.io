@@ -117,6 +117,11 @@ html,body{width:100%;min-height:100vh;overflow:hidden;background:#080300;font-fa
 .rr-rail .lr-dp.collapsed{margin-right:auto;}
 .lr-h .no{font-size:11px;color:var(--g3);}
 .lr-h .tag{margin-left:auto;font-size:11px;color:var(--g3);}
+.lr-info-btn{flex-shrink:0;margin-left:6px;width:14px;height:14px;display:flex;align-items:center;justify-content:center;
+  border:1px solid rgba(0,218,64,.4);border-radius:50%;font-size:9px;line-height:1;color:var(--g3);
+  cursor:pointer;pointer-events:auto;}
+.lr-info-btn:hover{background:rgba(0,218,64,.18);color:#00f6e4;border-color:#00f6e4;}
+.pilot-pnl .lr-h .lr-info-btn{margin-left:6px;}
 .lr-dp.teal .lr-h{color:#00e48b;}.lr-dp.teal .lr-h .arr{color:#00e48b;}
 .rr-rail .lr-dp.teal{flex:0 0 250px;}
 .rr-rail .lr-dp.teal .lr-b{flex:1 1 auto;min-height:0;position:relative;display:flex;overflow:hidden;height:100%;}
@@ -2029,7 +2034,7 @@ body::after{ content:''!important; position:fixed!important; inset:7px!important
   <!-- F.01 집합도 -->
   <div class="lr-dp teal">
    <div class="lr-dp-in">
-    <div class="lr-h"><span class="arr">▶</span>Intersection<span class="no">F.01</span><span class="tag">집합도</span></div>
+    <div class="lr-h"><span class="arr">▶</span>Intersection<span class="no">F.01</span><span class="tag">집합도</span><span class="lr-info-btn" onclick="event.stopPropagation();openPanelInfo('set')" title="설명 보기">i</span></div>
     <div class="lr-b">
       <div class="lr-gfx"><svg id="svg-set" viewBox="18 17 184 167" preserveAspectRatio="xMidYMid meet"></svg></div>
     </div>
@@ -2038,7 +2043,7 @@ body::after{ content:''!important; position:fixed!important; inset:7px!important
   <!-- F.02 등고선 -->
   <div class="lr-dp">
    <div class="lr-dp-in">
-    <div class="lr-h"><span class="arr">▶</span>CONTOUR FIELD<span class="no">F.02</span><span class="tag">등고선</span></div>
+    <div class="lr-h"><span class="arr">▶</span>CONTOUR FIELD<span class="no">F.02</span><span class="tag">등고선</span><span class="lr-info-btn" onclick="event.stopPropagation();openPanelInfo('contour')" title="설명 보기">i</span></div>
     <div class="lr-b" style="flex-direction:column">
       <div class="lr-gfx" style="flex:1 1 auto"><svg id="svg-cont" viewBox="0 0 220 200" preserveAspectRatio="xMidYMid slice"></svg></div>
       <div class="lr-profile"><div class="plbl">SECTION A–A′</div><svg id="svg-prof" viewBox="0 0 300 30" preserveAspectRatio="none"></svg></div>
@@ -2048,7 +2053,7 @@ body::after{ content:''!important; position:fixed!important; inset:7px!important
   <!-- F.03 데이터 -->
   <div class="lr-dp data">
    <div class="lr-dp-in">
-    <div class="lr-h"><span class="arr">▶</span>DATA<span class="no">F.03</span><span class="tag">측정값</span></div>
+    <div class="lr-h"><span class="arr">▶</span>DATA<span class="no">F.03</span><span class="tag">측정값</span><span class="lr-info-btn" onclick="event.stopPropagation();openPanelInfo('data')" title="설명 보기">i</span></div>
     <div class="lr-b lr-data">
       <div class="lr-dcol">
         <div class="sh">CARDINALITY</div>
@@ -2085,7 +2090,7 @@ body::after{ content:''!important; position:fixed!important; inset:7px!important
   <!-- G.01 / G.02 갤러리 -->
   <div class="lr-dp data" style="flex:0 0 150px;">
    <div class="lr-dp-in">
-    <div class="lr-h"><span class="arr">▶</span>GALLERY<span class="no">G.</span><span class="tag">포트폴리오</span></div>
+    <div class="lr-h"><span class="arr">▶</span>GALLERY<span class="no">G.</span><span class="tag">포트폴리오</span><span class="lr-info-btn" onclick="event.stopPropagation();openPanelInfo('gallery')" title="설명 보기">i</span></div>
     <div class="lr-b lr-data">
      <a class="lr-dcol" href="/portfolio-3d2.html" style="text-decoration:none;color:inherit;pointer-events:auto;">
       <div class="sh">G.01<span style="color:var(--acc);margin-left:4px;">●</span></div>
@@ -2124,7 +2129,7 @@ body::after{ content:''!important; position:fixed!important; inset:7px!important
 <aside class="rr-rail">
   <div class="lr-dp teal">
    <div class="lr-dp-in">
-    <div class="lr-h"><span class="arr">▶</span>SVA RADAR<span class="no">F.04</span><span class="tag">4축 형태학</span></div>
+    <div class="lr-h"><span class="arr">▶</span>SVA RADAR<span class="no">F.04</span><span class="tag">4축 형태학</span><span class="lr-info-btn" onclick="event.stopPropagation();openPanelInfo('radar')" title="설명 보기">i</span></div>
     <div class="lr-b">
       <div class="lr-gfx"><svg id="rr-radar" viewBox="0 0 210 210" preserveAspectRatio="xMidYMid meet"></svg></div>
     </div>
@@ -2132,7 +2137,7 @@ body::after{ content:''!important; position:fixed!important; inset:7px!important
   </div>
   <div class="lr-dp teal data">
    <div class="lr-dp-in">
-    <div class="lr-h"><span class="arr">▶</span>ANALYSIS<span class="no">F.04</span><span class="tag">분석 데이터</span></div>
+    <div class="lr-h"><span class="arr">▶</span>ANALYSIS<span class="no">F.04</span><span class="tag">분석 데이터</span><span class="lr-info-btn" onclick="event.stopPropagation();openPanelInfo('analysis')" title="설명 보기">i</span></div>
     <div class="lr-b" style="flex:0 0 auto;height:100%;overflow:hidden;">
       <div class="lr-data">
         <div class="lr-dcol">
@@ -2170,6 +2175,7 @@ body::after{ content:''!important; position:fixed!important; inset:7px!important
     <div class="lr-h">
       PILOT CHANNEL
       <span class="pilot-badge">PILOT</span>
+      <span class="lr-info-btn" onclick="event.stopPropagation();openPanelInfo('pilot')" title="설명 보기">i</span>
     </div>
     <div class="pl-intro">귀속 불가 이미지 실험소 — <span class="hi">공집합 채널</span> PILOT EXP</div>
     <div class="pl-nav">
@@ -3085,6 +3091,17 @@ DS: 중성 단색 배경 명시, 맥락 요소 부재
       <blockquote>"이렇게 볼 수밖에 없는 시선의 구조를 제시한다."</blockquote>
 
     </div>
+  </div>
+</div>
+
+<!-- ── PANEL INFO 팝업 (좌/우 패널 설명) ── -->
+<div id="panel-info-modal" class="stmt-modal" onclick="if(event.target===this)closePanelInfo()">
+  <div class="sm-box" role="dialog" aria-modal="true" aria-label="패널 설명">
+    <div class="sm-head">
+      <span class="sm-title" id="pi-title">PANEL INFO</span>
+      <button class="sm-close" type="button" onclick="closePanelInfo()" aria-label="닫기">✕</button>
+    </div>
+    <div class="sm-body" id="pi-body"></div>
   </div>
 </div>
 
@@ -4512,8 +4529,61 @@ function closeDocs(){
   if(m)m.classList.remove('on');
 }
 document.addEventListener('keydown',function(e){
-  if(e.key==='Escape'){closeDocs();closeStmt();}
+  if(e.key==='Escape'){closeDocs();closeStmt();closePanelInfo();}
 });
+</script>
+
+<script>
+// ── PANEL INFO 팝업 열기/닫기 ──
+const PANEL_INFO={
+  set:{
+    title:'Intersection · F.01 · 집합도',
+    desc:`<p class="en">Set is the world. I'm measuring the perimeter of the set.</p>
+      <p>두 실험 — SET(타인의 사진에서 추출한 지시문)과 SET:Inclusion(나의 과거 사진에서 추출한 지시문) — 이 만들어내는 교집합을 벤 다이어그램으로 시각화한다. |A∩B|의 크기는 서로 다른 방향에서 시작한 두 시선이 얼마나 겹치는지를 보여주는 값이다.</p>`
+  },
+  contour:{
+    title:'Contour Field · F.02 · 등고선',
+    desc:`<p>선정된 사진들의 시각적 유사성이 쌓여 만드는 등고선. 반복되는 조건이 밀집될수록 봉우리(PK)가 높아지고, 그 단면(SECTION A–A′)은 시선의 구조가 얼마나 가파르게 하나의 패턴으로 수렴하는지를 나타낸다.</p>`
+  },
+  data:{
+    title:'Data · F.03 · 측정값',
+    desc:`<p>집합 A(SET)와 B(SET:Inclusion)의 카디널리티, 둘레(PERIM), 고도 밴드, 그래디언트를 기록한 측정 로그. ∩ RATIO는 이 작업이 반복해서 되묻는 질문 — 서로 다른 방향에서 시작한 시선이 결국 얼마나 겹치는가 — 에 대한 수치적 답이다.</p>`
+  },
+  gallery:{
+    title:'Gallery · G. · 포트폴리오',
+    desc:`<p><b>G.01 ground and needle</b> — SET에서 선정된 결과물 아카이브.</p>
+      <p><b>G.02 auto mass</b> — SET:Inclusion 결과물을 3D/WebGL 환경으로 재구성한 아카이브.</p>
+      <p>각 항목의 → OPEN을 누르면 해당 포트폴리오로 이동한다.</p>`
+  },
+  radar:{
+    title:'SVA Radar · F.04 · 4축 형태학',
+    desc:`<p>SVA(Sequential Vision Autopsy) 방법론의 네 축 — Dominant Structure(DS, 주요 물리적 요소) · Spatial Distribution(SD, 공간적 배치) · Surface Anomaly(SA, 표면의 물리적 이상) · Key Variance(KV, 고유 변칙성) — 을 기준으로 개별 이미지의 형태학적 특징만을 수치화한다. 미학적·감정적 해석은 배제된다.</p>`
+  },
+  analysis:{
+    title:'Analysis · F.04 · 분석 데이터',
+    desc:`<p>SVA 4축 분석의 실시간 결과. 개별 이미지(SPECIMEN)마다 산출된 축 값(AXES)과 최종 판정(VERDICT) — CORE / SUPPORT / DROP — 을 통해 어떤 사진이 지시문을 통과했는지 기록한다.</p>`
+  },
+  pilot:{
+    title:'Pilot Channel · PILOT',
+    desc:`<p>SET / SET:Inclusion 어느 쪽에도 귀속되지 못한 이미지들을 위한 실험 채널 — <b>공집합 채널</b>.</p>
+      <p><b>NULL.LOG</b> — 결과 없는 검색어를 자동으로 기록한다. 3회 이상 반복되면 지시문 후보로 분류된다.</p>
+      <p><b>ATTR.TEST</b> — 이미지를 업로드해 문법 코드 귀속 여부를 테스트한다.</p>`
+  }
+};
+function openPanelInfo(key){
+  const info=PANEL_INFO[key];
+  const m=document.getElementById('panel-info-modal');
+  if(!info||!m)return;
+  document.getElementById('pi-title').textContent=info.title;
+  const b=document.getElementById('pi-body');
+  b.innerHTML=info.desc;
+  b.scrollTop=0;
+  m.classList.add('on');
+}
+function closePanelInfo(){
+  const m=document.getElementById('panel-info-modal');
+  if(m)m.classList.remove('on');
+}
 </script>
 
 <script>
