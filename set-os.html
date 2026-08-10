@@ -677,8 +677,8 @@ html,body{width:100%;min-height:100vh;overflow:hidden;background:#080300;font-fa
 .cs2-cell.sup .cs2-img{outline:1px solid rgba(0,218,64,.5);outline-offset:-1px;}
 .cs2-cell.drop .cs2-img img{opacity:.4;}
 .cs2-bar{display:flex;justify-content:space-between;align-items:center;padding:1px 3px;background:rgba(0,0,0,.75);}
-.cs2-n{font-family:var(--mono);font-size:9px;color:rgba(0,218,64,.28);line-height:1;}
-.cs2-badge{font-size:9px;letter-spacing:.5px;padding:0 2px;line-height:1.6;}
+.cs2-n{font-family:var(--mono);font-size:11px;color:rgba(0,218,64,.28);line-height:1;}
+.cs2-badge{font-size:11px;letter-spacing:.5px;padding:0 2px;line-height:1.6;}
 .cs2-badge.c{background:var(--acc);color:#000;}
 .cs2-badge.s{background:rgba(0,218,64,.8);color:#000;}
 
@@ -1260,16 +1260,16 @@ html,body{width:100%;min-height:100vh;overflow:hidden;background:#080300;font-fa
 .mb{
   display:flex;align-items:center;gap:5px;padding:0 12px;height:20px;
   font-size:13px;letter-spacing:1px;color:var(--g3);cursor:pointer;user-select:none;
-  background:rgba(8,4,0,0.7);border:1px solid var(--g4);
+  background:rgba(8,4,0,0.7);border:none;
   clip-path:polygon(8px 0,100% 0,calc(100% - 8px) 100%,0 100%);
   transition:all .1s;
 }
 .mb:hover{color:var(--g2);background:rgba(0,10,9,0.85);}
-.mb.on{color:#000;background:var(--acc);border-color:var(--acc);}
-.mb .k{font-size:12px;border:1px solid currentColor;opacity:.5;padding:0 2px;}
+.mb.on{color:#000;background:var(--acc);}
+.mb .k{font-size:12px;opacity:.5;padding:0 2px;}
 .activate{
   height:20px;padding:0 14px;
-  background:rgba(98,239,0,0.12);border:1px solid rgba(98,239,0,.55);
+  background:rgba(98,239,0,0.12);border:none;
   color:var(--ac2);font-size:13px;letter-spacing:2px;cursor:pointer;
   transition:.1s;flex-shrink:0;margin:0 4px;
   box-shadow:0 0 8px rgba(98,239,0,.15);
@@ -1376,7 +1376,7 @@ html,body{width:100%;min-height:100vh;overflow:hidden;background:#080300;font-fa
   font-family:var(--mono);font-size:11px;color:rgba(0,218,64,.6);letter-spacing:1px;
   border-bottom:1px solid rgba(0,218,64,.15);cursor:pointer;user-select:none;}
 .h-files-back:hover{color:rgba(0,218,64,1);}
-.h-files-title{flex-shrink:0;padding:4px 10px;font-family:var(--mono);font-size:9.5px;
+.h-files-title{flex-shrink:0;padding:4px 10px;font-family:var(--mono);font-size:11.5px;
   color:rgba(0,218,64,.3);letter-spacing:1.5px;border-bottom:1px solid rgba(0,218,64,.1);
   white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .h-files-grid{flex:1;overflow-x:hidden;overflow-y:auto;display:grid;
@@ -1392,7 +1392,7 @@ html,body{width:100%;min-height:100vh;overflow:hidden;background:#080300;font-fa
 .h-file-svg .fcorner{fill:rgba(0,218,64,.3);}
 .h-file-item:hover .h-file-svg .fbody{fill:rgba(0,76,51,.6);filter:brightness(1.2);}
 .h-file-item:hover .h-file-svg .fline{opacity:.7;}
-.h-file-name{font-family:var(--mono);font-size:9px;color:rgba(0,218,64,.55);
+.h-file-name{font-family:var(--mono);font-size:11px;color:rgba(0,218,64,.55);
   text-align:center;line-height:1.3;word-break:break-all;letter-spacing:.2px;width:100%;}
 .h-file-item:hover .h-file-name{color:#00da40;}
 .fld-name{font-family:var(--mono);font-size:11px;color:var(--fc,#00da40);opacity:.62;letter-spacing:.3px;
@@ -2342,7 +2342,7 @@ body::after{ content:''!important; position:fixed!important; inset:7px!important
             <!-- TOP-RIGHT: date + exif -->
             <div style="position:absolute;top:10px;right:12px;z-index:4;pointer-events:none;text-align:right;">
               <div id="gva-date" style="font-family:var(--mono);font-size:10px;color:rgba(0,218,64,.28);letter-spacing:2px;margin-bottom:3px;">2025.03.14</div>
-              <div id="gva-exif" style="font-family:var(--mono);font-size:9.5px;color:rgba(0,218,64,.18);letter-spacing:1px;">f/2.8 · 1/250s · ISO 200</div>
+              <div id="gva-exif" style="font-family:var(--mono);font-size:11.5px;color:rgba(0,218,64,.18);letter-spacing:1px;">f/2.8 · 1/250s · ISO 200</div>
             </div>
 
             <!-- bottom label -->
@@ -2396,16 +2396,16 @@ body::after{ content:''!important; position:fixed!important; inset:7px!important
             <!-- legend -->
             <div style="flex-shrink:0;padding:4px 9px;border-top:1px solid rgba(0,218,64,.07);
               display:flex;gap:8px;flex-wrap:wrap;">
-              <div style="display:flex;align-items:center;gap:3px;font-family:var(--mono);font-size:9px;color:rgba(0,232,234,1);">
+              <div style="display:flex;align-items:center;gap:3px;font-family:var(--mono);font-size:11px;color:rgba(0,232,234,1);">
                 <span style="width:4px;height:4px;background:rgba(0,232,234,1);flex-shrink:0;"></span>CORE
               </div>
-              <div style="display:flex;align-items:center;gap:3px;font-family:var(--mono);font-size:9px;color:rgba(0,228,20,1);">
+              <div style="display:flex;align-items:center;gap:3px;font-family:var(--mono);font-size:11px;color:rgba(0,228,20,1);">
                 <span style="width:4px;height:4px;background:rgba(0,228,20,1);flex-shrink:0;"></span>SUP
               </div>
-              <div style="display:flex;align-items:center;gap:3px;font-family:var(--mono);font-size:9px;color:rgba(64,170,0,1);">
+              <div style="display:flex;align-items:center;gap:3px;font-family:var(--mono);font-size:11px;color:rgba(64,170,0,1);">
                 <span style="width:4px;height:4px;background:rgba(64,170,0,1);flex-shrink:0;"></span>DROP
               </div>
-              <div style="display:flex;align-items:center;gap:3px;font-family:var(--mono);font-size:9px;color:rgba(180,180,180,.4);">
+              <div style="display:flex;align-items:center;gap:3px;font-family:var(--mono);font-size:11px;color:rgba(180,180,180,.4);">
                 <span style="width:4px;height:4px;background:rgba(180,180,180,.3);flex-shrink:0;"></span>보류
               </div>
             </div>
@@ -4455,7 +4455,7 @@ function scrollHud(dir){
         var n=_catMap[cat].length;
         return '<div class="fld-item fixed" title="'+cat+'" style="--fc:'+fc+'">'
           +'<svg class="fld-ic" viewBox="0 0 46 36"><path class="body" d="M3 8 H17 L20 12 H43 V32 H3 Z"/><line class="ln" x1="3" y1="16" x2="43" y2="16"/></svg>'
-          +'<span class="fld-name">'+cat+'<br><span style="opacity:.45;font-size:9px">'+n+' items</span></span></div>';
+          +'<span class="fld-name">'+cat+'<br><span style="opacity:.45;font-size:11px">'+n+' items</span></span></div>';
       }).join('');
       [].forEach.call(grid.querySelectorAll('.fld-item'),function(el,i){
         var cat=cats[i];
@@ -4582,7 +4582,7 @@ document.addEventListener('keydown',function(e){
     const svg=$('svg-set');let grid='';
     for(let x=20;x<=200;x+=20)grid+='<line x1="'+x+'" y1="14" x2="'+x+'" y2="186" stroke="rgba(0,218,64,.05)" stroke-width="0.5"/>';
     for(let y=20;y<=180;y+=20)grid+='<line x1="14" y1="'+y+'" x2="206" y2="'+y+'" stroke="rgba(0,218,64,.05)" stroke-width="0.5"/>';
-    let axt='';for(let x=20;x<=200;x+=40)axt+='<text x="'+(x-3)+'" y="194" fill="rgba(0,218,64,.35)" font-size="9" font-family="Courier Prime,Galmuri11,Share Tech Mono,monospace">'+((x-100)/2)+'</text>';
+    let axt='';for(let x=20;x<=200;x+=40)axt+='<text x="'+(x-3)+'" y="194" fill="rgba(0,218,64,.35)" font-size="11" font-family="Courier Prime,Galmuri11,Share Tech Mono,monospace">'+((x-100)/2)+'</text>';
     svg.innerHTML=`<defs>
       <radialGradient id="lrig" cx="50%" cy="50%" r="60%"><stop offset="0%" stop-color="rgba(0,228,139,.34)"/><stop offset="100%" stop-color="rgba(0,228,139,0)"/></radialGradient>
       <pattern id="lrhatch" width="5" height="5" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="5" stroke="rgba(0,228,139,.25)" stroke-width="0.5"/></pattern></defs>
@@ -4601,7 +4601,7 @@ document.addEventListener('keydown',function(e){
       <line x1="103" y1="100" x2="160" y2="60" stroke="rgba(0,228,139,.5)" stroke-width="0.5"/>
       <circle cx="103" cy="100" r="1.6" fill="#00e48b"/>
       <text x="162" y="58" fill="#00e48b" font-size="11" font-family="Courier Prime,Galmuri11,Share Tech Mono,monospace">A∩B = 32</text>
-      <text x="34" y="118" fill="rgba(0,228,139,.5)" font-size="9" font-family="Courier Prime,Galmuri11,Share Tech Mono,monospace">A\\B</text>
+      <text x="34" y="118" fill="rgba(0,228,139,.5)" font-size="11" font-family="Courier Prime,Galmuri11,Share Tech Mono,monospace">A\\B</text>
       <circle id="lrtrace" r="2.4" fill="#00e48b"><animate attributeName="opacity" values="1;.3;1" dur="1.3s" repeatCount="indefinite"/></circle>
       <text id="lrtraceXY" fill="#00e48b" font-size="10".5" font-family="Courier Prime,Galmuri11,Share Tech Mono,monospace"></text>`;
     const q=s=>svg.querySelector(s);const cA=q('#lrcA'),cB=q('#lrcB'),hA=q('#lrhA'),trace=q('#lrtrace'),tXY=q('#lrtraceXY'),dimA=q('#lrdimA'),dimAt=q('#lrdimAt');
@@ -4678,11 +4678,11 @@ document.addEventListener('keydown',function(e){
     const ang=i=>-Math.PI/2+i*Math.PI/2;const depth={x:13,y:-12};
     let rings='';for(let k=1;k<=4;k++){let p='';for(let i=0;i<4;i++)p+=(cx+Math.cos(ang(i))*R*k/4).toFixed(1)+','+(cy+Math.sin(ang(i))*R*k/4).toFixed(1)+' ';
       rings+='<polygon points="'+p+'" fill="none" stroke="rgba(0,218,64,.12)" stroke-width="0.6"/>';
-      rings+='<text x="'+(cx+2)+'" y="'+(cy-R*k/4+3).toFixed(1)+'" fill="rgba(0,218,64,.35)" font-size="9" font-family="Courier Prime,Galmuri11,Share Tech Mono,monospace">'+(k/4).toFixed(2)+'</text>';}
+      rings+='<text x="'+(cx+2)+'" y="'+(cy-R*k/4+3).toFixed(1)+'" fill="rgba(0,218,64,.35)" font-size="11" font-family="Courier Prime,Galmuri11,Share Tech Mono,monospace">'+(k/4).toFixed(2)+'</text>';}
     let spokes='',labels='';for(let i=0;i<4;i++){const a=ang(i);
       spokes+='<line x1="'+cx+'" y1="'+cy+'" x2="'+(cx+Math.cos(a)*R).toFixed(1)+'" y2="'+(cy+Math.sin(a)*R).toFixed(1)+'" stroke="rgba(0,218,64,.18)" stroke-width="0.6"/>';
       labels+='<text x="'+(cx+Math.cos(a)*(R+12)).toFixed(1)+'" y="'+(cy+Math.sin(a)*(R+12)).toFixed(1)+'" fill="#00e48b" font-size="11" font-family="Courier Prime,Galmuri11,Share Tech Mono,monospace" text-anchor="middle">'+axes[i][0]+'</text>';
-      labels+='<text x="'+(cx+Math.cos(a)*(R+12)).toFixed(1)+'" y="'+(cy+Math.sin(a)*(R+12)+7).toFixed(1)+'" fill="rgba(0,228,139,.5)" font-size="9".5" font-family="Courier Prime,Galmuri11,Share Tech Mono,monospace" text-anchor="middle">'+axes[i][1]+'</text>';}
+      labels+='<text x="'+(cx+Math.cos(a)*(R+12)).toFixed(1)+'" y="'+(cy+Math.sin(a)*(R+12)+7).toFixed(1)+'" fill="rgba(0,228,139,.5)" font-size="11".5" font-family="Courier Prime,Galmuri11,Share Tech Mono,monospace" text-anchor="middle">'+axes[i][1]+'</text>';}
     svg.innerHTML=rings+spokes+labels
       +'<circle cx="'+cx+'" cy="'+cy+'" r="1.5" fill="rgba(0,218,64,.4)"/>'
       +'<polygon id="rr-ghost" fill="none" stroke="rgba(0,228,139,.22)" stroke-width="0.8" stroke-dasharray="2 2"/>'
@@ -4704,7 +4704,7 @@ document.addEventListener('keydown',function(e){
       box.innerHTML=s;
       let d='';for(let i=0;i<4;i++){const a=ang(i),x=f[i][0],y=f[i][1];
         d+='<circle cx="'+x.toFixed(1)+'" cy="'+y.toFixed(1)+'" r="2.2" fill="#00e48b"/>';
-        d+='<text x="'+(x+Math.cos(a)*7).toFixed(1)+'" y="'+(y+Math.sin(a)*7+2).toFixed(1)+'" fill="#00e48b" font-size="9" font-family="Courier Prime,Galmuri11,Share Tech Mono,monospace" text-anchor="middle">'+cur[i].toFixed(2)+'</text>';}
+        d+='<text x="'+(x+Math.cos(a)*7).toFixed(1)+'" y="'+(y+Math.sin(a)*7+2).toFixed(1)+'" fill="#00e48b" font-size="11" font-family="Courier Prime,Galmuri11,Share Tech Mono,monospace" text-anchor="middle">'+cur[i].toFixed(2)+'</text>';}
       dots.innerHTML=d;
       const score=(cur[0]*0.2+cur[1]*0.2+cur[2]*0.25+cur[3]*0.35);
       $('rr-id').textContent=id;$('rr-rnd').textContent=rnd;$('rr-n').textContent=String(n).padStart(3,'0')+'/438';
