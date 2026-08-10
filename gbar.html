@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <title>GBAR — 후보4 LANGUAGE (발전형)</title>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500;600;700&family=Noto+Sans+KR:wght@400;500;700&family=Press+Start+2P&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500;600;700&family=Noto+Sans+KR:wght@400;500;700&family=Orbitron:wght@600;700;800&display=swap" rel="stylesheet">
 <style>
 :root{--g:#00c385;--cy:#00e19d;--amb:#ffc23a;--vio:#b088ff;--pink:#ff6ec9;--g3:rgba(0,195,133,.5);
   --mono:'IBM Plex Mono',monospace;--px:'Press Start 2P',monospace;--kr:'Noto Sans KR',sans-serif;}
@@ -26,8 +26,8 @@ body{width:100%;min-height:100vh;background:#000;font-family:var(--mono);
 .corner.br{bottom:3px;right:3px;border-bottom:1px solid var(--g);border-right:1px solid var(--g);}
 
 .ttlwrap{flex:0 0 auto;display:flex;align-items:baseline;gap:10px;}
-.ttl{font-family:var(--mono);font-weight:700;font-size:17px;letter-spacing:2px;color:#00f6e4;
-  text-shadow:0 0 14px rgba(0,246,228,.6),0 0 4px rgba(0,246,228,.9);}
+.ttl{font-family:'Orbitron',sans-serif;font-weight:800;font-size:22px;letter-spacing:1.5px;color:#00f6e4;
+  text-shadow:0 0 16px rgba(0,246,228,.65),0 0 5px rgba(0,246,228,.95);}
 .ttlsub{font-size:11px;letter-spacing:1px;color:var(--g3);}
 .ttlsub b{color:var(--cy);font-weight:600;}
 .stat{position:absolute;top:6px;right:16px;z-index:3;display:flex;align-items:center;gap:9px;
@@ -45,9 +45,9 @@ body{width:100%;min-height:100vh;background:#000;font-family:var(--mono);
 
 #bgcv{position:absolute;inset:0;z-index:1;opacity:.5;}
 #kin{flex:1 1 auto;min-width:0;font-size:14px;letter-spacing:.4px;white-space:nowrap;overflow:hidden;text-align:left;}
-#kin.kr{font-family:var(--kr);color:rgba(0,225,157,.85);}
 #kin .rc{transition:color .05s;}
 #kin .cur{color:var(--cy);animation:blink .9s steps(1) infinite;}
+#kin .krtxt{font-family:var(--kr);color:rgba(0,225,157,.6);margin-left:14px;}
 @keyframes blink{50%{opacity:0}}
 </style>
 </head>
@@ -57,7 +57,7 @@ body{width:100%;min-height:100vh;background:#000;font-family:var(--mono);
   <span class="corner tl"></span><span class="corner tr"></span><span class="corner bl"></span><span class="corner br"></span>
   <canvas id="bgcv"></canvas>
   <div class="stack">
-    <div class="ttlwrap"><div class="ttl">SET.OS</div><div class="ttlsub">ARCHIVE TERMINAL <b>v2.4</b></div></div>
+    <div class="ttlwrap"><div class="ttl">PROJECT SET</div><div class="ttlsub">ARCHIVE TERMINAL <b>v2.4</b></div></div>
     <div class="sep"></div>
     <div id="kin"></div>
   </div>
@@ -94,7 +94,6 @@ body{width:100%;min-height:100vh;background:#000;font-family:var(--mono);
   var li=0;
 
   function scrambleTo(target, kr, done){
-    el.classList.remove('kr');
     var frame=0, revealed=0;
     function tick(){
       frame++;
@@ -110,15 +109,10 @@ body{width:100%;min-height:100vh;background:#000;font-family:var(--mono);
           html += '<span class="rc" style="color:'+c+'">'+CH[Math.floor(Math.random()*CH.length)]+'</span>';
         }
       }
-      html += '<span class="cur">_</span>';
+      html += '<span class="cur">_</span><span class="krtxt" id="krtxt">'+kr+'</span>';
       el.innerHTML = html;
       if(revealed < target.length){ requestAnimationFrame(tick); }
-      else {
-        setTimeout(function(){
-          el.classList.add('kr'); el.textContent = kr;
-          setTimeout(done, 1900);
-        }, 900);
-      }
+      else { setTimeout(done, 2000); }
     }
     tick();
   }
