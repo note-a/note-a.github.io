@@ -3175,53 +3175,17 @@ function init(){
   fetchData(); bindEvents();
 }
 
+// DIST 패널 — 왼쪽 GALLERY가 지금 스캔 중인 실제 사진 정보를 실시간으로 표시하는 라이브 리드아웃
+let distLiveEls=null;
 function buildGlScatter(){
   const svg=document.getElementById('gl-scatter');
   if(!svg)return;
-
-  // ── DIR별 실제 상태 집계 ──
-  const dirStatus={};
-  const src=(typeof GL_FRAMES!=='undefined'&&GL_FRAMES.length)?GL_FRAMES:[];
-  src.forEach(f=>{
-    const d=(f.dir||'').toUpperCase();
-    if(!d) return;
-    if(!dirStatus[d]) dirStatus[d]={CORE:0,SUPPORT:0,DROP:0};
-    const s=(f.status||'').toUpperCase();
-    if(s==='CORE') dirStatus[d].CORE++;
-    else if(s==='SUPPORT'||s==='SUP') dirStatus[d].SUPPORT++;
-    else if(s==='DROP') dirStatus[d].DROP++;
-  });
-
-  // DIR 주요 상태 결정: 실제 데이터 우선, 없으면 인덱스 기반 폴백
-  function dirCls(code, i){
-    const st=dirStatus[code.toUpperCase()];
-    if(st){
-      const max=Math.max(st.CORE,st.SUPPORT,st.DROP);
-      if(max>0){
-        if(st.CORE>=max) return 'core';
-        if(st.SUPPORT>=max) return 'sup';
-        return 'drop';
-      }
-    }
-    // 폴백: 인덱스 기반 (전체 45개 DIR 균등 분배)
-    return i<15?'core':i<30?'sup':'drop';
-  }
-
-  const W=160, H=280;
+  // 실제 DIST 칸 비율(≈160×180)에 맞춘 viewBox — 좌우 여백(letterbox) 방지
+  const W=160, H=180;
   svg.setAttribute('viewBox',`0 0 ${W} ${H}`);
   svg.setAttribute('preserveAspectRatio','xMidYMid meet');
   svg.innerHTML='';
   const PAD=14;
-
-  const dirs=ALL_DIRS.map(d=>({...d}));
-
-  // 상태별 색상
-  const clsColor={
-    core:{fill:'rgba(0,232,234,1)'},
-    sup: {fill:'rgba(0,228,20,1)'},
-    drop:{fill:'rgba(64,170,0,1)'},
-  };
-  const statusTxtMap={core:'CORE',sup:'SUP',drop:'DROP'};
 
   function addText(x,y,txt,fill,size,anchor){
     const t=document.createElementNS('http://www.w3.org/2000/svg','text');
@@ -3235,37 +3199,38 @@ function buildGlScatter(){
     return t;
   }
 
-  // 상태별 집계 — CORE/SUP/DROP 각각 몇 개 DIR, 몇 장의 이미지인지
-  const agg={core:{dirN:0,imgN:0},sup:{dirN:0,imgN:0},drop:{dirN:0,imgN:0}};
-  dirs.forEach((d,i)=>{
-    const cls=dirCls(d.code,i);
-    agg[cls].dirN++;
-    agg[cls].imgN+=d.n;
-  });
-
-  let y=PAD+8;
-  ['core','sup','drop'].forEach(cls=>{
-    addText(PAD,y,statusTxtMap[cls],clsColor[cls].fill,7);
-    addText(W-PAD,y,agg[cls].dirN+' DIR · '+agg[cls].imgN,clsColor[cls].fill,7,'end');
-    y+=13;
-  });
-
-  y+=5;
+  let y=PAD+10;
+  const statusLine=addText(PAD,y,'● SCANNING','rgba(0,218,64,.85)',11);
+  y+=14;
   const divLine=document.createElementNS('http://www.w3.org/2000/svg','line');
   divLine.setAttribute('x1',PAD); divLine.setAttribute('x2',W-PAD);
   divLine.setAttribute('y1',y.toFixed(1)); divLine.setAttribute('y2',y.toFixed(1));
   divLine.setAttribute('stroke','rgba(0,218,64,.15)'); divLine.setAttribute('stroke-width','.6');
   svg.appendChild(divLine);
-  y+=11;
+  y+=13;
 
-  // 개수 상위 DIR 목록 — 순수 텍스트/숫자
-  const topDirs=dirs.map((d,i)=>({...d,cls:dirCls(d.code,i)})).sort((a,b)=>b.n-a.n).slice(0,14);
-  topDirs.forEach(d=>{
-    const fill=clsColor[d.cls].fill;
-    addText(PAD,y,d.code,fill,5.6);
-    addText(W-PAD,y,String(d.n),fill,5.6,'end');
-    y+=9.6;
+  const rows=[['DIR','dir'],['STATUS','status'],['ID','id'],['N','n'],['DATE','date'],['LOCK','lock']];
+  const valEls={};
+  rows.forEach(([label,key])=>{
+    addText(PAD,y,label,'rgba(0,218,64,.5)',10);
+    valEls[key]=addText(W-PAD,y,'—','#00f6e4',10,'end');
+    y+=15;
   });
+
+  distLiveEls={statusLine, valEls};
+  updateDistLive();
+}
+
+function updateDistLive(lockDist){
+  if(!distLiveEls) return;
+  const cur=(typeof GL_FRAMES!=='undefined'&&GL_FRAMES.length&&typeof glIdx!=='undefined')?GL_FRAMES[glIdx]:null;
+  const v=distLiveEls.valEls;
+  v.dir.textContent=cur?(cur.dir||'—').toUpperCase():'—';
+  v.status.textContent=cur?(cur.status||'—').toUpperCase():'—';
+  v.id.textContent=cur?(cur.id||'—').slice(-12):'—';
+  v.n.textContent=cur?(cur.n+' / '+String(cur.total).padStart(3,'0')):'—';
+  v.date.textContent=cur?(cur.date||'—'):'—';
+  if(lockDist!==undefined) v.lock.textContent=lockDist;
 }
 
 function tick(){
@@ -3615,17 +3580,7 @@ function buildGvaRadar(){
   let lockTimer=null;
 
   function showLock(dirCode,statusRaw,label){
-    const scLock=document.getElementById('sc-lock-msg');
-    if(scLock){
-      const statusTxt=statusRaw==='CORE'?'CORE':(statusRaw==='SUPPORT'||statusRaw==='SUP')?'SUP':statusRaw==='DROP'?'DROP':'—';
-      scLock.textContent='LOCK · '+dirCode+' · '+statusTxt+' · '+label;
-      scLock.style.transition='none';
-      scLock.style.opacity='0';
-      void scLock.offsetWidth;
-      scLock.style.transition='opacity .3s ease';
-      scLock.style.opacity='1';
-      setTimeout(()=>{ scLock.style.transition='opacity .6s ease'; scLock.style.opacity='0'; }, 1800);
-    }
+    if(typeof updateDistLive==='function') updateDistLive(label);
   }
 
   function updateMeasure(){
@@ -3723,6 +3678,7 @@ function glAThumbClick(idx){
   document.getElementById('gva-exif').textContent=p.id||'';
   document.getElementById('gva-date').textContent=p.date;
   document.querySelectorAll('.gv-thumb').forEach((t,i)=>t.classList.toggle('on',i===glIdx));
+  if(typeof updateDistLive==='function') updateDistLive();
 }
 
 // contact sheet
