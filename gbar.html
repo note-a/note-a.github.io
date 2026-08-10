@@ -13,9 +13,10 @@ body{width:100%;min-height:100vh;background:#000;font-family:var(--mono);
   display:flex;align-items:center;justify-content:center;}
 .bar{position:relative;width:100%;max-width:1200px;height:84px;overflow:hidden;background:#000;
   border:1px solid rgba(0,195,133,.34);box-shadow:0 0 0 1px rgba(0,0,0,.8),0 0 44px rgba(0,195,133,.12);}
-/* 제목+문구를 하나의 그룹으로 묶어 바 전체 기준 세로 중앙 정렬 */
-.stack{position:relative;z-index:4;height:100%;display:flex;flex-direction:column;justify-content:center;
-  gap:7px;padding:0 22px;}
+/* 제목+문구를 한 줄로 — 바 전체 기준 세로 중앙 정렬 */
+.stack{position:relative;z-index:4;height:100%;display:flex;flex-direction:row;align-items:center;
+  gap:16px;padding:0 22px;overflow:hidden;}
+.sep{flex:0 0 auto;width:1px;height:22px;background:rgba(0,195,133,.28);}
 .scan{position:absolute;inset:0;z-index:6;pointer-events:none;
   background:repeating-linear-gradient(0deg,transparent 0,transparent 2px,rgba(0,0,0,.16) 2px,rgba(0,0,0,.16) 3px);}
 .corner{position:absolute;width:12px;height:12px;z-index:8;}
@@ -24,7 +25,7 @@ body{width:100%;min-height:100vh;background:#000;font-family:var(--mono);
 .corner.bl{bottom:3px;left:3px;border-bottom:1px solid var(--g);border-left:1px solid var(--g);}
 .corner.br{bottom:3px;right:3px;border-bottom:1px solid var(--g);border-right:1px solid var(--g);}
 
-.ttlwrap{display:flex;align-items:baseline;gap:10px;align-self:flex-end;}
+.ttlwrap{flex:0 0 auto;display:flex;align-items:baseline;gap:10px;}
 .ttl{font-family:var(--mono);font-weight:700;font-size:17px;letter-spacing:2px;color:#00f6e4;
   text-shadow:0 0 14px rgba(0,246,228,.6),0 0 4px rgba(0,246,228,.9);}
 .ttlsub{font-size:11px;letter-spacing:1px;color:var(--g3);}
@@ -43,13 +44,11 @@ body{width:100%;min-height:100vh;background:#000;font-family:var(--mono);
 @keyframes p{0%,100%{opacity:1}50%{opacity:.3}}
 
 #bgcv{position:absolute;inset:0;z-index:1;opacity:.5;}
-#kin{align-self:flex-start;font-size:15px;line-height:1.3;letter-spacing:.4px;white-space:nowrap;text-align:left;}
+#kin{flex:1 1 auto;min-width:0;font-size:14px;letter-spacing:.4px;white-space:nowrap;overflow:hidden;text-align:left;}
+#kin.kr{font-family:var(--kr);color:rgba(0,225,157,.85);}
 #kin .rc{transition:color .05s;}
 #kin .cur{color:var(--cy);animation:blink .9s steps(1) infinite;}
 @keyframes blink{50%{opacity:0}}
-#krline{align-self:flex-start;font-family:var(--kr);font-size:10.5px;color:rgba(0,225,157,.55);
-  opacity:0;transition:opacity .5s ease;}
-#krline.on{opacity:1;}
 </style>
 </head>
 <body>
@@ -59,8 +58,8 @@ body{width:100%;min-height:100vh;background:#000;font-family:var(--mono);
   <canvas id="bgcv"></canvas>
   <div class="stack">
     <div class="ttlwrap"><div class="ttl">SET.OS</div><div class="ttlsub">ARCHIVE TERMINAL <b>v2.4</b></div></div>
+    <div class="sep"></div>
     <div id="kin"></div>
-    <div id="krline"></div>
   </div>
 </div>
 <script>
@@ -81,10 +80,9 @@ body{width:100%;min-height:100vh;background:#000;font-family:var(--mono);
   draw();
 })();
 
-// ── 스크램블 타이포 + 코히어런스 게이지 + 한글 번역 페이드 ──
+// ── 스크램블 타이포(영문) → 같은 줄에서 한글로 교체 → 다음 문장 ──
 (function(){
   var el=document.getElementById('kin');
-  var krEl=document.getElementById('krline');
   var pairs=[
     ['Set is the world. I\'m measuring the perimeter of the set.', '집합은 세계다. 나는 집합의 둘레를 재고 있다.'],
     ['Instructions, coerced body, suspended gaze.', '지시문, 강제된 몸, 유예된 시선.'],
@@ -96,16 +94,15 @@ body{width:100%;min-height:100vh;background:#000;font-family:var(--mono);
   var li=0;
 
   function scrambleTo(target, kr, done){
+    el.classList.remove('kr');
     var frame=0, revealed=0;
-    krEl.classList.remove('on'); krEl.textContent=kr;
     function tick(){
       frame++;
       revealed = Math.max(0, frame-14);
       var html='';
       for(var i=0;i<target.length;i++){
         if(i < revealed){
-          var ch = target[i]==='.' && i===target.length-1 ? target[i] : target[i];
-          html += '<span class="rc" style="color:'+(i<10?'#ffc23a':'#00c385')+'">'+ (ch===' '?'&nbsp;':ch) +'</span>';
+          html += '<span class="rc" style="color:'+(i<10?'#ffc23a':'#00c385')+'">'+ (target[i]===' '?'&nbsp;':target[i]) +'</span>';
         } else if(target[i]===' '){
           html += '&nbsp;';
         } else {
@@ -117,8 +114,10 @@ body{width:100%;min-height:100vh;background:#000;font-family:var(--mono);
       el.innerHTML = html;
       if(revealed < target.length){ requestAnimationFrame(tick); }
       else {
-        krEl.classList.add('on');
-        setTimeout(function(){ krEl.classList.remove('on'); done(); }, 1900);
+        setTimeout(function(){
+          el.classList.add('kr'); el.textContent = kr;
+          setTimeout(done, 1900);
+        }, 900);
       }
     }
     tick();
