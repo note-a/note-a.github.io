@@ -1863,26 +1863,21 @@ body.crt-entering #shell{animation:crtOn .52s cubic-bezier(.2,.65,.3,1) forwards
 }
 
 /* ═══════ TWEAKS: 앰버/골드 포인트 컬러 + 배경 밝기 ═══════ */
-:root{ --pt:#ffc23a; --red:#ff2f7a; --pt2:#ff4db0; --pt3:#b06bff; }  /* 앰버·핫핑크·마젠타·바이올렛 */
-/* 강조 수치(.hi) → 핑크, 특수값(.vl) → 바이올렛 — 밝은 글로우로 대비 */
-.v.hi, .lr-tbl .tr .v.hi{ color:var(--pt2)!important; text-shadow:0 0 10px rgba(255,77,176,.75),0 0 3px rgba(255,77,176,.9)!important; }
-.lr-tbl .tr .v.vl{ color:var(--pt3)!important; text-shadow:0 0 9px rgba(176,107,255,.65)!important; }
+:root{ --pt:#ffbf3a; --red:#ffbf3a; --pt2:#ff4d9e; }   /* 앰버 + 핑크(2번째 포인트) */
+/* 강조 수치(.hi) → 핑크, 특수값(.vl) → 앰버 → 색 리듬 */
+.v.hi, .lr-tbl .tr .v.hi{ color:var(--pt2)!important; text-shadow:0 0 7px rgba(255,77,158,.55)!important; }
+.lr-tbl .tr .v.vl{ color:var(--pt)!important; }
 /* ACTIVATE: 꽉 찬 앰버 */
-.activate{ color:#160f00!important; background:var(--pt)!important; border-color:var(--pt)!important;
-  box-shadow:0 0 18px rgba(255,194,58,.7)!important; font-weight:700; }
-.pl-cand-tag{ background:var(--pt2)!important; color:#160010!important; }  /* 후보 태그 → 핑크 */
-/* 경고 뱃지/도트 → 핫핑크 강한 글로우 */
-.h-badge-dot.hr{ background:var(--red)!important; box-shadow:0 0 11px var(--red),0 0 4px var(--red)!important; }
-.h-badge-lbl.hr{ color:var(--red)!important; text-shadow:0 0 8px rgba(255,47,122,.7)!important; }
-/* 포인트 대거 투입 (시안/초록 비중 낮춤 + 밝기 대비) */
-.lr-h .tag{ color:var(--pt)!important; text-shadow:0 0 6px rgba(255,194,58,.5)!important; }  /* 집합도/등고선 등 → 앰버(레일마다) */
-.lr-h .no{ color:var(--pt3)!important; }                  /* F.01 번호 → 바이올렛 */
-.lr-slbl{ color:var(--pt)!important; }                    /* ∩ RATIO/KV WEIGHT → 앰버 */
-#rr-cut{ color:var(--pt2)!important; font-weight:700; text-shadow:0 0 8px rgba(255,77,176,.7)!important; }
-.mnb-tag{ color:var(--pt3)!important; }                   /* 나브 태그 → 바이올렛 */
-.pl-at-dz-label{ color:var(--pt2)!important; }
-/* 상태 도트: ACTIVE는 밝게, 나머지 대비 */
-.pl-stat .dot{ box-shadow:0 0 7px currentColor!important; }
+.activate{ color:#0f0c02!important; background:var(--pt)!important; border-color:var(--pt)!important;
+  box-shadow:0 0 15px rgba(255,191,58,.5)!important; font-weight:700; }
+.pl-cand-tag{ background:var(--pt)!important; color:#0f0c02!important; }  /* 후보 태그 */
+/* 상태/경고 도트에 앰버 글로우 */
+.h-badge-dot.hr{ box-shadow:0 0 8px var(--pt),0 0 3px var(--pt)!important; }
+/* 포인트 추가: 섹션 번호·판정·나브 태그·DROP 라벨 → 앰버 */
+.lr-h .no{ color:var(--pt)!important; }
+#rr-cut{ color:var(--pt)!important; font-weight:700; }
+.mnb-tag{ color:var(--pt)!important; }
+.pl-at-dz-label{ color:var(--pt)!important; }
 /* 배경: 밝은 형광 틸 (시안↔그린 중간) — 평평하게 */
 /* 배경 캔버스 TV 스태틱 (패널 뒤) */
 #fx-grain,#fx-glitch,#fx-sweep{ display:none!important; }
