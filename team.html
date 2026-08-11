@@ -1228,12 +1228,19 @@
      레이아웃: 좌측 세로 네비 사이드바 + 미니 리스트 / 중앙 큰 콘텐츠 카드
      / 우측 레일 / 하단 큰 플레이어바.  밝은 하늘+잔디+햇살+물방울, 맑은 유리.
      ============================================================ */
+  @keyframes bgDrift{
+    0%{ background-position:0% 15%; background-size:150%; }
+    50%{ background-position:100% 80%; background-size:190%; }
+    100%{ background-position:0% 15%; background-size:150%; }
+  }
   html,body{
     background:url('https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/3797460/1e361f6ed83dc2b821eabb63d04bf3c0d7b06fe5/ss_1e361f6ed83dc2b821eabb63d04bf3c0d7b06fe5.1920x1080.jpg?t=1765820388') center 40%/cover no-repeat!important;
     background-attachment:fixed!important;
+    animation:bgDrift 14s ease-in-out infinite!important;
     color:#0e3e5e!important;
     font-family:'Bricolage Grotesque','Noto Sans KR','Apple SD Gothic Neo','Malgun Gothic',sans-serif!important;
   }
+  @media (prefers-reduced-motion:reduce){ html,body{ animation:none!important; } }
   body::before{
     content:''!important; display:block!important; position:fixed!important; inset:0!important; z-index:0!important;
     pointer-events:none!important; background:none!important;
