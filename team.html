@@ -1445,7 +1445,8 @@
   #cfg-overlay input, #cfg-overlay textarea{ background:rgba(233,244,252,.6)!important; border:1px solid rgba(13,58,88,.25)!important; border-radius:6px!important; }
   #cfg-overlay button{ background:rgba(233,244,252,.55)!important; border:1px solid rgba(13,58,88,.3)!important; border-radius:6px!important; }
   #cfg-overlay button:hover{ background:rgba(233,244,252,.85)!important; }
-  #app #photoView{ background:#082234!important; }
+  #app #photoView{ background:rgba(20,50,75,.12)!important; }
+  #app #pv-wrap{ background:rgba(20,50,75,.06)!important; }
   #app #devPanelView, #app #devPanelView *{ color:#0e3e5e!important; }
   #app #devPanelView .dp-section{ background:rgba(233,244,252,.35)!important; border-bottom:1px solid rgba(13,58,88,.15)!important; border-radius:10px!important; margin:6px 8px!important; }
   #app #devPanelView [style*="background:#000"], #app #devPanelView [style*="background: #000"],
@@ -1516,12 +1517,13 @@
   /* ── 버튼 = 글로시 그린 (재생 버튼 톤) ── */
   #app .back-btn{
     font-weight:600!important; font-size:10.5px!important; text-transform:none!important;
-    background:linear-gradient(180deg, #c8f59a 0%, #8fdd52 48%, #5cb32a 52%, #86d846 100%)!important;
-    color:#12490f!important; border:1px solid rgba(233,244,252,.85)!important; border-radius:999px!important;
-    padding:5px 16px!important; text-shadow:0 1px 0 rgba(233,244,252,.5)!important;
-    box-shadow:inset 0 1px 0 rgba(233,244,252,.9), 0 2px 5px rgba(40,120,20,.3)!important;
+    background:rgba(255,255,255,.55)!important;
+    -webkit-backdrop-filter:blur(8px)!important; backdrop-filter:blur(8px)!important;
+    color:#0d3a58!important; border:1px solid rgba(255,255,255,.85)!important; border-radius:999px!important;
+    padding:5px 16px!important; text-shadow:none!important;
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.9), 0 2px 5px rgba(10,60,110,.15)!important;
   }
-  #app .back-btn:hover{ background:linear-gradient(180deg, #d6ffb0, #9ee85f 48%, #6cc635 52%, #96e856 100%)!important; }
+  #app .back-btn:hover{ background:rgba(255,255,255,.8)!important; }
 
   /* ── 하단 = 큰 플레이어 바 ── */
   /* ── 하단 미니 플레이어 바 (Spotify player bar 복각) ── */
@@ -2720,9 +2722,9 @@ function renderDetailPage(){
         const globalIdx = detailPage * DETAIL_PAGE_SIZE + li;
         html += `<div onclick="openPhotoView(${globalIdx})" style="aspect-ratio:3/2;overflow:hidden;background:#e9f4fc;border:1px solid rgba(13,58,88,0.18);cursor:pointer;">
           <img src="${thumb||full}" onerror="if(!this._fb){this._fb=1;this.src='${full}'}"
-            style="width:100%;height:100%;object-fit:cover;filter:none;transition:filter .3s;"
-            onmouseover="this.style.filter='brightness(1.05)'"
-            onmouseout="this.style.filter='none'">
+            style="width:100%;height:100%;object-fit:cover;filter:saturate(1.45) brightness(1.08) contrast(1.08) hue-rotate(-4deg);transition:filter .35s;"
+            onmouseover="this.style.filter='none'"
+            onmouseout="this.style.filter='saturate(1.45) brightness(1.08) contrast(1.08) hue-rotate(-4deg)'">
         </div>`;
       });
       html += '</div>';
