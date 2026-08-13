@@ -1681,9 +1681,9 @@
 }
 #editView .cw{ width:96%!important; }
 #editView header{ position:sticky!important; top:0!important; z-index:5!important; flex-shrink:0!important; }
+#editView .header-in{ display:none!important; }
 #editView .inspector{ z-index:2000!important; }
 #editView .overlay{ z-index:2100!important; }
-body.is-edit-view #center-ph{ display:none!important; }
 body.is-edit-view #panel-center{ padding:0!important; }
 
 /* ── EDIT 뷰: team.html 라이트 글래스 테마로 리스킨 ── */
@@ -1695,7 +1695,13 @@ body.is-edit-view #panel-center{ padding:0!important; }
   --sans:'Bricolage Grotesque','Noto Sans KR','Apple SD Gothic Neo',sans-serif;
   --mono:'Space Mono',ui-monospace,SFMono-Regular,Menlo,monospace;
 }
-#editView, #editView *{ color:#0d3a58!important; border-radius:inherit; }
+#editView, #editView *{ border-radius:inherit; }
+#editView[id], #editView[id] *:not([style*="color"]){ color:#0d3a58!important; }
+#app #editView [style*="c0392b"]{ color:#c0392b!important; }
+#app #editView [style*="b26b00"]{ color:#b26b00!important; }
+#app #editView [style*="9a6b00"]{ color:#9a6b00!important; }
+#app #editView [style*="8a5200"]{ color:#8a5200!important; }
+#app #editView [style*="1c7a3f"]{ color:#1c7a3f!important; }
 #editView *{ border-radius:0!important; }
 #editView .hbtn, #editView .card, #editView .stat, #editView .pager button,
 #editView .modal, #editView .inspector, #editView .frow input, #editView .frow select,
@@ -1740,18 +1746,42 @@ body.is-edit-view #panel-center{ padding:0!important; }
 #editView .stats .stat.warn-chip b{ background:#0d3a58!important; color:#fff!important; border-radius:999px!important; }
 #editView .stats .stat.drop, #editView .stats .stat.drop b{ color:rgba(13,58,88,.35)!important; }
 
-#editView .grid{ border-left-color:rgba(13,58,88,.12)!important; }
-#editView .card{ border-color:rgba(13,58,88,.1)!important; background:rgba(255,255,255,.4)!important; }
-#editView .card:hover{ background:rgba(255,255,255,.65)!important; }
-#editView .card.sel{ box-shadow:inset 0 0 0 3px #0d3a58!important; border-color:#0d3a58!important; }
-#editView .c-head .card-id{ color:#0d3a58!important; }
+/* ── 카드 그리드: STATUS 갤러리(작업 현황)와 동일한 여백 없는 사진 그리드 언어로 통일 ── */
+#editView .grid{
+  border-left:none!important; gap:4px!important; padding:8px 0!important;
+  grid-template-columns:repeat(auto-fill,minmax(190px,1fr))!important;
+}
+#editView .card{
+  position:relative!important; border:none!important; border-radius:0!important; background:transparent!important;
+  padding:0!important; box-shadow:none!important; transition:none!important;
+}
+#editView .card:hover{ background:transparent!important; transform:none!important; box-shadow:none!important; }
+#editView .card.sel .ph-wrap{ box-shadow:inset 0 0 0 3px #0d3a58!important; }
+#editView .c-head{
+  position:static!important; display:flex!important; align-items:center!important; justify-content:space-between!important;
+  gap:6px!important; background:none!important; padding:3px 1px 5px!important; margin:0!important;
+}
+#editView .c-head .card-id{ color:#0d3a58!important; font-weight:700!important; }
 #editView .c-head .c-cat{ color:rgba(13,58,88,.4)!important; }
-#editView .card-meta{ color:rgba(13,58,88,.45)!important; }
+#editView .card-body{ padding:4px 2px 0!important; }
+#editView .card-meta{ color:rgba(13,58,88,.45)!important; font-family:var(--mono)!important; letter-spacing:.5px!important; }
+#editView .card-reason{ display:none!important; }
+#editView .ph-wrap{ border-radius:0!important; border:1px solid rgba(13,58,88,.15)!important; }
 #editView .ph-wrap .ph{ filter:none!important; }
+#editView .ph-wrap{ position:relative!important; }
+#editView .ph-wrap::after{
+  content:''; position:absolute; inset:0; pointer-events:none; z-index:2;
+  background:linear-gradient(135deg, #3fc7e0, #5a9cf0 55%, #7fe0c8);
+  mix-blend-mode:color; opacity:.55; transition:opacity .35s;
+}
+#editView .card:hover .ph-wrap::after{ opacity:0!important; }
+#editView .card-badge{ z-index:3!important; }
+#editView .card.noimg .ph-wrap::after{ inset:auto!important; top:6px!important; left:6px!important; right:auto!important; bottom:auto!important; mix-blend-mode:normal!important; opacity:1!important; }
 #editView .vbtn{ color:rgba(13,58,88,.35)!important; }
 #editView .vbtn:hover{ color:#0d3a58!important; }
 #editView .vbtn.active{ color:#0d3a58!important; font-weight:800!important; }
-#editView .dir-chip{ border-color:rgba(13,58,88,.3)!important; color:rgba(13,58,88,.6)!important; }
+#editView .dir-chip{ border:none!important; }
+#editView .c-cat.dash{ color:rgba(255,255,255,.6)!important; }
 
 #editView .pager button{
   background:rgba(255,255,255,.5)!important; border:1px solid rgba(13,58,88,.25)!important; color:#0d3a58!important; font-family:var(--sans)!important;
@@ -1770,20 +1800,55 @@ body.is-edit-view #panel-center{ padding:0!important; }
 #editView .insp-save.ok{ background:#1c7a3f!important; border-color:#1c7a3f!important; }
 #editView .insp-del{ border-color:#c0392b!important; color:#c0392b!important; background:rgba(255,255,255,.5)!important; }
 
-#editView .overlay{ background:rgba(20,50,75,.4)!important; -webkit-backdrop-filter:blur(4px)!important; backdrop-filter:blur(4px)!important; }
+/* team.html #cfg-overlay(SETTINGS 모달) 실제 수치를 그대로 이식 */
+#editView .overlay{ background:rgba(12,51,78,.35)!important; -webkit-backdrop-filter:blur(4px)!important; backdrop-filter:blur(4px)!important; }
 #editView .modal{
-  background:rgba(233,244,252,.95)!important; -webkit-backdrop-filter:blur(16px) saturate(1.5)!important; backdrop-filter:blur(16px) saturate(1.5)!important;
-  border:1px solid rgba(255,255,255,.85)!important; box-shadow:0 20px 60px rgba(10,60,110,.35)!important;
+  background:rgba(233,244,252,.82)!important; -webkit-backdrop-filter:blur(16px) saturate(1.5)!important; backdrop-filter:blur(16px) saturate(1.5)!important;
+  border:1px solid rgba(233,244,252,.9)!important; border-radius:16px!important; box-shadow:0 20px 50px rgba(15,69,105,.3)!important;
 }
+#editView .modal{ color:#0e3e5e!important; }
+#editView .modal *:not([style*="color"]){ color:#0e3e5e!important; }
 #editView .modal h3{
-  background:rgba(255,255,255,.6)!important; color:#0d3a58!important; border-bottom:1px solid rgba(13,58,88,.15)!important; font-family:var(--sans)!important;
+  background:none!important; color:#0e3e5e!important; border-bottom:1px solid rgba(13,58,88,.15)!important; font-family:var(--sans)!important;
 }
-#editView .modal-actions .hbtn.primary{ background:#0d3a58!important; color:#fff!important; }
+#editView .modal .hbtn{
+  background:rgba(233,244,252,.55)!important; border:1px solid rgba(13,58,88,.3)!important; border-radius:6px!important;
+}
+#editView .modal .hbtn:hover{ background:rgba(233,244,252,.85)!important; }
+#editView .modal-actions .hbtn.primary{ background:#0d3a58!important; color:#fff!important; border-color:#0d3a58!important; }
+#editView #delFilterBtn, #editView #delListBtn{ background:#c0392b!important; color:#fff!important; border-color:#c0392b!important; }
+#editView #delFilterBtn:hover, #editView #delListBtn:hover{ background:#a8301f!important; }
 #editView .frow input, #editView .frow select, #editView .frow textarea{
-  border-color:rgba(13,58,88,.28)!important; background:rgba(255,255,255,.6)!important;
+  background:rgba(233,244,252,.6)!important; border:1px solid rgba(13,58,88,.25)!important; border-radius:6px!important;
 }
 #editView .frow label{ color:rgba(13,58,88,.55)!important; font-family:var(--sans)!important; }
 #editView .addprev, #editView .dd-block pre{ background:rgba(255,255,255,.4)!important; border-color:rgba(13,58,88,.15)!important; }
+
+/* ── 모달 본문(Guide 등) 타이포·컴포넌트: team.html 글래스 UI 언어로 재구성 ── */
+#editView .modal{ font-family:var(--sans)!important; }
+#editView .modal .hlead{ color:rgba(13,58,88,.7)!important; font-family:var(--sans)!important; line-height:1.7!important; }
+#editView .modal .hnote{
+  background:rgba(255,255,255,.5)!important; border:1px solid rgba(13,58,88,.15)!important; border-radius:14px!important; padding:15px 17px!important;
+  -webkit-backdrop-filter:blur(6px)!important; backdrop-filter:blur(6px)!important; box-shadow:0 2px 10px rgba(10,60,110,.06)!important;
+}
+#editView .modal .hnote > b:first-child{ color:#0d3a58!important; font-weight:800!important; font-size:13px!important; }
+#editView .modal .hsec{
+  align-items:flex-start!important; background:rgba(255,255,255,.35)!important; border:1px solid rgba(13,58,88,.1)!important;
+  border-radius:14px!important; padding:13px 16px!important; margin-bottom:12px!important;
+}
+#editView .modal .hnum{
+  border-radius:50%!important; width:25px!important; height:25px!important; box-shadow:0 2px 6px rgba(10,60,110,.25)!important;
+}
+#editView .modal code{
+  background:rgba(13,58,88,.08)!important; border:1px solid rgba(13,58,88,.12)!important; color:#0d3a58!important;
+  border-radius:5px!important; font-family:var(--mono)!important; padding:2px 6px!important;
+}
+#editView .modal ul, #editView .modal ol{ color:rgba(13,58,88,.75)!important; }
+#editView .modal ul li::marker, #editView .modal ol li::marker{ color:rgba(13,58,88,.4)!important; }
+#editView .hverd{ background:rgba(255,255,255,.4)!important; border:1px solid rgba(13,58,88,.1)!important; border-radius:12px!important; padding:12px 16px!important; }
+#editView .vtag{
+  background:rgba(233,244,252,.6)!important; border:1px solid rgba(13,58,88,.2)!important; font-family:var(--mono)!important;
+}
 
 #editView .site-footer{ background:rgba(255,255,255,.4)!important; -webkit-backdrop-filter:blur(8px)!important; backdrop-filter:blur(8px)!important; border-top:1px solid rgba(13,58,88,.12)!important; }
 #editView .site-footer .ft-brand, #editView .site-footer .ft-ver{ color:rgba(13,58,88,.5)!important; }
@@ -1798,6 +1863,84 @@ body.is-edit-view #panel-center{ padding:0!important; }
 #editView .dist-scope .dsc.on{ background:#0d3a58!important; color:#fff!important; }
 #editView .dist-back{ background:#0d3a58!important; color:#fff!important; }
 #editView .dist-fill{ background:#0d3a58!important; }
+
+/* ── 잔여 구세대(BOOOKIN 흑백네온) 색상 정리: 완전히 걷어내지 못한 세부 요소 ── */
+#editView header{ border-top:none!important; }
+#editView ::selection{ background:rgba(13,58,88,.2)!important; }
+#editView #progIndicator{ background:rgba(255,255,255,.5)!important; border:1px solid rgba(13,58,88,.2)!important; }
+#editView #progIndicator .pi1, #editView #progIndicator .pi2{ color:#0d3a58!important; }
+#editView #progIndicator .pi3{ color:rgba(13,58,88,.4)!important; }
+#editView .toolbar .tlabel{ color:rgba(13,58,88,.4)!important; border-left-color:rgba(13,58,88,.2)!important; }
+#editView .toolbar select{
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='7' viewBox='0 0 10 7'%3E%3Cpath d='M0 0h10L5 7z' fill='%230d3a58'/%3E%3C/svg%3E")!important;
+  background-repeat:no-repeat!important; background-position:right 10px center!important; background-size:10px 7px!important;
+  padding-right:26px!important; -webkit-appearance:none!important; appearance:none!important;
+}
+#editView .overlay .modal{ box-shadow:0 20px 60px rgba(10,60,110,.35)!important; }
+#editView .dir-chip:hover{ outline:1.5px solid rgba(13,58,88,.5)!important; }
+#editView .vtag.v-core{ border-left-color:#0d3a58!important; }
+#editView .vtag.v-support{ border-left-color:rgba(13,58,88,.55)!important; }
+#editView .vtag.v-hold{ border-left-color:rgba(13,58,88,.32)!important; }
+#editView .vtag.v-drop{ border-left-color:rgba(13,58,88,.18)!important; }
+#editView .stat.core::before, #editView .stat.k::before{ background:#0d3a58!important; }
+#editView .stat.support::before{ background:rgba(13,58,88,.55)!important; }
+#editView .stat.hold::before{ background:rgba(13,58,88,.32)!important; }
+#editView .stat.drop::before{ background:rgba(13,58,88,.18)!important; }
+#editView .stat.p::before{ border-color:#0d3a58!important; }
+#editView .ph-wrap, #editView .insp-thumb, #editView code{ background:rgba(255,255,255,.5)!important; }
+#editView .c-head .c-cat.dash{ color:rgba(13,58,88,.3)!important; }
+#editView .dist-head{ color:rgba(13,58,88,.5)!important; border-bottom-color:rgba(13,58,88,.15)!important; }
+#editView .dist-row:hover{ background:rgba(233,244,252,.5)!important; }
+#editView .dist-row:hover .dist-fill{ background:#0d3a58!important; }
+#editView .dd-code{ color:#0d3a58!important; }
+#editView .dd-code .dd-alias{ color:rgba(13,58,88,.45)!important; }
+#editView .dd-body{ color:rgba(13,58,88,.7)!important; }
+#editView .dist-code, #editView .dist-n{ color:#0d3a58!important; }
+#editView .dist-bar{ background:rgba(13,58,88,.1)!important; }
+#editView .hnum{ background:#0d3a58!important; color:#fff!important; }
+#editView .hnote{ border-color:rgba(13,58,88,.2)!important; background:rgba(255,255,255,.5)!important; }
+
+/* ── Guide: 팝업이 아니라 team.html의 실제 GUIDE처럼 화면을 그대로 차지하는 네이티브 뷰로 전환 ── */
+#editView #helpOverlay{
+  position:static!important; inset:auto!important; background:none!important;
+  -webkit-backdrop-filter:none!important; backdrop-filter:none!important; padding:0!important;
+  z-index:auto!important; align-items:stretch!important; justify-content:flex-start!important;
+}
+#editView #helpOverlay .modal{
+  max-width:none!important; width:100%!important; background:none!important; border:none!important;
+  box-shadow:none!important; border-radius:0!important; padding:18px 2px 40px!important; max-height:none!important; overflow:visible!important;
+}
+#editView #helpOverlay .modal h3{
+  background:none!important; border-bottom:1px solid rgba(13,58,88,.15)!important; padding:0 0 14px!important; margin:0 0 16px!important; position:static!important;
+}
+#editView:has(#helpOverlay.on) header .toolbar,
+#editView:has(#helpOverlay.on) .stats,
+#editView:has(#helpOverlay.on) .grid,
+#editView:has(#helpOverlay.on) .empty,
+#editView:has(#helpOverlay.on) .pager,
+#editView:has(#helpOverlay.on) .site-footer,
+#editView:has(#helpOverlay.on) #draftBar{ display:none!important; }
+
+/* ── Import Select도 동일하게 네이티브 전체화면 뷰로 통일 ── */
+#editView #importOverlay{
+  position:static!important; inset:auto!important; background:none!important;
+  -webkit-backdrop-filter:none!important; backdrop-filter:none!important; padding:0!important;
+  z-index:auto!important; align-items:stretch!important; justify-content:flex-start!important;
+}
+#editView #importOverlay .modal{
+  max-width:none!important; width:100%!important; background:none!important; border:none!important;
+  box-shadow:none!important; border-radius:0!important; padding:18px 2px 40px!important; max-height:none!important; overflow:visible!important;
+}
+#editView #importOverlay .modal h3{
+  background:none!important; border-bottom:1px solid rgba(13,58,88,.15)!important; padding:0 0 14px!important; margin:0 0 16px!important; position:static!important;
+}
+#editView:has(#importOverlay.on) header .toolbar,
+#editView:has(#importOverlay.on) .stats,
+#editView:has(#importOverlay.on) .grid,
+#editView:has(#importOverlay.on) .empty,
+#editView:has(#importOverlay.on) .pager,
+#editView:has(#importOverlay.on) .site-footer,
+#editView:has(#importOverlay.on) #draftBar{ display:none!important; }
 
   </style>
                   <style id="kitsch-remix">
@@ -1991,6 +2134,17 @@ body.is-edit-view #panel-center{ padding:0!important; }
   }
   #app .panel-title{ font-weight:700!important; font-size:13px!important; letter-spacing:0!important; text-transform:none!important; color:#092c44!important; text-shadow:0 1px 0 rgba(233,244,252,.6)!important; }
   #app .panel-badge{ font-weight:600!important; font-size:10.5px!important; background:none!important; color:#0f7a3a!important; border:none!important; border-radius:0!important; padding:0!important; box-shadow:none!important; }
+
+  /* ── EDIT 진입 패널: 메뉴 리스트 ── */
+  .edit-mlink{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:9px 14px; font-size:11.5px; font-weight:600; letter-spacing:.5px;
+    color:rgba(13,58,88,.7); border-bottom:1px solid rgba(13,58,88,.08);
+    cursor:pointer; transition:background .15s, color .15s;
+  }
+  .edit-mlink:last-child{ border-bottom:none; }
+  .edit-mlink:hover{ background:rgba(233,244,252,.45); color:#0d3a58; }
+  .edit-mlink::after{ content:'→'; opacity:.35; font-size:10px; }
 
   /* ── 중앙 메인 콘텐츠: 큰 히어로 헤더 카드 (앨범 화면 자리) ── */
   #col-center{ grid-area:center!important; }
@@ -3117,14 +3271,18 @@ body.is-edit-view #panel-center{ padding:0!important; }
   <div id="col-right">
 
     <!-- EDIT 패널 -->
-    <div class="panel" id="panel-edit" style="display:flex;flex-direction:column;flex:1.6;cursor:pointer;" onclick="goEditView()">
-      <div class="panel-header" style="flex-shrink:0;">
+    <div class="panel" id="panel-edit" style="display:flex;flex-direction:column;flex:1.6;">
+      <div class="panel-header" style="flex-shrink:0;cursor:pointer;" onclick="goEditView()">
         <span class="panel-title">◆ EDIT</span>
         <span class="panel-badge">사진 검수</span>
       </div>
-      <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;padding:12px;text-align:center;">
-        <div style="font-size:10px;letter-spacing:1px;color:rgba(13,58,88,0.5);line-height:1.7;">사진 검수 · 태깅 도구<br>DIR 분류 · 등급 판정</div>
-        <div style="font-size:9px;letter-spacing:3px;color:#0d3a58;border:1px solid rgba(13,58,88,0.35);padding:6px 18px;">OPEN →</div>
+      <div style="flex:1;overflow-y:auto;display:flex;flex-direction:column;">
+        <span class="edit-mlink" onclick="editMenuAction('btnHelp')">Guide</span>
+        <span class="edit-mlink" onclick="editMenuAction('btnReload')">Live Load</span>
+        <span class="edit-mlink" onclick="editMenuAction('btnLoadFile')">Open File</span>
+        <span class="edit-mlink" onclick="editMenuAction('btnImport')">Import Select</span>
+        <span class="edit-mlink" onclick="editMenuAction('btnDownload')">Download</span>
+        <span class="edit-mlink" style="color:#c0392b;" onclick="editMenuAction('btnDelete')">Delete</span>
       </div>
     </div>
 
@@ -3729,6 +3887,17 @@ function showView(name){
 function goEditView(){
   showView('editView');
   if(window._editViewInit) window._editViewInit();
+  const ph=document.getElementById('center-ph');
+  if(ph){
+    const t=ph.querySelector('.panel-title'); if(t)t.textContent='◆ EDIT';
+    const b=ph.querySelector('.panel-badge'); if(b)b.textContent='VERDICT';
+  }
+}
+
+function editMenuAction(btnId){
+  goEditView();
+  const btn = document.getElementById(btnId);
+  if(btn) btn.click();
 }
 
 function cycleView(dir){
@@ -6766,6 +6935,8 @@ $('inspDelete').addEventListener('click', deleteSelectedPhoto);
 // ── 로드 ──
 async function loadLive(){
   setStatus('라이브 데이터 불러오는 중…');
+  const gridEl = $('grid');
+  if(gridEl) gridEl.innerHTML = '<div style="color:rgba(0,221,85,0.42);padding:20px;font-size:9px;letter-spacing:1px;">LOADING...</div>';
   try{
     let res;
     try{ res = await fetch(RAW_GITHUB+'?t='+Date.now()); if(!res.ok) throw 0; }
