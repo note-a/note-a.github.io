@@ -1740,13 +1740,28 @@ body.is-edit-view #panel-center{ padding:0!important; }
 #editView .stats .stat.warn-chip b{ background:#0d3a58!important; color:#fff!important; border-radius:999px!important; }
 #editView .stats .stat.drop, #editView .stats .stat.drop b{ color:rgba(13,58,88,.35)!important; }
 
-#editView .grid{ border-left-color:rgba(13,58,88,.12)!important; }
-#editView .card{ border-color:rgba(13,58,88,.1)!important; background:rgba(255,255,255,.4)!important; }
-#editView .card:hover{ background:rgba(255,255,255,.65)!important; }
-#editView .card.sel{ box-shadow:inset 0 0 0 3px #0d3a58!important; border-color:#0d3a58!important; }
-#editView .c-head .card-id{ color:#0d3a58!important; }
-#editView .c-head .c-cat{ color:rgba(13,58,88,.4)!important; }
-#editView .card-meta{ color:rgba(13,58,88,.45)!important; }
+/* ── 카드 그리드: STATUS 갤러리(작업 현황)와 동일한 여백 없는 사진 그리드 언어로 통일 ── */
+#editView .grid{
+  border-left:none!important; gap:4px!important; padding:8px 0!important;
+  grid-template-columns:repeat(auto-fill,minmax(190px,1fr))!important;
+}
+#editView .card{
+  position:relative!important; border:none!important; border-radius:0!important; background:transparent!important;
+  padding:0!important; box-shadow:none!important; transition:none!important;
+}
+#editView .card:hover{ background:transparent!important; transform:none!important; box-shadow:none!important; }
+#editView .card.sel .ph-wrap{ box-shadow:inset 0 0 0 3px #0d3a58!important; }
+#editView .c-head{
+  position:absolute!important; left:0!important; right:0!important; bottom:0!important; z-index:3!important;
+  background:linear-gradient(0deg, rgba(13,58,88,.72), rgba(13,58,88,0))!important;
+  padding:14px 6px 4px!important; margin:0!important;
+}
+#editView .c-head .card-id{ color:#fff!important; font-weight:700!important; text-shadow:0 1px 3px rgba(0,0,0,.4); }
+#editView .c-head .c-cat{ color:rgba(255,255,255,.75)!important; }
+#editView .card-body{ padding:4px 2px 0!important; }
+#editView .card-meta{ color:rgba(13,58,88,.45)!important; font-family:var(--mono)!important; letter-spacing:.5px!important; }
+#editView .card-reason{ display:none!important; }
+#editView .ph-wrap{ border-radius:0!important; border:1px solid rgba(13,58,88,.15)!important; }
 #editView .ph-wrap .ph{ filter:none!important; }
 #editView .ph-wrap{ position:relative!important; }
 #editView .ph-wrap::after{
@@ -1760,7 +1775,8 @@ body.is-edit-view #panel-center{ padding:0!important; }
 #editView .vbtn{ color:rgba(13,58,88,.35)!important; }
 #editView .vbtn:hover{ color:#0d3a58!important; }
 #editView .vbtn.active{ color:#0d3a58!important; font-weight:800!important; }
-#editView .dir-chip{ border-color:rgba(13,58,88,.3)!important; color:rgba(13,58,88,.6)!important; }
+#editView .dir-chip{ border:none!important; }
+#editView .c-cat.dash{ color:rgba(255,255,255,.6)!important; }
 
 #editView .pager button{
   background:rgba(255,255,255,.5)!important; border:1px solid rgba(13,58,88,.25)!important; color:#0d3a58!important; font-family:var(--sans)!important;
