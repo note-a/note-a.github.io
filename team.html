@@ -1685,6 +1685,125 @@
 #editView .overlay{ z-index:2100!important; }
 body.is-edit-view #center-ph{ display:none!important; }
 body.is-edit-view #panel-center{ padding:0!important; }
+@media (min-width:901px){
+  body.is-edit-view #app{
+    grid-template-columns:0px 1fr 0px!important;
+  }
+  body.is-edit-view #col-left, body.is-edit-view #col-right{ display:none!important; }
+}
+
+/* ── EDIT 뷰: team.html 라이트 글래스 테마로 리스킨 ── */
+#editView{
+  --page:transparent; --bg:#fff; --bg2:rgba(255,255,255,.4); --panel:rgba(255,255,255,.5);
+  --ink:#0d3a58; --ink2:rgba(13,58,88,.65); --ink3:rgba(13,58,88,.4);
+  --line:rgba(13,58,88,.15); --line2:rgba(13,58,88,.28); --line3:rgba(13,58,88,.4);
+  --focus:#0d3a58; --acc:#0d3a58;
+  --sans:'Bricolage Grotesque','Noto Sans KR','Apple SD Gothic Neo',sans-serif;
+  --mono:'Space Mono',ui-monospace,SFMono-Regular,Menlo,monospace;
+}
+#editView, #editView *{ color:#0d3a58!important; border-radius:inherit; }
+#editView *{ border-radius:0!important; }
+#editView .hbtn, #editView .card, #editView .stat, #editView .pager button,
+#editView .modal, #editView .inspector, #editView .frow input, #editView .frow select,
+#editView .frow textarea, #editView .toolbar select, #editView .dir-chip,
+#editView .vtag, #editView .dist-tile, #editView .addprev, #editView .insp-json,
+#editView .dd-block, #editView .dd-block pre{ border-radius:10px!important; }
+#editView .wbtn, #editView .vbtn{ border-radius:999px!important; }
+
+#editView header{
+  background:rgba(255,255,255,.55)!important; -webkit-backdrop-filter:blur(14px) saturate(1.5)!important; backdrop-filter:blur(14px) saturate(1.5)!important;
+  border-bottom:1px solid rgba(255,255,255,.7)!important; box-shadow:0 4px 16px rgba(10,60,110,.12)!important;
+}
+#editView .logo, #editView .logo .lg1, #editView .logo .lg2{
+  -webkit-text-stroke:0!important; color:#0d3a58!important; font-family:var(--sans)!important; font-weight:800!important;
+}
+#editView .logo .lg2::before{ background:#0d3a58!important; }
+#editView .header-in .hbtn{ border-left-color:rgba(13,58,88,.2)!important; color:#0d3a58!important; font-family:var(--sans)!important; }
+#editView .header-in .hbtn.primary{
+  background:linear-gradient(180deg, rgba(255,255,255,.9), rgba(210,238,255,.7))!important;
+  color:#0d3a58!important; border:1px solid rgba(255,255,255,.9)!important; box-shadow:0 2px 6px rgba(10,60,110,.2)!important;
+}
+#editView .header-in .hbtn.primary:hover{ background:rgba(255,255,255,1)!important; }
+#editView #btnDelete{ color:#c0392b!important; }
+
+#editView .toolbar{ border-color:rgba(13,58,88,.15)!important; }
+#editView .tlabel{ color:rgba(13,58,88,.4)!important; border-left-color:rgba(13,58,88,.2)!important; }
+#editView .toolbar input, #editView .toolbar select{
+  color:#0d3a58!important; background:rgba(255,255,255,.5)!important; border:none!important;
+  border-bottom:1px solid rgba(13,58,88,.35)!important; font-family:var(--sans)!important;
+}
+#editView .wbtn{ color:rgba(13,58,88,.5)!important; border-color:rgba(13,58,88,.3)!important; background:rgba(255,255,255,.4)!important; }
+#editView .wbtn.on{ background:#0d3a58!important; color:#fff!important; border-color:#0d3a58!important; }
+
+#editView .masthead{ display:none!important; }
+#editView .stats{
+  background:rgba(255,255,255,.35)!important; -webkit-backdrop-filter:blur(8px)!important; backdrop-filter:blur(8px)!important;
+  border-bottom:1px solid rgba(13,58,88,.12)!important; border-radius:12px!important; margin:8px 0!important;
+}
+#editView .stats .stat{ color:rgba(13,58,88,.55)!important; font-family:var(--sans)!important; }
+#editView .stats .stat b{ color:#0d3a58!important; }
+#editView .stats .stat.clk.active{ color:#0d3a58!important; border-bottom-color:#0d3a58!important; }
+#editView .stats .stat.warn-chip b{ background:#0d3a58!important; color:#fff!important; border-radius:999px!important; }
+#editView .stats .stat.drop, #editView .stats .stat.drop b{ color:rgba(13,58,88,.35)!important; }
+
+#editView .grid{ border-left-color:rgba(13,58,88,.12)!important; }
+#editView .card{ border-color:rgba(13,58,88,.1)!important; background:rgba(255,255,255,.4)!important; }
+#editView .card:hover{ background:rgba(255,255,255,.65)!important; }
+#editView .card.sel{ box-shadow:inset 0 0 0 3px #0d3a58!important; border-color:#0d3a58!important; }
+#editView .c-head .card-id{ color:#0d3a58!important; }
+#editView .c-head .c-cat{ color:rgba(13,58,88,.4)!important; }
+#editView .card-meta{ color:rgba(13,58,88,.45)!important; }
+#editView .ph-wrap .ph{ filter:none!important; }
+#editView .vbtn{ color:rgba(13,58,88,.35)!important; }
+#editView .vbtn:hover{ color:#0d3a58!important; }
+#editView .vbtn.active{ color:#0d3a58!important; font-weight:800!important; }
+#editView .dir-chip{ border-color:rgba(13,58,88,.3)!important; color:rgba(13,58,88,.6)!important; }
+
+#editView .pager button{
+  background:rgba(255,255,255,.5)!important; border:1px solid rgba(13,58,88,.25)!important; color:#0d3a58!important; font-family:var(--sans)!important;
+}
+#editView .pager button:hover:not(:disabled){ background:rgba(255,255,255,.85)!important; color:#0d3a58!important; }
+#editView .pager .pinfo{ background:rgba(255,255,255,.5)!important; color:#0d3a58!important; border:1px solid rgba(13,58,88,.25)!important; }
+
+#editView .inspector{
+  background:rgba(233,244,252,.92)!important; -webkit-backdrop-filter:blur(16px) saturate(1.5)!important; backdrop-filter:blur(16px) saturate(1.5)!important;
+  border:1px solid rgba(255,255,255,.85)!important; box-shadow:0 24px 70px rgba(10,60,110,.3), 0 0 0 100vmax rgba(20,50,75,.35)!important;
+}
+#editView .insp-close{ background:rgba(255,255,255,.6)!important; border-color:rgba(13,58,88,.25)!important; }
+#editView .insp-input{ background:rgba(255,255,255,.7)!important; border-color:rgba(13,58,88,.28)!important; }
+#editView .insp-json{ background:rgba(255,255,255,.4)!important; border-color:rgba(13,58,88,.15)!important; }
+#editView .insp-save{ background:#0d3a58!important; border-color:#0d3a58!important; color:#fff!important; }
+#editView .insp-save.ok{ background:#1c7a3f!important; border-color:#1c7a3f!important; }
+#editView .insp-del{ border-color:#c0392b!important; color:#c0392b!important; background:rgba(255,255,255,.5)!important; }
+
+#editView .overlay{ background:rgba(20,50,75,.4)!important; -webkit-backdrop-filter:blur(4px)!important; backdrop-filter:blur(4px)!important; }
+#editView .modal{
+  background:rgba(233,244,252,.95)!important; -webkit-backdrop-filter:blur(16px) saturate(1.5)!important; backdrop-filter:blur(16px) saturate(1.5)!important;
+  border:1px solid rgba(255,255,255,.85)!important; box-shadow:0 20px 60px rgba(10,60,110,.35)!important;
+}
+#editView .modal h3{
+  background:rgba(255,255,255,.6)!important; color:#0d3a58!important; border-bottom:1px solid rgba(13,58,88,.15)!important; font-family:var(--sans)!important;
+}
+#editView .modal-actions .hbtn.primary{ background:#0d3a58!important; color:#fff!important; }
+#editView .frow input, #editView .frow select, #editView .frow textarea{
+  border-color:rgba(13,58,88,.28)!important; background:rgba(255,255,255,.6)!important;
+}
+#editView .frow label{ color:rgba(13,58,88,.55)!important; font-family:var(--sans)!important; }
+#editView .addprev, #editView .dd-block pre{ background:rgba(255,255,255,.4)!important; border-color:rgba(13,58,88,.15)!important; }
+
+#editView .site-footer{ background:rgba(255,255,255,.4)!important; -webkit-backdrop-filter:blur(8px)!important; backdrop-filter:blur(8px)!important; border-top:1px solid rgba(13,58,88,.12)!important; }
+#editView .site-footer .ft-brand, #editView .site-footer .ft-ver{ color:rgba(13,58,88,.5)!important; }
+#editView .site-footer b{ color:#0d3a58!important; }
+
+#editView #draftBar{ background:rgba(255,255,255,.55)!important; color:#0d3a58!important; border-bottom:1px solid rgba(13,58,88,.15)!important; }
+#editView #draftBar .hbtn{ border-color:rgba(13,58,88,.4)!important; color:#0d3a58!important; }
+#editView #draftBar .db-restore{ background:#0d3a58!important; color:#fff!important; border-color:#0d3a58!important; }
+
+#editView .dist-tiles{ background:rgba(13,58,88,.1)!important; }
+#editView .dist-scope .dsc{ background:rgba(255,255,255,.5)!important; color:#0d3a58!important; border-color:rgba(13,58,88,.3)!important; }
+#editView .dist-scope .dsc.on{ background:#0d3a58!important; color:#fff!important; }
+#editView .dist-back{ background:#0d3a58!important; color:#fff!important; }
+#editView .dist-fill{ background:#0d3a58!important; }
 
   </style>
                   <style id="kitsch-remix">
@@ -1725,8 +1844,8 @@ body.is-edit-view #panel-center{ padding:0!important; }
      ========================================================= */
   @media (min-width: 901px){
   #app{
-    width:min(85vw,1020px)!important; height:min(88vh,780px)!important;
-    grid-template-columns:200px 1fr 200px!important;
+    width:min(92vw,1280px)!important; height:min(88vh,780px)!important;
+    grid-template-columns:170px 1fr 170px!important;
     grid-template-rows:56px auto 1fr 56px!important;
     grid-template-areas:
       "top   top    top"
