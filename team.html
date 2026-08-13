@@ -4083,7 +4083,11 @@ function showNoticeView(){
         <div style="font-size:10px;color:rgba(13,58,88,0.45);letter-spacing:2px;font-weight:700;margin-bottom:10px;">${p.title.toUpperCase()}</div>
         <div class="md-body">${html}</div>
       </div>`;
-    }).join('');
+    }).join('') + `
+      <div style="padding:16px 16px 20px;cursor:pointer;" onclick="goEditView();setTimeout(()=>document.getElementById('btnHelp').click(),0);">
+        <div style="font-size:10px;color:rgba(13,58,88,0.45);letter-spacing:2px;font-weight:700;margin-bottom:10px;">사진 판정 도구 (EDIT) 사용설명서</div>
+        <div class="md-body" style="text-decoration:underline;">📖 EDIT 사용법 보러가기 →</div>
+      </div>`;
   }
   showView('noticeView');
 }
