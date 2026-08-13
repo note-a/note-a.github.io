@@ -1746,6 +1746,8 @@ body.is-edit-view #panel-center{ padding:0!important; }
 #editView .stats .stat.warn-chip b{ background:#0d3a58!important; color:#fff!important; border-radius:999px!important; }
 #editView .stats .stat.drop, #editView .stats .stat.drop b{ color:rgba(13,58,88,.35)!important; }
 
+/* STATUS는 통계 바가 없음 - 완전히 동일하게 맞추기 위해 제거 */
+#editView .stats{ display:none!important; }
 /* ── 카드 그리드: STATUS 갤러리(작업 현황)와 동일한 여백 없는 사진 그리드 언어로 통일 ── */
 #editView .grid{
   border-left:none!important; column-gap:4px!important; row-gap:26px!important; padding:8px 0!important;
@@ -1874,6 +1876,7 @@ body.is-edit-view #panel-center{ padding:0!important; }
 #editView .dist-scope .dsc{ background:rgba(255,255,255,.5)!important; color:#0d3a58!important; border-color:rgba(13,58,88,.3)!important; }
 #editView .dist-scope .dsc.on{ background:#0d3a58!important; color:#fff!important; }
 #editView .dist-back{ background:#0d3a58!important; color:#fff!important; }
+#editView .dist-tile:hover{ outline:2px solid #0d3a58!important; }
 #editView .dist-fill{ background:#0d3a58!important; }
 
 /* ── 잔여 구세대(BOOOKIN 흑백네온) 색상 정리: 완전히 걷어내지 못한 세부 요소 ── */
@@ -7748,7 +7751,7 @@ const DIR_ALIASES={
 };
 
 // ── DIR 분포 ──
-const DIST_PAL=[['#ff0000','#ffff00'],['#00c400','#000'],['#0000ff','#fff'],['#ffff00','#ff0000'],['#ff00ff','#fff'],['#00ffff','#000'],['#ff7f00','#000'],['#8000ff','#00ff00'],['#000000','#00ff00'],['#ffffff','#ff0000'],['#e8ff00','#000'],['#ff1493','#fff'],['#000000','#ffff00'],['#ffffff','#0000ff'],['#00ff00','#ff00ff'],['#ff0000','#ffffff']];
+const DIST_PAL=[['#0d3a58','#fff'],['#1c5a86','#fff'],['#2c7aa8','#fff'],['#3fc7e0','#0d3a58'],['#5a9cf0','#fff'],['#7fe0c8','#0d3a58'],['#4a8fc7','#fff'],['#6bb8d9','#0d3a58'],['#2e6b8f','#fff'],['#8ad4e8','#0d3a58'],['#1a4d6e','#fff'],['#5fb3d4','#0d3a58'],['#3a6f9c','#fff'],['#7bc9e0','#0d3a58'],['#245577','#fff'],['#a3e0d8','#0d3a58']];
 function dhash(s){ let h=0; s=String(s); for(let i=0;i<s.length;i++){ h=(h*31+s.charCodeAt(i))>>>0; } return h; }
 function dirCodes(d){
   return String(d||'').replace(/\[\[|\]\]/g,' ').replace(/`/g,' ').replace(/↯/g,' ').replace(/\([^)]*\)/g,' ').replace(/\?/g,' ')
