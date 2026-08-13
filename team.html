@@ -1680,7 +1680,7 @@
   overflow-y:auto!important; padding:0 0 24px!important; background:transparent!important;
 }
 #editView .cw{ width:96%!important; }
-#editView header{ position:sticky!important; top:0!important; z-index:5!important; flex-shrink:0!important; }
+#editView header{ position:static!important; flex-shrink:0!important; }
 #editView .header-in{ display:none!important; }
 #editView .inspector{ z-index:2000!important; }
 #editView .overlay{ z-index:2100!important; }
@@ -1781,7 +1781,8 @@ body.is-edit-view #panel-center{ padding:0!important; }
 #editView .card-meta{ color:rgba(13,58,88,.45)!important; font-family:var(--mono)!important; letter-spacing:.5px!important; }
 #editView .card-reason{ display:none!important; }
 #editView .ph-wrap{ border-radius:0!important; border:none!important; }
-#editView .ph-wrap .ph{ filter:none!important; }
+#editView .ph-wrap .ph{ filter:none!important; object-fit:cover!important; }
+#editView .ph-wrap .ph-bg{ display:none!important; }
 #editView .ph-wrap{ position:relative!important; }
 #editView .ph-wrap::after{
   content:''; position:absolute; inset:0; pointer-events:none; z-index:2;
