@@ -3293,36 +3293,33 @@ body.is-edit-view #panel-center{ padding:0!important; }
   <!-- ── 우측 컬럼 ── -->
   <div id="col-right">
 
-    <!-- EDIT 패널 -->
-    <div class="panel" id="panel-edit" style="display:flex;flex-direction:column;flex:1.6;">
+    <!-- EDIT + DIR STATUS 통합 패널 -->
+    <div class="panel" id="panel-edit" style="display:flex;flex-direction:column;flex:1;">
       <div class="panel-header" style="flex-shrink:0;cursor:pointer;" onclick="goEditView()">
         <span class="panel-title">◆ EDIT</span>
         <span class="panel-badge">사진 검수</span>
       </div>
-      <div style="flex:1;overflow-y:auto;display:flex;flex-direction:column;">
-        <span class="edit-mlink" onclick="editMenuAction('btnHelp')">Guide</span>
+      <div style="flex-shrink:0;display:flex;flex-direction:column;">
         <span class="edit-mlink" onclick="editMenuAction('btnReload')">Live Load</span>
         <span class="edit-mlink" onclick="editMenuAction('btnLoadFile')">Open File</span>
         <span class="edit-mlink" onclick="editMenuAction('btnImport')">Import Select</span>
         <span class="edit-mlink" onclick="editMenuAction('btnDownload')">Download</span>
         <span class="edit-mlink" style="color:#c0392b;" onclick="editMenuAction('btnDelete')">Delete</span>
       </div>
-    </div>
-
-    <!-- DIR STATUS 패널 -->
-    <div class="panel" id="panel-sys" style="flex:1;display:flex;flex-direction:column;">
-      <div class="panel-header">
-        <span class="panel-title">◆ DIR STATUS</span>
-        <span class="panel-badge">85 DIRS</span>
-      </div>
-      <div class="dir-legend">
-        <div class="dir-lg"><div class="dir-ld" style="background:#0d3a58;box-shadow:0 0 3px #0d3a58;"></div>완료 20</div>
-        <div class="dir-lg"><div class="dir-ld" style="background:#ffcc44;"></div>진행 1</div>
-        <div class="dir-lg"><div class="dir-ld" style="border:1px solid rgba(13,58,88,.2);"></div>대기 64</div>
-      </div>
-      <canvas id="dir-graph-cv" style="flex:1;display:block;width:100%;cursor:grab;"></canvas>
-      <div style="font-size:6px;color:rgba(13,58,88,.28);border-top:1px solid rgba(13,58,88,.08);padding:4px 8px;display:flex;justify-content:space-between;">
-        <span>001–085</span><span style="color:#ffcc44;">▶ ISOOBJ</span><span>24%</span>
+      <div id="panel-sys" style="flex:1;display:flex;flex-direction:column;min-height:0;">
+        <div class="panel-header" style="flex-shrink:0;">
+          <span class="panel-title">◆ DIR STATUS</span>
+          <span class="panel-badge">85 DIRS</span>
+        </div>
+        <div class="dir-legend">
+          <div class="dir-lg"><div class="dir-ld" style="background:#0d3a58;box-shadow:0 0 3px #0d3a58;"></div>완료 20</div>
+          <div class="dir-lg"><div class="dir-ld" style="background:#ffcc44;"></div>진행 1</div>
+          <div class="dir-lg"><div class="dir-ld" style="border:1px solid rgba(13,58,88,.2);"></div>대기 64</div>
+        </div>
+        <canvas id="dir-graph-cv" style="flex:1;display:block;width:100%;cursor:grab;min-height:80px;"></canvas>
+        <div style="font-size:6px;color:rgba(13,58,88,.28);border-top:1px solid rgba(13,58,88,.08);padding:4px 8px;display:flex;justify-content:space-between;">
+          <span>001–085</span><span style="color:#ffcc44;">▶ ISOOBJ</span><span>24%</span>
+        </div>
       </div>
     </div>
 
