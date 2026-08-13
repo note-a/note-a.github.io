@@ -358,9 +358,11 @@ html,body { width:100%; height:100%; min-width:1270px; overflow:auto; background
 .home-btn { margin-top:auto; color:var(--g3); border-color:rgba(0,221,85,0.2); text-decoration:none; }
 
 /* ── 우측 컬럼 ── */
-#rightCol { width:300px; flex-shrink:0; display:flex; flex-direction:column; gap:8px; min-height:0; }
+#rightCol { width:320px; flex-shrink:0; display:flex; flex-direction:column; gap:8px; min-height:0; }
 #scanPnl { flex:0 0 auto; } #metaPnl { flex:0 0 auto; }
-#srcPnl { flex:1 1 0; min-height:0; } #relPnl { min-height:0; } #sidePnl { min-height:0; }
+#srcPnl { flex:1 1 100px; min-height:0; }
+#relPnl { min-height:0; } #sidePnl { min-height:0; }
+#rightCol > div:last-child { flex:0 0 108px; }
 #rightCol .pnl { min-height:0; } #rightCol .pnl-in { height:100%; }
 /* 우측 패널 선 약화: 베벨·내부 보더 흐리게 */
 #rightCol .pnl { background:linear-gradient(135deg,#149040 0%,#006a25 52%,#00401a 100%); }
@@ -477,7 +479,7 @@ html,body { width:100%; height:100%; min-width:1270px; overflow:auto; background
   background:var(--acc); transform:rotate(45deg); }
 
 /* ════ 하단 행 ════ */
-#botRow { height:136px; flex-shrink:0; display:flex; gap:8px; }
+#botRow { height:100px; flex-shrink:0; display:flex; gap:8px; }
 #logPnl { flex:1; min-width:0; overflow:hidden; } #logPnl .pnl-in { height:100%; }
 #repContent::-webkit-scrollbar { width:3px; }
 #repContent::-webkit-scrollbar-thumb { background:rgba(0,255,100,0.35); }
@@ -733,7 +735,6 @@ html,body { width:100%; height:100%; min-width:1270px; overflow:auto; background
   /* CAPTURE REPORT 전체 너비 */
   #logPnl { width: 100%; min-height: 140px; }
   #logPnl .pnl-in { height: auto; min-height: 140px; }
-  #botRow > div:last-child { display: none !important; } /* related+spotlight 래퍼 */
 
   /* ── 상태바 ── */
   #statusBar { overflow-x: auto; scrollbar-width: none; white-space: nowrap; }
@@ -886,6 +887,44 @@ html,body { width:100%; height:100%; min-width:1270px; overflow:auto; background
         </div>
       </div></div>
 
+      <!-- RELATED + SPOTLIGHT: rightCol 도시에로 편입 (레이아웃 재구성) -->
+      <div style="display:flex;gap:8px;flex-shrink:0;">
+
+        <div class="pnl" id="relPnl" style="flex:1;min-width:0;"><div class="pnl-in">
+          <div class="pnl-hd">RELATED · 교집합
+            <span class="hd-r">
+              <span class="rel-mode on" data-rel="SEQ">SEQ</span>
+              <span class="rel-mode" data-rel="SCENE">SCENE</span>
+              <span class="rel-mode" data-rel="TAG">TAG</span>
+            </span>
+          </div>
+          <div class="pnl-bd">
+            <div class="rel-cap" id="relCap">SELECT A PHOTO TO VIEW RELATED</div>
+            <div class="rel-grid" id="relGrid"></div>
+          </div>
+        </div></div>
+
+        <div class="pnl" id="sidePnl" style="flex:2;min-width:0;"><div class="pnl-in">
+          <div class="pnl-hd">SPOTLIGHT<span class="hd-r" id="spMeta" style="font-size:7px;color:var(--g3)">RANDOM · CORE</span></div>
+          <div class="pnl-bd" id="spBody" style="display:flex;gap:8px;align-items:stretch;height:calc(100% - 22px)">
+            <div id="spImg" style="aspect-ratio:3/2;height:100%;flex-shrink:0;background:#000;border:1px solid var(--g4);overflow:hidden;cursor:pointer;position:relative">
+              <img id="spThumb" style="width:100%;height:100%;object-fit:cover;filter:brightness(0.6) saturate(0) sepia(1) hue-rotate(90deg)" src="" onerror="this.style.display='none'">
+              <div style="position:absolute;bottom:3px;right:4px;font-size:6px;color:var(--g3)">▶</div>
+            </div>
+            <div style="flex:1;display:flex;flex-direction:column;gap:4px;min-width:0">
+              <div id="spFile" style="font-size:7.5px;color:var(--acc);letter-spacing:.5px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap"></div>
+              <div id="spBatch" style="font-size:7px;color:var(--g3);letter-spacing:.5px"></div>
+              <div id="spDirs" style="display:flex;flex-wrap:wrap;gap:3px;margin-top:2px"></div>
+              <div style="margin-top:auto;border-top:1px solid var(--g4);padding-top:4px;display:flex;gap:6px">
+                <div id="spVerdict" style="font-size:7.5px"></div>
+                <div id="spNext" style="font-size:7px;color:var(--g4);cursor:pointer;margin-left:auto">NEXT ›</div>
+              </div>
+            </div>
+          </div>
+        </div></div>
+
+      </div>
+
     </div>
 
     <!-- 세로 메뉴 -->
@@ -911,44 +950,6 @@ html,body { width:100%; height:100%; min-width:1270px; overflow:auto; background
         </div>
       </div>
     </div></div>
-
-    <!-- RELATED + SPOTLIGHT 2열 -->
-    <div style="display:flex;gap:8px;flex-shrink:0;width:440px;">
-
-      <div class="pnl" id="relPnl" style="flex:1;min-width:0;"><div class="pnl-in">
-        <div class="pnl-hd">RELATED · 교집합
-          <span class="hd-r">
-            <span class="rel-mode on" data-rel="SEQ">SEQ</span>
-            <span class="rel-mode" data-rel="SCENE">SCENE</span>
-            <span class="rel-mode" data-rel="TAG">TAG</span>
-          </span>
-        </div>
-        <div class="pnl-bd">
-          <div class="rel-cap" id="relCap">SELECT A PHOTO TO VIEW RELATED</div>
-          <div class="rel-grid" id="relGrid"></div>
-        </div>
-      </div></div>
-
-      <div class="pnl" id="sidePnl" style="flex:2;min-width:0;"><div class="pnl-in">
-        <div class="pnl-hd">SPOTLIGHT<span class="hd-r" id="spMeta" style="font-size:7px;color:var(--g3)">RANDOM · CORE</span></div>
-        <div class="pnl-bd" id="spBody" style="display:flex;gap:8px;align-items:stretch;height:calc(100% - 22px)">
-          <div id="spImg" style="aspect-ratio:3/2;height:100%;flex-shrink:0;background:#000;border:1px solid var(--g4);overflow:hidden;cursor:pointer;position:relative">
-            <img id="spThumb" style="width:100%;height:100%;object-fit:cover;filter:brightness(0.6) saturate(0) sepia(1) hue-rotate(90deg)" src="" onerror="this.style.display='none'">
-            <div style="position:absolute;bottom:3px;right:4px;font-size:6px;color:var(--g3)">▶</div>
-          </div>
-          <div style="flex:1;display:flex;flex-direction:column;gap:4px;min-width:0">
-            <div id="spFile" style="font-size:7.5px;color:var(--acc);letter-spacing:.5px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap"></div>
-            <div id="spBatch" style="font-size:7px;color:var(--g3);letter-spacing:.5px"></div>
-            <div id="spDirs" style="display:flex;flex-wrap:wrap;gap:3px;margin-top:2px"></div>
-            <div style="margin-top:auto;border-top:1px solid var(--g4);padding-top:4px;display:flex;gap:6px">
-              <div id="spVerdict" style="font-size:7.5px"></div>
-              <div id="spNext" style="font-size:7px;color:var(--g4);cursor:pointer;margin-left:auto">NEXT ›</div>
-            </div>
-          </div>
-        </div>
-      </div></div>
-
-    </div>
 
   </div>
 
@@ -1065,21 +1066,8 @@ function renderRecent(){
     </div>`).join('');
   document.querySelectorAll('.rec-row').forEach(r=>{
     r.onclick = ()=>{ S.dir=r.dataset.dir; document.getElementById('sbDir').textContent=S.dir;
-      renderRecent(); renderReport(); setFrame(1); log('NODE',false,'REPORT · '+S.dir); };
+      renderRecent(); setFrame(1); log('NODE',false,'REPORT · '+S.dir); };
   });
-}
-// 촬영 보고서 렌더
-function renderReport(){
-  const r = REPORTS[S.dir] || REPORTS['2026_03_MAR'];
-  document.getElementById('repNo').textContent = r.no;
-  document.getElementById('repGrid').innerHTML =
-    `<div class="rk">DATE</div><div class="rv">${r.date}</div>`+
-    `<div class="rk">LOCATION</div><div class="rv">${r.loc}</div>`+
-    `<div class="rk">FRAMES</div><div class="rv">${r.frames} FRAMES</div>`+
-    `<div class="rk">WEATHER</div><div class="rv">${r.wx}</div>`+
-    `<div class="rk">GEAR</div><div class="rv">${r.gear}</div>`+
-    `<div class="rk">SELECT</div><div class="rv"><span class="cc">CORE ${r.core}</span> · SUP ${r.sup} · <span class="dd">DROP ${r.drop}</span></div>`;
-  document.getElementById('repNote').innerHTML = `<span class="lbl">NOTE:</span> ${r.note}`;
 }
 function updateCtx(){
   document.getElementById('ctxLabel').textContent = S.view + ' · ' + S.filter;
@@ -2106,7 +2094,8 @@ function renderScan(d){
   const focus=(0.70+((d.n*17)%30)/100).toFixed(2);
   const expo=['-0.3','0.0','+0.3','+0.7','-0.7'][d.n%5];
   const edge=40+(d.n*11)%55, noise=5+(d.n*7)%28;
-  document.getElementById('scReadout').innerHTML=
+  const scReadout=document.getElementById('scReadout');
+  if(scReadout) scReadout.innerHTML=
     `<span class="rk">FOCUS</span> <b>${focus}</b>  <span class="rk">EXP</span> <b>${expo}EV</b><br>`+
     `<span class="rk">EDGE</span><span class="sc-bar"><i style="width:${edge}%"></i></span> <b>${edge}%</b><br>`+
     `<span class="rk">NOISE</span><span class="sc-bar"><i style="width:${noise}%"></i></span> <b>${noise}%</b>`;
@@ -3371,7 +3360,7 @@ function closeRepModal(){
 function _repModalEsc(e){ if(e.key==='Escape') closeRepModal(); }
 // ESC 키로 모달 닫기 (closeRepModal / _repModalEsc 에서 처리)
 
-renderMapInfo(); renderRecent(); renderReport(); updateCtx(); setFrame(1);
+renderMapInfo(); renderRecent(); updateCtx(); setFrame(1);
 
 // 시작 로그
 ['SESSION INIT · OBSERVER','HANDSHAKE OK · LEVEL-2','RECORDS FETCHED · 5,900','INDEX LOADED · 45 DIRS','VIEW: CONTACT SHEET'].forEach((m,i)=>{
