@@ -6985,6 +6985,7 @@ function bulkPreview(){
 }
 function openBulk(){
   if(!SHEETS.length){ alert('먼저 데이터를 불러오세요.'); return; }
+  closeOtherOverlays('bulkOverlay');
   $('bulkDate').value=''; $('bulkDir').value=''; $('bulkList').value=''; $('bulkVerdict').value='hold'; $('bulkSheet').value='auto';
   bulkPreview(); $('bulkOverlay').classList.add('on'); $('bulkDate').focus();
 }
@@ -7142,7 +7143,7 @@ function updateImportPreview(){
     ? `<b>${ids.length}장</b> 인식 — core ${cnt.core} · support ${cnt.support} · hold ${cnt.hold} · drop ${cnt.drop}${folder?` · 폴더 ${folder}`:' · <span style="color:var(--bad,#c0392b)">날짜 못 찾음(전체 매칭)</span>'}`
     : '붙여넣으면 몇 장이 채워질지 보여줘요.';
 }
-function openImport(){ $('importText').value=''; updateImportPreview(); $('importOverlay').classList.add('on'); $('importText').focus(); }
+function openImport(){ closeOtherOverlays('importOverlay'); $('importText').value=''; updateImportPreview(); $('importOverlay').classList.add('on'); $('importText').focus(); }
 function confirmImport(){
   const md = $('importText').value;
   const parsed = parseSelectFile(md);
@@ -7198,7 +7199,7 @@ function updateDeletePreview(){
   $('delFilterDesc').textContent = parts.length ? parts.join(' · ') : '전체(필터 없음)';
   $('delListCount').textContent = delNames().length;
 }
-function openDelete(){ $('delList').value=''; updateDeletePreview(); $('delOverlay').classList.add('on'); }
+function openDelete(){ closeOtherOverlays('delOverlay'); $('delList').value=''; updateDeletePreview(); $('delOverlay').classList.add('on'); }
 function confirmDeleteFilter(){
   const list = _lastList.slice();
   if(!list.length){ alert('삭제할 사진이 없어요.'); return; }
@@ -7249,7 +7250,12 @@ $('btnReload').addEventListener('click', ()=>{
   loadLive();
 });
 $('btnDownload').addEventListener('click', download);
-$('btnHelp').addEventListener('click', ()=>$('helpOverlay').classList.add('on'));
+function closeOtherOverlays(exceptId){
+  ['helpOverlay','importOverlay','delOverlay','bulkOverlay','distOverlay'].forEach(id=>{
+    if(id!==exceptId) $(id).classList.remove('on');
+  });
+}
+$('btnHelp').addEventListener('click', ()=>{ closeOtherOverlays('helpOverlay'); $('helpOverlay').classList.add('on'); });
 $('helpClose').addEventListener('click', ()=>$('helpOverlay').classList.remove('on'));
 $('helpOverlay').addEventListener('click', e=>{ if(e.target===$('helpOverlay')) $('helpOverlay').classList.remove('on'); });
 // ── DIR 지시문 사전 (gallery1.html에서 복사) ──
@@ -7765,6 +7771,7 @@ function showDirDoc(code){
   $('distList').style.display='none'; $('distScope').style.display='none'; d.style.display=''; d.scrollTop=0;
 }
 function openDist(scope){
+  closeOtherOverlays('distOverlay');
   document.querySelectorAll('#distScope .dsc').forEach(b=>b.classList.toggle('on', b.dataset.s===scope));
   $('distDetail').style.display='none'; $('distList').style.display=''; $('distScope').style.display='';
   renderDist(scope); $('distOverlay').classList.add('on');
