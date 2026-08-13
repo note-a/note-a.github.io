@@ -1748,9 +1748,12 @@ body.is-edit-view #panel-center{ padding:0!important; }
 
 /* ── 카드 그리드: STATUS 갤러리(작업 현황)와 동일한 여백 없는 사진 그리드 언어로 통일 ── */
 #editView .grid{
-  border-left:none!important; gap:4px!important; padding:8px 0!important;
+  border-left:none!important; column-gap:4px!important; row-gap:26px!important; padding:8px 0!important;
   grid-template-columns:repeat(auto-fill,minmax(190px,1fr))!important;
 }
+#editView .vbtns{ gap:3px!important; margin-top:6px!important; }
+#editView .vbtn{ font-size:9.5px!important; opacity:.8; }
+#editView .card-meta{ font-size:9.5px!important; margin-top:2px!important; }
 #editView .card{
   position:relative!important; border:none!important; border-radius:0!important; background:transparent!important;
   padding:0!important; box-shadow:none!important; transition:none!important;
