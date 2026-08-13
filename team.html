@@ -3764,7 +3764,8 @@ function renderDetailPage(){
   if(dh) dh.innerHTML = `
     <span class="mbadge" style="color:#0d3a58;border-color:rgba(13,58,88,0.3);">STATUS</span>
     <span style="color:#0d3a58;font-size:11px;font-weight:700;">${name}</span>
-    <span style="color:rgba(13,58,88,0.4);font-size:9px;margin-left:auto;">${all.length} PHOTOS</span>`;
+    <span onclick="goEditView()" style="cursor:pointer;color:#0d3a58;font-size:9px;font-weight:700;letter-spacing:.5px;border:1px solid rgba(13,58,88,.3);border-radius:999px;padding:3px 10px;margin-left:auto;">전체 필터로 보기 →</span>
+    <span style="color:rgba(13,58,88,0.4);font-size:9px;">${all.length} PHOTOS</span>`;
 
   if(db){
     if(!slice.length){
@@ -3777,7 +3778,7 @@ function renderDetailPage(){
         const full = p.filename || p.url || '';
         const thumb = full ? full.replace(/\/DSCF([^/]+)\.(jpg|JPG)$/, '/t/DSCF$1.jpg') : '';
         const globalIdx = detailPage * DETAIL_PAGE_SIZE + li;
-        html += `<div onclick="openPhotoView(${globalIdx})" onmouseover="this.querySelector('.gtint').style.opacity='0'" onmouseout="this.querySelector('.gtint').style.opacity='.6'" style="aspect-ratio:3/2;overflow:hidden;background:#e9f4fc;border:1px solid rgba(13,58,88,0.18);cursor:pointer;position:relative;">
+        html += `<div onclick="openStatusPhotoEdit(${globalIdx})" onmouseover="this.querySelector('.gtint').style.opacity='0'" onmouseout="this.querySelector('.gtint').style.opacity='.6'" style="aspect-ratio:3/2;overflow:hidden;background:#e9f4fc;border:1px solid rgba(13,58,88,0.18);cursor:pointer;position:relative;">
           <img src="${thumb||full}" onerror="if(!this._fb){this._fb=1;this.src='${full}'}"
             style="width:100%;height:100%;object-fit:cover;filter:saturate(1.4) brightness(1.08);">
           <div class="gtint" style="position:absolute;inset:0;background:linear-gradient(135deg, #3fc7e0, #5a9cf0 55%, #7fe0c8);mix-blend-mode:color;opacity:.6;pointer-events:none;transition:opacity .35s;"></div>
@@ -3793,6 +3794,24 @@ function renderDetailPage(){
 function changeDetailPage(dir){
   detailPage += dir;
   renderDetailPage();
+}
+
+// STATUS 갤러리에서 사진 클릭 → EDIT의 판정 인스펙터를 그대로 열기 (갤러리 통합)
+async function openStatusPhotoEdit(idx){
+  const photo = _detailPhotos[idx];
+  if(!photo){ return; }
+  if(typeof window._editViewInit === 'function') window._editViewInit();
+  if(typeof LEAVES === 'undefined' || !LEAVES.length){
+    if(typeof loadLive === 'function'){ try{ await loadLive(); }catch(e){} }
+  }
+  let L = (typeof LEAVES !== 'undefined') ? LEAVES.find(l => l.node.filename === photo.filename) : null;
+  if(!L){
+    // 매칭 실패(로드 실패 등) 시 기존 사진 뷰어로 대체
+    openPhotoView(idx);
+    return;
+  }
+  _selUid = L.uid;
+  if(typeof showInspector === 'function') showInspector(L);
 }
 
 function openLightbox(url){
