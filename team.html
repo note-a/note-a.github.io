@@ -1695,7 +1695,13 @@ body.is-edit-view #panel-center{ padding:0!important; }
   --sans:'Bricolage Grotesque','Noto Sans KR','Apple SD Gothic Neo',sans-serif;
   --mono:'Space Mono',ui-monospace,SFMono-Regular,Menlo,monospace;
 }
-#editView, #editView *{ color:#0d3a58!important; border-radius:inherit; }
+#editView, #editView *{ border-radius:inherit; }
+#app #editView, #app #editView *:not([style*="color"]){ color:#0d3a58!important; }
+#app #editView [style*="c0392b"]{ color:#c0392b!important; }
+#app #editView [style*="b26b00"]{ color:#b26b00!important; }
+#app #editView [style*="9a6b00"]{ color:#9a6b00!important; }
+#app #editView [style*="8a5200"]{ color:#8a5200!important; }
+#app #editView [style*="1c7a3f"]{ color:#1c7a3f!important; }
 #editView *{ border-radius:0!important; }
 #editView .hbtn, #editView .card, #editView .stat, #editView .pager button,
 #editView .modal, #editView .inspector, #editView .frow input, #editView .frow select,
