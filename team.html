@@ -1885,6 +1885,25 @@ body.is-edit-view #panel-center{ padding:0!important; }
 #editView .hnum{ background:#0d3a58!important; color:#fff!important; }
 #editView .hnote{ border-color:rgba(13,58,88,.2)!important; background:rgba(255,255,255,.5)!important; }
 
+/* ── Guide: 팝업이 아니라 team.html의 실제 GUIDE처럼 화면을 그대로 차지하는 네이티브 뷰로 전환 ── */
+#helpOverlay{
+  position:static!important; inset:auto!important; background:none!important;
+  -webkit-backdrop-filter:none!important; backdrop-filter:none!important; padding:0!important;
+  z-index:auto!important; align-items:stretch!important; justify-content:flex-start!important;
+}
+#helpOverlay .modal{
+  max-width:none!important; width:100%!important; background:none!important; border:none!important;
+  box-shadow:none!important; border-radius:0!important; padding:18px 2px 40px!important; max-height:none!important; overflow:visible!important;
+}
+#helpOverlay .modal h3{
+  background:none!important; border-bottom:1px solid rgba(13,58,88,.15)!important; padding:0 0 14px!important; margin:0 0 16px!important; position:static!important;
+}
+#editView:has(#helpOverlay.on) header .toolbar,
+#editView:has(#helpOverlay.on) .stats,
+#editView:has(#helpOverlay.on) .grid,
+#editView:has(#helpOverlay.on) .empty,
+#editView:has(#helpOverlay.on) .pager{ display:none!important; }
+
   </style>
                   <style id="kitsch-remix">
   /* ============================================================
