@@ -1785,6 +1785,32 @@ body.is-edit-view #panel-center{ padding:0!important; }
 #editView .frow label{ color:rgba(13,58,88,.55)!important; font-family:var(--sans)!important; }
 #editView .addprev, #editView .dd-block pre{ background:rgba(255,255,255,.4)!important; border-color:rgba(13,58,88,.15)!important; }
 
+/* ── 모달 본문(Guide 등) 타이포·컴포넌트: team.html 글래스 UI 언어로 재구성 ── */
+#editView .modal{ font-family:var(--sans)!important; }
+#editView .modal .hlead{ color:rgba(13,58,88,.7)!important; font-family:var(--sans)!important; line-height:1.7!important; }
+#editView .modal .hnote{
+  background:rgba(255,255,255,.5)!important; border:1px solid rgba(13,58,88,.15)!important; border-radius:14px!important; padding:15px 17px!important;
+  -webkit-backdrop-filter:blur(6px)!important; backdrop-filter:blur(6px)!important; box-shadow:0 2px 10px rgba(10,60,110,.06)!important;
+}
+#editView .modal .hnote > b:first-child{ color:#0d3a58!important; font-weight:800!important; font-size:13px!important; }
+#editView .modal .hsec{
+  align-items:flex-start!important; background:rgba(255,255,255,.35)!important; border:1px solid rgba(13,58,88,.1)!important;
+  border-radius:14px!important; padding:13px 16px!important; margin-bottom:12px!important;
+}
+#editView .modal .hnum{
+  border-radius:50%!important; width:25px!important; height:25px!important; box-shadow:0 2px 6px rgba(10,60,110,.25)!important;
+}
+#editView .modal code{
+  background:rgba(13,58,88,.08)!important; border:1px solid rgba(13,58,88,.12)!important; color:#0d3a58!important;
+  border-radius:5px!important; font-family:var(--mono)!important; padding:2px 6px!important;
+}
+#editView .modal ul, #editView .modal ol{ color:rgba(13,58,88,.75)!important; }
+#editView .modal ul li::marker, #editView .modal ol li::marker{ color:rgba(13,58,88,.4)!important; }
+#editView .hverd{ background:rgba(255,255,255,.4)!important; border:1px solid rgba(13,58,88,.1)!important; border-radius:12px!important; padding:12px 16px!important; }
+#editView .vtag{
+  background:rgba(233,244,252,.6)!important; border:1px solid rgba(13,58,88,.2)!important; font-family:var(--mono)!important;
+}
+
 #editView .site-footer{ background:rgba(255,255,255,.4)!important; -webkit-backdrop-filter:blur(8px)!important; backdrop-filter:blur(8px)!important; border-top:1px solid rgba(13,58,88,.12)!important; }
 #editView .site-footer .ft-brand, #editView .site-footer .ft-ver{ color:rgba(13,58,88,.5)!important; }
 #editView .site-footer b{ color:#0d3a58!important; }
