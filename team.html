@@ -1685,12 +1685,6 @@
 #editView .overlay{ z-index:2100!important; }
 body.is-edit-view #center-ph{ display:none!important; }
 body.is-edit-view #panel-center{ padding:0!important; }
-@media (min-width:901px){
-  body.is-edit-view #app{
-    grid-template-columns:0px 1fr 0px!important;
-  }
-  body.is-edit-view #col-left, body.is-edit-view #col-right{ display:none!important; }
-}
 
 /* ── EDIT 뷰: team.html 라이트 글래스 테마로 리스킨 ── */
 #editView{
@@ -2317,6 +2311,7 @@ body.is-edit-view #panel-center{ padding:0!important; }
     <span data-cat="criteria" onclick="goBoard(this)">EXHIBIT</span>
     <span data-cat="idea"     onclick="goBoard(this)">IDEA</span>
     <span data-cat="dev"      onclick="goBoard(this)">DEV</span>
+    <span data-cat="edit"     onclick="goBoard(this)">EDIT</span>
     <span class="mb-home" onclick="backToIntro()">HOME</span>
     <span onclick="clearAllData()" style="color:rgba(255,60,60,0.6);border-left:1px solid rgba(255,60,60,0.15);letter-spacing:1.5px;" title="모든 게시글·채팅·메모 삭제">RESET</span>
   </div>
@@ -3758,6 +3753,7 @@ function goBoard(spanEl){
 
   if(cat==='idea'){    showMemoView(); return; }
   if(cat==='chat'){    showChatView(); return; }
+  if(cat==='edit'){    goEditView(); return; }
   if(cat==='calendar'){
     showView('calendarView'); renderCalendar();
     const ph=document.getElementById('center-ph');
