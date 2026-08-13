@@ -6935,6 +6935,8 @@ $('inspDelete').addEventListener('click', deleteSelectedPhoto);
 // ── 로드 ──
 async function loadLive(){
   setStatus('라이브 데이터 불러오는 중…');
+  const gridEl = $('grid');
+  if(gridEl) gridEl.innerHTML = '<div style="color:rgba(0,221,85,0.42);padding:20px;font-size:9px;letter-spacing:1px;">LOADING...</div>';
   try{
     let res;
     try{ res = await fetch(RAW_GITHUB+'?t='+Date.now()); if(!res.ok) throw 0; }
