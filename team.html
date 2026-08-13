@@ -1748,6 +1748,15 @@ body.is-edit-view #panel-center{ padding:0!important; }
 #editView .c-head .c-cat{ color:rgba(13,58,88,.4)!important; }
 #editView .card-meta{ color:rgba(13,58,88,.45)!important; }
 #editView .ph-wrap .ph{ filter:none!important; }
+#editView .ph-wrap{ position:relative!important; }
+#editView .ph-wrap::after{
+  content:''; position:absolute; inset:0; pointer-events:none; z-index:2;
+  background:linear-gradient(135deg, #3fc7e0, #5a9cf0 55%, #7fe0c8);
+  mix-blend-mode:color; opacity:.55; transition:opacity .35s;
+}
+#editView .card:hover .ph-wrap::after{ opacity:0!important; }
+#editView .card-badge{ z-index:3!important; }
+#editView .card.noimg .ph-wrap::after{ inset:auto!important; top:6px!important; left:6px!important; right:auto!important; bottom:auto!important; mix-blend-mode:normal!important; opacity:1!important; }
 #editView .vbtn{ color:rgba(13,58,88,.35)!important; }
 #editView .vbtn:hover{ color:#0d3a58!important; }
 #editView .vbtn.active{ color:#0d3a58!important; font-weight:800!important; }
