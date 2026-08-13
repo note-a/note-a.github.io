@@ -1681,9 +1681,9 @@
 }
 #editView .cw{ width:96%!important; }
 #editView header{ position:sticky!important; top:0!important; z-index:5!important; flex-shrink:0!important; }
+#editView .header-in{ display:none!important; }
 #editView .inspector{ z-index:2000!important; }
 #editView .overlay{ z-index:2100!important; }
-body.is-edit-view #center-ph{ display:none!important; }
 body.is-edit-view #panel-center{ padding:0!important; }
 
 /* ── EDIT 뷰: team.html 라이트 글래스 테마로 리스킨 ── */
@@ -3140,6 +3140,8 @@ body.is-edit-view #panel-center{ padding:0!important; }
         <span class="edit-mlink" onclick="editMenuAction('btnReload')">Live Load</span>
         <span class="edit-mlink" onclick="editMenuAction('btnLoadFile')">Open File</span>
         <span class="edit-mlink" onclick="editMenuAction('btnImport')">Import Select</span>
+        <span class="edit-mlink" onclick="editMenuAction('btnDownload')">Download</span>
+        <span class="edit-mlink" style="color:#c0392b;" onclick="editMenuAction('btnDelete')">Delete</span>
       </div>
     </div>
 
@@ -3744,6 +3746,11 @@ function showView(name){
 function goEditView(){
   showView('editView');
   if(window._editViewInit) window._editViewInit();
+  const ph=document.getElementById('center-ph');
+  if(ph){
+    const t=ph.querySelector('.panel-title'); if(t)t.textContent='◆ EDIT';
+    const b=ph.querySelector('.panel-badge'); if(b)b.textContent='VERDICT';
+  }
 }
 
 function editMenuAction(btnId){
