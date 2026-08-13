@@ -1753,6 +1753,12 @@ body.is-edit-view #panel-center{ padding:0!important; }
 }
 #editView .vbtns{ gap:3px!important; margin-top:6px!important; }
 #editView .vbtn{ font-size:9.5px!important; opacity:.8; }
+#editView #inspVbtns{ display:grid!important; grid-template-columns:repeat(4,1fr)!important; gap:6px!important; }
+#editView #inspVbtns .vbtn{
+  font-size:12px!important; font-weight:700!important; opacity:1!important; padding:10px 0!important;
+  border:1px solid rgba(13,58,88,.25)!important; border-radius:8px!important; background:rgba(255,255,255,.5)!important;
+}
+#editView #inspVbtns .vbtn.active{ background:#0d3a58!important; color:#fff!important; border-color:#0d3a58!important; }
 #editView .card-meta{ font-size:9.5px!important; margin-top:2px!important; }
 #editView .card{
   position:relative!important; border:none!important; border-radius:0!important; background:transparent!important;
@@ -1760,12 +1766,15 @@ body.is-edit-view #panel-center{ padding:0!important; }
 }
 #editView .card:hover{ background:transparent!important; transform:none!important; box-shadow:none!important; }
 #editView .card.sel .ph-wrap{ box-shadow:inset 0 0 0 3px #0d3a58!important; }
+/* STATUS 갤러리 카드와 완전히 동일한 구조: 사진 + 캡션 한 줄. 판정 버튼/날짜는 카드에서 제거, 인스펙터로 이동 */
+#editView .ph-wrap{ order:1!important; }
 #editView .c-head{
-  position:static!important; display:flex!important; align-items:center!important; justify-content:space-between!important;
-  gap:6px!important; background:none!important; padding:3px 1px 5px!important; margin:0!important;
+  order:2!important; position:static!important; display:flex!important; align-items:center!important; justify-content:center!important;
+  gap:4px!important; background:none!important; padding:5px 1px!important; margin:0!important;
 }
-#editView .c-head .card-id{ color:#0d3a58!important; font-weight:700!important; }
-#editView .c-head .c-cat{ color:rgba(13,58,88,.4)!important; }
+#editView .c-head .card-id{ color:#0d3a58!important; font-weight:400!important; font-size:9px!important; letter-spacing:.5px!important; font-family:var(--mono)!important; }
+#editView .c-head .c-cat{ color:rgba(13,58,88,.4)!important; font-size:8px!important; }
+#editView .card-body{ display:none!important; }
 #editView .card-body{ padding:4px 2px 0!important; }
 #editView .card-meta{ color:rgba(13,58,88,.45)!important; font-family:var(--mono)!important; letter-spacing:.5px!important; }
 #editView .card-reason{ display:none!important; }
@@ -2574,6 +2583,13 @@ body.is-edit-view #panel-center{ padding:0!important; }
   <div class="insp-hd"><span class="t" id="inspTitle">—</span><button class="insp-close" id="inspClose">×</button></div>
   <img class="insp-thumb" id="inspThumb" alt="">
   <div class="insp-body">
+    <div class="insp-label">판정 · VERDICT</div>
+    <div class="vbtns" id="inspVbtns" style="margin:0 0 14px;">
+      <button class="vbtn" data-v="core">CORE</button>
+      <button class="vbtn" data-v="support">SUP</button>
+      <button class="vbtn" data-v="hold">HOLD</button>
+      <button class="vbtn" data-v="drop">DROP</button>
+    </div>
     <div class="insp-label">셀렉 사유 · SELECT REASON</div>
     <textarea class="insp-input" id="inspReason" rows="5" placeholder="이 사진을 왜 골랐는지 입력 (복붙 OK)"></textarea>
     <div class="insp-label">DIR · 분류 <span class="dir-match" id="dirMatch"></span></div>
@@ -6769,8 +6785,24 @@ function showInspector(L){
   if(typeof updateDirUI==='function') updateDirUI();
   $('dirDrop').style.display='none';
   $('inspJson').textContent = JSON.stringify(L.node, null, 2);
+  document.querySelectorAll('#inspVbtns .vbtn').forEach(b=>b.classList.toggle('active', b.dataset.v===L.node.verdict));
   $('inspector').classList.add('on');
 }
+$('inspVbtns').addEventListener('click', e=>{
+  const btn = e.target.closest('.vbtn'); if(!btn) return;
+  if(_selUid==null) return;
+  const L = _uidmap[_selUid]; if(!L) return;
+  const v = btn.dataset.v;
+  if(L.node.verdict!==v){
+    L.node.verdict = v;
+    L.node.author = worker;
+    document.querySelectorAll('#inspVbtns .vbtn').forEach(b=>b.classList.toggle('active', b.dataset.v===v));
+    $('inspJson').textContent = JSON.stringify(L.node, null, 2);
+    markDirty(); renderStats(_lastList.length);
+    const card = document.querySelector('.card.sel');
+    const bd = card && card.querySelector('.card-badge'); if(bd){ bd.textContent = worker; bd.className = 'card-badge '+worker; }
+  }
+});
 // 셀렉사유·DIR 저장 → 실제 사진 데이터에 기록
 function saveInspector(){
   if(_selUid==null) return;
