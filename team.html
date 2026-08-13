@@ -1921,6 +1921,27 @@ body.is-edit-view #panel-center{ padding:0!important; }
 #editView:has(#helpOverlay.on) .site-footer,
 #editView:has(#helpOverlay.on) #draftBar{ display:none!important; }
 
+/* ── Import Select도 동일하게 네이티브 전체화면 뷰로 통일 ── */
+#editView #importOverlay{
+  position:static!important; inset:auto!important; background:none!important;
+  -webkit-backdrop-filter:none!important; backdrop-filter:none!important; padding:0!important;
+  z-index:auto!important; align-items:stretch!important; justify-content:flex-start!important;
+}
+#editView #importOverlay .modal{
+  max-width:none!important; width:100%!important; background:none!important; border:none!important;
+  box-shadow:none!important; border-radius:0!important; padding:18px 2px 40px!important; max-height:none!important; overflow:visible!important;
+}
+#editView #importOverlay .modal h3{
+  background:none!important; border-bottom:1px solid rgba(13,58,88,.15)!important; padding:0 0 14px!important; margin:0 0 16px!important; position:static!important;
+}
+#editView:has(#importOverlay.on) header .toolbar,
+#editView:has(#importOverlay.on) .stats,
+#editView:has(#importOverlay.on) .grid,
+#editView:has(#importOverlay.on) .empty,
+#editView:has(#importOverlay.on) .pager,
+#editView:has(#importOverlay.on) .site-footer,
+#editView:has(#importOverlay.on) #draftBar{ display:none!important; }
+
   </style>
                   <style id="kitsch-remix">
   /* ============================================================
