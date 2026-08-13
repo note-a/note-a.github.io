@@ -1009,6 +1009,11 @@
     .back-btn { background:transparent;border:1px solid rgba(13,58,88,0.3);color:rgba(13,58,88,.7);
       padding:3px 10px;font-family:'Space Mono',monospace;font-size:10px;letter-spacing:1px;cursor:pointer;transition:all .15s; }
     .back-btn:hover { background:rgba(13,58,88,.08);color:#0d3a58;border-color:#0d3a58; }
+    .board-subtabs { display:flex;flex-shrink:0;border-bottom:1px solid rgba(13,58,88,0.1); }
+    .board-subtab { flex:1;text-align:center;padding:8px 0;font-family:'Space Mono',monospace;font-size:10px;
+      letter-spacing:2px;font-weight:700;color:rgba(13,58,88,.4);cursor:pointer;border-bottom:2px solid transparent; }
+    .board-subtab:hover { color:rgba(13,58,88,.7); }
+    .board-subtab.on { color:#0d3a58;border-bottom-color:#0d3a58; }
 
     /* ── DEV PANEL ── */
     .dp-section { padding:14px 12px; border-bottom:1px solid rgba(13,58,88,0.15); }
@@ -2476,10 +2481,8 @@ body.is-edit-view #panel-center{ padding:0!important; }
     <span data-cat="calendar" onclick="goBoard(this)">SCHEDULE</span>
     <span data-cat="notice"   onclick="goBoard(this)">GUIDE</span>
     <span data-cat="status"   onclick="goBoard(this)">STATUS</span>
-    <span data-cat="handover" onclick="goBoard(this)">LOG</span>
-    <span data-cat="chat"     onclick="goBoard(this)">THREAD</span>
+    <span data-cat="handover" onclick="goBoard(this)">BOARD</span>
     <span data-cat="criteria" onclick="goBoard(this)">EXHIBIT</span>
-    <span data-cat="idea"     onclick="goBoard(this)">IDEA</span>
     <span data-cat="dev"      onclick="goBoard(this)">DEV</span>
     <span class="mb-home" onclick="backToIntro()">HOME</span>
     <span onclick="clearAllData()" style="color:rgba(255,60,60,0.6);border-left:1px solid rgba(255,60,60,0.15);letter-spacing:1.5px;" title="모든 게시글·채팅·메모 삭제">RESET</span>
@@ -2985,6 +2988,7 @@ body.is-edit-view #panel-center{ padding:0!important; }
 
       <!-- CHAT VIEW (질문/논의) -->
       <div id="chatView" style="display:none;flex-direction:column;flex:1;min-height:0;">
+        <div class="board-subtabs"><span class="board-subtab" onclick="goBoardTab('handover')">LOG</span><span class="board-subtab on" onclick="goBoardTab('chat')">THREAD</span><span class="board-subtab" onclick="goBoardTab('idea')">IDEA</span></div>
         <div id="chat-messages" style="flex:1;overflow-y:auto;overflow-x:hidden;padding:8px 10px;display:flex;flex-direction:column;gap:5px;"></div>
         <div style="padding:6px 10px;border-top:1px solid rgba(13,58,88,0.07);display:flex;gap:5px;align-items:flex-end;flex-shrink:0;">
           <textarea id="chat-input" placeholder="메시지 입력... (Enter 전송)" rows="3"
@@ -3010,6 +3014,7 @@ body.is-edit-view #panel-center{ padding:0!important; }
 
       <!-- BOARD -->
       <div id="boardView" style="display:none;flex-direction:column;flex:1;min-height:0;">
+        <div class="board-subtabs" id="board-subtabs-el"><span class="board-subtab on" onclick="goBoardTab('handover')">LOG</span><span class="board-subtab" onclick="goBoardTab('chat')">THREAD</span><span class="board-subtab" onclick="goBoardTab('idea')">IDEA</span></div>
         <div id="board-feed" style="flex:1;overflow-y:auto;min-height:0;"></div>
         <div class="board-back-bar">
           <button class="back-btn" onclick="backToIntro()">◀ HOME</button>
@@ -3036,6 +3041,7 @@ body.is-edit-view #panel-center{ padding:0!important; }
 
       <!-- MEMO VIEW (아이디어/메모 전용) -->
       <div id="memoView" style="display:none;flex-direction:column;flex:1;min-height:0;">
+        <div class="board-subtabs"><span class="board-subtab" onclick="goBoardTab('handover')">LOG</span><span class="board-subtab" onclick="goBoardTab('chat')">THREAD</span><span class="board-subtab on" onclick="goBoardTab('idea')">IDEA</span></div>
         <div class="detail-head" style="flex-shrink:0;">
           <span class="mbadge" style="color:#2193de;border-color:rgba(33,147,222,0.3);">MEMO</span>
           <span style="color:rgba(33,147,222,.6);font-size:9px;letter-spacing:1px;">아이디어 / 메모</span>
@@ -3981,6 +3987,24 @@ function goBoard(spanEl){
   renderBoard(cat);
 }
 
+// LOG/THREAD/IDEA 통합 게시판: 사이드바 메뉴 하나(BOARD)에서 탭으로 전환
+function goBoardTab(cat){
+  document.querySelectorAll('#team-menubar span').forEach(s=>s.classList.remove('mactive'));
+  const boardSpan = document.querySelector('#team-menubar span[data-cat="handover"]');
+  if(boardSpan) boardSpan.classList.add('mactive');
+  const prevCat = currentCat;
+  currentCat = cat;
+  if(cat !== prevCat) boardPage = 0;
+  if(cat==='idea'){ showMemoView(); return; }
+  if(cat==='chat'){ showChatView(); return; }
+  if(cat==='handover'){ loadHandoverData().then(()=>renderBoard(cat)).catch(()=>renderBoard(cat)); return; }
+}
+function _boardSubtabsHTML(active){
+  const tabs = [['handover','LOG'],['chat','THREAD'],['idea','IDEA']];
+  return '<div class="board-subtabs">' + tabs.map(([c,l])=>
+    `<span class="board-subtab${c===active?' on':''}" onclick="goBoardTab('${c}')">${l}</span>`
+  ).join('') + '</div>';
+}
 const PAGE_SIZE = 10;
 const PAGE_SIZE_LOG = 15;
 let boardPage = 0;
@@ -3989,6 +4013,8 @@ function renderBoard(cat, page){
   if(page !== undefined) boardPage = page;
   const posts = BOARD_DATA[cat] || [];
   const pageSize = (cat === 'handover') ? PAGE_SIZE_LOG : PAGE_SIZE;
+  const subtabsEl = document.getElementById('board-subtabs-el');
+  if(subtabsEl) subtabsEl.style.display = (cat === 'handover') ? 'flex' : 'none';
 
   const feed = document.getElementById('board-feed');
   const badge = document.getElementById('board-badge');
