@@ -2819,14 +2819,14 @@ function flatCardHTML(L, globalIdx){
   const full = n.filename || n.url || '';
   const thumb = full ? full.replace(/\/DSCF([^/]+)\.(jpg|JPG)$/, '/t/DSCF$1.jpg') : '';
   const vBtns = [['core','CORE'],['support','SUP'],['hold','HOLD'],['drop','DROP']].map(([val,lbl])=>
-    `<button onclick="event.stopPropagation();setFlatVerdict(${L.uid},'${val}')" style="flex:1;font-size:8px;padding:4px 2px;cursor:pointer;letter-spacing:.5px;font-family:'Space Mono',monospace;background:${val===v?'#0d3a58':'rgba(13,58,88,0.06)'};color:${val===v?'#fff':'rgba(13,58,88,.55)'};border:1px solid rgba(13,58,88,${val===v?'0.5':'0.15'});">${lbl}</button>`
+    `<button onclick="event.stopPropagation();setFlatVerdict(${L.uid},'${val}')" style="flex:1;font-size:8px;padding:4px 2px;cursor:pointer;letter-spacing:.5px;font-family:'Space Mono',monospace;background:${val===v?'#0d3a58':'rgba(13,58,88,0.06)'}!important;color:${val===v?'#fff':'rgba(13,58,88,.55)'}!important;border:1px solid rgba(13,58,88,${val===v?'0.5':'0.15'});">${lbl}</button>`
   ).join('');
-  return `<div class="flat-card" data-uid="${L.uid}" style="display:flex;flex-direction:column;gap:4px;background:rgba(255,255,255,.4);border:1px solid rgba(13,58,88,.12);border-radius:8px;overflow:hidden;">
-    <div onclick="openFlatPhoto(${globalIdx})" style="cursor:pointer;aspect-ratio:3/2;overflow:hidden;background:#e9f4fc;position:relative;">
-      <img src="${thumb||full}" loading="lazy" onerror="if(!this._fb){this._fb=1;this.src='${full}'}" style="width:100%;height:100%;object-fit:cover;">
+  return `<div class="flat-card" data-uid="${L.uid}" style="display:block;background:#f4faff!important;border:1px solid rgba(13,58,88,.25);border-radius:8px;">
+    <div onclick="openFlatPhoto(${globalIdx})" style="cursor:pointer;width:100%;height:110px;overflow:hidden;background:#e9f4fc;position:relative;">
+      <img src="${thumb||full}" loading="lazy" onerror="if(!this._fb){this._fb=1;this.src='${full}'}" style="display:block;width:100%;height:100%;object-fit:cover;">
     </div>
-    <div style="padding:0 6px;font-size:9px;color:#0d3a58;font-weight:700;letter-spacing:.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${n.id||''}</div>
-    <div style="display:flex;gap:2px;padding:0 6px 6px;">${vBtns}</div>
+    <div style="padding:5px 6px 0;font-size:9px;color:#0d3a58!important;font-weight:700;letter-spacing:.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${n.id||''}</div>
+    <div style="display:flex;gap:2px;padding:4px 6px 6px;">${vBtns}</div>
   </div>`;
 }
 
