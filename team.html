@@ -2707,8 +2707,8 @@ function flatCardHTML(L, globalIdx){
   const vBtns = [['core','CORE'],['support','SUP'],['hold','HOLD'],['drop','DROP']].map(([val,lbl])=>
     `<button onclick="event.stopPropagation();setFlatVerdict(${L.uid},'${val}')" style="flex:1;font-size:8px;padding:4px 2px;cursor:pointer;letter-spacing:.5px;font-family:'Space Mono',monospace;background:${val===v?'#0d3a58':'rgba(13,58,88,0.06)'}!important;color:${val===v?'#fff':'rgba(13,58,88,.55)'}!important;border:1px solid rgba(13,58,88,${val===v?'0.5':'0.15'});">${lbl}</button>`
   ).join('');
-  return `<div class="flat-card" data-uid="${L.uid}" style="display:block;background:#f4faff!important;border:1px solid rgba(13,58,88,.25);border-radius:8px;">
-    <div onclick="openFlatPhoto(${globalIdx})" style="cursor:pointer;width:100%;height:110px;overflow:hidden;background:#e9f4fc;position:relative;">
+  return `<div class="flat-card" data-uid="${L.uid}" style="display:block;background:rgba(255,255,255,.28)!important;border:1px solid rgba(13,58,88,.2);border-radius:8px;box-shadow:0 2px 8px rgba(13,58,88,.06);">
+    <div onclick="openFlatPhoto(${globalIdx})" style="cursor:pointer;width:100%;height:110px;overflow:hidden;background:#0d3a58;position:relative;">
       <img src="${thumb||full}" loading="lazy" onerror="if(!this._fb){this._fb=1;this.src='${full}'}" style="display:block;width:100%;height:100%;object-fit:cover;">
     </div>
     <div style="padding:5px 6px 0;font-size:9px;color:#0d3a58!important;font-weight:700;letter-spacing:.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${n.id||''}</div>
