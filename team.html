@@ -3021,24 +3021,37 @@ function _renderNoticePosts(ids){
   const html = _wrapMdSections(raw);
   return `<div style="padding:16px 16px 24px;"><div class="md-body">${html}</div></div>`;
 }
+const NOTICE_ICONS = { workflow: '📷', process: '🧭' };
+function _renderNoticeCards(){
+  return `<div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;padding:20px 16px;">` +
+    Object.keys(NOTICE_TABS).map(k => `
+      <div onclick="goNoticeTab('${k}')" style="cursor:pointer;background:rgba(255,255,255,.5);border:1px solid rgba(13,58,88,.15);border-radius:16px;padding:28px 20px;text-align:center;transition:transform .15s;box-shadow:0 2px 10px rgba(13,58,88,.06);"
+        onmouseover="this.style.transform='translateY(-3px)'" onmouseout="this.style.transform='translateY(0)'">
+        <div style="font-size:34px;margin-bottom:10px;">${NOTICE_ICONS[k]||'📄'}</div>
+        <div style="font-size:15px;font-weight:800;color:#0d3a58;letter-spacing:.5px;">${NOTICE_TABS[k].label}</div>
+      </div>`).join('') +
+    `</div>`;
+}
 function goNoticeTab(tab){
   _noticeTab = tab;
   const el = document.getElementById('noticeView');
   if(!el) return;
-  const body = el.querySelector('#notice-body');
-  if(body) body.innerHTML = _renderNoticePosts(NOTICE_TABS[tab].ids);
-  el.querySelectorAll('.board-subtab').forEach(t => t.classList.toggle('on', t.dataset.tab===tab));
+  el.innerHTML = `<div class="board-subtabs">
+      <span class="board-subtab" onclick="goNoticeHome()">◀ 목록</span>
+      ${Object.keys(NOTICE_TABS).map(k=>`<span class="board-subtab${k===tab?' on':''}" data-tab="${k}" onclick="goNoticeTab('${k}')">${NOTICE_TABS[k].label}</span>`).join('')}
+    </div>
+    <div id="notice-body">${_renderNoticePosts(NOTICE_TABS[tab].ids)}</div>`;
+}
+function goNoticeHome(){
+  _noticeTab = null;
+  const el = document.getElementById('noticeView');
+  if(el) el.innerHTML = _renderNoticeCards();
 }
 function showNoticeView(){
   const el = document.getElementById('noticeView');
   if(!el) return;
-  if(!el._rendered){
-    el._rendered = true;
-    const tabsHtml = '<div class="board-subtabs">' + Object.keys(NOTICE_TABS).map(k =>
-      `<span class="board-subtab${k===_noticeTab?' on':''}" data-tab="${k}" onclick="goNoticeTab('${k}')">${NOTICE_TABS[k].label}</span>`
-    ).join('') + '</div>';
-    el.innerHTML = tabsHtml + `<div id="notice-body">${_renderNoticePosts(NOTICE_TABS[_noticeTab].ids)}</div>`;
-  }
+  el.innerHTML = _noticeTab ? '' : _renderNoticeCards();
+  if(_noticeTab) goNoticeTab(_noticeTab);
   showView('noticeView');
 }
 
