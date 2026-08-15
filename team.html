@@ -1107,12 +1107,12 @@
       #introView { width: 100% !important; height: 100% !important; overflow-y: auto !important; -webkit-overflow-scrolling: touch !important; }
       .kp-grid { height: calc(100dvh - 440px) !important; overflow-y: auto !important; width: 100% !important; min-height: 260px !important; }
       #board-feed { height: calc(100dvh - 336px) !important; overflow-y: auto !important; -webkit-overflow-scrolling: touch !important; }
-      #gallery-grid-wrap { overflow-y: auto !important; -webkit-overflow-scrolling: touch !important; }
+      #flat-grid { overflow-y: auto !important; -webkit-overflow-scrolling: touch !important; }
       .detail-body-wrap { overflow-y: auto !important; -webkit-overflow-scrolling: touch !important; }
       #chat-messages { overflow-y: auto !important; -webkit-overflow-scrolling: touch !important; }
       #memo-feed { overflow-y: auto !important; -webkit-overflow-scrolling: touch !important; }
       #statement-section { max-height: 40vh !important; overflow-y: auto !important; -webkit-overflow-scrolling: touch !important; }
-      #gallery-grid-wrap { grid-template-columns: repeat(2, 1fr) !important; min-width: 0 !important; }
+      #flat-grid { grid-template-columns: repeat(2, 1fr) !important; min-width: 0 !important; }
       #team-menubar, #team-menubar *, #col-center, #col-center * { font-size: 17px !important; }
       .msg-row { font-size: 16px !important; padding: 10px 12px !important; line-height: 2 !important; }
       .mbadge { font-size: 12px !important; padding: 3px 8px !important; }
@@ -1981,9 +1981,7 @@
         <div class="detail-body-wrap" id="detailBody"></div>
         <div class="board-back-bar">
           <button class="back-btn" onclick="backToBoard()">◀ LIST</button>
-          <button class="back-btn" id="detail-prev" onclick="changeDetailPage(-1)" style="display:none;">◀</button>
           <span style="flex:1;font-size:10px;color:rgba(13,58,88,.35);letter-spacing:1px;text-align:center;" id="detailMeta"></span>
-          <button class="back-btn" id="detail-next" onclick="changeDetailPage(1)" style="display:none;">▶</button>
           <button class="back-btn" id="detail-edit-btn" onclick="openEdit()" style="display:none;color:#ffcc44;border-color:rgba(255,204,68,0.4);">수정</button>
           <button class="back-btn" id="detail-del-btn" onclick="deletePost()" style="display:none;color:#ff6060;border-color:rgba(255,96,96,0.4);">삭제</button>
         </div>
@@ -2080,48 +2078,33 @@
         </div>
       </div>
       <div id="galleryView" style="display:none;flex-direction:column;flex:1;min-height:0;overflow:hidden;">
-        <div class="board-subtabs" style="flex-shrink:0;">
-          <span class="board-subtab on" id="gal-tab-month" onclick="showGalleryTab('month')">월별</span>
-          <span class="board-subtab" id="gal-tab-flat" onclick="showGalleryTab('flat')">전체 보기</span>
+        <div style="flex-shrink:0;padding:8px 10px;display:flex;flex-wrap:wrap;gap:6px;border-bottom:1px solid rgba(13,58,88,0.1);">
+          <input id="flat-q" type="text" placeholder="검색 (ID · DIR · 사유)" oninput="renderFlatGrid()"
+            style="flex:1;min-width:120px;background:rgba(13,58,88,0.04);border:1px solid rgba(13,58,88,0.2);color:#0d3a58;font-family:'Space Mono',monospace;font-size:11px;padding:5px 8px;outline:none;">
+          <select id="flat-fverdict" onchange="renderFlatGrid()" style="background:rgba(13,58,88,0.04);border:1px solid rgba(13,58,88,0.2);color:#0d3a58;font-family:'Space Mono',monospace;font-size:10px;padding:5px 6px;outline:none;">
+            <option value="">전체 판정</option>
+            <option value="core">core</option>
+            <option value="support">support</option>
+            <option value="hold">hold</option>
+            <option value="drop">drop</option>
+          </select>
+          <select id="flat-fsheet" onchange="renderFlatGrid()" style="background:rgba(13,58,88,0.04);border:1px solid rgba(13,58,88,0.2);color:#0d3a58;font-family:'Space Mono',monospace;font-size:10px;padding:5px 6px;outline:none;max-width:140px;">
+            <option value="">전체 폴더</option>
+          </select>
+          <select id="flat-fauthor" onchange="renderFlatGrid()" style="background:rgba(13,58,88,0.04);border:1px solid rgba(13,58,88,0.2);color:#0d3a58;font-family:'Space Mono',monospace;font-size:10px;padding:5px 6px;outline:none;">
+            <option value="">K/P</option>
+            <option value="K">K</option>
+            <option value="P">P</option>
+          </select>
+          <button onclick="downloadAdminContents()" style="font-size:9px;padding:5px 10px;background:rgba(13,58,88,0.08);border:1px solid rgba(13,58,88,0.3);color:#0d3a58;cursor:pointer;letter-spacing:1px;white-space:nowrap;font-family:'Space Mono',monospace;">⬇ 다운로드</button>
         </div>
-        <div id="gallery-grid-wrap" style="flex:1;overflow-y:auto;padding:8px;display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:4px;align-content:start;background:transparent;"></div>
-
-        <!-- 전체 보기: 검색·필터 가능한 평면 그리드 -->
-        <div id="gallery-flat-wrap" style="display:none;flex-direction:column;flex:1;min-height:0;overflow:hidden;">
-          <div style="flex-shrink:0;padding:8px 10px;display:flex;flex-wrap:wrap;gap:6px;border-bottom:1px solid rgba(13,58,88,0.1);">
-            <input id="flat-q" type="text" placeholder="검색 (ID · DIR · 사유)" oninput="renderFlatGrid()"
-              style="flex:1;min-width:120px;background:rgba(13,58,88,0.04);border:1px solid rgba(13,58,88,0.2);color:#0d3a58;font-family:'Space Mono',monospace;font-size:11px;padding:5px 8px;outline:none;">
-            <select id="flat-fverdict" onchange="renderFlatGrid()" style="background:rgba(13,58,88,0.04);border:1px solid rgba(13,58,88,0.2);color:#0d3a58;font-family:'Space Mono',monospace;font-size:10px;padding:5px 6px;outline:none;">
-              <option value="">전체 판정</option>
-              <option value="core">core</option>
-              <option value="support">support</option>
-              <option value="hold">hold</option>
-              <option value="drop">drop</option>
-            </select>
-            <select id="flat-fsheet" onchange="renderFlatGrid()" style="background:rgba(13,58,88,0.04);border:1px solid rgba(13,58,88,0.2);color:#0d3a58;font-family:'Space Mono',monospace;font-size:10px;padding:5px 6px;outline:none;max-width:140px;">
-              <option value="">전체 폴더</option>
-            </select>
-            <select id="flat-fauthor" onchange="renderFlatGrid()" style="background:rgba(13,58,88,0.04);border:1px solid rgba(13,58,88,0.2);color:#0d3a58;font-family:'Space Mono',monospace;font-size:10px;padding:5px 6px;outline:none;">
-              <option value="">K/P</option>
-              <option value="K">K</option>
-              <option value="P">P</option>
-            </select>
-            <button onclick="downloadAdminContents()" style="font-size:9px;padding:5px 10px;background:rgba(13,58,88,0.08);border:1px solid rgba(13,58,88,0.3);color:#0d3a58;cursor:pointer;letter-spacing:1px;white-space:nowrap;font-family:'Space Mono',monospace;">⬇ 다운로드</button>
-          </div>
-          <div id="flat-stats" style="flex-shrink:0;padding:6px 10px;display:flex;flex-wrap:wrap;gap:10px;font-size:9px;letter-spacing:.5px;color:rgba(13,58,88,.55);border-bottom:1px solid rgba(13,58,88,0.08);font-family:'Space Mono',monospace;"></div>
-          <div id="flat-grid" style="flex:1;overflow-y:auto;padding:8px;display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px;align-content:start;"></div>
-          <div class="board-back-bar" style="flex-shrink:0;">
-            <button class="back-btn" id="flat-prev" onclick="changeFlatPage(-1)" style="display:none;">◀</button>
-            <span style="flex:1;font-size:10px;color:rgba(13,58,88,0.5);text-align:center;letter-spacing:1px;" id="flat-pageinfo"></span>
-            <button class="back-btn" id="flat-next" onclick="changeFlatPage(1)" style="display:none;">▶</button>
-          </div>
-        </div>
-
-        <div class="board-back-bar" id="gallery-back-bar" style="flex-shrink:0;">
+        <div id="flat-stats" style="flex-shrink:0;padding:6px 10px;display:flex;flex-wrap:wrap;gap:10px;font-size:9px;letter-spacing:.5px;color:rgba(13,58,88,.55);border-bottom:1px solid rgba(13,58,88,0.08);font-family:'Space Mono',monospace;"></div>
+        <div id="flat-grid" style="flex:1;overflow-y:auto;padding:8px;display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px;align-content:start;"></div>
+        <div class="board-back-bar" style="flex-shrink:0;">
           <button class="back-btn" onclick="backToIntro()">◀ HOME</button>
-          <button class="back-btn" id="gal-prev" onclick="changeGalleryPage(-1)" style="display:none;">◀</button>
-          <span style="flex:1;font-size:10px;color:rgba(13,58,88,0.5);text-align:center;letter-spacing:1px;" id="galCount"></span>
-          <button class="back-btn" id="gal-next" onclick="changeGalleryPage(1)" style="display:none;">▶</button>
+          <button class="back-btn" id="flat-prev" onclick="changeFlatPage(-1)" style="display:none;">◀</button>
+          <span style="flex:1;font-size:10px;color:rgba(13,58,88,0.5);text-align:center;letter-spacing:1px;" id="flat-pageinfo"></span>
+          <button class="back-btn" id="flat-next" onclick="changeFlatPage(1)" style="display:none;">▶</button>
         </div>
       </div>
 
@@ -2621,100 +2604,31 @@ function loadHandoverData(){
 // ══════════════════════════════════════════════════
 // BOARD VIEW FUNCTIONS
 // ══════════════════════════════════════════════════
-const GALLERY_PAGE_SIZE = 12;
-let galleryPage = 0;
 let _galleryMonths = null;
 
-function renderGalleryPage(){
-  const wrap = document.getElementById('gallery-grid-wrap');
-  const prevBtn = document.getElementById('gal-prev');
-  const nextBtn = document.getElementById('gal-next');
-  const countEl = document.getElementById('galCount');
-  if(!wrap || !_galleryMonths) return;
-
-  const months = _galleryMonths;
-  const totalPages = Math.max(1, Math.ceil(months.length / GALLERY_PAGE_SIZE));
-  if(galleryPage >= totalPages) galleryPage = totalPages - 1;
-  if(galleryPage < 0) galleryPage = 0;
-
-  const slice = months.slice(galleryPage * GALLERY_PAGE_SIZE, (galleryPage + 1) * GALLERY_PAGE_SIZE);
-  const showPager = months.length > GALLERY_PAGE_SIZE;
-  if(prevBtn){ prevBtn.style.display = showPager ? '' : 'none'; prevBtn.disabled = galleryPage === 0; prevBtn.style.opacity = galleryPage === 0 ? '0.3' : '1'; }
-  if(nextBtn){ nextBtn.style.display = showPager ? '' : 'none'; nextBtn.disabled = galleryPage >= totalPages-1; nextBtn.style.opacity = galleryPage >= totalPages-1 ? '0.3' : '1'; }
-  if(countEl) countEl.textContent = showPager ? `${galleryPage+1} / ${totalPages}` : `${months.length} MONTHS`;
-
-  wrap.innerHTML = '';
-  wrap.scrollTop = 0;
-  slice.forEach(month => {
-    const firstPhoto = (month.children || []).flatMap(c => c.type==='sheet' ? (c.children||[]) : [c])[0];
-    const full = firstPhoto ? (firstPhoto.filename || firstPhoto.url || '') : '';
-    const thumb = full ? full.replace(/\/DSCF([^/]+)\.(jpg|JPG)$/, '/t/DSCF$1.jpg') : '';
-    const dayCount = (month.children || []).length;
-    const name = (month.title || month.id).toUpperCase().replace(/\./g, '/');
-
-    const card = document.createElement('div');
-    card.style.cssText = 'cursor:pointer;display:flex;flex-direction:column;gap:3px;';
-    card.onclick = () => showMonthDetail(month);
-
-    const thumbDiv = document.createElement('div');
-    thumbDiv.style.cssText = 'aspect-ratio:3/2;background:#e9f4fc;overflow:hidden;border:1px solid rgba(13,58,88,0.18);position:relative;';
-    if(thumb || full){
-      const img = document.createElement('img');
-      img.src = thumb || full;
-      img.dataset.full = full;
-      img.style.cssText = 'width:100%;height:100%;object-fit:cover;display:block;filter:saturate(1.4) brightness(1.08);';
-      img.onerror = function(){ if(!this._fb){ this._fb=1; this.src=this.dataset.full; } };
-      const tint = document.createElement('div');
-      tint.style.cssText = 'position:absolute;inset:0;background:linear-gradient(135deg, #3fc7e0, #5a9cf0 55%, #7fe0c8);mix-blend-mode:color;opacity:.6;pointer-events:none;transition:opacity .35s;';
-      thumbDiv.onmouseover = function(){ tint.style.opacity='0'; };
-      thumbDiv.onmouseout = function(){ tint.style.opacity='.6'; };
-      thumbDiv.appendChild(img);
-      thumbDiv.appendChild(tint);
-    }
-    card.appendChild(thumbDiv);
-
-    const lbl = document.createElement('div');
-    lbl.style.cssText = 'display:flex;align-items:center;justify-content:center;gap:4px;font-size:8px;color:#00dd55;letter-spacing:0.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-family:"Space Mono",monospace;';
-    lbl.innerHTML = name + ' <span style="color:rgba(0,221,85,0.42);font-size:7px;">(' + dayCount + ')</span>';
-    card.appendChild(lbl);
-
-    wrap.appendChild(card);
-  });
-}
-
-function changeGalleryPage(dir){
-  galleryPage += dir;
-  renderGalleryPage();
-}
-
-function _galleryAutoOpen(){
-  if(!_galleryMonths||!_galleryMonths.length) return;
-  const now = new Date();
-  const ym = `${now.getFullYear()}.${String(now.getMonth()+1).padStart(2,'0')}`;
-  const curr = _galleryMonths.find(m=>(m.title||m.id||'').includes(ym));
-  showMonthDetail(curr||_galleryMonths[_galleryMonths.length-1]);
-}
-function loadGalleryGrid(autoOpen){
-  const wrap = document.getElementById('gallery-grid-wrap');
-  if(!wrap) return;
-  if(_galleryMonths){ if(autoOpen) _galleryAutoOpen(); else renderGalleryPage(); return; }
-  wrap.innerHTML = '<div style="color:rgba(0,221,85,0.42);padding:20px;font-size:9px;letter-spacing:1px;">LOADING...</div>';
+// ── STATUS: 검색·필터 가능한 평면 그리드 (전체 사진, 단일 뷰) ──
+function loadGalleryGrid(){
+  const grid = document.getElementById('flat-grid');
+  if(!grid) return;
+  if(_galleryMonths){
+    if(!_flatLeaves.length) flattenGalleryPhotos();
+    renderFlatGrid();
+    return;
+  }
+  grid.innerHTML = '<div style="padding:20px;color:rgba(13,58,88,.4);font-size:11px;">로딩 중...</div>';
   fetch('./admin-contents.json')
     .then(r => r.ok ? r.json() : Promise.reject('fetch failed'))
     .then(data => {
       _adminData = data;
       _galleryMonths = (data.project && data.project.photos) || [];
-      galleryPage = 0;
-      if(!_galleryMonths.length){ wrap.innerHTML = '<div style="color:rgba(0,221,85,0.42);padding:20px;font-size:9px;">NO DATA</div>'; return; }
-      if(autoOpen) _galleryAutoOpen(); else renderGalleryPage();
+      if(!_galleryMonths.length){ grid.innerHTML = '<div style="padding:20px;color:rgba(13,58,88,.4);font-size:11px;">NO DATA</div>'; return; }
+      flattenGalleryPhotos();
+      renderFlatGrid();
     })
     .catch(() => {
-      wrap.innerHTML = '<div style="color:#f44;padding:20px;font-size:12px;">로드 실패 — 다시 시도해주세요</div>';
+      grid.innerHTML = '<div style="color:#f44;padding:20px;font-size:12px;">로드 실패 — 다시 시도해주세요</div>';
     });
 }
-
-// ── STATUS 전체 보기: 검색·필터 가능한 평면 그리드 ──
-let _galTab = 'month';
 let _adminData = null;
 let _flatLeaves = [];
 let _flatSheets = [];
@@ -2722,34 +2636,6 @@ let _flatUidMap = {};
 let _flatPage = 0;
 let _flatDirty = false;
 const FLAT_PAGE_SIZE = 60;
-
-function showGalleryTab(tab){
-  _galTab = tab;
-  const tabMonth = document.getElementById('gal-tab-month');
-  const tabFlat = document.getElementById('gal-tab-flat');
-  if(tabMonth) tabMonth.classList.toggle('on', tab==='month');
-  if(tabFlat) tabFlat.classList.toggle('on', tab==='flat');
-  const monthWrap = document.getElementById('gallery-grid-wrap');
-  const monthBar = document.getElementById('gallery-back-bar');
-  const flatWrap = document.getElementById('gallery-flat-wrap');
-  if(tab==='month'){
-    if(monthWrap) monthWrap.style.display='grid';
-    if(monthBar) monthBar.style.display='flex';
-    if(flatWrap) flatWrap.style.display='none';
-    return;
-  }
-  if(monthWrap) monthWrap.style.display='none';
-  if(monthBar) monthBar.style.display='none';
-  if(flatWrap) flatWrap.style.display='flex';
-  if(!_galleryMonths){
-    const g = document.getElementById('flat-grid');
-    if(g) g.innerHTML = '<div style="padding:20px;color:rgba(13,58,88,.4);font-size:11px;">로딩 중...</div>';
-    setTimeout(()=>{ if(_galTab==='flat' && _galleryMonths) showGalleryTab('flat'); }, 400);
-    return;
-  }
-  if(!_flatLeaves.length) flattenGalleryPhotos();
-  renderFlatGrid();
-}
 
 function flattenGalleryPhotos(){
   _flatLeaves = []; _flatSheets = []; _flatUidMap = {};
@@ -2881,82 +2767,6 @@ function downloadAdminContents(){
   URL.revokeObjectURL(url);
   _flatDirty = false;
   renderFlatStats(flatFiltered().length);
-}
-
-let _detailMonth = null;
-let _detailPhotos = [];
-let detailPage = 0;
-const DETAIL_PAGE_SIZE = 24;
-
-function showMonthDetail(month){
-  _detailMonth = month;
-  const allPhotos = (month.children || [])
-    .flatMap(s => s.type==='sheet' ? (s.children||[]) : [s])
-    .filter(p => p.filename || p.url);
-  _detailPhotos = allPhotos.filter(p =>
-    !p.verdict || p.verdict==='core' || p.verdict==='support'
-  );
-  detailPage = 0;
-  renderDetailPage();
-  showView('detailView');
-}
-
-function renderDetailPage(){
-  const month = _detailMonth;
-  if(!month) return;
-
-  const name = (month.title || month.id || '').toUpperCase().replace(/\./g,'/');
-  const all = _detailPhotos;
-  const totalPages = Math.max(1, Math.ceil(all.length / DETAIL_PAGE_SIZE));
-  if(detailPage >= totalPages) detailPage = totalPages - 1;
-  if(detailPage < 0) detailPage = 0;
-
-  const slice = all.slice(detailPage * DETAIL_PAGE_SIZE, (detailPage + 1) * DETAIL_PAGE_SIZE);
-  const showPager = all.length > DETAIL_PAGE_SIZE;
-
-  const prevBtn = document.getElementById('detail-prev');
-  const nextBtn = document.getElementById('detail-next');
-  const meta = document.getElementById('detailMeta');
-  if(prevBtn){ prevBtn.style.display = showPager ? '' : 'none'; prevBtn.disabled = detailPage===0; prevBtn.style.opacity = detailPage===0 ? '0.3' : '1'; }
-  if(nextBtn){ nextBtn.style.display = showPager ? '' : 'none'; nextBtn.disabled = detailPage>=totalPages-1; nextBtn.style.opacity = detailPage>=totalPages-1 ? '0.3' : '1'; }
-  if(meta) meta.textContent = showPager ? `${detailPage+1} / ${totalPages}` : `${all.length} PHOTOS`;
-
-  const dh = document.getElementById('detailHeader');
-  const db = document.getElementById('detailBody');
-  const ph = document.getElementById('center-ph');
-  if(ph){const t=ph.querySelector('.panel-title');if(t)t.textContent='◆ 작업 현황';}
-  if(dh) dh.innerHTML = `
-    <span class="mbadge" style="color:#0d3a58;border-color:rgba(13,58,88,0.3);">STATUS</span>
-    <span style="color:#0d3a58;font-size:11px;font-weight:700;">${name}</span>
-    <span style="color:rgba(13,58,88,0.4);font-size:9px;margin-left:auto;">${all.length} PHOTOS</span>`;
-
-  if(db){
-    if(!slice.length){
-      db.innerHTML = '<div style="color:rgba(13,58,88,0.3);font-size:10px;padding:20px;">// NO PHOTOS</div>';
-    } else {
-      const allUrls = all.map(p => p.filename || p.url || '');
-      window._pvAllPhotos = allUrls;
-      let html = '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:4px;">';
-      slice.forEach((p, li) => {
-        const full = p.filename || p.url || '';
-        const thumb = full ? full.replace(/\/DSCF([^/]+)\.(jpg|JPG)$/, '/t/DSCF$1.jpg') : '';
-        const globalIdx = detailPage * DETAIL_PAGE_SIZE + li;
-        html += `<div onclick="openPhotoView(${globalIdx})" onmouseover="this.querySelector('.gtint').style.opacity='0'" onmouseout="this.querySelector('.gtint').style.opacity='.6'" style="aspect-ratio:3/2;overflow:hidden;background:#e9f4fc;border:1px solid rgba(13,58,88,0.18);cursor:pointer;position:relative;">
-          <img src="${thumb||full}" onerror="if(!this._fb){this._fb=1;this.src='${full}'}"
-            style="width:100%;height:100%;object-fit:cover;filter:saturate(1.4) brightness(1.08);">
-          <div class="gtint" style="position:absolute;inset:0;background:linear-gradient(135deg, #3fc7e0, #5a9cf0 55%, #7fe0c8);mix-blend-mode:color;opacity:.6;pointer-events:none;transition:opacity .35s;"></div>
-        </div>`;
-      });
-      html += '</div>';
-      db.innerHTML = html;
-      db.scrollTop = 0;
-    }
-  }
-}
-
-function changeDetailPage(dir){
-  detailPage += dir;
-  renderDetailPage();
 }
 
 function openLightbox(url){
