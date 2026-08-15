@@ -3008,19 +3008,38 @@ function _wrapMdSections(html){
   });
   return out.innerHTML;
 }
+const NOTICE_TABS = {
+  workflow: { label: '사진 판정 작업', ids: [8001, 8008] },
+  process:  { label: '프로세스', ids: [8007] }
+};
+let _noticeTab = 'workflow';
+function _renderNoticePosts(ids){
+  return BOARD_DATA.notice.filter(p => ids.includes(p.id)).map(p => {
+    const raw = (typeof marked !== 'undefined') ? marked.parse(p.body) : p.body.replace(/\n/g,'<br>');
+    const html = _wrapMdSections(raw);
+    return `<div style="border-bottom:1px solid rgba(13,58,88,0.1);padding:16px 16px 20px;">
+      <div style="font-size:10px;color:rgba(13,58,88,0.45);letter-spacing:2px;font-weight:700;margin-bottom:10px;">${p.title.toUpperCase()}</div>
+      <div class="md-body">${html}</div>
+    </div>`;
+  }).join('');
+}
+function goNoticeTab(tab){
+  _noticeTab = tab;
+  const el = document.getElementById('noticeView');
+  if(!el) return;
+  const body = el.querySelector('#notice-body');
+  if(body) body.innerHTML = _renderNoticePosts(NOTICE_TABS[tab].ids);
+  el.querySelectorAll('.board-subtab').forEach(t => t.classList.toggle('on', t.dataset.tab===tab));
+}
 function showNoticeView(){
   const el = document.getElementById('noticeView');
   if(!el) return;
   if(!el._rendered){
     el._rendered = true;
-    el.innerHTML = BOARD_DATA.notice.map(p => {
-      const raw = (typeof marked !== 'undefined') ? marked.parse(p.body) : p.body.replace(/\n/g,'<br>');
-      const html = _wrapMdSections(raw);
-      return `<div style="border-bottom:1px solid rgba(13,58,88,0.1);padding:16px 16px 20px;">
-        <div style="font-size:10px;color:rgba(13,58,88,0.45);letter-spacing:2px;font-weight:700;margin-bottom:10px;">${p.title.toUpperCase()}</div>
-        <div class="md-body">${html}</div>
-      </div>`;
-    }).join('');
+    const tabsHtml = '<div class="board-subtabs">' + Object.keys(NOTICE_TABS).map(k =>
+      `<span class="board-subtab${k===_noticeTab?' on':''}" data-tab="${k}" onclick="goNoticeTab('${k}')">${NOTICE_TABS[k].label}</span>`
+    ).join('') + '</div>';
+    el.innerHTML = tabsHtml + `<div id="notice-body">${_renderNoticePosts(NOTICE_TABS[_noticeTab].ids)}</div>`;
   }
   showView('noticeView');
 }
