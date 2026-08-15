@@ -2096,6 +2096,9 @@
             <option value="K">K</option>
             <option value="P">P</option>
           </select>
+          <button onclick="document.getElementById('flat-file-input').click()" style="font-size:9px;padding:5px 10px;background:rgba(13,58,88,0.08);border:1px solid rgba(13,58,88,0.3);color:#0d3a58;cursor:pointer;letter-spacing:1px;white-space:nowrap;font-family:'Space Mono',monospace;">📁 파일 열기</button>
+          <input id="flat-file-input" type="file" accept=".json" style="display:none;" onchange="handleOpenFile(event)">
+          <button onclick="openImportModal()" style="font-size:9px;padding:5px 10px;background:rgba(13,58,88,0.08);border:1px solid rgba(13,58,88,0.3);color:#0d3a58;cursor:pointer;letter-spacing:1px;white-space:nowrap;font-family:'Space Mono',monospace;">📥 셀렉 가져오기</button>
           <button onclick="downloadAdminContents()" style="font-size:9px;padding:5px 10px;background:rgba(13,58,88,0.08);border:1px solid rgba(13,58,88,0.3);color:#0d3a58;cursor:pointer;letter-spacing:1px;white-space:nowrap;font-family:'Space Mono',monospace;">⬇ 다운로드</button>
         </div>
         <div id="flat-stats" style="flex-shrink:0;padding:6px 10px;display:flex;flex-wrap:wrap;gap:10px;font-size:9px;letter-spacing:.5px;color:rgba(13,58,88,.55);border-bottom:1px solid rgba(13,58,88,0.08);font-family:'Space Mono',monospace;"></div>
@@ -2767,6 +2770,193 @@ function downloadAdminContents(){
   URL.revokeObjectURL(url);
   _flatDirty = false;
   renderFlatStats(flatFiltered().length);
+}
+
+// ── 파일 열기: 로컬에 저장해둔 admin-contents.json 이어서 편집 ──
+function handleOpenFile(e){
+  const f = e.target.files && e.target.files[0];
+  if(!f) return;
+  const rd = new FileReader();
+  rd.onload = ()=>{
+    let data;
+    try{ data = JSON.parse(rd.result); }
+    catch(err){ alert('JSON 파싱 실패 — admin-contents.json 파일이 맞는지 확인해주세요.'); return; }
+    _adminData = data;
+    _galleryMonths = (data.project && data.project.photos) || [];
+    flattenGalleryPhotos();
+    _flatDirty = false;
+    renderFlatGrid();
+    alert(`✓ 파일을 불러왔어요 — 사진 ${_flatLeaves.length.toLocaleString()}장`);
+  };
+  rd.readAsText(f);
+  e.target.value = '';
+}
+
+// ── 셀렉 파일(.md) 가져오기 — 판정·DIR·사유 일괄 자동 입력 ──
+const R2_BASE = 'https://pub-ffca45bf1c204526a3de1b2315e479b3.r2.dev/';
+const VERDICT_EMOJI = {'🟢':'core','🟡':'support','🔴':'drop','📝':'drop','❓':'hold'};
+const DIR1_MAP = {
+  space:    ['','MONOLITH','STRATA','DISSOLVE','LITGRID','VANISH','MIRRORSURF','PEEL','SNOWFILL','OXIDE','ADWRAP','ROADCLASH','WALLTXT','OVERGROW'],
+  object:   ['','ISOLATE','RUPTURE','GRID','CLUSTER','FLOAT','SKELETON','BLOOM','WRAP','SURFACE'],
+  figure:   ['','DUALFRAME','HEADOBJ','BACKPOSE','DUALFIG','DIPTYCH','FGBG','COLORISO','SKINREP','BODYTXT'],
+  figurebg: ['','BGPAT','SCALE','ATMOFUSE','GLASSDUAL','AEROFLT','ARCHCAP','BACKLIT'],
+  unjudge:  ['','SURFILL','BLURABS']
+};
+function convertDir(raw){
+  if(!raw) return raw;
+  const codes=[];
+  raw.replace(/(space|object|figurebg|figure|unjudge)\s*-\s*(\d{1,2})/gi, (m,cat,num)=>{
+    const arr=DIR1_MAP[cat.toLowerCase()], n=parseInt(num,10);
+    if(arr && arr[n]) codes.push(arr[n]); return m;
+  });
+  if(!codes.length) return raw;
+  const seen={}, uniq=[]; codes.forEach(c=>{ if(!seen[c]){ seen[c]=1; uniq.push(c); } });
+  return uniq.join(' / ');
+}
+function parseSelectFile(md){
+  const out = {};
+  const EM = Object.keys(VERDICT_EMOJI);
+  (md||'').split(/\r?\n/).forEach(raw=>{
+    const line = raw.trim();
+    if(line[0] !== '|') return;
+    if(/^\|\s*:?-+/.test(line)) return;
+    const cells = line.split('|').slice(1,-1).map(c=>c.trim());
+    if(cells.length < 3) return;
+    let id=null, idIdx=-1;
+    for(let i=0;i<cells.length;i++){
+      const m = cells[i].replace(/\[\[|\]\]/g,'').match(/DSCF\s*(\d{3,})/i);
+      if(m){ id='DSCF'+m[1]; idIdx=i; break; }
+    }
+    if(!id){
+      const c0 = cells[0].replace(/\[\[|\]\]/g,'').replace(/\*/g,'').trim();
+      if(/^\d{3,5}$/.test(c0)){ id='DSCF'+c0; idIdx=0; }
+    }
+    if(!id) return;
+    let verdict=null;
+    for(const c of cells){ for(const e of EM){ if(c.indexOf(e)>=0){ verdict=VERDICT_EMOJI[e]; break; } } if(verdict) break; }
+    let dir='';
+    for(let i=idIdx+1;i<cells.length-1;i++){
+      const c = cells[i].replace(/`/g,'').trim();
+      if(!c || c==='—') continue;
+      if(EM.some(e=>c.indexOf(e)>=0)) continue;
+      if(/^[A-Za-z][A-Za-z0-9]*(-\d+)?/.test(c)){ dir=c; break; }
+    }
+    dir = convertDir(dir);
+    let reason = cells[cells.length-1] || '';
+    if(reason===id || reason==='—' || EM.some(e=>reason.indexOf(e)>=0)) reason='';
+    reason = reason.replace(/^(Core|Support)\s*(—\s*)?/i,'').trim();
+    const prev = out[id] || {};
+    out[id] = {
+      verdict: verdict || prev.verdict || null,
+      dir: dir || prev.dir || '',
+      reason: (reason.length > (prev.reason||'').length) ? reason : (prev.reason||'')
+    };
+  });
+  return out;
+}
+function selDateFolder(md){
+  const m = (md||'').match(/\b(20\d{2})(\d{2})(\d{2})\b/);
+  return m ? (m[1]+'/'+m[2]+'/'+m[2]+m[3]) : null;
+}
+function findOrCreateDateSheet(dateFolder){
+  const parts = dateFolder.split('/').filter(Boolean);
+  if(parts.length < 3) return null;
+  const monthTitle = parts[0]+'.'+parts[1];
+  const dayTitle = parts[2];
+  const photos = _galleryMonths;
+  let month = photos.find(s=>s && s.type==='sheet' && s.title===monthTitle);
+  if(!month){ month={type:'sheet', id:monthTitle, title:monthTitle, children:[]}; photos.push(month); }
+  month.children = month.children||[];
+  let day = month.children.find(s=>s && s.type==='sheet' && s.title===dayTitle);
+  if(!day){ day={type:'sheet', id:monthTitle+'/'+dayTitle, title:dayTitle, children:[]}; month.children.push(day); }
+  day.children = day.children||[];
+  return { node:day, label:monthTitle+' / '+dayTitle };
+}
+function applySelectImport(parsed, folder, autoAdd){
+  const byId = {};
+  _flatLeaves.forEach(L=>{ const id=(L.node.id||'').toUpperCase(); (byId[id]=byId[id]||[]).push(L); });
+  let matched=0, notFound=0, folderMiss=0, added=0;
+  let dayChildren=null;
+  if(autoAdd && folder){ const ds=findOrCreateDateSheet(folder); if(ds) dayChildren=ds.node.children; }
+  Object.keys(parsed).forEach(id=>{
+    const info = parsed[id];
+    const list = byId[id] || [];
+    const inF = folder ? list.filter(L=>(L.node.filename||'').indexOf(folder)>=0) : list;
+    if(inF.length){
+      inF.forEach(L=>{
+        if(info.verdict) L.node.verdict = info.verdict;
+        if(info.dir)     L.node.dir = info.dir;
+        if(info.reason)  L.node.reason = info.reason;
+        matched++;
+      });
+    } else if(autoAdd && dayChildren && folder){
+      dayChildren.push({ id:id, filename:R2_BASE+folder+'/'+id+'.JPG', verdict:info.verdict||'hold', dir:info.dir||'', reason:info.reason||'', author:'K' });
+      added++;
+    } else {
+      if(list.length) folderMiss++; else notFound++;
+    }
+  });
+  if(added){ flattenGalleryPhotos(); }
+  return {matched, notFound, folderMiss, added};
+}
+function openImportModal(){
+  if(!_galleryMonths){ alert('먼저 STATUS 데이터가 로드될 때까지 기다려주세요.'); return; }
+  openPopup('◆ 셀렉 가져오기', body=>{
+    body.innerHTML = `
+      <div style="font-size:11px;color:#0d3a58;margin-bottom:8px;line-height:1.6;">
+        셀렉 결과 <b>.md 표</b>를 그대로 붙여넣으면 판정·DIR·사유를 한번에 채워요.<br>
+        <span style="color:rgba(13,58,88,.55);">파일로 있으면 </span><label for="import-md-file" style="text-decoration:underline;cursor:pointer;color:#0d3a58;">📁 .md 파일 열기</label>
+      </div>
+      <input id="import-md-file" type="file" accept=".md,.markdown,.txt" style="display:none;">
+      <textarea id="import-text" rows="10" placeholder="| DSCF6926 | 🟢 | SURFACE | 사유... |" style="width:100%;box-sizing:border-box;background:rgba(13,58,88,0.04);border:1px solid rgba(13,58,88,0.2);color:#0d3a58;font-family:'Space Mono',monospace;font-size:11px;padding:8px;outline:none;resize:vertical;"></textarea>
+      <div id="import-preview" style="font-size:10px;color:rgba(13,58,88,.6);margin:8px 0;">붙여넣으면 몇 장이 채워질지 보여줘요.</div>
+      <label style="display:flex;align-items:center;gap:6px;font-size:10px;color:#0d3a58;margin-bottom:10px;">
+        <input id="import-autoadd" type="checkbox"> 목록에 없는 사진은 새로 등록 (판정·DIR·사유 포함)
+      </label>
+      <div style="display:flex;gap:8px;justify-content:flex-end;">
+        <button onclick="closePopup()" style="font-size:10px;padding:6px 14px;background:rgba(13,58,88,0.06);border:1px solid rgba(13,58,88,0.2);color:#0d3a58;cursor:pointer;font-family:'Space Mono',monospace;">취소</button>
+        <button onclick="confirmImportSelect()" style="font-size:10px;padding:6px 14px;background:#0d3a58;border:1px solid #0d3a58;color:#fff;cursor:pointer;font-family:'Space Mono',monospace;">가져오기</button>
+      </div>`;
+    document.getElementById('import-text').addEventListener('input', updateImportPreviewUI);
+    document.getElementById('import-md-file').addEventListener('change', e=>{
+      const f = e.target.files && e.target.files[0]; if(!f) return;
+      const rd = new FileReader();
+      rd.onload = ()=>{ document.getElementById('import-text').value = rd.result; updateImportPreviewUI(); };
+      rd.readAsText(f);
+    });
+  });
+}
+function updateImportPreviewUI(){
+  const md = document.getElementById('import-text').value;
+  const parsed = parseSelectFile(md);
+  const ids = Object.keys(parsed);
+  const cnt = {core:0,support:0,hold:0,drop:0};
+  ids.forEach(id=>{ const v=parsed[id].verdict; if(v&&cnt[v]!=null)cnt[v]++; });
+  const folder = selDateFolder(md);
+  const el = document.getElementById('import-preview');
+  if(!el) return;
+  el.innerHTML = ids.length
+    ? `<b>${ids.length}장</b> 인식 — core ${cnt.core} · support ${cnt.support} · hold ${cnt.hold} · drop ${cnt.drop}${folder?` · 폴더 ${folder}`:` · <span style="color:#c0392b;">날짜 못 찾음(전체 매칭)</span>`}`
+    : '붙여넣으면 몇 장이 채워질지 보여줘요.';
+}
+function confirmImportSelect(){
+  const md = document.getElementById('import-text').value;
+  const parsed = parseSelectFile(md);
+  const ids = Object.keys(parsed);
+  if(!ids.length){ alert('표를 인식하지 못했어요. 셀렉 .md 내용을 그대로 붙여넣었는지 확인해주세요.'); return; }
+  const folder = selDateFolder(md);
+  const autoAdd = document.getElementById('import-autoadd')?.checked || false;
+  if(autoAdd && !folder){ if(!confirm('⚠️ .md에서 날짜 폴더를 못 찾아 자동 등록을 못 해요. 기존 사진 업데이트만 진행할까요?')) return; }
+  const r = applySelectImport(parsed, folder, autoAdd);
+  _flatDirty = true;
+  renderFlatGrid(true);
+  closePopup();
+  let msg = `✅ 완료!\n· 기존 ${r.matched}장 업데이트`;
+  if(r.added)      msg += `\n· 새로 등록 ${r.added}장`;
+  if(r.folderMiss) msg += `\n· ${r.folderMiss}개는 다른 폴더에 있어 스킵`;
+  if(r.notFound && !autoAdd) msg += `\n· ${r.notFound}개는 데이터에 없음`;
+  msg += `\n\n⬇ 다운로드 후 GitHub 업로드해야 실제 반영돼요.`;
+  alert(msg);
 }
 
 function openLightbox(url){
@@ -5401,6 +5591,8 @@ document.getElementById('cfg-tl-text')?.addEventListener('keydown', e=>{ if(e.ke
   function closePopup() {
     overlay.classList.remove('open');
   }
+  window.openPopup = openPopup;
+  window.closePopup = closePopup;
 
   overlay.addEventListener('click', e => { if(e.target === overlay) closePopup(); });
   popClose.addEventListener('click', closePopup);
