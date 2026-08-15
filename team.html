@@ -2096,10 +2096,12 @@
             <option value="K">K</option>
             <option value="P">P</option>
           </select>
+          <button onclick="liveLoadGallery()" style="font-size:9px;padding:5px 10px;background:rgba(13,58,88,0.08);border:1px solid rgba(13,58,88,0.3);color:#0d3a58;cursor:pointer;letter-spacing:1px;white-space:nowrap;font-family:'Space Mono',monospace;">🔄 Live Load</button>
           <button onclick="document.getElementById('flat-file-input').click()" style="font-size:9px;padding:5px 10px;background:rgba(13,58,88,0.08);border:1px solid rgba(13,58,88,0.3);color:#0d3a58;cursor:pointer;letter-spacing:1px;white-space:nowrap;font-family:'Space Mono',monospace;">📁 파일 열기</button>
           <input id="flat-file-input" type="file" accept=".json" style="display:none;" onchange="handleOpenFile(event)">
           <button onclick="openImportModal()" style="font-size:9px;padding:5px 10px;background:rgba(13,58,88,0.08);border:1px solid rgba(13,58,88,0.3);color:#0d3a58;cursor:pointer;letter-spacing:1px;white-space:nowrap;font-family:'Space Mono',monospace;">📥 셀렉 가져오기</button>
           <button onclick="downloadAdminContents()" style="font-size:9px;padding:5px 10px;background:rgba(13,58,88,0.08);border:1px solid rgba(13,58,88,0.3);color:#0d3a58;cursor:pointer;letter-spacing:1px;white-space:nowrap;font-family:'Space Mono',monospace;">⬇ 다운로드</button>
+          <button onclick="openDeleteModal()" style="font-size:9px;padding:5px 10px;background:rgba(192,57,43,0.08);border:1px solid rgba(192,57,43,0.35);color:#c0392b;cursor:pointer;letter-spacing:1px;white-space:nowrap;font-family:'Space Mono',monospace;">🗑 삭제</button>
         </div>
         <div id="flat-stats" style="flex-shrink:0;padding:6px 10px;display:flex;flex-wrap:wrap;gap:10px;font-size:9px;letter-spacing:.5px;color:rgba(13,58,88,.55);border-bottom:1px solid rgba(13,58,88,0.08);font-family:'Space Mono',monospace;"></div>
         <div id="flat-grid" style="flex:1;overflow-y:auto;padding:8px;display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px;align-content:start;"></div>
@@ -2651,7 +2653,7 @@ function flattenGalleryPhotos(){
         _flatSheets.push(label.join(' / '));
         walk(it.children, label);
       } else if(it){
-        const L = { node: it, sheet: pathLabels.join(' / '), uid: uid++ };
+        const L = { node: it, parent: items, sheet: pathLabels.join(' / '), uid: uid++ };
         _flatLeaves.push(L);
         _flatUidMap[L.uid] = L;
       }
@@ -2809,6 +2811,26 @@ function downloadAdminContents(){
   URL.revokeObjectURL(url);
   _flatDirty = false;
   renderFlatStats(flatFiltered().length);
+}
+
+// ── Live Load: GitHub에 올라간 최신 admin-contents.json 다시 불러오기 ──
+const RAW_GITHUB_ADMIN = 'https://raw.githubusercontent.com/note-a/note-a.github.io/main/admin-contents.json';
+function liveLoadGallery(){
+  const grid = document.getElementById('flat-grid');
+  if(grid) grid.innerHTML = '<div style="padding:20px;color:rgba(13,58,88,.4);font-size:11px;">라이브 데이터 불러오는 중...</div>';
+  fetch(RAW_GITHUB_ADMIN+'?t='+Date.now())
+    .then(r => r.ok ? r.json() : Promise.reject('github fetch failed'))
+    .catch(()=> fetch('./admin-contents.json?t='+Date.now()).then(r => r.ok ? r.json() : Promise.reject('local fetch failed')))
+    .then(data => {
+      _adminData = data;
+      _galleryMonths = (data.project && data.project.photos) || [];
+      flattenGalleryPhotos();
+      _flatDirty = false;
+      renderFlatGrid();
+    })
+    .catch(()=>{
+      if(grid) grid.innerHTML = '<div style="color:#f44;padding:20px;font-size:12px;">로드 실패 — 다시 시도해주세요</div>';
+    });
 }
 
 // ── 파일 열기: 로컬에 저장해둔 admin-contents.json 이어서 편집 ──
@@ -2996,6 +3018,104 @@ function confirmImportSelect(){
   if(r.notFound && !autoAdd) msg += `\n· ${r.notFound}개는 데이터에 없음`;
   msg += `\n\n⬇ 다운로드 후 GitHub 업로드해야 실제 반영돼요.`;
   alert(msg);
+}
+
+// ── 일괄 삭제 — 목록에서만 제거 (R2 이미지는 그대로) ──
+function pruneEmptySheetsFlat(items){
+  for(let i=items.length-1;i>=0;i--){
+    const it = items[i];
+    if(it && it.type==='sheet'){
+      pruneEmptySheetsFlat(it.children||[]);
+      if(!it.children || it.children.length===0) items.splice(i,1);
+    }
+  }
+}
+function deleteFlatLeaves(list){
+  const byParent = new Map();
+  list.forEach(L=>{ if(!L||!L.parent) return; if(!byParent.has(L.parent)) byParent.set(L.parent, new Set()); byParent.get(L.parent).add(L.node); });
+  let n = 0;
+  byParent.forEach((nodes, arr)=>{ for(let i=arr.length-1;i>=0;i--){ if(nodes.has(arr[i])){ arr.splice(i,1); n++; } } });
+  return n;
+}
+function afterDeleteFlat(n){
+  pruneEmptySheetsFlat(_galleryMonths || []);
+  flattenGalleryPhotos();
+  _flatDirty = true;
+  renderFlatGrid();
+  closePopup();
+  alert(`✅ ${n}장 목록에서 삭제했어요.\n\n※ R2 이미지는 그대로 남아있어요.\n⬇ 다운로드 후 GitHub 업로드해야 실제 반영돼요.`);
+}
+function delNamesFlat(){
+  const el = document.getElementById('del-list');
+  if(!el) return [];
+  return el.value.split(/[\n,]+/).map(s=>s.trim().replace(/\.[^.]+$/,'').toUpperCase()).filter(Boolean);
+}
+function updateDeletePreview(){
+  const filterCount = document.getElementById('del-filter-count');
+  const filterDesc = document.getElementById('del-filter-desc');
+  const listCount = document.getElementById('del-list-count');
+  const list = flatFiltered();
+  if(filterCount) filterCount.textContent = list.length.toLocaleString();
+  if(filterDesc){
+    const q = document.getElementById('flat-q')?.value.trim();
+    const v = document.getElementById('flat-fverdict')?.value;
+    const sh = document.getElementById('flat-fsheet')?.value;
+    const au = document.getElementById('flat-fauthor')?.value;
+    const parts = [];
+    if(q) parts.push(`검색"${q}"`);
+    if(v) parts.push('판정='+v);
+    if(sh) parts.push('폴더 선택');
+    if(au) parts.push('작성자='+au);
+    filterDesc.textContent = parts.length ? parts.join(' · ') : '전체 (필터 없음)';
+  }
+  if(listCount) listCount.textContent = delNamesFlat().length;
+}
+function confirmDeleteFilter(){
+  const list = flatFiltered();
+  if(!list.length){ alert('삭제할 사진이 없어요.'); return; }
+  const q = document.getElementById('flat-q')?.value.trim();
+  const v = document.getElementById('flat-fverdict')?.value;
+  const sh = document.getElementById('flat-fsheet')?.value;
+  const au = document.getElementById('flat-fauthor')?.value;
+  const noFilter = !q && !v && !sh && !au;
+  let msg = `지금 필터 결과 ${list.length}장을 목록에서 삭제할까요?`;
+  if(noFilter) msg = `⚠️ 지금 '전체'라서 ${list.length}장(거의 모든 사진)이 삭제돼요! 정말 할까요?`;
+  msg += `\n\n※ R2 이미지는 그대로, 목록에서만 빠져요.\n※ 다운로드 후 GitHub 업로드해야 실제 반영.`;
+  if(!confirm(msg)) return;
+  if(noFilter && !confirm(`한 번 더 확인 — 정말 ${list.length}장 전부 삭제할까요?`)) return;
+  afterDeleteFlat(deleteFlatLeaves(list));
+}
+function confirmDeleteList(){
+  const names = delNamesFlat();
+  if(!names.length){ alert('파일명을 붙여넣어 주세요.'); return; }
+  const set = new Set(names);
+  const list = _flatLeaves.filter(L => set.has((L.node.id||'').toUpperCase()));
+  if(!list.length){ alert('일치하는 사진이 없어요. (파일명·확장자 확인)'); return; }
+  if(!confirm(`${list.length}장을 목록에서 삭제할까요?  (입력 ${names.length}개 중 일치 ${list.length}개)\n\n※ R2 이미지는 그대로, 목록에서만 빠져요.\n※ 다운로드 후 GitHub 업로드해야 실제 반영.`)) return;
+  afterDeleteFlat(deleteFlatLeaves(list));
+}
+function openDeleteModal(){
+  if(!_galleryMonths){ alert('먼저 STATUS 데이터가 로드될 때까지 기다려주세요.'); return; }
+  openPopup('◆ 사진 삭제', body=>{
+    body.innerHTML = `
+      <div style="font-size:11px;color:#04202e;line-height:1.6;margin-bottom:14px;">
+        목록에서만 제거돼요 (R2 이미지 파일은 그대로 남아요).<br>
+        <b>방법 1</b> — 지금 검색·필터 결과를 그대로 삭제<br>
+        <b>방법 2</b> — 파일명을 한 줄에 하나씩 붙여넣어 삭제
+      </div>
+      <div style="background:rgba(255,255,255,.6);border:1px solid rgba(4,32,46,.2);border-radius:8px;padding:10px 12px;margin-bottom:14px;">
+        <div style="font-size:11px;color:#04202e;margin-bottom:6px;">현재 필터: <b id="del-filter-desc"></b></div>
+        <div style="font-size:11px;color:#04202e;margin-bottom:10px;">대상 <b id="del-filter-count"></b>장</div>
+        <button onclick="confirmDeleteFilter()" style="width:100%;padding:9px;background:#c0392b;border:none;color:#fff;font-size:11px;font-weight:700;letter-spacing:1px;cursor:pointer;">필터 결과 삭제</button>
+      </div>
+      <div style="font-size:10px;color:#04202e;font-weight:700;letter-spacing:1px;margin-bottom:4px;">파일명 목록 (한 줄에 하나) — 인식 <span id="del-list-count">0</span>개</div>
+      <textarea id="del-list" rows="5" placeholder="DSCF1234&#10;DSCF1235" oninput="updateDeletePreview()" style="width:100%;box-sizing:border-box;background:rgba(255,255,255,.85);border:1px solid rgba(4,32,46,0.3);color:#04202e;font-family:inherit;font-size:12px;padding:8px;outline:none;resize:vertical;margin-bottom:14px;"></textarea>
+      <div style="display:flex;gap:8px;justify-content:flex-end;">
+        <button onclick="closePopup()" style="font-size:10px;padding:6px 14px;background:rgba(13,58,88,0.06);border:1px solid rgba(13,58,88,0.2);color:#0d3a58;cursor:pointer;font-family:'Space Mono',monospace;">취소</button>
+        <button onclick="confirmDeleteList()" style="font-size:10px;padding:6px 14px;background:#c0392b;border:1px solid #c0392b;color:#fff;cursor:pointer;font-family:'Space Mono',monospace;">목록 삭제</button>
+      </div>`;
+    updateDeletePreview();
+  });
 }
 
 function openLightbox(url){
