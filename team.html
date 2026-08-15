@@ -2519,7 +2519,6 @@ body.is-edit-view #panel-center{ padding:0!important; }
         <span class="panel-badge">사진 검수</span>
       </div>
       <div style="flex-shrink:0;display:flex;flex-direction:column;">
-        <span class="edit-mlink" onclick="editMenuAction('btnReload')">Live Load</span>
         <span class="edit-mlink" onclick="editMenuAction('btnLoadFile')">Open File</span>
         <span class="edit-mlink" onclick="editMenuAction('btnImport')">Import Select</span>
         <span class="edit-mlink" onclick="editMenuAction('btnDownload')">Download</span>
@@ -3163,6 +3162,7 @@ body.is-edit-view #panel-center{ padding:0!important; }
           <button class="back-btn" id="gal-prev" onclick="changeGalleryPage(-1)" style="display:none;">◀</button>
           <span style="flex:1;font-size:10px;color:rgba(13,58,88,0.5);text-align:center;letter-spacing:1px;" id="galCount"></span>
           <button class="back-btn" id="gal-next" onclick="changeGalleryPage(1)" style="display:none;">▶</button>
+          <button class="back-btn" onclick="liveLoadStatus()">⟳ Live Load</button>
         </div>
       </div>
 
@@ -3744,6 +3744,13 @@ function loadGalleryGrid(autoOpen){
     .catch(() => {
       wrap.innerHTML = '<div style="color:#f44;padding:20px;font-size:12px;">로드 실패 — 다시 시도해주세요</div>';
     });
+}
+
+// STATUS에 통합된 Live Load: 갤러리 데이터 + EDIT용 데이터를 함께 새로고침
+async function liveLoadStatus(){
+  _galleryMonths = null;
+  if(typeof loadLive === 'function'){ try{ await loadLive(); }catch(e){} }
+  loadGalleryGrid();
 }
 
 let _detailMonth = null;
