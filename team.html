@@ -1219,6 +1219,9 @@
     .md-body th { border:1px solid rgba(13,58,88,0.25); padding:8px 12px; color:#0d3a58; background:rgba(13,58,88,0.08); text-align:left; }
     .md-body td { border:1px solid rgba(13,58,88,0.15); padding:8px 12px; color:rgba(13,58,88,0.7); }
     .md-body a { color:#0f9a4a; text-decoration:underline; font-weight:600; }
+    .md-body .md-card { background:rgba(255,255,255,.55); border:1px solid rgba(13,58,88,0.12); border-radius:14px; padding:18px 22px 6px; margin:18px 0; box-shadow:0 2px 10px rgba(13,58,88,.06); }
+    .md-body .md-card h2 { margin-top:0; }
+    .md-body .md-card h2:first-child { margin-top:0; }
   </style>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
@@ -2988,13 +2991,31 @@ function changePage(dir){
   renderBoard(currentCat);
 }
 
+// h2 섹션마다 카드 박스로 감싸기 (마크다운 구조는 그대로, 렌더링만 보강)
+function _wrapMdSections(html){
+  const tmp = document.createElement('div');
+  tmp.innerHTML = html;
+  const out = document.createElement('div');
+  let card = null;
+  Array.from(tmp.childNodes).forEach(node => {
+    if(node.nodeType===1 && node.tagName==='H2'){
+      card = document.createElement('div');
+      card.className = 'md-card';
+      out.appendChild(card);
+    }
+    if(card){ card.appendChild(node); }
+    else { out.appendChild(node); }
+  });
+  return out.innerHTML;
+}
 function showNoticeView(){
   const el = document.getElementById('noticeView');
   if(!el) return;
   if(!el._rendered){
     el._rendered = true;
     el.innerHTML = BOARD_DATA.notice.map(p => {
-      const html = (typeof marked !== 'undefined') ? marked.parse(p.body) : p.body.replace(/\n/g,'<br>');
+      const raw = (typeof marked !== 'undefined') ? marked.parse(p.body) : p.body.replace(/\n/g,'<br>');
+      const html = _wrapMdSections(raw);
       return `<div style="border-bottom:1px solid rgba(13,58,88,0.1);padding:16px 16px 20px;">
         <div style="font-size:10px;color:rgba(13,58,88,0.45);letter-spacing:2px;font-weight:700;margin-bottom:10px;">${p.title.toUpperCase()}</div>
         <div class="md-body">${html}</div>
