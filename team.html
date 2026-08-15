@@ -3017,7 +3017,7 @@ const NOTICE_TABS = {
   workflow: { label: '사진 판정 작업', ids: [8001, 8008] },
   process:  { label: '프로세스', ids: [8007] }
 };
-let _noticeTab = 'workflow';
+let _noticeTab = null;
 function _renderNoticePosts(ids){
   // 여러 게시글을 리스트로 나열하지 않고, 하나의 이어진 문서처럼 합쳐서 렌더링
   const bodies = BOARD_DATA.notice.filter(p => ids.includes(p.id)).map(p => p.body);
