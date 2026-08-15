@@ -2512,20 +2512,6 @@ body.is-edit-view #panel-center{ padding:0!important; }
   <!-- ── 좌측 컬럼 ── -->
   <div id="col-left">
 
-    <!-- EDIT 패널 (메뉴 전용) -->
-    <div class="panel" id="panel-edit" style="display:flex;flex-direction:column;flex:1;">
-      <div class="panel-header" style="flex-shrink:0;cursor:pointer;" onclick="goEditView()">
-        <span class="panel-title">◆ EDIT</span>
-        <span class="panel-badge">사진 검수</span>
-      </div>
-      <div style="flex-shrink:0;display:flex;flex-direction:column;">
-        <span class="edit-mlink" onclick="editMenuAction('btnLoadFile')">Open File</span>
-        <span class="edit-mlink" onclick="editMenuAction('btnImport')">Import Select</span>
-        <span class="edit-mlink" onclick="editMenuAction('btnDownload')">Download</span>
-        <span class="edit-mlink" style="color:#c0392b;" onclick="editMenuAction('btnDelete')">Delete</span>
-      </div>
-    </div>
-
     <!-- TIMELINE 패널 -->
     <div class="panel" id="panel-timeline" style="flex-shrink:0;">
       <div class="panel-corner-tr"></div>
@@ -2608,6 +2594,12 @@ body.is-edit-view #panel-center{ padding:0!important; }
   <span class="ft-brand">■ SET · PHOTO ARCHIVE</span>
   <span>TOTAL <b id="ftCount">6,422</b> FRAMES</span>
   <span class="ft-ver">2026 · admin-contents.json</span>
+  <span class="ft-actions" style="margin-left:auto;display:flex;gap:14px;">
+    <span class="edit-mlink" style="border:none;padding:0;" onclick="document.getElementById('btnLoadFile').click()">Open File</span>
+    <span class="edit-mlink" style="border:none;padding:0;" onclick="document.getElementById('btnImport').click()">Import Select</span>
+    <span class="edit-mlink" style="border:none;padding:0;" onclick="document.getElementById('btnDownload').click()">Download</span>
+    <span class="edit-mlink" style="border:none;padding:0;color:#c0392b;" onclick="document.getElementById('btnDelete').click()">Delete</span>
+  </span>
 </footer>
 
 <!-- 우측 인스펙터: 선택 사진 원본 -->
