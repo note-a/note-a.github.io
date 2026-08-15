@@ -3014,8 +3014,8 @@ function _wrapMdSections(html){
   return out.innerHTML;
 }
 const NOTICE_TABS = {
-  workflow: { label: '사진 판정 작업', ids: [8001, 8008] },
-  process:  { label: '프로세스', ids: [8007] }
+  workflow: { label: '사진 판정 작업', desc: '사진에 판정 태그를 매기고 저장하는 방법', ids: [8001, 8008] },
+  process:  { label: '프로세스', desc: 'SET 작업이 진행되는 전체 단계 안내', ids: [8007] }
 };
 let _noticeTab = null;
 function _renderNoticePosts(ids){
@@ -3034,6 +3034,7 @@ function _renderNoticeCards(){
         onmouseover="this.style.transform='translateY(-3px)'" onmouseout="this.style.transform='translateY(0)'">
         <div style="font-size:34px;margin-bottom:10px;">${NOTICE_ICONS[k]||'📄'}</div>
         <div style="font-size:15px;font-weight:800;color:#0d3a58;letter-spacing:.5px;">${NOTICE_TABS[k].label}</div>
+        <div style="font-size:11px;color:rgba(13,58,88,.55);margin-top:6px;line-height:1.5;">${NOTICE_TABS[k].desc||''}</div>
       </div>`).join('') +
     `</div>`;
 }
