@@ -1963,6 +1963,27 @@ body.is-edit-view #panel-center{ padding:0!important; }
 #editView:has(#importOverlay.on) .site-footer,
 #editView:has(#importOverlay.on) #draftBar{ display:none!important; }
 
+/* ── Delete/Bulk/Dist도 동일하게 네이티브 전체화면 뷰로 통일 ── */
+#editView #delOverlay, #editView #bulkOverlay, #editView #distOverlay{
+  position:static!important; inset:auto!important; background:none!important;
+  -webkit-backdrop-filter:none!important; backdrop-filter:none!important; padding:0!important;
+  z-index:auto!important; align-items:stretch!important; justify-content:flex-start!important;
+}
+#editView #delOverlay .modal, #editView #bulkOverlay .modal, #editView #distOverlay .modal{
+  max-width:none!important; width:100%!important; background:none!important; border:none!important;
+  box-shadow:none!important; border-radius:0!important; padding:18px 2px 40px!important; max-height:none!important; overflow:visible!important;
+}
+#editView #delOverlay .modal h3, #editView #bulkOverlay .modal h3, #editView #distOverlay .modal h3{
+  background:none!important; border-bottom:1px solid rgba(13,58,88,.15)!important; padding:0 0 14px!important; margin:0 0 16px!important; position:static!important;
+}
+#editView:has(#delOverlay.on) header .toolbar, #editView:has(#bulkOverlay.on) header .toolbar, #editView:has(#distOverlay.on) header .toolbar,
+#editView:has(#delOverlay.on) .stats, #editView:has(#bulkOverlay.on) .stats, #editView:has(#distOverlay.on) .stats,
+#editView:has(#delOverlay.on) .grid, #editView:has(#bulkOverlay.on) .grid, #editView:has(#distOverlay.on) .grid,
+#editView:has(#delOverlay.on) .empty, #editView:has(#bulkOverlay.on) .empty, #editView:has(#distOverlay.on) .empty,
+#editView:has(#delOverlay.on) .pager, #editView:has(#bulkOverlay.on) .pager, #editView:has(#distOverlay.on) .pager,
+#editView:has(#delOverlay.on) .site-footer, #editView:has(#bulkOverlay.on) .site-footer, #editView:has(#distOverlay.on) .site-footer,
+#editView:has(#delOverlay.on) #draftBar, #editView:has(#bulkOverlay.on) #draftBar, #editView:has(#distOverlay.on) #draftBar{ display:none!important; }
+
   </style>
                   <style id="kitsch-remix">
   /* ============================================================
@@ -7334,7 +7355,6 @@ $('wsel').addEventListener('click', e=>{
   $('wsel').querySelectorAll('.wbtn').forEach(x=>x.classList.toggle('on', x.dataset.w===worker));
 });
 $('btnReload').addEventListener('click', ()=>{
-  if(dirty && !confirm('저장 안 한 수정이 있어요. 라이브로 다시 불러오면 사라집니다. 계속?')) return;
   loadLive();
 });
 $('btnDownload').addEventListener('click', download);
