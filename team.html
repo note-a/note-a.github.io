@@ -2080,8 +2080,44 @@
         </div>
       </div>
       <div id="galleryView" style="display:none;flex-direction:column;flex:1;min-height:0;overflow:hidden;">
+        <div class="board-subtabs" style="flex-shrink:0;">
+          <span class="board-subtab on" id="gal-tab-month" onclick="showGalleryTab('month')">월별</span>
+          <span class="board-subtab" id="gal-tab-flat" onclick="showGalleryTab('flat')">전체 보기</span>
+        </div>
         <div id="gallery-grid-wrap" style="flex:1;overflow-y:auto;padding:8px;display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:4px;align-content:start;background:transparent;"></div>
-        <div class="board-back-bar" style="flex-shrink:0;">
+
+        <!-- 전체 보기: 검색·필터 가능한 평면 그리드 -->
+        <div id="gallery-flat-wrap" style="display:none;flex-direction:column;flex:1;min-height:0;overflow:hidden;">
+          <div style="flex-shrink:0;padding:8px 10px;display:flex;flex-wrap:wrap;gap:6px;border-bottom:1px solid rgba(13,58,88,0.1);">
+            <input id="flat-q" type="text" placeholder="검색 (ID · DIR · 사유)" oninput="renderFlatGrid()"
+              style="flex:1;min-width:120px;background:rgba(13,58,88,0.04);border:1px solid rgba(13,58,88,0.2);color:#0d3a58;font-family:'Space Mono',monospace;font-size:11px;padding:5px 8px;outline:none;">
+            <select id="flat-fverdict" onchange="renderFlatGrid()" style="background:rgba(13,58,88,0.04);border:1px solid rgba(13,58,88,0.2);color:#0d3a58;font-family:'Space Mono',monospace;font-size:10px;padding:5px 6px;outline:none;">
+              <option value="">전체 판정</option>
+              <option value="core">core</option>
+              <option value="support">support</option>
+              <option value="hold">hold</option>
+              <option value="drop">drop</option>
+            </select>
+            <select id="flat-fsheet" onchange="renderFlatGrid()" style="background:rgba(13,58,88,0.04);border:1px solid rgba(13,58,88,0.2);color:#0d3a58;font-family:'Space Mono',monospace;font-size:10px;padding:5px 6px;outline:none;max-width:140px;">
+              <option value="">전체 폴더</option>
+            </select>
+            <select id="flat-fauthor" onchange="renderFlatGrid()" style="background:rgba(13,58,88,0.04);border:1px solid rgba(13,58,88,0.2);color:#0d3a58;font-family:'Space Mono',monospace;font-size:10px;padding:5px 6px;outline:none;">
+              <option value="">K/P</option>
+              <option value="K">K</option>
+              <option value="P">P</option>
+            </select>
+            <button onclick="downloadAdminContents()" style="font-size:9px;padding:5px 10px;background:rgba(13,58,88,0.08);border:1px solid rgba(13,58,88,0.3);color:#0d3a58;cursor:pointer;letter-spacing:1px;white-space:nowrap;font-family:'Space Mono',monospace;">⬇ 다운로드</button>
+          </div>
+          <div id="flat-stats" style="flex-shrink:0;padding:6px 10px;display:flex;flex-wrap:wrap;gap:10px;font-size:9px;letter-spacing:.5px;color:rgba(13,58,88,.55);border-bottom:1px solid rgba(13,58,88,0.08);font-family:'Space Mono',monospace;"></div>
+          <div id="flat-grid" style="flex:1;overflow-y:auto;padding:8px;display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px;align-content:start;"></div>
+          <div class="board-back-bar" style="flex-shrink:0;">
+            <button class="back-btn" id="flat-prev" onclick="changeFlatPage(-1)" style="display:none;">◀</button>
+            <span style="flex:1;font-size:10px;color:rgba(13,58,88,0.5);text-align:center;letter-spacing:1px;" id="flat-pageinfo"></span>
+            <button class="back-btn" id="flat-next" onclick="changeFlatPage(1)" style="display:none;">▶</button>
+          </div>
+        </div>
+
+        <div class="board-back-bar" id="gallery-back-bar" style="flex-shrink:0;">
           <button class="back-btn" onclick="backToIntro()">◀ HOME</button>
           <button class="back-btn" id="gal-prev" onclick="changeGalleryPage(-1)" style="display:none;">◀</button>
           <span style="flex:1;font-size:10px;color:rgba(13,58,88,0.5);text-align:center;letter-spacing:1px;" id="galCount"></span>
@@ -2666,6 +2702,7 @@ function loadGalleryGrid(autoOpen){
   fetch('./admin-contents.json')
     .then(r => r.ok ? r.json() : Promise.reject('fetch failed'))
     .then(data => {
+      _adminData = data;
       _galleryMonths = (data.project && data.project.photos) || [];
       galleryPage = 0;
       if(!_galleryMonths.length){ wrap.innerHTML = '<div style="color:rgba(0,221,85,0.42);padding:20px;font-size:9px;">NO DATA</div>'; return; }
@@ -2674,6 +2711,176 @@ function loadGalleryGrid(autoOpen){
     .catch(() => {
       wrap.innerHTML = '<div style="color:#f44;padding:20px;font-size:12px;">로드 실패 — 다시 시도해주세요</div>';
     });
+}
+
+// ── STATUS 전체 보기: 검색·필터 가능한 평면 그리드 ──
+let _galTab = 'month';
+let _adminData = null;
+let _flatLeaves = [];
+let _flatSheets = [];
+let _flatUidMap = {};
+let _flatPage = 0;
+let _flatDirty = false;
+const FLAT_PAGE_SIZE = 60;
+
+function showGalleryTab(tab){
+  _galTab = tab;
+  const tabMonth = document.getElementById('gal-tab-month');
+  const tabFlat = document.getElementById('gal-tab-flat');
+  if(tabMonth) tabMonth.classList.toggle('on', tab==='month');
+  if(tabFlat) tabFlat.classList.toggle('on', tab==='flat');
+  const monthWrap = document.getElementById('gallery-grid-wrap');
+  const monthBar = document.getElementById('gallery-back-bar');
+  const flatWrap = document.getElementById('gallery-flat-wrap');
+  if(tab==='month'){
+    if(monthWrap) monthWrap.style.display='grid';
+    if(monthBar) monthBar.style.display='flex';
+    if(flatWrap) flatWrap.style.display='none';
+    return;
+  }
+  if(monthWrap) monthWrap.style.display='none';
+  if(monthBar) monthBar.style.display='none';
+  if(flatWrap) flatWrap.style.display='flex';
+  if(!_galleryMonths){
+    const g = document.getElementById('flat-grid');
+    if(g) g.innerHTML = '<div style="padding:20px;color:rgba(13,58,88,.4);font-size:11px;">로딩 중...</div>';
+    setTimeout(()=>{ if(_galTab==='flat' && _galleryMonths) showGalleryTab('flat'); }, 400);
+    return;
+  }
+  if(!_flatLeaves.length) flattenGalleryPhotos();
+  renderFlatGrid();
+}
+
+function flattenGalleryPhotos(){
+  _flatLeaves = []; _flatSheets = []; _flatUidMap = {};
+  let uid = 0;
+  function walk(items, pathLabels){
+    (items||[]).forEach(it=>{
+      if(it && it.type==='sheet'){
+        const label = pathLabels.concat([it.title||it.name||it.id||'sheet']);
+        it.children = it.children||[];
+        _flatSheets.push(label.join(' / '));
+        walk(it.children, label);
+      } else if(it){
+        const L = { node: it, sheet: pathLabels.join(' / '), uid: uid++ };
+        _flatLeaves.push(L);
+        _flatUidMap[L.uid] = L;
+      }
+    });
+  }
+  walk(_galleryMonths, []);
+  const sel = document.getElementById('flat-fsheet');
+  if(sel){
+    sel.innerHTML = '<option value="">전체 폴더</option>' +
+      _flatSheets.map(s=>`<option value="${s.replace(/"/g,'&quot;')}">${s}</option>`).join('');
+  }
+}
+
+function flatFiltered(){
+  const q = (document.getElementById('flat-q')?.value||'').trim().toLowerCase();
+  const fv = document.getElementById('flat-fverdict')?.value||'';
+  const fs = document.getElementById('flat-fsheet')?.value||'';
+  const fa = document.getElementById('flat-fauthor')?.value||'';
+  return _flatLeaves.filter(L=>{
+    const n = L.node;
+    if(fv && (n.verdict||'')!==fv) return false;
+    if(fs && L.sheet!==fs) return false;
+    if(fa && (n.author==='P'?'P':'K')!==fa) return false;
+    if(q){
+      const hay = ((n.id||'')+' '+(n.dir||'')+' '+(n.reason||'')+' '+L.sheet).toLowerCase();
+      if(hay.indexOf(q)<0) return false;
+    }
+    return true;
+  });
+}
+
+function renderFlatStats(filteredCount){
+  const el = document.getElementById('flat-stats');
+  if(!el) return;
+  const c = {core:0,support:0,hold:0,drop:0}; let kN=0, pN=0;
+  _flatLeaves.forEach(L=>{
+    const v = L.node.verdict;
+    if(c[v]!=null) c[v]++;
+    (L.node.author==='P' ? pN++ : kN++);
+  });
+  el.innerHTML =
+    `<span>전체 <b style="color:#0d3a58;">${_flatLeaves.length.toLocaleString()}</b></span>`+
+    `<span style="color:#0f9a4a;">core <b>${c.core}</b></span>`+
+    `<span style="color:#b28a00;">support <b>${c.support}</b></span>`+
+    `<span style="color:#888;">hold <b>${c.hold}</b></span>`+
+    `<span style="color:#c0392b;">drop <b>${c.drop}</b></span>`+
+    `<span>K <b>${kN}</b> · P <b>${pN}</b></span>`+
+    `<span>필터됨 <b>${filteredCount.toLocaleString()}</b></span>`+
+    (_flatDirty ? `<span style="color:#c0392b;margin-left:auto;font-weight:700;">● 수정됨 — 다운로드 필요</span>` : '');
+}
+
+function flatCardHTML(L, globalIdx){
+  const n = L.node, v = n.verdict||'';
+  const full = n.filename || n.url || '';
+  const thumb = full ? full.replace(/\/DSCF([^/]+)\.(jpg|JPG)$/, '/t/DSCF$1.jpg') : '';
+  const vBtns = [['core','CORE'],['support','SUP'],['hold','HOLD'],['drop','DROP']].map(([val,lbl])=>
+    `<button onclick="event.stopPropagation();setFlatVerdict(${L.uid},'${val}')" style="flex:1;font-size:8px;padding:4px 2px;cursor:pointer;letter-spacing:.5px;font-family:'Space Mono',monospace;background:${val===v?'#0d3a58':'rgba(13,58,88,0.06)'};color:${val===v?'#fff':'rgba(13,58,88,.55)'};border:1px solid rgba(13,58,88,${val===v?'0.5':'0.15'});">${lbl}</button>`
+  ).join('');
+  return `<div class="flat-card" data-uid="${L.uid}" style="display:flex;flex-direction:column;gap:4px;background:rgba(255,255,255,.4);border:1px solid rgba(13,58,88,.12);border-radius:8px;overflow:hidden;">
+    <div onclick="openFlatPhoto(${globalIdx})" style="cursor:pointer;aspect-ratio:3/2;overflow:hidden;background:#e9f4fc;position:relative;">
+      <img src="${thumb||full}" loading="lazy" onerror="if(!this._fb){this._fb=1;this.src='${full}'}" style="width:100%;height:100%;object-fit:cover;">
+    </div>
+    <div style="padding:0 6px;font-size:9px;color:#0d3a58;font-weight:700;letter-spacing:.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${n.id||''}</div>
+    <div style="display:flex;gap:2px;padding:0 6px 6px;">${vBtns}</div>
+  </div>`;
+}
+
+function renderFlatGrid(keepPage){
+  if(!keepPage) _flatPage = 0;
+  const list = flatFiltered();
+  renderFlatStats(list.length);
+  const pages = Math.max(1, Math.ceil(list.length/FLAT_PAGE_SIZE));
+  if(_flatPage >= pages) _flatPage = pages-1;
+  if(_flatPage < 0) _flatPage = 0;
+  const start = _flatPage * FLAT_PAGE_SIZE;
+  const slice = list.slice(start, start+FLAT_PAGE_SIZE);
+  window._pvAllPhotos = list.map(L => L.node.filename || L.node.url || '');
+  const grid = document.getElementById('flat-grid');
+  if(grid){
+    grid.innerHTML = slice.length
+      ? slice.map((L,i)=>flatCardHTML(L, start+i)).join('')
+      : '<div style="padding:20px;color:rgba(13,58,88,.4);font-size:11px;">결과 없음</div>';
+  }
+  const showPager = list.length > FLAT_PAGE_SIZE;
+  const prevBtn = document.getElementById('flat-prev');
+  const nextBtn = document.getElementById('flat-next');
+  const info = document.getElementById('flat-pageinfo');
+  if(prevBtn){ prevBtn.style.display = showPager?'':'none'; prevBtn.disabled = _flatPage===0; prevBtn.style.opacity = _flatPage===0?'0.3':'1'; }
+  if(nextBtn){ nextBtn.style.display = showPager?'':'none'; nextBtn.disabled = _flatPage>=pages-1; nextBtn.style.opacity = _flatPage>=pages-1?'0.3':'1'; }
+  if(info) info.textContent = showPager ? `${_flatPage+1} / ${pages}` : `${list.length} PHOTOS`;
+}
+
+function changeFlatPage(dir){
+  _flatPage += dir;
+  renderFlatGrid(true);
+}
+
+function openFlatPhoto(idx){
+  openPhotoView(idx);
+}
+
+function setFlatVerdict(uid, val){
+  const L = _flatUidMap[uid];
+  if(!L) return;
+  L.node.verdict = val;
+  _flatDirty = true;
+  renderFlatGrid(true);
+}
+
+function downloadAdminContents(){
+  if(!_adminData) return;
+  const blob = new Blob([JSON.stringify(_adminData, null, 2)], {type:'application/json'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = 'admin-contents.json'; a.click();
+  URL.revokeObjectURL(url);
+  _flatDirty = false;
+  renderFlatStats(flatFiltered().length);
 }
 
 let _detailMonth = null;
