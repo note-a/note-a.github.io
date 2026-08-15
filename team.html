@@ -3014,14 +3014,12 @@ const NOTICE_TABS = {
 };
 let _noticeTab = 'workflow';
 function _renderNoticePosts(ids){
-  return BOARD_DATA.notice.filter(p => ids.includes(p.id)).map(p => {
-    const raw = (typeof marked !== 'undefined') ? marked.parse(p.body) : p.body.replace(/\n/g,'<br>');
-    const html = _wrapMdSections(raw);
-    return `<div style="border-bottom:1px solid rgba(13,58,88,0.1);padding:16px 16px 20px;">
-      <div style="font-size:10px;color:rgba(13,58,88,0.45);letter-spacing:2px;font-weight:700;margin-bottom:10px;">${p.title.toUpperCase()}</div>
-      <div class="md-body">${html}</div>
-    </div>`;
-  }).join('');
+  // 여러 게시글을 리스트로 나열하지 않고, 하나의 이어진 문서처럼 합쳐서 렌더링
+  const bodies = BOARD_DATA.notice.filter(p => ids.includes(p.id)).map(p => p.body);
+  const combined = bodies.join('\n\n');
+  const raw = (typeof marked !== 'undefined') ? marked.parse(combined) : combined.replace(/\n/g,'<br>');
+  const html = _wrapMdSections(raw);
+  return `<div style="padding:16px 16px 24px;"><div class="md-body">${html}</div></div>`;
 }
 function goNoticeTab(tab){
   _noticeTab = tab;
