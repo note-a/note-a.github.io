@@ -1304,13 +1304,7 @@
     border-radius:50% 50% 50% 50% / 60% 60% 40% 40%!important; filter:none!important; pointer-events:none!important; z-index:6!important;
     box-shadow:14px 22px 0 -6px rgba(233,244,252,.4)!important;
   }
-  #app-corner-tr,#app-corner-bl,#app-corner-br{
-    display:block!important; width:26px!important; height:26px!important;
-    filter:drop-shadow(0 0 8px rgba(64,224,255,.8))!important;
-  }
-  #app-corner-tr{ border-top:3px solid #40e0ff!important; border-right:3px solid #40e0ff!important; }
-  #app-corner-bl{ border-bottom:3px solid #40e0ff!important; border-left:3px solid #40e0ff!important; }
-  #app-corner-br{ border-bottom:3px solid #40e0ff!important; border-right:3px solid #40e0ff!important; }
+  #app-corner-tr,#app-corner-bl,#app-corner-br{ display:none!important; }
 
   /* ── 상단바 · 하단바: 같은 스타일로 통일, 프레임에 플러시(각지게, 여백 없이 밀착) ── */
   #titlebar{
@@ -1423,12 +1417,7 @@
     box-shadow:0 6px 18px rgba(15,69,105,.2), inset 0 2px 0 rgba(233,244,252,.85)!important;
   }
   .panel::before,.panel::after{ display:none!important; }
-  .panel-corner-tr,.panel-corner-bl{
-    display:block!important; width:18px!important; height:18px!important;
-    filter:drop-shadow(0 0 6px rgba(64,224,255,.7))!important;
-  }
-  .panel-corner-tr{ border-top:2px solid #40e0ff!important; border-right:2px solid #40e0ff!important; }
-  .panel-corner-bl{ border-bottom:2px solid #40e0ff!important; border-left:2px solid #40e0ff!important; }
+  .panel-corner-tr,.panel-corner-bl{ display:none!important; }
   .panel-header{
     background:linear-gradient(180deg, rgba(233,244,252,.55), rgba(164,211,242,.32))!important;
     -webkit-backdrop-filter:blur(4px)!important; backdrop-filter:blur(4px)!important;
@@ -2097,17 +2086,17 @@
         <div style="flex-shrink:0;padding:8px 10px 6px;display:flex;gap:6px;border-bottom:1px solid rgba(13,58,88,0.1);">
           <input id="flat-q" type="text" placeholder="검색 (ID · DIR · 사유)" oninput="renderFlatGrid()"
             style="flex:0 1 150px;min-width:0;background:rgba(13,58,88,0.04);border:1px solid rgba(13,58,88,0.2);color:#0d3a58;font-family:'Space Mono',monospace;font-size:11px;padding:5px 8px;outline:none;">
-          <select id="flat-fverdict" onchange="renderFlatGrid()" style="background:rgba(13,58,88,0.04);border:1px solid rgba(13,58,88,0.2);color:#0d3a58;font-family:'Space Mono',monospace;font-size:10px;padding:5px 6px;outline:none;flex-shrink:0;">
+          <select id="flat-fverdict" onchange="renderFlatGrid()" style="background:rgba(13,58,88,0.04);border:1px solid rgba(13,58,88,0.2);color:#0d3a58;font-family:'Space Mono',monospace;font-size:10px;padding:5px 6px;outline:none;flex:1;">
             <option value="">전체 판정</option>
             <option value="core">core</option>
             <option value="support">support</option>
             <option value="hold">hold</option>
             <option value="drop">drop</option>
           </select>
-          <select id="flat-fsheet" onchange="renderFlatGrid()" style="background:rgba(13,58,88,0.04);border:1px solid rgba(13,58,88,0.2);color:#0d3a58;font-family:'Space Mono',monospace;font-size:10px;padding:5px 6px;outline:none;max-width:130px;flex-shrink:0;">
+          <select id="flat-fsheet" onchange="renderFlatGrid()" style="background:rgba(13,58,88,0.04);border:1px solid rgba(13,58,88,0.2);color:#0d3a58;font-family:'Space Mono',monospace;font-size:10px;padding:5px 6px;outline:none;flex:1;">
             <option value="">전체 폴더</option>
           </select>
-          <select id="flat-fauthor" onchange="renderFlatGrid()" style="background:rgba(13,58,88,0.04);border:1px solid rgba(13,58,88,0.2);color:#0d3a58;font-family:'Space Mono',monospace;font-size:10px;padding:5px 6px;outline:none;flex-shrink:0;">
+          <select id="flat-fauthor" onchange="renderFlatGrid()" style="background:rgba(13,58,88,0.04);border:1px solid rgba(13,58,88,0.2);color:#0d3a58;font-family:'Space Mono',monospace;font-size:10px;padding:5px 6px;outline:none;flex:1;">
             <option value="">K/P</option>
             <option value="K">K</option>
             <option value="P">P</option>
