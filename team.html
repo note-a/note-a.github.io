@@ -1115,6 +1115,12 @@
       #memo-feed { overflow-y: auto !important; -webkit-overflow-scrolling: touch !important; }
       #statement-section { max-height: 40vh !important; overflow-y: auto !important; -webkit-overflow-scrolling: touch !important; }
       #flat-grid { grid-template-columns: repeat(2, 1fr) !important; min-width: 0 !important; }
+      .gthumb { height: auto !important; aspect-ratio: 4 / 3 !important; }
+      .flat-toolbar { padding: 10px 12px !important; }
+      #flat-q { flex: 1 1 100% !important; }
+      #board-badge { display: none !important; }
+      .board-subtabs { overflow-x: auto !important; -webkit-overflow-scrolling: touch !important; }
+      .board-subtab { flex: 0 0 auto !important; padding: 10px 12px !important; }
       #team-menubar, #team-menubar *, #col-center, #col-center * { font-size: 17px !important; }
       .msg-row { font-size: 16px !important; padding: 10px 12px !important; line-height: 2 !important; }
       .mbadge { font-size: 12px !important; padding: 3px 8px !important; }
@@ -1362,8 +1368,14 @@
   }
   #app .tb-center{ letter-spacing:0!important; }
   @media (max-width:900px){
-    #app .tb-center{ flex:1 1 auto!important; min-width:0!important; max-width:none!important; overflow:hidden!important; justify-content:center!important; }
-    #app .tb-search-text{ font-size:18px!important; letter-spacing:.5px!important; overflow:hidden!important; text-overflow:ellipsis!important; max-width:100%!important; text-align:center!important; }
+    #app .tb-left{ display:none!important; }
+    #app .tb-right{ flex-basis:auto!important; gap:0!important; }
+    #app .tb-center{ flex:1 1 auto!important; min-width:0!important; max-width:none!important; overflow:hidden!important; justify-content:center!important; padding-left:6px!important; }
+    #app .tb-search-text{
+      flex-direction:row!important; gap:6px!important; line-height:1!important;
+      font-size:clamp(16px,5.3vw,24px)!important; letter-spacing:-.5px!important;
+      overflow:hidden!important; text-overflow:ellipsis!important; max-width:100%!important; text-align:center!important;
+    }
   }
 
   /* 우측: Upgrade 풍 필/벨/아바타 */
@@ -1542,8 +1554,7 @@
     #app .back-btn{ font-size:20px!important; padding:12px 22px!important; }
     #app #kfeed span, #app #sfeed span{ font-size:25px!important; }
     #app textarea, #app input{ font-size:25px!important; }
-    #app .tb-search-text{ font-size:13px!important; }
-    #app .mobile-menu-btn{ width:52px!important; height:52px!important; font-size:32px!important; }
+    #app .mobile-menu-btn{ width:36px!important; height:36px!important; font-size:22px!important; }
     #app .tb-navbtn{ width:30px!important; height:30px!important; font-size:16px!important; }
   }
 
@@ -2113,7 +2124,7 @@
         </div>
       </div>
       <div id="galleryView" style="display:none;flex-direction:column;flex:1;min-height:0;overflow:hidden;">
-        <div style="flex-shrink:0;padding:12px 16px;display:flex;gap:9px;border-bottom:1px solid rgba(13,58,88,0.1);white-space:nowrap;">
+        <div class="flat-toolbar" style="flex-shrink:0;padding:12px 16px;display:flex;flex-wrap:wrap;gap:9px;border-bottom:1px solid rgba(13,58,88,0.1);">
           <input id="flat-q" type="text" placeholder="검색 (ID · DIR · 사유)" oninput="renderFlatGrid()"
             style="flex:0 1 150px;min-width:0;background:rgba(13,58,88,0.04);border:1px solid rgba(13,58,88,0.2);color:#0d3a58;font-family:'Space Mono',monospace;font-size:11px;padding:7px 10px;outline:none;">
           <div style="position:relative;flex-shrink:0;">
@@ -5876,7 +5887,7 @@ tlRender();
 
 <div id="cfg-overlay" onclick="if(event.target===this)cfgClose()"
   style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:10000;align-items:center;justify-content:center;">
-  <div style="background:#082234;border:1px solid rgba(13,58,88,.25);width:340px;max-height:80vh;
+  <div style="background:#082234;border:1px solid rgba(13,58,88,.25);width:min(340px,92vw);max-height:80vh;
               overflow-y:auto;font-family:'Space Mono',monospace;font-size:11px;color:#0d3a58;">
     <div style="padding:10px 14px;border-bottom:1px solid rgba(13,58,88,.15);display:flex;justify-content:space-between;align-items:center;">
       <span style="letter-spacing:2px;font-size:10px;">⚙ SETTINGS</span>
