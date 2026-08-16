@@ -1013,6 +1013,7 @@
     .board-subtab { flex:1;text-align:center;padding:10px 8px;font-family:'Space Mono',monospace;font-size:11px;
       letter-spacing:1.5px;font-weight:700;color:rgba(13,58,88,.4);cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap; }
     .board-subtab:hover { color:rgba(13,58,88,.7); }
+    .insp-dd-item:hover { background:rgba(64,224,255,.15); }
     .board-subtab.on { color:#0d3a58;border-bottom-color:#40e0ff;text-shadow:0 0 8px rgba(64,224,255,.5); }
 
     /* ── DEV PANEL ── */
@@ -2774,6 +2775,100 @@ function setFlatVerdict(uid, val){
   renderFlatGrid(true);
 }
 
+// ── DIR 자동완성: gallery1.html의 지시문 사전 불러오기 ──
+let DIR_DICT = {};
+let DIR_ALIAS = {};
+let DIR_READY = false;
+const _escH = s => String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+async function loadDirDict(){
+  const urls = ['https://raw.githubusercontent.com/note-a/note-a.github.io/main/gallery1.html', './gallery1.html'];
+  for(const u of urls){
+    try{
+      const res = await fetch(u + '?t=' + Date.now());
+      if(!res.ok) continue;
+      const html = await res.text();
+      const s = html.indexOf('DIR_INSTRUCTIONS={');
+      if(s < 0) continue;
+      const e = html.indexOf('DIR_ALIASES=', s);
+      const block = html.slice(s, e > s ? e : s + 130000);
+      const re = /([A-Z][A-Z0-9]{2,})\s*:\s*`([^`]*)`/g;
+      let m; const dict = {};
+      while((m = re.exec(block))) dict[m[1]] = m[2];
+      if(!Object.keys(dict).length) continue;
+      DIR_DICT = dict;
+      if(e > 0){
+        const ab = html.slice(e, html.indexOf('}', e) + 1);
+        const ar = /([A-Za-z0-9]+)\s*:\s*'([^']+)'/g;
+        let a;
+        while((a = ar.exec(ab))) DIR_ALIAS[a[1].toUpperCase()] = a[2].toUpperCase();
+      }
+      DIR_READY = true;
+      return;
+    }catch(err){}
+  }
+}
+loadDirDict();
+function dirResolve(c){ c = String(c||'').toUpperCase(); return DIR_ALIAS[c] || c; }
+function dirText(c){ return DIR_DICT[dirResolve(c)] || null; }
+function dirLabel(c){ const t = dirText(c); if(!t) return ''; return t.split('\n')[0].replace(/^원본\s*문법[^:]*:\s*/,'').slice(0,42); }
+function dirTokens(v){ return String(v||'').split('/').map(s=>s.trim()).filter(Boolean); }
+
+function updateInspDirUI(){
+  const input = document.getElementById('insp-dir');
+  const mEl = document.getElementById('insp-dir-match');
+  const dEl = document.getElementById('insp-dir-detail');
+  if(!input || !mEl || !dEl) return;
+  const toks = dirTokens(input.value);
+  const L = _flatUidMap[_inspectUid];
+  const v = L ? String(L.node.verdict||'').toLowerCase() : '';
+  const isDrop = v==='drop';
+  const isSel = v==='core' || v==='support';
+  if(!toks.length){
+    if(isSel){
+      mEl.innerHTML = `<span style="color:#c0392b;font-weight:700;">⚠ DIR 미입력</span>`;
+      dEl.innerHTML = `<div style="background:rgba(192,57,43,.08);border:1px solid rgba(192,57,43,.3);border-radius:6px;padding:8px 10px;">⚠ <b>DIR 미입력</b> — 뽑은 사진(${v})인데 분류 코드가 비어있어요. 위 칸에 코드를 입력해주세요.</div>`;
+    } else { mEl.innerHTML=''; dEl.innerHTML=''; }
+    return;
+  }
+  if(!DIR_READY){ mEl.innerHTML=''; dEl.innerHTML='<div style="color:rgba(4,32,46,.4);">DIR 사전 불러오는 중...</div>'; return; }
+  mEl.innerHTML = toks.map(t=>{
+    if(dirText(t)) return `<span style="color:#0f9a4a;font-weight:700;">✓ ${t.toUpperCase()}</span>`;
+    if(isDrop) return `<span style="color:#b28a00;font-weight:700;">✎ 기각 메모</span>`;
+    return `<span style="color:#c0392b;font-weight:700;">✗ ${t.toUpperCase()}</span>`;
+  }).join('');
+  dEl.innerHTML = toks.map(t=>{
+    const txt = dirText(t);
+    if(txt) return `<div style="background:rgba(255,255,255,.7);border:1px solid rgba(4,32,46,.2);border-radius:6px;padding:8px 10px;margin-bottom:6px;"><b>${dirResolve(t)}</b><pre style="white-space:pre-wrap;font-family:inherit;margin:4px 0 0;">${_escH(txt)}</pre></div>`;
+    if(isDrop) return `<div style="background:rgba(178,138,0,.08);border:1px solid rgba(178,138,0,.3);border-radius:6px;padding:8px 10px;margin-bottom:6px;">✎ <b>기각 메모</b> — "${_escH(t)}" 는 분류 코드가 아니라 기각 기록이에요. 정상이에요.</div>`;
+    return `<div style="background:rgba(192,57,43,.08);border:1px solid rgba(192,57,43,.3);border-radius:6px;padding:8px 10px;margin-bottom:6px;">✗ <b>${t.toUpperCase()}</b> — 사전에 없는 코드예요. 오타이거나 미등록 코드일 수 있어요.</div>`;
+  }).join('');
+}
+function showInspDirDrop(){
+  const input = document.getElementById('insp-dir');
+  const drop = document.getElementById('insp-dir-dropdown');
+  if(!input || !drop) return;
+  const parts = input.value.split('/');
+  const cur = parts[parts.length-1].trim().toUpperCase();
+  if(!DIR_READY || !cur){ drop.style.display='none'; return; }
+  const codes = Object.keys(DIR_DICT)
+    .filter(c => c.indexOf(cur) >= 0)
+    .sort((a,b) => (a.startsWith(cur)?0:1) - (b.startsWith(cur)?0:1) || a.localeCompare(b))
+    .slice(0, 10);
+  if(!codes.length){ drop.style.display='none'; return; }
+  drop.innerHTML = codes.map(c=>`<div class="insp-dd-item" data-code="${c}" style="padding:7px 10px;cursor:pointer;border-bottom:1px solid rgba(4,32,46,.08);"><b style="color:#0d3a58;">${c}</b> <span style="color:rgba(4,32,46,.55);font-size:10px;">${_escH(dirLabel(c))}</span></div>`).join('');
+  drop.style.display = 'block';
+}
+function pickInspDir(code){
+  const input = document.getElementById('insp-dir');
+  if(!input) return;
+  const parts = input.value.split('/');
+  parts[parts.length-1] = code;
+  input.value = parts.map(s=>s.trim()).filter(Boolean).join(' / ');
+  document.getElementById('insp-dir-dropdown').style.display='none';
+  updateInspDirUI();
+  input.focus();
+}
+
 // ── 사진 클릭 → 인스펙터 (셀렉 사유·DIR 편집 + 원본 JSON) ──
 let _inspectUid = null;
 function openPhotoInspector(uid){
@@ -2790,10 +2885,25 @@ function openPhotoInspector(uid){
       <div style="font-size:10px;color:#04202e;font-weight:700;letter-spacing:1px;margin-bottom:4px;">셀렉 사유 · SELECT REASON</div>
       <textarea id="insp-reason" rows="3" style="width:100%;box-sizing:border-box;background:rgba(255,255,255,.85);border:1px solid rgba(4,32,46,0.3);color:#04202e;font-family:inherit;font-size:12px;padding:8px;outline:none;resize:vertical;margin-bottom:14px;">${n.reason||''}</textarea>
       <div style="font-size:10px;color:#04202e;font-weight:700;letter-spacing:1px;margin-bottom:4px;">DIR · 분류</div>
-      <input id="insp-dir" type="text" placeholder="예: SURFACE / URBREFL" value="${(n.dir||'').replace(/"/g,'&quot;')}" style="width:100%;box-sizing:border-box;background:rgba(255,255,255,.85);border:1px solid rgba(4,32,46,0.3);color:#04202e;font-family:inherit;font-size:12px;padding:8px;outline:none;margin-bottom:14px;">
+      <div style="position:relative;margin-bottom:6px;">
+        <input id="insp-dir" type="text" placeholder="예: SURFACE / URBREFL" value="${(n.dir||'').replace(/"/g,'&quot;')}" style="width:100%;box-sizing:border-box;background:rgba(255,255,255,.85);border:1px solid rgba(4,32,46,0.3);color:#04202e;font-family:inherit;font-size:12px;padding:8px;outline:none;">
+        <div id="insp-dir-dropdown" style="display:none;position:absolute;top:100%;left:0;right:0;z-index:20;background:#fff;border:1px solid rgba(4,32,46,.3);max-height:180px;overflow-y:auto;box-shadow:0 6px 16px rgba(0,0,0,.15);"></div>
+      </div>
+      <div id="insp-dir-match" style="display:flex;gap:8px;flex-wrap:wrap;font-size:10px;margin-bottom:6px;"></div>
+      <div id="insp-dir-detail" style="font-size:10px;line-height:1.6;margin-bottom:14px;"></div>
       <button id="insp-save-btn" onclick="saveInspector()" style="width:100%;padding:12px;background:#0d3a58;border:none;color:#fff;font-size:12px;font-weight:700;letter-spacing:1px;cursor:pointer;margin-bottom:16px;">💾 저장 (셀렉사유 · DIR)</button>
       <div style="font-size:10px;color:#04202e;font-weight:700;letter-spacing:1px;margin-bottom:4px;">원본 데이터 (JSON)</div>
       <pre id="insp-json" style="background:rgba(255,255,255,.85);border:1px solid rgba(4,32,46,0.25);padding:10px;font-size:10px;color:#04202e;overflow-x:auto;white-space:pre-wrap;word-break:break-all;margin:0;">${JSON.stringify(n, null, 2)}</pre>`;
+    const dirInput = document.getElementById('insp-dir');
+    const dirDrop = document.getElementById('insp-dir-dropdown');
+    dirInput.addEventListener('input', ()=>{ showInspDirDrop(); updateInspDirUI(); });
+    dirInput.addEventListener('focus', showInspDirDrop);
+    dirInput.addEventListener('blur', ()=> setTimeout(()=>{ dirDrop.style.display='none'; }, 160));
+    dirDrop.addEventListener('mousedown', e=>{
+      const it = e.target.closest('.insp-dd-item');
+      if(it){ e.preventDefault(); pickInspDir(it.dataset.code); }
+    });
+    updateInspDirUI();
   });
 }
 function saveInspector(){
