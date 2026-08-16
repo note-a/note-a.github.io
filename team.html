@@ -2086,21 +2086,26 @@
         <div style="flex-shrink:0;padding:12px 16px;display:flex;gap:9px;border-bottom:1px solid rgba(13,58,88,0.1);white-space:nowrap;">
           <input id="flat-q" type="text" placeholder="검색 (ID · DIR · 사유)" oninput="renderFlatGrid()"
             style="flex:0 1 150px;min-width:0;background:rgba(13,58,88,0.04);border:1px solid rgba(13,58,88,0.2);color:#0d3a58;font-family:'Space Mono',monospace;font-size:11px;padding:7px 10px;outline:none;">
-          <select id="flat-fverdict" onchange="renderFlatGrid()" style="background:rgba(13,58,88,0.04);border:1px solid rgba(13,58,88,0.2);color:#0d3a58;font-family:'Space Mono',monospace;font-size:10px;padding:7px 6px;outline:none;flex:0 1 90px;min-width:0;">
-            <option value="">전체 판정</option>
-            <option value="core">core</option>
-            <option value="support">support</option>
-            <option value="hold">hold</option>
-            <option value="drop">drop</option>
-          </select>
-          <select id="flat-fsheet" onchange="renderFlatGrid()" style="background:rgba(13,58,88,0.04);border:1px solid rgba(13,58,88,0.2);color:#0d3a58;font-family:'Space Mono',monospace;font-size:10px;padding:7px 6px;outline:none;flex:0 1 100px;min-width:0;">
-            <option value="">전체 폴더</option>
-          </select>
-          <select id="flat-fauthor" onchange="renderFlatGrid()" style="background:rgba(13,58,88,0.04);border:1px solid rgba(13,58,88,0.2);color:#0d3a58;font-family:'Space Mono',monospace;font-size:10px;padding:7px 6px;outline:none;flex:0 1 65px;min-width:0;">
-            <option value="">K/P</option>
-            <option value="K">K</option>
-            <option value="P">P</option>
-          </select>
+          <div style="position:relative;flex-shrink:0;">
+            <button onclick="toggleFlatFilterPanel()" style="font-size:9px;padding:7px 12px;background:rgba(13,58,88,0.05);border:1px solid rgba(13,58,88,0.2);color:#0d3a58;cursor:pointer;letter-spacing:.5px;white-space:nowrap;font-family:'Space Mono',monospace;border-radius:6px;">▾ 필터<span id="flat-filter-badge"></span></button>
+            <div id="flat-filter-panel" style="display:none;position:absolute;top:100%;left:0;margin-top:4px;z-index:30;background:#fff;border:1px solid rgba(13,58,88,.25);border-radius:8px;box-shadow:0 8px 20px rgba(13,58,88,.2);padding:10px;display:flex;flex-direction:column;gap:8px;white-space:nowrap;">
+              <select id="flat-fverdict" onchange="renderFlatGrid()" style="background:rgba(13,58,88,0.04);border:1px solid rgba(13,58,88,0.2);color:#0d3a58;font-family:'Space Mono',monospace;font-size:11px;padding:6px 8px;outline:none;width:150px;">
+                <option value="">전체 판정</option>
+                <option value="core">core</option>
+                <option value="support">support</option>
+                <option value="hold">hold</option>
+                <option value="drop">drop</option>
+              </select>
+              <select id="flat-fsheet" onchange="renderFlatGrid()" style="background:rgba(13,58,88,0.04);border:1px solid rgba(13,58,88,0.2);color:#0d3a58;font-family:'Space Mono',monospace;font-size:11px;padding:6px 8px;outline:none;width:150px;">
+                <option value="">전체 폴더</option>
+              </select>
+              <select id="flat-fauthor" onchange="renderFlatGrid()" style="background:rgba(13,58,88,0.04);border:1px solid rgba(13,58,88,0.2);color:#0d3a58;font-family:'Space Mono',monospace;font-size:11px;padding:6px 8px;outline:none;width:150px;">
+                <option value="">K/P</option>
+                <option value="K">K</option>
+                <option value="P">P</option>
+              </select>
+            </div>
+          </div>
           <span style="flex:1;"></span>
           <button onclick="liveLoadGallery()" style="font-size:9px;padding:7px 12px;background:rgba(13,58,88,0.05);border:1px solid rgba(13,58,88,0.2);color:#0d3a58;cursor:pointer;letter-spacing:.5px;white-space:nowrap;font-family:'Space Mono',monospace;border-radius:6px;flex-shrink:0;">🔄 Live Load</button>
           <button onclick="document.getElementById('flat-file-input').click()" style="font-size:9px;padding:7px 12px;background:rgba(13,58,88,0.05);border:1px solid rgba(13,58,88,0.2);color:#0d3a58;cursor:pointer;letter-spacing:.5px;white-space:nowrap;font-family:'Space Mono',monospace;border-radius:6px;flex-shrink:0;">📁 파일 열기</button>
@@ -2750,7 +2755,27 @@ function renderFlatGrid(keepPage){
   if(prevBtn){ prevBtn.style.display = showPager?'':'none'; prevBtn.disabled = _flatPage===0; prevBtn.style.opacity = _flatPage===0?'0.3':'1'; }
   if(nextBtn){ nextBtn.style.display = showPager?'':'none'; nextBtn.disabled = _flatPage>=pages-1; nextBtn.style.opacity = _flatPage>=pages-1?'0.3':'1'; }
   if(info) info.textContent = showPager ? `${_flatPage+1} / ${pages}` : `${list.length} PHOTOS`;
+  updateFlatFilterBadge();
 }
+
+function updateFlatFilterBadge(){
+  const badge = document.getElementById('flat-filter-badge');
+  if(!badge) return;
+  const n = ['flat-fverdict','flat-fsheet','flat-fauthor'].filter(id => document.getElementById(id)?.value).length;
+  badge.textContent = n ? ` (${n})` : '';
+}
+function toggleFlatFilterPanel(){
+  const panel = document.getElementById('flat-filter-panel');
+  if(!panel) return;
+  panel.style.display = panel.style.display==='none' ? 'flex' : 'none';
+}
+document.addEventListener('click', e=>{
+  const panel = document.getElementById('flat-filter-panel');
+  if(!panel || panel.style.display==='none') return;
+  if(!panel.contains(e.target) && e.target.getAttribute('onclick')!=='toggleFlatFilterPanel()'){
+    panel.style.display = 'none';
+  }
+});
 
 function changeFlatPage(dir){
   _flatPage += dir;
