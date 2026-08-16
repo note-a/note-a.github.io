@@ -1338,7 +1338,8 @@
   #app .tb-center:hover .tb-search-text{ text-decoration:none!important; }
   #app .tb-search-ico{ display:none!important; }
   #app .tb-search-text{
-    font-size:32px!important; letter-spacing:.5px!important; text-transform:none!important; white-space:nowrap!important; overflow:visible!important;
+    font-size:19px!important; letter-spacing:-.3px!important; text-transform:none!important; white-space:nowrap!important; overflow:visible!important;
+    display:flex!important; flex-direction:column!important; align-items:center!important; gap:0!important; line-height:1.05!important;
   }
   #app .tb-part1,#app .tb-part2{
     color:#ffffff!important;
@@ -1348,9 +1349,11 @@
       0 3px 4px rgba(6,30,50,.25), 0 1px 2px rgba(6,30,50,.18)
       !important;
   }
-  #app .tb-part1{ font-family:'Luckiest Guy','Noto Sans KR',sans-serif!important; font-weight:400!important; font-style:normal!important; text-transform:uppercase!important; }
-  #app .tb-part2{ font-family:'Luckiest Guy','Noto Sans KR',sans-serif!important; font-weight:400!important; font-style:normal!important; text-transform:none!important;
-    color:transparent!important; -webkit-text-fill-color:transparent!important; -webkit-text-stroke:1.5px #ffffff!important; text-shadow:none!important; }
+  #app .tb-part1,#app .tb-part2{ font-family:'Luckiest Guy','Noto Sans KR',sans-serif!important; font-weight:400!important; font-style:normal!important; text-transform:uppercase!important; }
+  #app .tb-part2{
+    font-size:1.15em!important;
+    color:transparent!important; -webkit-text-fill-color:transparent!important; -webkit-text-stroke:1.5px #ffffff!important; text-shadow:none!important;
+  }
   #app .tb-center{ letter-spacing:0!important; }
   @media (max-width:900px){
     #app .tb-center{ flex:1 1 auto!important; min-width:0!important; max-width:none!important; overflow:hidden!important; justify-content:center!important; }
