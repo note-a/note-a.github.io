@@ -2907,6 +2907,31 @@ function pickInspDir(code){
   input.focus();
 }
 
+// ── 헤더 타이틀 진짜 픽셀 단위 수직 중앙정렬 (폰트 자체 여백 오차 보정) ──
+function centerHeaderTitle(){
+  const tb = document.getElementById('titlebar');
+  const searchText = document.querySelector('.tb-search-text');
+  const p1 = document.querySelector('.tb-part1');
+  const p2 = document.querySelector('.tb-part2');
+  if(!tb || !searchText || !p1 || !p2) return;
+  searchText.style.marginTop = '0px';
+  const tbRect = tb.getBoundingClientRect();
+  const p1Rect = p1.getBoundingClientRect();
+  const p2Rect = p2.getBoundingClientRect();
+  const visTop = p1Rect.top;
+  const visBottom = p2Rect.bottom;
+  const visCenter = (visTop + visBottom) / 2;
+  const tbCenter = (tbRect.top + tbRect.bottom) / 2;
+  const offset = tbCenter - visCenter;
+  searchText.style.marginTop = offset.toFixed(1) + 'px';
+}
+if(document.fonts && document.fonts.ready){
+  document.fonts.ready.then(()=>{ centerHeaderTitle(); setTimeout(centerHeaderTitle, 200); });
+} else {
+  window.addEventListener('load', centerHeaderTitle);
+}
+window.addEventListener('resize', centerHeaderTitle);
+
 // ── 사진 클릭 → 인스펙터 (셀렉 사유·DIR 편집 + 원본 JSON) ──
 let _inspectUid = null;
 function openPhotoInspector(uid){
