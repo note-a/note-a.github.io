@@ -1342,7 +1342,7 @@
   #app .tb-search-ico{ display:none!important; }
   #app .tb-search-text{
     font-size:23px!important; letter-spacing:-.3px!important; text-transform:none!important; white-space:nowrap!important; overflow:visible!important;
-    display:flex!important; flex-direction:column!important; align-items:center!important; gap:0!important; line-height:.82!important;
+    display:flex!important; flex-direction:column!important; align-items:center!important; gap:3px!important; line-height:.82!important;
   }
   #app .tb-part1,#app .tb-part2{
     color:#ffffff!important;
@@ -1355,7 +1355,8 @@
   #app .tb-part1,#app .tb-part2{ font-family:'Luckiest Guy','Noto Sans KR',sans-serif!important; font-weight:400!important; font-style:normal!important; text-transform:uppercase!important; }
   #app .tb-part2{
     font-size:1.15em!important;
-    color:transparent!important; -webkit-text-fill-color:transparent!important; -webkit-text-stroke:1.5px #ffffff!important; text-shadow:none!important;
+    color:transparent!important; -webkit-text-fill-color:transparent!important; -webkit-text-stroke:1.5px #ffffff!important;
+    text-shadow:0 2px 3px rgba(6,30,50,.3)!important;
   }
   #app .tb-center{ letter-spacing:0!important; }
   @media (max-width:900px){
@@ -2907,7 +2908,25 @@ function pickInspDir(code){
   input.focus();
 }
 
-// ── 헤더 타이틀 진짜 픽셀 단위 수직 중앙정렬 (폰트 자체 여백 오차 보정) ──
+// ── 헤더 타이틀 진짜 픽셀 단위 수직 중앙정렬 (캔버스로 실제 잉크 경계 측정 — line-height 여백 무시) ──
+const _inkCanvas = document.createElement('canvas');
+const _inkCtx = _inkCanvas.getContext('2d');
+function _inkBounds(el){
+  const cs = getComputedStyle(el);
+  _inkCtx.font = `${cs.fontStyle} ${cs.fontWeight} ${cs.fontSize} ${cs.fontFamily}`;
+  const m = _inkCtx.measureText(el.textContent);
+  const rect = el.getBoundingClientRect();
+  const boxCenter = rect.top + rect.height/2;
+  // 폰트의 자연스러운 어센트/디센트 대비, line box 중앙 기준으로 잉크 상/하단 위치 추정
+  const fontAscent = m.fontBoundingBoxAscent != null ? m.fontBoundingBoxAscent : m.actualBoundingBoxAscent;
+  const fontDescent = m.fontBoundingBoxDescent != null ? m.fontBoundingBoxDescent : m.actualBoundingBoxDescent;
+  const fontHalf = (fontAscent + fontDescent) / 2;
+  const baseline = boxCenter - fontHalf + fontAscent;
+  return {
+    inkTop: baseline - m.actualBoundingBoxAscent,
+    inkBottom: baseline + m.actualBoundingBoxDescent
+  };
+}
 function centerHeaderTitle(){
   const tb = document.getElementById('titlebar');
   const searchText = document.querySelector('.tb-search-text');
@@ -2916,19 +2935,21 @@ function centerHeaderTitle(){
   if(!tb || !searchText || !p1 || !p2) return;
   searchText.style.marginTop = '0px';
   const tbRect = tb.getBoundingClientRect();
-  const p1Rect = p1.getBoundingClientRect();
-  const p2Rect = p2.getBoundingClientRect();
-  const visTop = p1Rect.top;
-  const visBottom = p2Rect.bottom;
-  const visCenter = (visTop + visBottom) / 2;
+  const b1 = _inkBounds(p1);
+  const b2 = _inkBounds(p2);
+  const inkTop = Math.min(b1.inkTop, b2.inkTop);
+  const inkBottom = Math.max(b1.inkBottom, b2.inkBottom);
+  const inkCenter = (inkTop + inkBottom) / 2;
   const tbCenter = (tbRect.top + tbRect.bottom) / 2;
-  const offset = tbCenter - visCenter;
+  const manualNudge = 3; // 살짝 아래로
+  const offset = tbCenter - inkCenter + manualNudge;
   searchText.style.marginTop = offset.toFixed(1) + 'px';
 }
+centerHeaderTitle();
+window.addEventListener('load', centerHeaderTitle);
+[50, 150, 300, 600, 1000, 1800, 3000].forEach(ms => setTimeout(centerHeaderTitle, ms));
 if(document.fonts && document.fonts.ready){
-  document.fonts.ready.then(()=>{ centerHeaderTitle(); setTimeout(centerHeaderTitle, 200); });
-} else {
-  window.addEventListener('load', centerHeaderTitle);
+  document.fonts.ready.then(()=>{ centerHeaderTitle(); setTimeout(centerHeaderTitle, 100); });
 }
 window.addEventListener('resize', centerHeaderTitle);
 
