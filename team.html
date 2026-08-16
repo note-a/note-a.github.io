@@ -1330,12 +1330,14 @@
 
   /* 중앙 검색 필드 (Spotify 서치바) */
   #app .tb-center{
-    flex:0 1 auto!important; max-width:560px!important; margin:0!important;
+    flex:0 1 auto!important; max-width:560px!important; margin:0 auto!important;
     display:flex!important; align-items:center!important; gap:9px!important;
     background:none!important; border-radius:0!important; padding:0!important;
     cursor:pointer!important; animation:none!important; -webkit-text-stroke:0!important; text-shadow:none!important;
-    position:absolute!important; left:50%!important; top:50%!important; transform:translate(-50%,-50%)!important; z-index:5!important;
+    position:static!important; left:auto!important; top:auto!important; transform:none!important; z-index:auto!important;
   }
+  #app .tb-left{ flex-basis:120px!important; }
+  #app .tb-right{ flex-basis:120px!important; justify-content:flex-end!important; }
   #app .tb-center:hover .tb-search-text{ text-decoration:none!important; }
   #app .tb-search-ico{ display:none!important; }
   #app .tb-search-text{
@@ -1531,7 +1533,7 @@
     #app .back-btn{ font-size:20px!important; padding:12px 22px!important; }
     #app #kfeed span, #app #sfeed span{ font-size:25px!important; }
     #app textarea, #app input{ font-size:25px!important; }
-    #app .tb-search-text{ font-size:24px!important; }
+    #app .tb-search-text{ font-size:13px!important; }
     #app .mobile-menu-btn{ width:52px!important; height:52px!important; font-size:32px!important; }
     #app .tb-navbtn{ width:30px!important; height:30px!important; font-size:16px!important; }
   }
