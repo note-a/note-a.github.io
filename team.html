@@ -1014,6 +1014,7 @@
       letter-spacing:1.5px;font-weight:700;color:rgba(13,58,88,.4);cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap; }
     .board-subtab:hover { color:rgba(13,58,88,.7); }
     .insp-dd-item:hover { background:rgba(64,224,255,.15); }
+    .gthumb:hover .gtint { opacity:0; }
     .board-subtab.on { color:#0d3a58;border-bottom-color:#40e0ff;text-shadow:0 0 8px rgba(64,224,255,.5); }
 
     /* ── DEV PANEL ── */
@@ -2724,8 +2725,9 @@ function flatCardHTML(L, globalIdx){
     `<button onclick="event.stopPropagation();setFlatVerdict(${L.uid},'${val}')" style="flex:1;font-size:8px;padding:4px 2px;cursor:pointer;letter-spacing:.5px;font-family:'Space Mono',monospace;font-weight:700;background:${val===v?'#0d3a58':'rgba(255,255,255,.75)'}!important;color:${val===v?'#fff':'#0d3a58'}!important;border:1px solid ${val===v?'#0d3a58':'rgba(13,58,88,.45)'};">${lbl}</button>`
   ).join('');
   return `<div class="flat-card" data-uid="${L.uid}" style="display:block;background:rgba(255,255,255,.28)!important;border:1px solid rgba(64,224,255,.4);border-radius:8px;box-shadow:0 0 0 1px rgba(64,224,255,.12), 0 2px 8px rgba(13,58,88,.1);">
-    <div onclick="openPhotoInspector(${L.uid})" style="cursor:pointer;width:100%;height:110px;overflow:hidden;background:#0d3a58;position:relative;box-shadow:inset 0 0 16px rgba(64,224,255,.25);">
-      <img src="${thumb||full}" loading="lazy" onerror="if(!this._fb){this._fb=1;this.src='${full}'}" style="display:block;width:100%;height:100%;object-fit:cover;">
+    <div class="gthumb" onclick="openPhotoInspector(${L.uid})" style="cursor:pointer;width:100%;height:110px;overflow:hidden;background:#0d3a58;position:relative;box-shadow:inset 0 0 16px rgba(64,224,255,.25);">
+      <img src="${thumb||full}" loading="lazy" onerror="if(!this._fb){this._fb=1;this.src='${full}'}" style="display:block;width:100%;height:100%;object-fit:cover;filter:saturate(1.4) brightness(1.1);">
+      <div class="gtint" style="position:absolute;inset:0;background:linear-gradient(135deg, #3fc7e0, #5a9cf0 55%, #7fe0c8);mix-blend-mode:color;opacity:.65;pointer-events:none;transition:opacity .3s;"></div>
     </div>
     <div style="padding:5px 6px 0;font-size:9px;color:#0d3a58!important;font-weight:700;letter-spacing:.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${n.id||''}</div>
     <div style="display:flex;gap:2px;padding:4px 6px 6px;">${vBtns}</div>
