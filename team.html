@@ -1338,11 +1338,17 @@
   #app .tb-center:hover .tb-search-text{ text-decoration:none!important; }
   #app .tb-search-ico{ display:none!important; }
   #app .tb-search-text{
-    font-family:'Varela Round','Noto Sans KR',sans-serif!important; font-size:22px!important; font-weight:400!important; font-style:normal!important;
-    letter-spacing:4px!important; text-transform:uppercase!important; white-space:nowrap!important; overflow:visible!important;
-    background:linear-gradient(180deg, #ffffff 0%, #ffffff 45%, #cfeeff 55%, #9fd8f5 100%)!important;
+    font-family:'Fredoka','Noto Sans KR',sans-serif!important; font-size:23px!important; font-weight:700!important; font-style:normal!important;
+    letter-spacing:.5px!important; text-transform:uppercase!important; white-space:nowrap!important; overflow:visible!important;
+    background:linear-gradient(180deg, #ffffff 0%, #eaf9ff 30%, #b8e8ff 48%, #d9b8ff 62%, #ffd6f0 80%, #ffffff 100%)!important;
     -webkit-background-clip:text!important; background-clip:text!important; -webkit-text-fill-color:transparent!important; color:transparent!important;
-    filter:drop-shadow(0 2px 3px rgba(6,30,50,.3))!important;
+    -webkit-text-stroke:1.4px rgba(255,255,255,.9)!important;
+    filter:
+      drop-shadow(0 -1px 0 rgba(255,255,255,.9))
+      drop-shadow(0 2px 1px rgba(120,180,255,.5))
+      drop-shadow(0 3px 6px rgba(70,130,220,.45))
+      drop-shadow(0 5px 10px rgba(6,30,50,.35))
+      !important;
   }
   #app .tb-center{ letter-spacing:0!important; }
   @media (max-width:900px){
