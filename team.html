@@ -2094,30 +2094,32 @@
         </div>
       </div>
       <div id="galleryView" style="display:none;flex-direction:column;flex:1;min-height:0;overflow:hidden;">
-        <div style="flex-shrink:0;padding:8px 10px;display:flex;flex-wrap:wrap;gap:6px;border-bottom:1px solid rgba(13,58,88,0.1);">
+        <div style="flex-shrink:0;padding:8px 10px 6px;display:flex;gap:6px;border-bottom:1px solid rgba(13,58,88,0.1);">
           <input id="flat-q" type="text" placeholder="검색 (ID · DIR · 사유)" oninput="renderFlatGrid()"
-            style="flex:1;min-width:120px;background:rgba(13,58,88,0.04);border:1px solid rgba(13,58,88,0.2);color:#0d3a58;font-family:'Space Mono',monospace;font-size:11px;padding:5px 8px;outline:none;">
-          <select id="flat-fverdict" onchange="renderFlatGrid()" style="background:rgba(13,58,88,0.04);border:1px solid rgba(13,58,88,0.2);color:#0d3a58;font-family:'Space Mono',monospace;font-size:10px;padding:5px 6px;outline:none;">
+            style="flex:1;min-width:0;background:rgba(13,58,88,0.04);border:1px solid rgba(13,58,88,0.2);color:#0d3a58;font-family:'Space Mono',monospace;font-size:11px;padding:5px 8px;outline:none;">
+          <select id="flat-fverdict" onchange="renderFlatGrid()" style="background:rgba(13,58,88,0.04);border:1px solid rgba(13,58,88,0.2);color:#0d3a58;font-family:'Space Mono',monospace;font-size:10px;padding:5px 6px;outline:none;flex-shrink:0;">
             <option value="">전체 판정</option>
             <option value="core">core</option>
             <option value="support">support</option>
             <option value="hold">hold</option>
             <option value="drop">drop</option>
           </select>
-          <select id="flat-fsheet" onchange="renderFlatGrid()" style="background:rgba(13,58,88,0.04);border:1px solid rgba(13,58,88,0.2);color:#0d3a58;font-family:'Space Mono',monospace;font-size:10px;padding:5px 6px;outline:none;max-width:140px;">
+          <select id="flat-fsheet" onchange="renderFlatGrid()" style="background:rgba(13,58,88,0.04);border:1px solid rgba(13,58,88,0.2);color:#0d3a58;font-family:'Space Mono',monospace;font-size:10px;padding:5px 6px;outline:none;max-width:130px;flex-shrink:0;">
             <option value="">전체 폴더</option>
           </select>
-          <select id="flat-fauthor" onchange="renderFlatGrid()" style="background:rgba(13,58,88,0.04);border:1px solid rgba(13,58,88,0.2);color:#0d3a58;font-family:'Space Mono',monospace;font-size:10px;padding:5px 6px;outline:none;">
+          <select id="flat-fauthor" onchange="renderFlatGrid()" style="background:rgba(13,58,88,0.04);border:1px solid rgba(13,58,88,0.2);color:#0d3a58;font-family:'Space Mono',monospace;font-size:10px;padding:5px 6px;outline:none;flex-shrink:0;">
             <option value="">K/P</option>
             <option value="K">K</option>
             <option value="P">P</option>
           </select>
-          <button onclick="liveLoadGallery()" style="font-size:9px;padding:5px 10px;background:rgba(13,58,88,0.08);border:1px solid rgba(13,58,88,0.3);color:#0d3a58;cursor:pointer;letter-spacing:1px;white-space:nowrap;font-family:'Space Mono',monospace;">🔄 Live Load</button>
-          <button onclick="document.getElementById('flat-file-input').click()" style="font-size:9px;padding:5px 10px;background:rgba(13,58,88,0.08);border:1px solid rgba(13,58,88,0.3);color:#0d3a58;cursor:pointer;letter-spacing:1px;white-space:nowrap;font-family:'Space Mono',monospace;">📁 파일 열기</button>
+        </div>
+        <div style="flex-shrink:0;padding:0 10px 8px;display:flex;justify-content:flex-end;gap:5px;border-bottom:1px solid rgba(13,58,88,0.1);">
+          <button onclick="liveLoadGallery()" title="Live Load — GitHub 최신 데이터 다시 불러오기" style="width:30px;height:30px;font-size:13px;background:rgba(13,58,88,0.05);border:1px solid rgba(13,58,88,0.2);color:#0d3a58;cursor:pointer;border-radius:6px;">🔄</button>
+          <button onclick="document.getElementById('flat-file-input').click()" title="파일 열기 — 로컬 json 이어서 편집" style="width:30px;height:30px;font-size:13px;background:rgba(13,58,88,0.05);border:1px solid rgba(13,58,88,0.2);color:#0d3a58;cursor:pointer;border-radius:6px;">📁</button>
           <input id="flat-file-input" type="file" accept=".json" style="display:none;" onchange="handleOpenFile(event)">
-          <button onclick="openImportModal()" style="font-size:9px;padding:5px 10px;background:rgba(13,58,88,0.08);border:1px solid rgba(13,58,88,0.3);color:#0d3a58;cursor:pointer;letter-spacing:1px;white-space:nowrap;font-family:'Space Mono',monospace;">📥 셀렉 가져오기</button>
-          <button onclick="downloadAdminContents()" style="font-size:9px;padding:5px 10px;background:rgba(13,58,88,0.08);border:1px solid rgba(13,58,88,0.3);color:#0d3a58;cursor:pointer;letter-spacing:1px;white-space:nowrap;font-family:'Space Mono',monospace;">⬇ 다운로드</button>
-          <button onclick="openDeleteModal()" style="font-size:9px;padding:5px 10px;background:rgba(192,57,43,0.08);border:1px solid rgba(192,57,43,0.35);color:#c0392b;cursor:pointer;letter-spacing:1px;white-space:nowrap;font-family:'Space Mono',monospace;">🗑 삭제</button>
+          <button onclick="openImportModal()" title="셀렉 가져오기 — .md 표로 판정·DIR·사유 일괄 입력" style="width:30px;height:30px;font-size:13px;background:rgba(13,58,88,0.05);border:1px solid rgba(13,58,88,0.2);color:#0d3a58;cursor:pointer;border-radius:6px;">📥</button>
+          <button onclick="downloadAdminContents()" title="다운로드 — admin-contents.json 저장" style="width:30px;height:30px;font-size:13px;background:rgba(13,58,88,0.05);border:1px solid rgba(13,58,88,0.2);color:#0d3a58;cursor:pointer;border-radius:6px;">⬇</button>
+          <button onclick="openDeleteModal()" title="삭제 — 필터·목록으로 일괄 삭제" style="width:30px;height:30px;font-size:13px;background:rgba(192,57,43,0.06);border:1px solid rgba(192,57,43,0.3);color:#c0392b;cursor:pointer;border-radius:6px;">🗑</button>
         </div>
         <div id="flat-stats" style="flex-shrink:0;padding:6px 10px;display:flex;flex-wrap:wrap;gap:10px;font-size:9px;letter-spacing:.5px;color:rgba(13,58,88,.55);border-bottom:1px solid rgba(13,58,88,0.08);font-family:'Space Mono',monospace;"></div>
         <div id="flat-grid" style="flex:1;overflow-y:auto;padding:8px;display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px;align-content:start;"></div>
