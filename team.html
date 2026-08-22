@@ -1116,7 +1116,7 @@
       #statement-section { max-height: 40vh !important; overflow-y: auto !important; -webkit-overflow-scrolling: touch !important; }
       #flat-grid { grid-template-columns: repeat(2, 1fr) !important; min-width: 0 !important; }
       .gthumb { height: auto !important; aspect-ratio: 4 / 3 !important; }
-      .flat-toolbar { padding: 10px 12px !important; }
+      .flat-toolbar { padding: 10px 12px !important; flex-wrap: wrap !important; overflow-x: visible !important; }
       #flat-q { flex: 1 1 100% !important; }
       #board-badge { display: none !important; }
       .board-subtabs { overflow-x: auto !important; -webkit-overflow-scrolling: touch !important; }
@@ -2114,7 +2114,7 @@
         </div>
       </div>
       <div id="galleryView" style="display:none;flex-direction:column;flex:1;min-height:0;overflow:hidden;">
-        <div class="flat-toolbar" style="flex-shrink:0;padding:12px 16px;display:flex;flex-wrap:wrap;gap:9px;border-bottom:1px solid rgba(13,58,88,0.1);">
+        <div class="flat-toolbar" style="flex-shrink:0;padding:12px 16px;display:flex;flex-wrap:nowrap;gap:9px;border-bottom:1px solid rgba(13,58,88,0.1);overflow-x:auto;">
           <input id="flat-q" type="text" placeholder="검색 (ID · DIR · 사유)" oninput="renderFlatGrid()"
             style="flex:0 1 150px;min-width:0;background:rgba(13,58,88,0.04);border:1px solid rgba(13,58,88,0.2);color:#0d3a58;font-family:'Space Mono',monospace;font-size:11px;padding:7px 10px;outline:none;">
           <div style="position:relative;flex-shrink:0;">
