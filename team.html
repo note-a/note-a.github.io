@@ -1359,8 +1359,8 @@
   #app .tb-center:hover .tb-search-text{ text-decoration:none!important; }
   #app .tb-search-ico{ display:none!important; }
   #app .tb-search-text{
-    font-size:23px!important; letter-spacing:-.3px!important; text-transform:none!important; white-space:nowrap!important; overflow:visible!important;
-    display:flex!important; flex-direction:column!important; align-items:center!important; gap:4px!important; line-height:.82!important;
+    font-size:27px!important; letter-spacing:-.3px!important; text-transform:none!important; white-space:nowrap!important; overflow:visible!important;
+    display:flex!important; flex-direction:row!important; align-items:baseline!important; gap:10px!important; line-height:1!important;
   }
   #app .tb-part1,#app .tb-part2{
     color:#ffffff!important;
@@ -1377,6 +1377,7 @@
     color:transparent!important; -webkit-text-fill-color:transparent!important; -webkit-text-stroke:1.5px #ffffff!important;
     text-shadow:none!important;
     filter:drop-shadow(0 2px 3px rgba(6,30,50,.3))!important;
+    position:relative!important; top:0.08em!important;
   }
   #app .tb-center{ letter-spacing:0!important; }
   @media (max-width:900px){
@@ -2765,7 +2766,7 @@ function flatFiltered(){
       if(hay.indexOf(q)<0) return false;
     }
     return true;
-  });
+  }).sort((a,b)=> b.sheet.localeCompare(a.sheet) || b.uid-a.uid);
 }
 
 function renderFlatStats(filteredCount){
