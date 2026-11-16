@@ -39,9 +39,9 @@
   .city.on text{fill:#000;font-weight:500}
   #hours{display:grid;grid-template-columns:repeat(24,1fr);gap:2px;height:46px;align-items:end;margin-top:8px}
   #hours div{background:#d8d8d8;cursor:pointer;position:relative;min-height:3px}
-  #hours div::after{content:attr(data-o);position:absolute;bottom:100%;left:50%;transform:translateX(-50%);font-size:8.5px;color:#888;padding-bottom:2px;white-space:nowrap}
+  #hours div::after{content:none;position:absolute;bottom:100%;left:50%;transform:translateX(-50%);font-size:8.5px;color:#888;padding-bottom:2px;white-space:nowrap}
   #hours div.sel::after{color:#eb5050;font-weight:500}
-  #hours{margin-top:22px!important}
+  #hours{margin-top:8px!important}
   #hours div:hover{background:#999}
   #slip{border:1px solid #000;margin-top:10px;padding:8px 10px;display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:center;font-size:12px}
   #slip .s1{font-weight:500;letter-spacing:.06em;background:#000;color:#fff;padding:3px 7px;font-size:11px}
@@ -115,9 +115,10 @@
   <div class="lead"><div class="ko">2022년 8월, 전세계 사람들이 이미지 생성 AI(Stable Diffusion 디스코드)에 실제로 입력한 프롬프트다.</div><div class="en">Prompts that people around the world actually typed into an image-generating AI (the Stable Diffusion Discord) in August 2022.</div></div>
   <ul>
     <li><span class="b">*</span><div class="ko">프롬프트 하나는 어음 한 장이다. 발행 시각, 번호(seed), 만기(steps)가 적혀 있다. 이 어음으로 받은 이미지들은 지금 모두 열리지 않는다. 결제 결과는 <b class="red">404 부도</b>.</div><div class="en">Each prompt is a promissory note, stamped with its issue time, number (seed) and maturity (steps). The images these notes paid out no longer open. Payment result: <b class="red">404 dishonored</b>.</div></li>
-    <li><span class="b">*</span><div class="ko">지도에서 도시를 누르면 그 도시의 시간으로 본다. 아래 시간 막대를 누르면 그 도시가 그 시각이었을 때 발행된 어음만 흐른다. 막대 위 숫자는 배당률이다. 드문 시간일수록 높다.</div><div class="en">Tap a city on the map to see it in that city's time. Tap an hour below and only the notes issued while that city was at that hour will flow. The number above each bar is the odds: the rarer the hour, the higher.</div></li>
+    <li><span class="b">*</span><div class="ko">지도에서 도시를 누르면 그 도시의 시간으로 본다. 아래 시간 막대를 누르면 그 도시가 그 시각이었을 때 발행된 어음만 흐른다.</div><div class="en">Tap a city on the map to see it in that city's time. Tap an hour below and only the notes issued while that city was at that hour will flow.</div></li>
     <li><span class="b">*</span><div class="ko">떠다니는 이미지는 AI 이미지에서 기계가 이름을 붙인 조각뿐이다.</div><div class="en">The floating images are only the fragments of AI images that a machine has named.</div></li>
-    <li><span class="b">*</span><div class="ko">화면엔 2026년 11월 10일 춘천에서 찍힌 사진들이 뜨고, 지도는 그 순간으로 돌아가고, 기계가 이름을 붙인 부분만 배당되어 흐름 속으로 흩어진다. 이름 없는 부분은 미지급으로 지워진다.</div><div class="en">Photographs taken in Chuncheon on 10 November 2026 appear on the screen. The map returns to that moment, and only the parts the machine names are paid out as dividends, scattering into the flow. The unnamed parts are erased as unpaid.</div></li>
+    <li><span class="b">*</span><div class="ko">2026년 11월 10일 춘천에서 찍힌 사진이 네 장씩 뜬다. 지도는 셔터가 눌린 순간으로 돌아가고, 기계가 이름을 붙인 부분만 배당되어 흐름 속으로 흩어진다. 이름 없는 부분은 미지급으로 지워진다.</div><div class="en">Photographs taken in Chuncheon on 10 November 2026 appear four at a time. The map returns to the moment each shutter was pressed, and only the parts the machine names are paid out as dividends, scattering into the flow. The unnamed parts are erased as unpaid.</div></li>
+    <li><span class="b">*</span><div class="ko">단어 하나에 건다. 다음에 뜨는 사진 네 장에서 기계가 그 단어를 부르면, 부른 개수만큼 배당률을 곱해 받는다. 드문 단어일수록 배당률이 높다. NOTHING은 기계가 아무것도 부르지 못하는 쪽에 거는 것이다.</div><div class="en">Bet on a word. If the machine names it in the next four photographs, you are paid the odds for each time it is named. The rarer the word, the higher the odds. NOTHING is a bet that the machine names nothing at all.</div></li>
     <li><span class="b">*</span><div class="ko">화면은 멈추지 않는다. 다시 누르지 않으면 모든 어음이 흐른다.</div><div class="en">The screen does not stop. Unless you tap again, every note flows.</div></li>
   </ul>
   <button id="enter">ENTER</button>
@@ -215,7 +216,7 @@ function drawHours(){
   const cnt=Array(24).fill(0); HOURS[city].forEach(h=>cnt[h]++); const mx=Math.max(...cnt);
   const nh=localH(city,curTs);
   const tot=cnt.reduce((a,b)=>a+b,0);
-  [...hoursEl.children].forEach((d,h)=>{d.style.height=(10+90*cnt[h]/mx)+"%";d.className=(h===hour?"sel":(h===nh?"now":""));d.dataset.o=cnt[h]?"x"+(tot/cnt[h]).toFixed(1):"—";});
+  [...hoursEl.children].forEach((d,h)=>{d.style.height=(10+90*cnt[h]/mx)+"%";d.className=(h===hour?"sel":(h===nh?"now":""));});
 }
 function drawMap(){
   const d=new Date(curTs*1000), doy=(Date.UTC(d.getUTCFullYear(),d.getUTCMonth(),d.getUTCDate())-Date.UTC(d.getUTCFullYear(),0,0))/864e5;
