@@ -69,7 +69,7 @@
   #mode{font-size:11px;margin-top:8px;display:flex;justify-content:space-between;align-items:center;gap:8px}
   #live{border:1px solid #000;background:#fff;font:inherit;font-size:10.5px;padding:2px 8px;cursor:pointer}
   #live.on{background:#000;color:#fff}
-  #intro{position:fixed;inset:0;z-index:10;background:#1d4fd8;color:#fff;display:flex;align-items:center;justify-content:center;padding:28px;overflow:auto;font-family:"IBM Plex Mono","Malgun Gothic","맑은 고딕","Apple SD Gothic Neo",monospace}
+  #intro{position:fixed;inset:0;z-index:10;background:#fff;color:#000;display:flex;align-items:center;justify-content:center;padding:28px;overflow:auto;font-family:"IBM Plex Mono","Malgun Gothic","맑은 고딕","Apple SD Gothic Neo",monospace}
   #intro .box{max-width:640px;width:100%;margin:auto}
   #intro .q .qo{font-size:20px;line-height:1.4;margin-bottom:10px}
   #intro .q .ko,#intro .q .en{font-size:13px;line-height:1.6;color:#fff;margin:0}
@@ -77,13 +77,13 @@
   #intro .qa{font-size:10px;color:#666;margin-top:14px;line-height:1.5}
   #intro .lead{margin-bottom:24px;padding-bottom:18px;border-bottom:1px solid #fff}
   #intro ul{list-style:none}
-  #intro li{margin-bottom:16px}
+  #intro li{margin-bottom:22px}
   #intro li>.b{position:absolute;left:0;top:0;font-size:12px}
   #intro .ko{font-size:12px;line-height:1.65;word-break:keep-all}
-  #intro .en{font-size:12px;line-height:1.55;color:#b9cdfa;margin-top:2px}
-  #intro .red{color:#ffb3ae}
-  #intro button{margin-top:22px;border:1px solid #fff;background:#fff;color:#1d4fd8;font:inherit;font-size:12px;letter-spacing:.08em;padding:10px 26px;cursor:pointer}
-  #intro button:hover{background:#1d4fd8;color:#fff}
+  #intro .en{font-size:12px;line-height:1.55;color:#777;margin-top:2px}
+  #intro .red{color:#d1242f}
+  #intro button{margin-top:22px;border:1px solid #000;background:#000;color:#fff;font:inherit;font-size:12px;letter-spacing:.08em;padding:10px 26px;cursor:pointer}
+  #intro button:hover{background:#fff;color:#000}
   #intro .src{margin-top:22px;font-size:10px;color:#9fb8f2;line-height:1.5}
   #intro [hidden]{display:none}
   @media (min-width:900px) and (orientation:landscape){
@@ -91,6 +91,29 @@
     #intro button{font-size:14px}
     #intro .src{font-size:12px}
   }
+  #intro .ttl{border-bottom:1px solid #fff;padding-bottom:14px;margin-bottom:22px}
+  #intro .t1{font-size:22px;letter-spacing:-.01em;margin-bottom:8px}
+  #intro .t2{font-size:11.5px;line-height:1.6;color:#dfe8ff}
+  #intro .t2 span{color:#b9cdfa}
+  #intro .sec{margin-bottom:18px}
+  #intro .sec.last{border-top:1px solid rgba(255,255,255,.5);padding-top:14px;margin-top:4px}
+  #intro .how{border-top:1px solid rgba(255,255,255,.5);padding-top:12px;margin:4px 0 18px}
+  #intro .hh{font-size:12px;margin-bottom:10px;letter-spacing:.04em}
+  #intro .hh span,#intro .tm span{color:#b9cdfa;margin-left:6px}
+  #intro .rw{display:grid;grid-template-columns:9em 1fr;gap:10px;margin-bottom:12px}
+  #intro .tm{font-size:12px}
+  #intro .tm span{display:block;margin-left:0;font-size:11px}
+  @media (orientation:portrait){#intro .rw{grid-template-columns:1fr;gap:2px}}
+  #intro .kb p{font-size:13px;line-height:1.75;word-break:keep-all;margin-bottom:12px}
+  #intro .eb{border-top:1px solid rgba(0,0,0,.25);margin-top:18px;padding-top:16px}
+  #intro .eb p{font-size:12px;line-height:1.6;color:#777;margin-bottom:10px}
+  @media (min-width:900px) and (orientation:landscape){#intro .kb p{font-size:15px}#intro .eb p{font-size:13.5px}}
+  #intro .cf{display:grid;grid-template-columns:7.5em 1fr;gap:12px;padding:6px 0;border-bottom:1px solid rgba(255,255,255,.22)}
+  #intro .kb .cf{font-size:13px;line-height:1.65;word-break:keep-all}
+  #intro .eb .cf{font-size:11.5px;line-height:1.55;color:#b9cdfa;border-bottom-color:rgba(255,255,255,.14)}
+  #intro .cl{opacity:.75;letter-spacing:.04em}
+  @media (min-width:900px) and (orientation:landscape){#intro .kb .cf{font-size:14px}#intro .eb .cf{font-size:12.5px}#intro .box{max-width:760px}}
+  @media (orientation:portrait){#intro .cf{grid-template-columns:5.6em 1fr;gap:8px}}
   #intro.out{animation:out .35s steps(3) forwards}
   @keyframes out{to{opacity:0;visibility:hidden}}
   #betpop{position:fixed;inset:0;z-index:8;background:rgba(255,255,255,.55);display:flex;align-items:center;justify-content:center;padding:20px;font-family:"IBM Plex Mono","Malgun Gothic","맑은 고딕","Apple SD Gothic Neo",monospace}
@@ -135,24 +158,24 @@
   #respop .rtot{font-size:11px;opacity:.8;border-top:1px solid rgba(255,255,255,.4);padding-top:8px}
   #gpop{position:fixed;inset:0;z-index:9;display:flex;align-items:center;justify-content:center;pointer-events:none}
   #gpop[hidden]{display:none}
-  #gpop .col{width:min(560px,92vw);border-radius:10px;overflow:hidden;background:#1d4fd8;-webkit-backdrop-filter:blur(20px);backdrop-filter:blur(20px);box-shadow:0 0 0 .5px rgba(255,255,255,.18) inset,0 0 0 .5px rgba(0,0,0,.6),0 24px 60px rgba(0,0,0,.4);animation:mac .25s cubic-bezier(.2,1.2,.35,1) both}
+  #gpop .col{width:min(560px,92vw);border-radius:10px;overflow:hidden;background:#fff;-webkit-backdrop-filter:blur(20px);backdrop-filter:blur(20px);box-shadow:0 0 0 .5px rgba(255,255,255,.18) inset,0 0 0 .5px rgba(0,0,0,.6),0 24px 60px rgba(0,0,0,.4);animation:mac .25s cubic-bezier(.2,1.2,.35,1) both}
   @keyframes mac{from{transform:scale(.94);opacity:0}to{transform:none;opacity:1}}
   #gpop .chrome{height:28px;background:linear-gradient(#ececec,#d8d8d8);border-bottom:1px solid #b5b5b5;display:flex;align-items:center;position:relative;padding:0 10px}
   #gpop .lights{display:flex;gap:8px}
   #gpop .lights i{width:12px;height:12px;border-radius:50%}
   #gpop .lights i:nth-child(1){background:#ff5f57}#gpop .lights i:nth-child(2){background:#febc2e}#gpop .lights i:nth-child(3){background:#28c840}
   #gpop .ttl{position:absolute;left:0;right:0;text-align:center;font:600 12px -apple-system,BlinkMacSystemFont,"Helvetica Neue",sans-serif;color:#4a4a4a}
-  #gpop .term{padding:10px 12px 14px;min-height:260px;font:12.5px/1.5 "SF Mono",Menlo,Monaco,"IBM Plex Mono","Malgun Gothic",monospace;color:#fff;white-space:pre-wrap;word-break:break-all}
-  #gpop .g{color:#7dffa8} #gpop .r{color:#ffb3ae} #gpop .y{color:#fff59a} #gpop .c{color:#bfe3ff} #gpop .d{color:#9fb8f2}
+  #gpop .term{padding:10px 12px 14px;min-height:260px;font:12.5px/1.5 "SF Mono",Menlo,Monaco,"IBM Plex Mono","Malgun Gothic",monospace;color:#000;white-space:pre-wrap;word-break:break-all}
+  #gpop .g{color:#1a7f37} #gpop .r{color:#d1242f} #gpop .y{color:#9a6700} #gpop .c{color:#0550ae} #gpop .d{color:#8c8c8c}
   #gpop .big{font-weight:700}
-  #gpop .cur{display:inline-block;width:.6em;background:#fff;animation:cb 1s steps(1) infinite}
+  #gpop .cur{display:inline-block;width:.6em;background:#000;animation:cb 1s steps(1) infinite}
   @keyframes cb{50%{opacity:0}}
-  #gtag{position:absolute;left:4%;top:10px;z-index:3;width:260px;border-radius:8px;overflow:hidden;background:#1d4fd8;box-shadow:0 0 0 .5px rgba(0,0,0,.6),0 8px 24px rgba(0,0,0,.3);pointer-events:none;font:11.5px/1.5 "SF Mono",Menlo,Monaco,monospace;color:#fff}
+  #gtag{position:absolute;left:4%;top:10px;z-index:3;width:260px;border-radius:8px;overflow:hidden;background:#fff;box-shadow:0 0 0 .5px rgba(0,0,0,.6),0 8px 24px rgba(0,0,0,.3);pointer-events:none;font:11.5px/1.5 "SF Mono",Menlo,Monaco,"Apple SD Gothic Neo","Malgun Gothic",monospace;color:#000}
   #gtag[hidden]{display:none}
   #gtag .h{height:18px;background:linear-gradient(#ececec,#d8d8d8);border-bottom:1px solid #b5b5b5;display:flex;gap:5px;align-items:center;padding:0 7px}
   #gtag .h i{width:8px;height:8px;border-radius:50%;background:#ff5f57}#gtag .h i+i{background:#febc2e}#gtag .h i+i+i{background:#28c840}
   #gtag .c{padding:5px 8px 7px}
-  #gtag b{color:#7dffa8;font-weight:700}
+  #gtag b{color:#1a7f37;font-weight:700}
   @keyframes in{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
   #foot{font-size:9.5px;color:#999;padding:8px 0 12px;border-top:1px solid #eee;line-height:1.4}
   @media (orientation:portrait){
@@ -175,19 +198,14 @@
 <body>
 <div id="intro">
 <div class="box" id="p2">
-  <div class="lead"><div class="ko">기계는 이름을 붙일 수 있는 것에만 값을 매긴다.</div><div class="en">The machine puts a price only on what it can name.</div></div>
-  <ul>
-    <li><div class="ko">흐르는 글은 2022년 8월, 전세계 사람들이 이미지 생성 AI(Stable Diffusion 디스코드)에 실제로 입력한 프롬프트다. 프롬프트 하나는 어음 한 장이다. 이 어음으로 받은 이미지는 지금 모두 열리지 않는다. 결제 결과는 <b class="red">404 부도</b>.</div><div class="en">The scrolling text is real prompts that people around the world typed into an image-generating AI (the Stable Diffusion Discord) in August 2022. Each prompt is a promissory note. The images they paid out no longer open. Payment result: <b class="red">404 dishonored</b>.</div></li>
-    <li><div class="ko">떠다니는 이미지는 AI 이미지에서 기계가 이름을 붙인 조각뿐이다.</div><div class="en">The floating images are only the fragments of AI images that a machine has named.</div></li>
-    <li><div class="ko">2026년 11월 10일 춘천에서 찍은 사진이 네 장씩 뜬다. 기계는 아는 것에 이름을 붙이고, 이름 없는 부분은 몇 초 만에 지운다.</div><div class="en">Photographs taken in Chuncheon on 10 November 2026 appear four at a time. The machine names what it knows and erases the unnamed parts within seconds.</div></li>
-    <li><div class="ko">이름 없는 부분을 누르면 구한다. 구한 조각은 면에서 선으로 펴져 화면 아래 한 줄에 이어 붙고, 부도난 어음 한 장을 갚는다.</div><div class="en">Tap an unnamed part to rescue it. The piece is unrolled from a plane into a line, joined to the single line at the bottom of the screen, and settles one dishonored note.</div></li>
-    <li><div class="ko">이름 붙은 칸을 누르면 판다. 토큰을 받지만, 그 조각은 AI 이미지 속으로 흡수된다.</div><div class="en">Tap a named box to sell it. You receive tokens, but that piece is absorbed into the AI images.</div></li>
-    <li><div class="ko">한 판에서 판 것보다 구한 것이 많으면 당신이 이기고, 아니면 기계가 이긴다. 같은 자리를 둘 다 가질 수는 없다.</div><div class="en">Rescue more than you sell in a round and you win; otherwise the machine wins. You cannot have both from the same place.</div></li>
-    <li><div class="ko">지도는 사진이 찍힌 순간으로 돌아간다. 도시와 시간을 누르면 그 도시가 그 시각이었을 때 발행된 어음만 흐른다.</div><div class="en">The map returns to the moment each photograph was taken. Tap a city and an hour to let only the notes issued at that hour in that city flow.</div></li>
-    <li><div class="ko">화면은 멈추지 않는다.</div><div class="en">The screen does not stop.</div></li>
-  </ul>
+  <div class="kb">
+    <p>2022년 8월, 이미지 생성 AI에 869개의 문장이 입력되었다. 각 문장은 한 장의 이미지를 약속하는 어음이었으나, 그 이미지들은 지금 어느 것도 열리지 않은 채 모두 부도 처리되었다 <b class="red">(404)</b>. 2026년 11월 10일, 춘천에서 62장의 사진이 기록되었다. 기계는 그 안에서 자신이 아는 것, 이를테면 자동차와 사람과 신호등에만 이름을 부여했고, 이름 없는 나머지는 수 초 안에 지워 나갔다. 그 짧은 간격 속에서 이름 없는 자리에 손이 닿으면, 그 조각은 소거를 피해 화면 아래의 선으로 이어졌고 부도난 약속 하나를 대신 결제했다. 이름 붙은 자리에 손이 닿으면, 조각은 배당으로 환산되어 토큰이 지급되었고 AI 이미지의 흐름 속으로 흡수되었다. 남겨진 것이 팔린 것보다 많은 판은 사람의 몫으로, 그렇지 않은 판은 기계의 몫으로 기록되었다. 지도 위에서 도시와 시간을 고르면, 그 시각에 쓰인 문장들만이 다시 흘렀다.</p>
+  </div>
+  <div class="eb">
+    <p>In August 2022, 869 sentences were entered into an image-generating AI. Each was a promissory note for an image, yet none of those images will open now; all were dishonored <b class="red">(404)</b>. On 10 November 2026, sixty-two photographs were recorded in Chuncheon. Within them the machine granted names only to what it knew, cars, people, traffic lights, and went on erasing the unnamed remainder within seconds. In that brief interval, a touch on an unnamed place let the piece escape erasure; it joined the line at the bottom of the screen and settled one broken promise in its stead. A touch on a named place converted the piece into a dividend, paid out in tokens, and absorbed it into the current of AI images. Rounds in which more was kept than sold were recorded as the viewer's; the rest, as the machine's. Choosing a city and an hour on the map let only the sentences written at that moment flow again.</p>
+  </div>
   <button id="enter">ENTER</button>
-  <div class="src">prompts: krea-ai/open-prompts · images: stable-diffusion-image-prompt-gallery · photographs: 김혜지, FUJIFILM X100V, 2026.11.10</div>
+</div>
 </div>
 </div>
 <div id="gpop" hidden><div class="col" id="col"></div></div>
@@ -208,7 +226,7 @@
       <div id="hours"></div>
       <div id="hlab"><span>00</span><span>06</span><span>12</span><span>18</span><span>23</span></div>
       <div id="mode"><span id="mtext">—</span><button id="live" class="on">LIVE</button></div>
-      <div id="slip"><div class="s1" id="s1">LEDGER</div><div class="s2" id="s2">tap what has no name before it disappears · tap a named box to sell it</div><div class="s3" id="s3"></div></div>
+      <div id="slip"><div class="s1" id="s1">LEDGER</div><div class="s2" id="s2">tap what has no name to keep it · tap a named box to sell it</div><div class="s3" id="s3"></div></div>
     </div>
     <div id="feed"></div>
     <div id="foot">notes: real user prompts from the Stable Diffusion Discord, Aug 2022 (krea-ai/open-prompts) — their image links on cdn.discordapp.com lack the signed expiry parameters Discord has required since Dec 2023 and no longer resolve · images: Stable Diffusion outputs (stable-diffusion-image-prompt-gallery) · photographs: 김혜지, FUJIFILM X100V, Chuncheon, 2026.11.10 (EXIF read from the original RAF files)</div>
@@ -318,8 +336,8 @@ function drawSlip(){
   s3.textContent=`YOU ${youW} : ${macW} MACHINE  |  TOKENS ${won.toFixed(1)}  |  LENGTH ${lineCols.toLocaleString()} px`;
   if(ev && t-ev.t0>HOLD && t-ev.t0<SHOW){
     slip.className="armed"; s1.textContent="ERASING";
-    s2.textContent=`${(SHOW-(t-ev.t0)).toFixed(1)}s · tap the unnamed to rescue it · tap a named box to sell it`;
-  }else{ slip.className=""; s1.textContent="LEDGER"; s2.textContent="when photographs appear: tap what has no name before it disappears · tap a named box to sell it"; }
+    s2.textContent=`${(SHOW-(t-ev.t0)).toFixed(1)}s · tap the unnamed to keep it · tap a named box to sell it`;
+  }else{ slip.className=""; s1.textContent="LEDGER"; s2.textContent="when photographs appear: tap what has no name to keep it · tap a named box to sell it"; }
 }
 function pushMeta(ms,ks=[]){
   const el=document.createElement("div"); el.className="m";
@@ -402,12 +420,12 @@ function drawPhoto(et){
       const n=Math.floor(m.boxes.length*Math.min(1,(et-HOLD)/BOXT))+1;
       m.boxes.slice(0,n).forEach(([x1,y1,x2,y2,name,c],bi)=>{
         const X0=g.x+x1*g.s,Y0=g.y+y1*g.s,Wd=(x2-x1)*g.s,Hd=(y2-y1)*g.s;
-        if(st.sold.has(bi)){ c2.fillStyle="#fff"; c2.fillRect(X0,Y0,Wd,Hd); c2.setLineDash([3,3]); c2.strokeStyle="#eb5050"; c2.strokeRect(X0+.5,Y0+.5,Wd,Hd); c2.setLineDash([]); c2.fillStyle="#eb5050"; c2.font="10px 'IBM Plex Mono', monospace"; c2.fillText(`SOLD +${val(name)}`,X0+3,Y0+12); }
+        if(st.sold.has(bi)){ c2.fillStyle="#fff"; c2.fillRect(X0,Y0,Wd,Hd); c2.setLineDash([3,3]); c2.strokeStyle="#eb5050"; c2.strokeRect(X0+.5,Y0+.5,Wd,Hd); c2.setLineDash([]); c2.fillStyle="#eb5050"; c2.font="10px 'IBM Plex Mono', monospace"; c2.fillText(`배당 +${val(name)}`,X0+3,Y0+12); }
         else label(X0,Y0,Wd,Hd,name,c,2,c2);
       });
     }
   });
-  if(et>HOLD){ c2.fillStyle="#000"; c2.font="11px 'IBM Plex Mono', monospace"; const s=`ERASING ${(SHOW-et).toFixed(1)}s · TAP THE UNNAMED TO RESCUE IT`; c2.fillRect(W*.04,4,c2.measureText(s).width+12,16); c2.fillStyle="#fff"; c2.fillText(s,W*.04+6,16); }
+  if(et>HOLD){ c2.fillStyle="#000"; c2.font="11px 'IBM Plex Mono', monospace"; const s=`ERASING ${(SHOW-et).toFixed(1)}s · TAP THE UNNAMED TO KEEP IT`; c2.fillRect(W*.04,4,c2.measureText(s).width+12,16); c2.fillStyle="#fff"; c2.fillText(s,W*.04+6,16); }
   drawLine(c2); drawHUD(c2);
 }
 function scatter(){
@@ -449,7 +467,7 @@ function drawLine(c){
   const y=H-LINE_H-16, w=Math.floor(W);
   c.fillStyle="#fff"; c.fillRect(0,y-14,W,LINE_H+30);
   c.fillStyle="#000"; c.font="10px 'IBM Plex Mono', monospace";
-  c.fillText(`CONTINUUM · ${lineCols.toLocaleString()} px · rescued planes, unrolled into one line`,W*.04,y-4);
+  c.fillText(`CONTINUUM · ${lineCols.toLocaleString()} px · kept planes, unrolled into one line`,W*.04,y-4);
   c.strokeStyle="#000"; c.lineWidth=1; c.strokeRect(.5,y-.5,W-1,LINE_H+1);
   if(!lineBuf.length) return;
   const n=Math.min(w,lineBuf.length); strip.width=n; strip.height=1;
@@ -527,22 +545,18 @@ function showPop(kind,dur){
   colEl.style.animation="none"; colEl.offsetHeight; colEl.style.animation="";
   const named=lastKs.flatMap(k=>DATA.mine[k].boxes.map(bx=>bx[4]));
   const files=lastKs.map(k=>(DATA.mine[k].meta.find(x=>x[0]==="FILE")||[,""])[1]).join(" ");
-  const res = v==="win" ? `<span class="g big">RESULT: YOU WIN</span>` : v==="draw" ? `<span class="y big">RESULT: DRAW</span>` : `<span class="r big">RESULT: MACHINE WINS</span>`;
-  const ko = v==="win" ? "이름 없는 것이 더 많이 남았다." : v==="draw" ? "구한 만큼 팔았다." : (a||b) ? "기계가 더 많이 가져갔다." : "아무것도 구하지 못했다.";
+  const vs = v==="win" ? `<span class="g big">결과: 당신 승</span>  <span class="d">남김 ${a} &gt; 팖 ${b}</span>` : v==="draw" ? `<span class="y big">결과: 무승부</span>  <span class="d">남김 ${a} = 팖 ${b}</span>` : `<span class="r big">결과: 기계 승</span>  <span class="d">남김 ${a} ≤ 팖 ${b}</span>`;
   const P_="<span class=\"c\">capital@continuum</span> <span class=\"d\">~</span> % ";
+  const uniq=[...new Set(named)];
   const lines=[
-    `<span class="d">Last login: ${new Date().toString().slice(0,24)} on ttys00${roundNo%10}</span>`,
     P_+`./continuum --round ${roundNo}`,
-    `reading ${esc(files)}`,
-    `naming ......................... ${named.length?esc([...new Set(named)].join(", ")):"<span class=\"d\">(nothing)</span>"}`,
-    `erasing unnamed ................ <span class="r">done</span>`,
-    `rescued   ${String(a).padEnd(3)} <span class="g">+${(a*256).toLocaleString()} px</span>`,
-    `sold      ${String(b).padEnd(3)} <span class="y">+${r.won.toFixed(1)} tokens</span>`,
-    `notes     ${a?`<span class="g">${a} paid</span>`:`<span class="r">404 dishonored</span>`}`,
+    `사진 ${lastKs.length}장 · 기계가 부른 이름: ${uniq.length?esc(uniq.join(", ")):"<span class=\"d\">없음</span>"}`,
+    `이름 없는 부분 지우는 중 ........ <span class="r">완료</span>`,
+    `남김  ${a}  → ${a?`<span class="g">부도 어음 ${a}장 결제</span>  <span class="d">선 +${(a*256).toLocaleString()} px</span>`:`<span class="r">어음 404 부도 그대로</span>`}`,
+    `팖    ${b}  → ${b?`<span class="y">배당 +${r.won.toFixed(1)} 토큰</span>  <span class="d">조각은 AI 이미지로</span>`:`<span class="d">배당 없음</span>`}`,
     `<span class="d">────────────────────────────────────────</span>`,
-    res,
-    ko,
-    `<span class="d">you ${youW} : ${macW} machine · tokens ${won.toFixed(1)} · length ${lineCols.toLocaleString()} px</span>`,
+    vs,
+    `<span class="d">누적  당신 ${youW} : ${macW} 기계 · 배당 ${won.toFixed(1)} 토큰 · 결제된 어음 ${settled.size}장 · 선 ${lineCols.toLocaleString()} px</span>`,
     P_+`<span class="cur">&nbsp;</span>`
   ];
   colEl.innerHTML=`<div class="chrome"><div class="lights"><i></i><i></i><i></i></div><div class="ttl">continuum — -zsh — 80×24</div></div><div class="term" id="term"></div>`;
@@ -553,7 +567,7 @@ function showPop(kind,dur){
 }
 function tickPop(){
   if(!gp.hidden && t>=gpUntil) gp.hidden=true;
-  if(tagOn){ const left=Math.max(0,nextEv-t); gtag.innerHTML=`<div class="h"><i></i><i></i><i></i></div><div class="c">% ./continuum --round ${roundNo+1}<br>4 photographs incoming in <b>${left>2?3:left>1?2:1}</b></div>`; if(ev||left<=0){tagOn=false;gtag.hidden=true;} }
+  if(tagOn){ const left=Math.max(0,nextEv-t); gtag.innerHTML=`<div class="h"><i></i><i></i><i></i></div><div class="c">% ./continuum --round ${roundNo+1}<br>사진 4장 도착까지 <b>${left>2?3:left>1?2:1}</b></div>`; if(ev||left<=0){tagOn=false;gtag.hidden=true;} }
   if(!ev && nextEv-t<=3 && preShown!==roundNo && t>2){ preShown=roundNo; showPop("pre"); }
 }
 let roundNo=0, youW=0, macW=0;
@@ -575,13 +589,13 @@ document.getElementById("left").addEventListener("pointerdown",e=>{
     const bi=m.boxes.findIndex(([x1,y1,x2,y2])=>sx>=x1&&sx<=x2&&sy>=y1&&sy<=y2);
     if(bi>=0){
       if(st.sold.has(bi)) return;
-      const [x1,y1,x2,y2,name,c]=m.boxes[bi]; st.sold.add(bi); sold++; won+=val(name); ev.sum.sold.push([k,x1,y1,x2-x1,y2-y1]); ev.sum.won+=val(name); floats.push({s:`+${val(name)} TOKENS`,x:px,y:py,t0:t,col:"#eb5050"});
+      const [x1,y1,x2,y2,name,c]=m.boxes[bi]; st.sold.add(bi); sold++; won+=val(name); ev.sum.sold.push([k,x1,y1,x2-x1,y2-y1]); ev.sum.won+=val(name); floats.push({s:`배당 +${val(name)}`,x:px,y:py,t0:t,col:"#eb5050"});
       const f=[{img:mineImgs[k],x:x1,y:y1,w:x2-x1,h:y2-y1,ox:0,oy:0,n:name,c}];
       for(let j=0;j<4;j++) DATA.groups.push({f,ih:y2-y1,base:Math.max(m.w,m.h)*.9});
     }else{
       if(fadeA(et)>=.97) return;
       const sz=Math.round(Math.min(m.w,m.h)*.14), x=Math.max(0,Math.min(m.w-sz,Math.round(sx-sz/2))), y=Math.max(0,Math.min(m.h-sz,Math.round(sy-sz/2)));
-      st.res.push([x,y,sz,sz]); rescued++; ev.sum.res.push([k,x,y,sz,sz]); floats.push({s:`+256 px`,x:px,y:py,t0:t,col:"#000"});
+      st.res.push([x,y,sz,sz]); rescued++; ev.sum.res.push([k,x,y,sz,sz]); floats.push({s:`어음 결제 +256px`,x:px,y:py,t0:t,col:"#000"});
       unroll(mineImgs[k],x,y,sz,sz);
       settleNote((m.meta.find(r=>r[0]==="FILE")||[,""])[1],x,y);
     }
@@ -598,7 +612,7 @@ function typeIn(box,speed,done){
   for(const nd of list){
     const a=document.createElement("span"), h=document.createElement("span");
     h.style.visibility="hidden"; h.textContent=nd.nodeValue; nd.replaceWith(a,h);
-    const g=a.parentElement.closest(".lead,li")||box, lane=a.parentElement.closest(".ko,.en")||a.parentElement;
+    const g=a.parentElement.closest(".kb,.eb,.lead,li")||box, lane=a.parentElement.closest(".cf,p,.ko,.en")||a.parentElement;
     if(!gmap.has(g)){gmap.set(g,new Map()); groups.push(gmap.get(g));}
     const lanes=gmap.get(g); if(!lanes.has(lane)) lanes.set(lane,[]); lanes.get(lane).push([a,h]);
   }
