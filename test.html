@@ -133,6 +133,25 @@
   #respop .rcrops{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px}
   #respop .rcrops canvas{height:70px;border:1px solid #fff;background:#fff}
   #respop .rtot{font-size:11px;opacity:.8;border-top:1px solid rgba(255,255,255,.4);padding-top:8px}
+  #gpop{position:fixed;inset:0;z-index:9;display:flex;align-items:center;justify-content:center;padding:20px;pointer-events:none;font-family:"IBM Plex Mono","Malgun Gothic","맑은 고딕","Apple SD Gothic Neo",monospace}
+  #gpop[hidden]{display:none}
+  #gpop .gbox{background:#000;color:#fff;max-width:520px;width:100%;padding:20px 22px;animation:gin .16s steps(3)}
+  @keyframes gin{from{opacity:0;transform:scale(.97)}to{opacity:1;transform:none}}
+  #gpop .gk{font-size:10.5px;color:#8a8a8a;letter-spacing:.08em;margin-bottom:6px}
+  #gpop .gt{font-size:40px;line-height:1.1;letter-spacing:.04em;margin-bottom:8px}
+  #gpop .gs{font-size:12.5px;line-height:1.6;word-break:keep-all}
+  #gpop .gs span{color:#8a8a8a}
+  #gpop .gcrops{display:flex;flex-wrap:wrap;gap:5px;margin-top:10px}
+  #gpop .gcrops canvas{height:54px;border:1px solid #fff}
+  #gpop .gcrops canvas.sold{border:1px dashed #eb5050}
+  #gpop .gf{font-size:10.5px;color:#8a8a8a;margin-top:10px;border-top:1px solid #333;padding-top:8px}
+  #gpop .gf b{color:#fff;font-weight:400}
+  #gpop .gt .gsub{font-size:14px;letter-spacing:.02em;margin-top:6px;opacity:.9}
+  #gpop .gbox.lose{background:#fff;color:#000;border:2px solid #000}
+  #gpop .gbox.lose .gk,#gpop .gbox.lose .gs span,#gpop .gbox.lose .gf{color:#666}
+  #gpop .gbox.lose .gf b{color:#000}
+  #gpop .gbox.red{background:#eb5050}
+  #gpop .gbox.red .gk,#gpop .gbox.red .gs span,#gpop .gbox.red .gf{color:#fff}
   @keyframes in{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
   #foot{font-size:9.5px;color:#999;padding:8px 0 12px;border-top:1px solid #eee;line-height:1.4}
   @media (orientation:portrait){
@@ -162,7 +181,7 @@
     <li><span class="b">*</span><div class="ko">2026년 11월 10일 춘천에서 찍은 사진이 네 장씩 뜬다. 기계는 아는 것에 이름을 붙이고, 이름 없는 부분은 몇 초 만에 지운다.</div><div class="en">Photographs taken in Chuncheon on 10 November 2026 appear four at a time. The machine names what it knows and erases the unnamed parts within seconds.</div></li>
     <li><span class="b">*</span><div class="ko">이름 없는 부분을 누르면 구한다. 구한 조각은 면에서 선으로 펴져 화면 아래 한 줄에 이어 붙고, 부도난 어음 한 장을 갚는다.</div><div class="en">Tap an unnamed part to rescue it. The piece is unrolled from a plane into a line, joined to the single line at the bottom of the screen, and settles one dishonored note.</div></li>
     <li><span class="b">*</span><div class="ko">이름 붙은 칸을 누르면 판다. 값을 받지만, 그 조각은 AI 이미지 속으로 흡수된다.</div><div class="en">Tap a named box to sell it. You are paid, but that piece is absorbed into the AI images.</div></li>
-    <li><span class="b">*</span><div class="ko">팔면 장부의 돈(WON)이 늘고, 구하면 선의 길이(LENGTH)가 는다. 시간은 짧고, 같은 자리를 둘 다 가질 수는 없다.</div><div class="en">Selling adds to your money (WON); rescuing adds to the length of the line (LENGTH). Time is short, and you cannot have both from the same place.</div></li>
+    <li><span class="b">*</span><div class="ko">팔면 토큰(TOKENS)이 쌓이고, 구하면 선의 길이(LENGTH)가 는다. 한 판에서 판 것보다 구한 것이 많으면 당신이 이기고, 아니면 기계가 이긴다. 시간은 짧고, 같은 자리를 둘 다 가질 수는 없다.</div><div class="en">Selling stacks up TOKENS; rescuing adds to the LENGTH of the line. Rescue more than you sell in a round and you win; otherwise the machine wins. Time is short, and you cannot have both from the same place.</div></li>
     <li><span class="b">*</span><div class="ko">지도는 사진이 찍힌 순간으로 돌아간다. 도시와 시간을 누르면 그 도시가 그 시각이었을 때 발행된 어음만 흐른다.</div><div class="en">The map returns to the moment each photograph was taken. Tap a city and an hour to let only the notes issued at that hour in that city flow.</div></li>
     <li><span class="b">*</span><div class="ko">화면은 멈추지 않는다.</div><div class="en">The screen does not stop.</div></li>
   </ul>
@@ -170,6 +189,13 @@
   <div class="src">prompts: krea-ai/open-prompts · images: stable-diffusion-image-prompt-gallery · photographs: 김혜지, FUJIFILM X100V, 2026.11.10</div>
 </div>
 </div>
+<div id="gpop" hidden><div class="gbox">
+  <div class="gk" id="gk"></div>
+  <div class="gt" id="gt"></div>
+  <div class="gs" id="gs"></div>
+  <div class="gcrops" id="gcrops"></div>
+  <div class="gf" id="gf"></div>
+</div></div>
 <div id="wrap">
   <div id="left"><canvas id="cv"></canvas><canvas id="cv2"></canvas></div>
   <div id="right">
@@ -294,7 +320,7 @@ const settled=new Map(); let won=0, sold=0, rescued=0, issued=0;
 const slip=document.getElementById("slip"), s1=document.getElementById("s1"), s2=document.getElementById("s2"), s3=document.getElementById("s3");
 function drawCount(){ issued=Math.max(issued,vi); cntEl.textContent=`ISSUED ${issued} · PAID ${settled.size} · DISHONORED ${Math.max(0,issued-settled.size)}`; }
 function drawSlip(){
-  s3.textContent=`WON ${won.toFixed(1)} · SOLD ${sold}  |  LENGTH ${lineCols.toLocaleString()} px · RESCUED ${rescued}`;
+  s3.textContent=`YOU ${youW} : ${macW} MACHINE  |  TOKENS ${won.toFixed(1)}  |  LENGTH ${lineCols.toLocaleString()} px`;
   if(ev && t-ev.t0>HOLD && t-ev.t0<SHOW){
     slip.className="armed"; s1.textContent="ERASING";
     s2.textContent=`${(SHOW-(t-ev.t0)).toFixed(1)}s · tap the unnamed to rescue it · tap a named box to sell it`;
@@ -387,7 +413,7 @@ function drawPhoto(et){
     }
   });
   if(et>HOLD){ c2.fillStyle="#000"; c2.font="11px 'IBM Plex Mono', monospace"; const s=`ERASING ${(SHOW-et).toFixed(1)}s · TAP THE UNNAMED TO RESCUE IT`; c2.fillRect(W*.04,4,c2.measureText(s).width+12,16); c2.fillStyle="#fff"; c2.fillText(s,W*.04+6,16); }
-  drawLine(c2);
+  drawLine(c2); drawHUD(c2);
 }
 function scatter(){
   const cs=cells(ev.ks.length);
@@ -399,6 +425,20 @@ function scatter(){
 }
 const val=n=>(DATA.odds&&DATA.odds[n])||2;
 
+// ---------- HUD: score + token stack ----------
+const floats=[];
+function drawHUD(c){
+  const x=W-12, y=8; c.textAlign="right"; c.font="11px 'IBM Plex Mono', monospace";
+  const s1=`YOU ${youW} : ${macW} MACHINE`, s2=`TOKENS ${won.toFixed(1)}`;
+  const tw=Math.max(c.measureText(s1).width,c.measureText(s2).width)+16;
+  c.fillStyle="#000"; c.fillRect(x-tw,y,tw,38); c.fillStyle="#fff"; c.fillText(s1,x-8,y+15); c.fillStyle="#eb5050"; c.fillText(s2,x-8,y+31);
+  c.textAlign="left";
+  // token stack: one square per token
+  const n=Math.floor(won), per=16, sz=8, gap=2; let sx=x-tw, sy=y+44;
+  for(let i=0;i<Math.min(n,200);i++){ const cx=x-(i%per+1)*(sz+gap)+gap, cy=sy+Math.floor(i/per)*(sz+gap); c.fillStyle="#eb5050"; c.fillRect(cx,cy,sz,sz); }
+  for(let i=floats.length-1;i>=0;i--){ const f=floats[i], a=1-(t-f.t0)/1.1; if(a<=0){floats.splice(i,1);continue;}
+    c.globalAlpha=a; c.fillStyle=f.col; c.font="bold 16px 'IBM Plex Mono', monospace"; c.fillText(f.s,f.x,f.y-(1-a)*40); c.globalAlpha=1; }
+}
 // ---------- the continuum line: rescued planes unrolled into one line ----------
 const LINE_H=14; let lineCols=0; const lineBuf=[]; const LINE_KEEP=6000;
 const lc=document.createElement("canvas"), lctx=lc.getContext("2d");
@@ -424,6 +464,46 @@ function drawLine(c){
   c.drawImage(strip,0,0,n,1,W-n,y,n,LINE_H); c.imageSmoothingEnabled=true;
 }
 
+
+// ---------- game popups ----------
+const gp=document.getElementById("gpop"), gbox=gp.querySelector(".gbox");
+let gpUntil=0, preShown=-1, roundSum=null;
+function showPop(kind,dur){
+  const $=id=>document.getElementById(id);
+  $("gcrops").innerHTML="";
+  if(kind==="pre"){
+    gbox.className="gbox";
+    $("gk").textContent=`ROUND ${roundNo+1} · 4 PHOTOGRAPHS INCOMING`;
+    $("gt").textContent="3";
+    $("gs").innerHTML=`이름 없는 곳을 누르면 구하고, 이름 칸을 누르면 판다.<br><span>Tap the unnamed to rescue it. Tap a named box to sell it.</span>`;
+    $("gf").innerHTML=`TOKENS <b>${won.toFixed(1)}</b> · LENGTH <b>${lineCols.toLocaleString()} px</b> · NOTES SETTLED <b>${settled.size}</b>`;
+  }else{
+    const r=roundSum; const none=!r.res.length&&!r.sold.length;
+    const v = r.res.length>r.sold.length ? "win" : r.res.length&&r.res.length===r.sold.length ? "draw" : "lose";
+    gbox.className="gbox "+(v==="win"?"red":v==="draw"?"":"lose");
+    $("gk").textContent=`ROUND ${roundNo} · YOU ${youW} : ${macW} MACHINE`;
+    $("gt").innerHTML= (v==="win"?"YOU WIN":v==="draw"?"DRAW":"MACHINE WINS")+`<div class="gsub">${r.res.length?`+${(r.res.length*256).toLocaleString()} px`:"+0 px"} &nbsp; · &nbsp; ${r.sold.length?`+${r.won.toFixed(1)} TOKENS`:"+0 TOKENS"}</div>`;
+    $("gs").innerHTML = none
+      ? `아무것도 구하지도 팔지도 않았다. 이름 없는 부분은 전부 지워졌다.<br><span>Nothing rescued, nothing sold. Every unnamed part was erased.</span>`
+      : `구함 ${r.res.length} · 팖 ${r.sold.length} · 갚은 어음 ${r.res.length}${v==="lose"?" — 기계가 더 많이 가져갔다.":v==="win"?" — 이름 없는 것이 더 많이 남았다.":""}<br><span>rescued ${r.res.length} · sold ${r.sold.length} · notes settled ${r.res.length}</span>`;
+    for(const [k,x,y,w,h,isSold] of [...r.res.map(a=>[...a,false]),...r.sold.map(a=>[...a,true])].slice(0,12)){
+      const c=document.createElement("canvas"), sc=54/h; c.width=Math.max(8,Math.round(w*sc)); c.height=54;
+      c.getContext("2d").drawImage(mineImgs[k],x,y,w,h,0,0,c.width,c.height); if(isSold)c.className="sold"; $("gcrops").appendChild(c);
+    }
+    $("gf").innerHTML=`TOTAL · TOKENS <b>${won.toFixed(1)}</b> · LENGTH <b>${lineCols.toLocaleString()} px</b> · NOTES SETTLED <b>${settled.size}</b>`;
+  }
+  gp.hidden=false; gpUntil=t+dur;
+}
+function tickPop(){
+  if(!gp.hidden){
+    if(gbox.className==="gbox" && document.getElementById("gk").textContent.includes("INCOMING")){
+      const left=Math.max(0,nextEv-t); document.getElementById("gt").textContent=left>2?"3":left>1?"2":"1";
+    }
+    if(t>=gpUntil) gp.hidden=true;
+  }
+  if(!ev && nextEv-t<=2.6 && preShown!==roundNo && t>2){ preShown=roundNo; showPop("pre",nextEv-t); }
+}
+let roundNo=0, youW=0, macW=0;
 // ---------- tapping ----------
 function settleNote(file,x,y){
   const el=[...feed.querySelectorAll(".p")].reverse().find(e=>!settled.has(+e.dataset.i));
@@ -442,13 +522,13 @@ document.getElementById("left").addEventListener("pointerdown",e=>{
     const bi=m.boxes.findIndex(([x1,y1,x2,y2])=>sx>=x1&&sx<=x2&&sy>=y1&&sy<=y2);
     if(bi>=0){
       if(st.sold.has(bi)) return;
-      const [x1,y1,x2,y2,name,c]=m.boxes[bi]; st.sold.add(bi); sold++; won+=val(name);
+      const [x1,y1,x2,y2,name,c]=m.boxes[bi]; st.sold.add(bi); sold++; won+=val(name); ev.sum.sold.push([k,x1,y1,x2-x1,y2-y1]); ev.sum.won+=val(name); floats.push({s:`+${val(name)} TOKENS`,x:px,y:py,t0:t,col:"#eb5050"});
       const f=[{img:mineImgs[k],x:x1,y:y1,w:x2-x1,h:y2-y1,ox:0,oy:0,n:name,c}];
       for(let j=0;j<4;j++) DATA.groups.push({f,ih:y2-y1,base:Math.max(m.w,m.h)*.9});
     }else{
       if(fadeA(et)>=.97) return;
       const sz=Math.round(Math.min(m.w,m.h)*.14), x=Math.max(0,Math.min(m.w-sz,Math.round(sx-sz/2))), y=Math.max(0,Math.min(m.h-sz,Math.round(sy-sz/2)));
-      st.res.push([x,y,sz,sz]); rescued++;
+      st.res.push([x,y,sz,sz]); rescued++; ev.sum.res.push([k,x,y,sz,sz]); floats.push({s:`+256 px`,x:px,y:py,t0:t,col:"#000"});
       unroll(mineImgs[k],x,y,sz,sz);
       settleNote((m.meta.find(r=>r[0]==="FILE")||[,""])[1],x,y);
     }
@@ -490,17 +570,18 @@ let t=0, last=performance.now(), acc=0;
 const STEP=1/24;
 function frame(){
   if(Math.round(t*24)%3===0) drawSlip();
+  tickPop();
   cv.style.filter="none";
   if(ev){
     const et=t-ev.t0;
     if(et<SHOW){ drawPhoto(et); if(Math.random()<.01)pushPrompt(); return; }
-    lastKs=ev.ks.slice(); scatter(); ev=null; ctx.fillStyle="#fff"; ctx.fillRect(0,0,W,H); 
+    lastKs=ev.ks.slice(); roundSum=ev.sum; { const a=roundSum.res.length,b=roundSum.sold.length; if(a>b) youW++; else if(!(a&&a===b)) macW++; } scatter(); ev=null; showPop("res",2.6); ctx.fillStyle="#fff"; ctx.fillRect(0,0,W,H); 
   }
   if(t>=nextEv){
     const ks=[]; for(let i=0;i<N_AT_ONCE;i++){ if(mk%order.length===0) order.sort(()=>Math.random()-.5); ks.push(order[mk%order.length]); mk++; }
     ks.sort((a,b)=>DATA.mine[a].ts-DATA.mine[b].ts);
-    ev={ks,t0:t,st:ks.map(()=>({sold:new Set(),res:[]}))};
-    nextEv=t+SHOW+rnd(4,6);
+    ev={ks,t0:t,st:ks.map(()=>({sold:new Set(),res:[]})),sum:{res:[],sold:[],won:0}}; roundNo++; gp.hidden=true;
+    nextEv=t+SHOW+rnd(6,7);
     pushMeta(ks.map(k=>DATA.mine[k]),ks); drawPhoto(0); return;
   }
   for(let i=poisson(1.7);i>0;i--) spawn();
@@ -517,7 +598,7 @@ function frame(){
     const g=drawFrag(fr); if(g) labels.push([g,fr.f.n,fr.f.c]);
   }
   for(const [[x,y,w,h],n,c] of labels) label(x,y,w,h,n,c,1);
-  drawLine(ctx2);
+  drawLine(ctx2); drawHUD(ctx2);
 
   cv.style.filter="none";
   if(Math.random()<.015) cv.style.filter="invert(1)";
@@ -532,7 +613,7 @@ resize(); applyFilter(); drawHours();
 document.getElementById("enter").addEventListener("click",()=>{
   const it=document.getElementById("intro"); it.classList.add("out"); setTimeout(()=>it.remove(),400); resize();
   requestAnimationFrame(n=>{last=n;loop(n)});
-  nextEv=4;
+  nextEv=5;
 },{once:true});
 </script>
 </body>
