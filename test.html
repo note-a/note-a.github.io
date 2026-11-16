@@ -10,7 +10,7 @@
   *{box-sizing:border-box;margin:0;padding:0}
   html,body{height:100%;background:#fff;color:#000;overflow:hidden}
   body{font-family:"IBM Plex Mono","Malgun Gothic","맑은 고딕","Apple SD Gothic Neo",monospace}
-  #wrap{position:fixed;inset:0;display:grid;grid-template-columns:1fr 1fr}
+  #wrap{position:fixed;inset:0;display:grid;grid-template-columns:1.7fr 1fr}
   #left{position:relative;border-right:1px solid #000;overflow:hidden}
   #cv,#cv2{position:absolute;inset:0;width:100%;height:100%;display:block}
   #right{display:flex;flex-direction:column;overflow:hidden;padding:18px 22px 0}
@@ -77,7 +77,7 @@
   #intro .qa{font-size:10px;color:#666;margin-top:14px;line-height:1.5}
   #intro .lead{margin-bottom:24px;padding-bottom:18px;border-bottom:1px solid #fff}
   #intro ul{list-style:none}
-  #intro li{margin-bottom:16px;position:relative;padding-left:2ch}
+  #intro li{margin-bottom:16px}
   #intro li>.b{position:absolute;left:0;top:0;font-size:12px}
   #intro .ko{font-size:12px;line-height:1.65;word-break:keep-all}
   #intro .en{font-size:12px;line-height:1.55;color:#8a8a8a;margin-top:2px}
@@ -133,35 +133,55 @@
   #respop .rcrops{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px}
   #respop .rcrops canvas{height:70px;border:1px solid #fff;background:#fff}
   #respop .rtot{font-size:11px;opacity:.8;border-top:1px solid rgba(255,255,255,.4);padding-top:8px}
-  #gpop{position:fixed;inset:0;z-index:9;display:flex;align-items:center;justify-content:center;pointer-events:none}
+  #gpop{position:fixed;inset:0;z-index:9;display:flex;align-items:center;justify-content:center;pointer-events:none;perspective:1200px}
   #gpop[hidden]{display:none}
-  #gpop .col{position:relative;width:min(440px,92vw);height:min(440px,92vw);image-rendering:pixelated}
-  #gpop .col *{position:absolute;image-rendering:pixelated}
-  #gpop .blk{left:20%;top:20%;width:60%;height:60%;background:#6b5cf6}
-  #gpop .rain{left:12%;top:16%;width:18%;height:56%;background:linear-gradient(160deg,#ff3b3b 0 14%,#ff9a00 14% 28%,#ffe600 28% 42%,#29e04a 42% 56%,#21b8ff 56% 70%,#7a3bff 70% 84%,#ff3bd4 84%);clip-path:polygon(30% 0,100% 8%,70% 100%,0 92%);transform:skewY(-8deg)}
-  #gpop .tri{left:20%;top:42%;width:40%;height:38%;background:linear-gradient(135deg,#ff4fd8,#8a5cff 60%,#43c6ff);clip-path:polygon(0 0,100% 100%,0 100%);opacity:.9}
-  #gpop .frag{border:0;animation:bob .5s steps(2) infinite alternate}
-  #gpop .frag.r{outline:2px solid #fff}
-  #gpop .frag.s{outline:2px dashed #ff3b3b}
-  #gpop .lab{font:8px "Press Start 2P",monospace;color:#000;padding:2px 3px;white-space:nowrap}
-  @keyframes bob{to{translate:0 -3px}}
-  #gpop .word{left:0;right:0;top:41%;text-align:center;font:26px/1.15 "Press Start 2P",monospace;color:#ffe600;text-shadow:3px 3px 0 #ff2fd0,6px 6px 0 #000;letter-spacing:1px;animation:blink .35s steps(2) 3}
-  #gpop .word.lose{color:#fff;text-shadow:3px 3px 0 #21b8ff,6px 6px 0 #000}
-  #gpop .word.draw{color:#29e04a}
-  @keyframes blink{50%{opacity:0}}
-  #gpop .bdg{font:20px/1 "VT323",monospace;padding:3px 7px 2px;background:#c0c0c0;color:#000;border:2px solid;border-color:#fff #404040 #404040 #fff;white-space:nowrap}
-  #gpop .bdg.k{background:#000;color:#ffe600;border-color:#555 #000 #000 #555}
-  #gpop .bdg.r{background:#ff2f2f;color:#fff;border-color:#ff9c9c #8a0000 #8a0000 #ff9c9c}
-  #gpop .msg{left:20%;right:20%;top:66%;font:13px/1.3 "VT323","Malgun Gothic","맑은 고딕",monospace;color:#fff;text-align:center;text-shadow:1px 1px 0 #000}
-  #gtag{position:absolute;left:4%;top:8px;z-index:3;font:9px/1 "Press Start 2P",monospace;background:#6b5cf6;color:#ffe600;padding:6px 9px;pointer-events:none;border:2px solid;border-color:#b3aaff #2b1f9e #2b1f9e #b3aaff;text-shadow:2px 2px 0 #ff2fd0}
+  #gpop .col{position:relative;width:min(380px,90vw);transform-style:preserve-3d;transform:rotateX(7deg) rotateY(-11deg);animation:pop .01s .32s both}
+  @keyframes pop{from{opacity:0}to{opacity:1}}
+  #gpop .zoom{position:absolute;inset:0;border:2px solid #808080;animation:zoom .32s steps(6) both;transform:translateZ(16px)}
+  @keyframes zoom{from{transform:translateZ(16px) scale(.08);opacity:1}99%{opacity:1}to{transform:translateZ(16px) scale(1);opacity:0}}
+  #gpop .fc{position:absolute;backface-visibility:hidden}
+  #gpop .front{position:relative;transform:translateZ(16px);background:#c0c0c0;border:1px solid;border-color:#dfdfdf #000 #000 #dfdfdf;box-shadow:inset 1px 1px 0 #fff,inset -1px -1px 0 #808080;padding:3px;font:11px/1.35 Tahoma,"MS Sans Serif",Geneva,"Malgun Gothic",sans-serif;color:#000;-webkit-font-smoothing:none}
+  #gpop .sd.r{right:-32px;top:0;width:32px;height:100%;transform-origin:left;transform:rotateY(90deg);background:#7a7a7a}
+  #gpop .sd.b{left:0;bottom:-32px;width:100%;height:32px;transform-origin:top;transform:rotateX(-90deg);background:#5c5c5c}
+  #gpop .sd.r,#gpop .sd.b{transform-style:flat}
+  #gpop .sdw{position:absolute;inset:0;transform-style:preserve-3d;transform:translateZ(16px)}
+  #gpop .tb{height:18px;background:#000080;color:#fff;display:flex;align-items:center;justify-content:space-between;padding:0 2px 0 3px;font-weight:bold}
+  #gpop .tb.off{background:#808080;color:#c0c0c0}
+  #gpop .tb .tt{display:flex;align-items:center;gap:4px}
+  #gpop .tb canvas{width:16px;height:16px;image-rendering:pixelated}
+  #gpop .tbb{display:flex;gap:0}
+  #gpop .tbb i{width:16px;height:14px;background:#c0c0c0;border:1px solid;border-color:#fff #000 #000 #fff;box-shadow:inset -1px -1px 0 #808080;font:bold 9px/11px Tahoma,sans-serif;color:#000;text-align:center;font-style:normal;margin-left:2px}
+  #gpop .bd{padding:12px 10px 10px}
+  #gpop .top{display:flex;gap:12px;align-items:flex-start}
+  #gpop .top canvas{width:32px;height:32px;image-rendering:pixelated;flex:none}
+  #gpop .top .tx b{display:block;font-size:12px;margin-bottom:3px}
+  #gpop fieldset{border:1px solid #808080;box-shadow:1px 1px 0 #fff, inset 1px 1px 0 #fff;margin:12px 0 0;padding:6px 8px 8px}
+  #gpop legend{padding:0 3px}
+  #gpop .row{display:flex;justify-content:space-between;margin:3px 0}
+  #gpop .fld{background:#fff;border:1px solid;border-color:#808080 #fff #fff #808080;box-shadow:inset 1px 1px 0 #000;padding:1px 4px;min-width:110px;text-align:right}
+  #gpop .well{margin-top:6px;height:44px;background:#fff;border:1px solid;border-color:#808080 #fff #fff #808080;box-shadow:inset 1px 1px 0 #000;display:flex;gap:2px;padding:3px;overflow:hidden;align-items:center}
+  #gpop .well canvas{height:36px;image-rendering:pixelated}
+  #gpop .well canvas.s{outline:1px dashed #c00;outline-offset:-1px;opacity:.6}
+  #gpop .well .none{color:#808080;padding-left:3px}
+  #gpop .prog{margin-top:8px;height:16px;border:1px solid;border-color:#808080 #fff #fff #808080;box-shadow:inset 1px 1px 0 #000;padding:2px;display:flex;gap:2px;overflow:hidden}
+  #gpop .prog i{width:8px;flex:none;background:#000080}
+  #gpop .btns{display:flex;justify-content:center;gap:8px;margin-top:12px}
+  #gpop .btn{min-width:72px;height:22px;background:#c0c0c0;border:1px solid;border-color:#fff #000 #000 #fff;box-shadow:inset -1px -1px 0 #808080,inset 1px 1px 0 #dfdfdf;display:flex;align-items:center;justify-content:center}
+  #gpop .btn.def{outline:1px solid #000}
+  #gpop .btn.def span{outline:1px dotted #000;outline-offset:2px;padding:0 6px}
+  #gpop .stat{margin-top:8px;border-top:1px solid #808080;box-shadow:0 1px 0 #fff inset;padding-top:4px;display:flex;gap:2px}
+  #gpop .stat span{flex:1;border:1px solid;border-color:#808080 #fff #fff #808080;padding:0 4px;white-space:nowrap;overflow:hidden;font-size:10.5px}
+  #gtag{position:absolute;left:4%;top:8px;z-index:3;font:11px Tahoma,"MS Sans Serif",sans-serif;background:#c0c0c0;color:#000;padding:0;pointer-events:none;border:1px solid;border-color:#dfdfdf #000 #000 #dfdfdf;box-shadow:inset 1px 1px 0 #fff,inset -1px -1px 0 #808080}
+  #gtag .h{background:#000080;color:#fff;font-weight:bold;padding:2px 6px;margin:2px}
+  #gtag .c{padding:4px 8px 6px}
   #gtag[hidden]{display:none}
-  #gtag b{font-weight:400;font-size:16px;margin-left:10px;color:#fff;display:inline-block;animation:blink .5s steps(2) infinite}
+  #gtag b{font-size:14px;margin-left:6px}
   @keyframes in{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
   #foot{font-size:9.5px;color:#999;padding:8px 0 12px;border-top:1px solid #eee;line-height:1.4}
   @media (orientation:portrait){
     #wrap{grid-template-columns:1fr;grid-template-rows:1fr 1fr}
     #left{border-right:0;border-bottom:1px solid #000}
-    #wrap{grid-template-rows:38fr 62fr}
+    #wrap{grid-template-rows:50fr 50fr}
     #right{padding:10px 12px 0}
     #hours{height:30px}
     #hours div::after{display:none}
@@ -178,16 +198,16 @@
 <body>
 <div id="intro">
 <div class="box" id="p2">
-  <div class="lead"><div class="ko">기계는 이름을 붙일 수 있는 것에만 값을 매긴다. 당신은 이름 없는 것을 구하거나, 이름 있는 것을 판다.</div><div class="en">The machine puts a price only on what it can name. You either rescue what has no name, or sell what does.</div></div>
+  <div class="lead"><div class="ko">기계는 이름을 붙일 수 있는 것에만 값을 매긴다.</div><div class="en">The machine puts a price only on what it can name.</div></div>
   <ul>
-    <li><span class="b">*</span><div class="ko">흐르는 글은 2022년 8월, 전세계 사람들이 이미지 생성 AI(Stable Diffusion 디스코드)에 실제로 입력한 프롬프트다. 프롬프트 하나는 어음 한 장이다. 이 어음으로 받은 이미지는 지금 모두 열리지 않는다. 결제 결과는 <b class="red">404 부도</b>.</div><div class="en">The scrolling text is real prompts that people around the world typed into an image-generating AI (the Stable Diffusion Discord) in August 2022. Each prompt is a promissory note. The images they paid out no longer open. Payment result: <b class="red">404 dishonored</b>.</div></li>
-    <li><span class="b">*</span><div class="ko">떠다니는 이미지는 AI 이미지에서 기계가 이름을 붙인 조각뿐이다.</div><div class="en">The floating images are only the fragments of AI images that a machine has named.</div></li>
-    <li><span class="b">*</span><div class="ko">2026년 11월 10일 춘천에서 찍은 사진이 네 장씩 뜬다. 기계는 아는 것에 이름을 붙이고, 이름 없는 부분은 몇 초 만에 지운다.</div><div class="en">Photographs taken in Chuncheon on 10 November 2026 appear four at a time. The machine names what it knows and erases the unnamed parts within seconds.</div></li>
-    <li><span class="b">*</span><div class="ko">이름 없는 부분을 누르면 구한다. 구한 조각은 면에서 선으로 펴져 화면 아래 한 줄에 이어 붙고, 부도난 어음 한 장을 갚는다.</div><div class="en">Tap an unnamed part to rescue it. The piece is unrolled from a plane into a line, joined to the single line at the bottom of the screen, and settles one dishonored note.</div></li>
-    <li><span class="b">*</span><div class="ko">이름 붙은 칸을 누르면 판다. 값을 받지만, 그 조각은 AI 이미지 속으로 흡수된다.</div><div class="en">Tap a named box to sell it. You are paid, but that piece is absorbed into the AI images.</div></li>
-    <li><span class="b">*</span><div class="ko">팔면 토큰(TOKENS)이 쌓이고, 구하면 선의 길이(LENGTH)가 는다. 한 판에서 판 것보다 구한 것이 많으면 당신이 이기고, 아니면 기계가 이긴다. 시간은 짧고, 같은 자리를 둘 다 가질 수는 없다.</div><div class="en">Selling stacks up TOKENS; rescuing adds to the LENGTH of the line. Rescue more than you sell in a round and you win; otherwise the machine wins. Time is short, and you cannot have both from the same place.</div></li>
-    <li><span class="b">*</span><div class="ko">지도는 사진이 찍힌 순간으로 돌아간다. 도시와 시간을 누르면 그 도시가 그 시각이었을 때 발행된 어음만 흐른다.</div><div class="en">The map returns to the moment each photograph was taken. Tap a city and an hour to let only the notes issued at that hour in that city flow.</div></li>
-    <li><span class="b">*</span><div class="ko">화면은 멈추지 않는다.</div><div class="en">The screen does not stop.</div></li>
+    <li><div class="ko">흐르는 글은 2022년 8월, 전세계 사람들이 이미지 생성 AI(Stable Diffusion 디스코드)에 실제로 입력한 프롬프트다. 프롬프트 하나는 어음 한 장이다. 이 어음으로 받은 이미지는 지금 모두 열리지 않는다. 결제 결과는 <b class="red">404 부도</b>.</div><div class="en">The scrolling text is real prompts that people around the world typed into an image-generating AI (the Stable Diffusion Discord) in August 2022. Each prompt is a promissory note. The images they paid out no longer open. Payment result: <b class="red">404 dishonored</b>.</div></li>
+    <li><div class="ko">떠다니는 이미지는 AI 이미지에서 기계가 이름을 붙인 조각뿐이다.</div><div class="en">The floating images are only the fragments of AI images that a machine has named.</div></li>
+    <li><div class="ko">2026년 11월 10일 춘천에서 찍은 사진이 네 장씩 뜬다. 기계는 아는 것에 이름을 붙이고, 이름 없는 부분은 몇 초 만에 지운다.</div><div class="en">Photographs taken in Chuncheon on 10 November 2026 appear four at a time. The machine names what it knows and erases the unnamed parts within seconds.</div></li>
+    <li><div class="ko">이름 없는 부분을 누르면 구한다. 구한 조각은 면에서 선으로 펴져 화면 아래 한 줄에 이어 붙고, 부도난 어음 한 장을 갚는다.</div><div class="en">Tap an unnamed part to rescue it. The piece is unrolled from a plane into a line, joined to the single line at the bottom of the screen, and settles one dishonored note.</div></li>
+    <li><div class="ko">이름 붙은 칸을 누르면 판다. 토큰을 받지만, 그 조각은 AI 이미지 속으로 흡수된다.</div><div class="en">Tap a named box to sell it. You receive tokens, but that piece is absorbed into the AI images.</div></li>
+    <li><div class="ko">한 판에서 판 것보다 구한 것이 많으면 당신이 이기고, 아니면 기계가 이긴다. 같은 자리를 둘 다 가질 수는 없다.</div><div class="en">Rescue more than you sell in a round and you win; otherwise the machine wins. You cannot have both from the same place.</div></li>
+    <li><div class="ko">지도는 사진이 찍힌 순간으로 돌아간다. 도시와 시간을 누르면 그 도시가 그 시각이었을 때 발행된 어음만 흐른다.</div><div class="en">The map returns to the moment each photograph was taken. Tap a city and an hour to let only the notes issued at that hour in that city flow.</div></li>
+    <li><div class="ko">화면은 멈추지 않는다.</div><div class="en">The screen does not stop.</div></li>
   </ul>
   <button id="enter">ENTER</button>
   <div class="src">prompts: krea-ai/open-prompts · images: stable-diffusion-image-prompt-gallery · photographs: 김혜지, FUJIFILM X100V, 2026.11.10</div>
@@ -467,6 +487,28 @@ function drawLine(c){
 const gp=document.getElementById("gpop");
 let gpUntil=0, preShown=-1, roundSum=null;
 const gtag=document.getElementById("gtag"); let tagOn=false;
+function drawIcon(c,v,s){
+  const g=c.getContext("2d"); g.clearRect(0,0,c.width,c.height); const P=(x,y,w,h,col)=>{g.fillStyle=col;g.fillRect(x*s,y*s,w*s,h*s);};
+  if(v==="win"){ // info balloon: white circle, blue i
+    for(let y=0;y<16;y++)for(let x=0;x<16;x++){const d=Math.hypot(x-7.5,y-7.5); if(d<7.6)P(x,y,1,1,d>6.6?"#000":"#fff");}
+    P(7,3,2,2,"#0000ff"); P(7,6,2,7,"#0000ff"); P(6,12,4,1,"#0000ff");
+  }else if(v==="draw"){ // warning triangle
+    for(let y=1;y<15;y++){const hw=Math.floor(y*0.5); for(let x=8-hw;x<=7+hw;x++) P(x,y,1,1,(x===8-hw||x===7+hw||y===14)?"#000":"#ffff00");}
+    P(7,5,2,5,"#000"); P(7,11,2,2,"#000");
+  }else{ // error: red circle white X
+    for(let y=0;y<16;y++)for(let x=0;x<16;x++){const d=Math.hypot(x-7.5,y-7.5); if(d<7.6)P(x,y,1,1,d>6.6?"#800000":"#ff0000");}
+    for(let i=0;i<7;i++){P(4+i,4+i,2,1,"#fff");P(10-i,4+i,2,1,"#fff");}
+  }
+}
+let actx=null;
+function beep(v){
+  try{ actx=actx||new (window.AudioContext||window.webkitAudioContext)(); const o=actx.createOscillator(), gn=actx.createGain();
+    o.type="square"; const f=v==="win"?[880,1320]:v==="draw"?[660,660]:[220,165];
+    o.frequency.setValueAtTime(f[0],actx.currentTime); o.frequency.setValueAtTime(f[1],actx.currentTime+.09);
+    gn.gain.setValueAtTime(.05,actx.currentTime); gn.gain.exponentialRampToValueAtTime(.0001,actx.currentTime+.25);
+    o.connect(gn).connect(actx.destination); o.start(); o.stop(actx.currentTime+.26);
+  }catch(e){}
+}
 function lowres(img,x,y,w,h,maxH){
   const sc=maxH/h, W2=Math.max(6,Math.round(w*sc)), H2=Math.round(maxH), q=3;
   const s=document.createElement("canvas"); s.width=Math.max(2,Math.round(W2/q)); s.height=Math.max(2,Math.round(H2/q));
@@ -481,37 +523,40 @@ function showPop(kind,dur){
   const r=roundSum, a=r.res.length, b=r.sold.length;
   const v = a>b ? "win" : (a&&a===b) ? "draw" : "lose";
   colEl.innerHTML="";
-  const d=cls=>{const e=document.createElement("div"); e.className=cls; return e;};
-  put(d("blk"),{}); put(d("rain"),{}); put(d("tri"),{});
-  // scatter: AI fragments + this round's pieces, clip-art style around the block
-  const spots=[[2,4],[62,2],[78,22],[80,56],[64,76],[34,80],[4,70],[2,40],[40,6],[86,40],[20,58],[56,30]];
-  spots.sort(()=>Math.random()-.5);
-  const mine=[...r.res.map(x=>[...x,"r"]),...r.sold.map(x=>[...x,"s"])].slice(0,5);
-  let si=0;
-  for(const [k,x,y,w,h,kind] of mine){
-    const [L,T]=spots[si++%spots.length], c=lowres(mineImgs[k],x,y,w,h,rnd(58,88)); c.className="frag "+kind;
-    put(c,{left:L+"%",top:T+"%",transform:`rotate(${rnd(-12,12)}deg)`,animationDelay:rnd(0,.5)+"s"});
-  }
-  for(let i=0;i<7-mine.length+2;i++){
-    const g=pick(DATA.groups), f=pick(g.f), [L,T]=spots[si++%spots.length];
-    const c=lowres(f.img||atl[f.a],f.x,f.y,f.w,f.h,rnd(46,80)); c.className="frag";
-    put(c,{left:L+"%",top:T+"%",transform:`rotate(${rnd(-14,14)}deg)`,animationDelay:rnd(0,.5)+"s"});
-    const lb=d("lab"); lb.textContent=f.n; put(lb,{left:L+"%",top:`calc(${T}% - 12px)`,background:col(f.n)});
-  }
-  const wd=d("word "+(v==="win"?"":v==="draw"?"draw":"lose")); wd.innerHTML=v==="win"?"YOU<br>WIN":v==="draw"?"DRAW":"MACHINE<br>WINS"; put(wd,{});
-  const bd=(txt,cls,css)=>{const e=d("bdg "+cls); e.textContent=txt; put(e,css);};
-  bd(`+${(a*256).toLocaleString()} px`,"",{left:"6%",top:"84%",transform:"rotate(-3deg)"});
-  bd(`+${r.won.toFixed(1)} TOKENS`,"r",{left:"50%",top:"86%",transform:"rotate(2deg)"});
-  bd(`YOU ${youW}:${macW} MACHINE`,"k",{left:"52%",top:"12%",transform:"rotate(3deg)"});
-  bd(`TOKENS ${won.toFixed(1)}`,"k",{left:"8%",top:"14%",transform:"rotate(-4deg)"});
-  if(a) bd(`${a} NOTE${a>1?"S":""} PAID`,"",{left:"66%",top:"70%",transform:"rotate(-6deg)"});
-  else bd("404 DISHONORED","r",{left:"62%",top:"70%",transform:"rotate(-6deg)"});
-  const m=d("msg"); m.innerHTML = v==="win" ? "이름 없는 것이 더 많이 남았다<br>more of the unnamed remained" : v==="draw" ? "구한 만큼 팔았다<br>sold as much as rescued" : (a||b) ? "기계가 더 많이 가져갔다<br>the machine took more" : "아무것도 구하지 못했다<br>nothing was rescued"; put(m,{});
+  colEl.style.animation="none"; colEl.offsetHeight; colEl.style.animation="";
+  const title=v==="win"?"Rescue Complete":v==="draw"?"Settlement":"Machine";
+  const head=v==="win"?"YOU WIN":v==="draw"?"DRAW":"MACHINE WINS";
+  const body=v==="win"?"More of the unnamed remained.<br>이름 없는 것이 더 많이 남았다.":v==="draw"?"You sold as much as you rescued.<br>구한 만큼 팔았다.":(a||b)?"The machine took more than you rescued.<br>기계가 더 많이 가져갔다.":"Nothing was rescued. The unnamed was erased.<br>아무것도 구하지 못했다.";
+  const segs=Math.min(40,Math.round(lineCols/256));
+  colEl.innerHTML=`
+    <div class="zoom"></div>
+    <div class="sdw"><div class="fc sd r"></div><div class="fc sd b"></div></div>
+    <div class="front">
+      <div class="tb"><span class="tt"><canvas id="ic16" width="16" height="16"></canvas>${title} — Round ${roundNo}</span><span class="tbb"><i>_</i><i>□</i><i>×</i></span></div>
+      <div class="bd">
+        <div class="top"><canvas id="ic32" width="32" height="32"></canvas><div class="tx"><b>${head}</b>${body}</div></div>
+        <fieldset><legend>This round</legend>
+          <div class="row"><span>Rescued: ${a}</span><span class="fld">+${(a*256).toLocaleString()} px</span></div>
+          <div class="row"><span>Sold: ${b}</span><span class="fld">+${r.won.toFixed(1)} tokens</span></div>
+          <div class="row"><span>Notes:</span><span class="fld">${a?a+" paid":"404 dishonored"}</span></div>
+          <div class="well" id="well"></div>
+        </fieldset>
+        <div class="prog">${"<i></i>".repeat(segs)}</div>
+        <div class="btns"><div class="btn def"><span>OK</span></div><div class="btn">Cancel</div></div>
+        <div class="stat"><span>You ${youW} : ${macW} Machine</span><span>Tokens ${won.toFixed(1)}</span><span>${lineCols.toLocaleString()} px</span></div>
+      </div>
+    </div>`;
+  drawIcon(document.getElementById("ic32"),v,2); drawIcon(document.getElementById("ic16"),v,1);
+  const well=document.getElementById("well");
+  const items=[...r.res.map(x=>[...x,""]),...r.sold.map(x=>[...x,"s"])].slice(0,9);
+  if(!items.length) well.innerHTML='<span class="none">(empty)</span>';
+  for(const [k,x,y,w,h,c] of items){ const cv_=lowres(mineImgs[k],x,y,w,h,36); cv_.className=c; well.appendChild(cv_); }
+  beep(v);
   gp.hidden=false; gpUntil=t+dur;
 }
 function tickPop(){
   if(!gp.hidden && t>=gpUntil) gp.hidden=true;
-  if(tagOn){ const left=Math.max(0,nextEv-t); gtag.innerHTML=`ROUND ${roundNo+1} · 4 PHOTOGRAPHS INCOMING<b>${left>2?3:left>1?2:1}</b>`; if(ev||left<=0){tagOn=false;gtag.hidden=true;} }
+  if(tagOn){ const left=Math.max(0,nextEv-t); gtag.innerHTML=`<div class="h">Incoming — Round ${roundNo+1}</div><div class="c">4 photographs in<b>${left>2?3:left>1?2:1}</b></div>`; if(ev||left<=0){tagOn=false;gtag.hidden=true;} }
   if(!ev && nextEv-t<=3 && preShown!==roundNo && t>2){ preShown=roundNo; showPop("pre"); }
 }
 let roundNo=0, youW=0, macW=0;
@@ -622,7 +667,7 @@ function loop(now){
 }
 resize(); applyFilter(); drawHours();
 document.getElementById("enter").addEventListener("click",()=>{
-  const it=document.getElementById("intro"); it.classList.add("out"); setTimeout(()=>it.remove(),400); resize();
+  try{actx=new (window.AudioContext||window.webkitAudioContext)();}catch(e){} const it=document.getElementById("intro"); it.classList.add("out"); setTimeout(()=>it.remove(),400); resize();
   requestAnimationFrame(n=>{last=n;loop(n)});
   nextEv=5;
 },{once:true});
