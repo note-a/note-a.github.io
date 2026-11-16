@@ -458,28 +458,33 @@ document.getElementById("left").addEventListener("pointerdown",e=>{
 
 // ---------- intro typing ----------
 function typeIn(box,speed,done){
-  const segs=[]; const w=document.createTreeWalker(box,NodeFilter.SHOW_TEXT,{acceptNode:n=>n.parentElement.closest("button")||!n.nodeValue.trim()?NodeFilter.FILTER_REJECT:NodeFilter.FILTER_ACCEPT});
+  // groups = lead / each rule; inside a group, Korean and English lines type at the same time
+  const w=document.createTreeWalker(box,NodeFilter.SHOW_TEXT,{acceptNode:n=>n.parentElement.closest("button")||!n.nodeValue.trim()?NodeFilter.FILTER_REJECT:NodeFilter.FILTER_ACCEPT});
   const list=[]; let n; while(n=w.nextNode()) list.push(n);
+  const groups=[]; const gmap=new Map();
   for(const nd of list){
     const a=document.createElement("span"), h=document.createElement("span");
-    h.style.visibility="hidden"; h.textContent=nd.nodeValue;
-    nd.replaceWith(a,h); segs.push([a,h]);
+    h.style.visibility="hidden"; h.textContent=nd.nodeValue; nd.replaceWith(a,h);
+    const g=a.parentElement.closest(".lead,li")||box, lane=a.parentElement.closest(".ko,.en")||a.parentElement;
+    if(!gmap.has(g)){gmap.set(g,new Map()); groups.push(gmap.get(g));}
+    const lanes=gmap.get(g); if(!lanes.has(lane)) lanes.set(lane,[]); lanes.get(lane).push([a,h]);
   }
   const btn=box.querySelector("button"); btn.style.visibility="hidden";
-  let i=0,stop=false;
-  const finish=()=>{if(stop)return;stop=true;segs.forEach(([a,h])=>{a.textContent+=h.textContent;h.textContent="";});btn.style.visibility="visible";box.removeEventListener("click",skip);done&&done();};
+  let gi=0, stop=false;
+  const all=()=>groups.flatMap(g=>[...g.values()].flat());
+  const finish=()=>{if(stop)return;stop=true;all().forEach(([a,h])=>{a.textContent+=h.textContent;h.textContent="";});btn.style.visibility="visible";box.removeEventListener("click",skip);done&&done();};
   const skip=e=>{if(e.target!==btn)finish();};
   box.addEventListener("click",skip);
+  const step1=segs=>{ for(const [a,h] of segs){ if(h.textContent){ const c=[...h.textContent].slice(0,2).join(""); a.textContent+=c; h.textContent=h.textContent.slice(c.length); return true; } } return false; };
   (function step(){
     if(stop)return;
-    while(i<segs.length&&!segs[i][1].textContent) i++;
-    if(i>=segs.length){finish();return;}
-    const [a,h]=segs[i]; const s=h.textContent; const c=[...s][0];
-    a.textContent+=c; h.textContent=s.slice(c.length);
+    if(gi>=groups.length){finish();return;}
+    let any=false; for(const segs of groups[gi].values()) any=step1(segs)||any;
+    if(!any) gi++;
     setTimeout(step,speed);
   })();
 }
-typeIn(document.getElementById("p2"),14);
+typeIn(document.getElementById("p2"),12);
 // ---------- loop ----------
 let t=0, last=performance.now(), acc=0;
 const STEP=1/24;
