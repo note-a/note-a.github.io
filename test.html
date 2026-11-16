@@ -90,6 +90,26 @@
   }
   #intro.out{animation:out .35s steps(3) forwards}
   @keyframes out{to{opacity:0;visibility:hidden}}
+  #betpop{position:fixed;inset:0;z-index:8;background:rgba(255,255,255,.55);display:flex;align-items:center;justify-content:center;padding:20px;font-family:"IBM Plex Mono","Malgun Gothic","맑은 고딕","Apple SD Gothic Neo",monospace}
+  #betpop[hidden]{display:none}
+  #betpop .pbox{background:#000;color:#fff;max-width:560px;width:100%;padding:22px 24px 18px;animation:pin .18s steps(3)}
+  @keyframes pin{from{opacity:0;transform:scale(.97)}to{opacity:1;transform:none}}
+  #betpop .plast{font-size:11px;margin-bottom:12px;min-height:1em}
+  #betpop .plast.hit{color:#fff;background:#eb5050;padding:4px 7px;display:inline-block}
+  #betpop .plast.miss{color:#eb5050}
+  #betpop .ptitle{font-size:18px;letter-spacing:.08em;margin-bottom:8px}
+  #betpop .pq{font-size:13px;line-height:1.6;margin-bottom:16px;word-break:keep-all}
+  #betpop .pq span{color:#8a8a8a;font-size:12px}
+  #betpop .pchips{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+  #betpop .pchips button{font:inherit;font-size:12px;background:#000;color:#fff;border:1px solid #fff;padding:10px 6px;cursor:pointer;display:flex;justify-content:space-between;gap:6px}
+  #betpop .pchips button i{font-style:normal;color:#8a8a8a}
+  #betpop .pchips button:hover{background:#fff;color:#000}
+  #betpop .pchips button:hover i{color:#000}
+  #betpop .pbar{height:2px;background:#333;margin:16px 0 10px}
+  #betpop .pbar i{display:block;height:100%;background:#eb5050;width:100%}
+  #betpop .pfoot{display:flex;justify-content:space-between;align-items:center;font-size:11px;color:#8a8a8a}
+  #betpop #pskip{font:inherit;font-size:11px;background:none;color:#fff;border:1px solid #555;padding:4px 12px;cursor:pointer}
+  @media (orientation:portrait){#betpop .pchips{grid-template-columns:repeat(2,1fr)} #betpop .ptitle{font-size:15px}}
   @keyframes in{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
   #foot{font-size:9.5px;color:#999;padding:8px 0 12px;border-top:1px solid #eee;line-height:1.4}
   @media (orientation:portrait){
@@ -125,6 +145,14 @@
   <div class="src">prompts: krea-ai/open-prompts · images: stable-diffusion-image-prompt-gallery · photographs: 김혜지, FUJIFILM X100V, 2026.11.10</div>
 </div>
 </div>
+<div id="betpop" hidden><div class="pbox">
+  <div class="plast" id="plast"></div>
+  <div class="ptitle">PLACE YOUR BET</div>
+  <div class="pq">다음 사진 네 장에서 기계는 무엇을 부를까?<br><span>What will the machine name in the next four photographs?</span></div>
+  <div class="pchips" id="pchips"></div>
+  <div class="pbar"><i id="pbarI"></i></div>
+  <div class="pfoot"><span id="pleft">—</span><button id="pskip">SKIP</button></div>
+</div></div>
 <div id="wrap">
   <div id="left"><canvas id="cv"></canvas><canvas id="cv2"></canvas></div>
   <div id="right">
@@ -250,6 +278,32 @@ Object.entries(DATA.odds).forEach(([l,o])=>{
   b.addEventListener("click",()=>{betOn=(betOn===l)?null:l; [...chipsEl.children].forEach(c=>c.classList.toggle("on",c===b&&betOn===l)); drawSlip();});
   chipsEl.appendChild(b);
 });
+
+// ---------- bet popup ----------
+const pop=document.getElementById("betpop"), pchips=document.getElementById("pchips"), plast=document.getElementById("plast"), pbarI=document.getElementById("pbarI"), pleft=document.getElementById("pleft");
+let popOpen=false, popT0=0, popEnd=0, lastResult=null;
+function choose(l){
+  betOn=l; [...chipsEl.children].forEach((c,i)=>c.classList.toggle("on",Object.keys(DATA.odds)[i]===l));
+  closePop(); drawSlip();
+}
+Object.entries(DATA.odds).forEach(([l,o])=>{
+  const b=document.createElement("button"); b.innerHTML=`<span>${l.toUpperCase()}</span><i>x${o}</i>`;
+  b.addEventListener("click",()=>choose(l)); pchips.appendChild(b);
+});
+document.getElementById("pskip").addEventListener("click",()=>choose(null));
+function openPop(){
+  betOn=null; [...chipsEl.children].forEach(c=>c.classList.remove("on"));
+  if(lastResult){plast.className="plast "+(lastResult.hit?"hit":"miss"); plast.textContent=(lastResult.hit?"LAST ROUND · HIT · ":"LAST ROUND · MISS · ")+lastResult.text;}
+  else {plast.className="plast"; plast.textContent="";}
+  popOpen=true; popT0=t; popEnd=nextEv-.3; pop.hidden=false;
+}
+function closePop(){ popOpen=false; pop.hidden=true; }
+function tickPop(){
+  if(!popOpen) return;
+  const left=Math.max(0,popEnd-t), tot=Math.max(.1,popEnd-popT0);
+  pbarI.style.width=(100*left/tot)+"%"; pleft.textContent=`shutter in ${left.toFixed(1)}s`;
+  if(left<=0) choose(betOn);
+}
 function drawSlip(){
   const tot=bets?`BETS ${bets} · HITS ${hits} · WON ${won.toFixed(1)}`:"";
   if(result && t<resultUntil){
@@ -279,9 +333,9 @@ function pushMeta(ms){
     if(hit){hits++; won+=pay;}
     const said = named.length ? [...new Set(named)].join(", ") : "nothing";
     result={hit,text: hit ? `${betOn.toUpperCase()} ×${cnt} · PAID ${cnt} × ${o} = ${pay.toFixed(1)} · machine said: ${said}` : `machine said: ${said} · PAID 0`};
-    resultUntil=t+3.5;
+    resultUntil=t+3.5; lastResult=result;
     bet=`<div class="bet ${hit?"hit":"miss"}">BET ${betOn.toUpperCase()} · ODDS x${o} · ${hit?`HIT · PAID ${pay.toFixed(1)}`:"MISS · PAID 0"} · machine said: ${esc(said)}</div>`;
-  }else bet=`<div class="bet">NO BET</div>`;
+  }else{ bet=`<div class="bet">NO BET</div>`; lastResult=null; }
   html+=bet;
   for(const m of ms){
     const g=k=>(m.meta.find(r=>r[0]===k)||[,"—"])[1];
@@ -399,17 +453,18 @@ let t=0, last=performance.now(), acc=0;
 const STEP=1/24;
 function frame(){
   if(Math.round(t*24)%3===0) drawSlip();
+  tickPop();
   cv.style.filter="none";
   if(ev){
     const et=t-ev.t0;
     if(et<SHOW){ drawPhoto(et); if(Math.random()<.004)pushPrompt(); return; }
-    scatter(); ev=null; ctx.fillStyle="#fff"; ctx.fillRect(0,0,W,H);
+    scatter(); ev=null; ctx.fillStyle="#fff"; ctx.fillRect(0,0,W,H); setTimeout(openPop,900);
   }
   if(t>=nextEv){
     const ks=[]; for(let i=0;i<N_AT_ONCE;i++){ if(mk%order.length===0) order.sort(()=>Math.random()-.5); ks.push(order[mk%order.length]); mk++; }
     ks.sort((a,b)=>DATA.mine[a].ts-DATA.mine[b].ts);
     ev={ks,t0:t};
-    nextEv=t+SHOW+rnd(2,4)+1;
+    nextEv=t+SHOW+rnd(6,7.5);
     pushMeta(ks.map(k=>DATA.mine[k])); drawPhoto(0); return;
   }
   for(let i=poisson(1.7);i>0;i--) spawn();
@@ -440,6 +495,7 @@ resize(); applyFilter(); drawHours();
 document.getElementById("enter").addEventListener("click",()=>{
   const it=document.getElementById("intro"); it.classList.add("out"); setTimeout(()=>it.remove(),400); resize();
   requestAnimationFrame(n=>{last=n;loop(n)});
+  nextEv=7; setTimeout(openPop,700);
 },{once:true});
 </script>
 </body>
