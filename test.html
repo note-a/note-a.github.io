@@ -457,6 +457,14 @@
     #intro .box{max-width:none!important;width:100%!important;padding:24px 4px!important;margin:0!important}
     #intro .kb,#intro .eb{padding:0!important}
   }
+
+  #fpop{position:fixed;inset:0;z-index:12;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,.75)}
+  #fpop[hidden]{display:none}
+  #fpop .card{width:min(560px,92vw)!important;padding:0!important}
+  #fpop .doc{padding:14px 16px 4px!important}
+  #fpop canvas{display:block;width:100%;aspect-ratio:1;image-rendering:pixelated;background:#000}
+  #fpop .t1{font-size:12px!important;margin-top:10px}
+  #fpop .t2{font-size:9px!important;color:#8a8a8a;line-height:1.6}
 </style>
 </head>
 <body>
@@ -472,7 +480,8 @@
 </div>
 </div>
 </div>
-<div id="rpop" hidden><div class="card" data-t="규칙"><div class="lights"><i></i><i></i><i></i></div><div class="doc"><ol><li>2025–26년 나노바나나 프로에 쓰인 문장 하나가 어음으로 도착한다. 이미지를 약속했지만 아직 결제되지 않았다.<span class="en">A prompt written for Nano Banana Pro in 2025–26 arrives. It is still unpaid.</span></li><li>같은 시기에 찍은 사진 네 장 중 그 어음을 결제할 사진 한 장을 고른다. 시간 제한은 없다.<span class="en">Pick the one of four photographs from the same months that can pay it. No time limit.</span></li><li>기계(YOLO)가 사진 속 사물에 이름을 붙인다.<span class="en">The machine (YOLO) names the objects it sees.</span></li><li>어음이 요구한 이름이 고른 사진에 있으면 결제, 당신의 승. 이름 붙은 조각만큼 배당(토큰)이 지급되고 조각은 아래 선으로 이어진다.<span class="en">If your photo has the required name, the prompt is paid: you win, tokens are paid and the fragment joins the line.</span></li><li>다른 사진에만 있었다면 하나만 더. 어디에도 없으면 기계의 승.<span class="en">If only another photo had it: one more. If none did: the machine wins.</span></li><li>타임라인과 시간 막대를 누르면 그때 발행된 어음만 나온다.<span class="en">Click the timeline or an hour to play only prompts written then.</span></li></ol></div><div class="btns"><button id="rgo">START</button></div></div></div>
+<div id="rpop" hidden><div class="card" data-t="규칙"><div class="lights"><i></i><i></i><i></i></div><div class="doc"><ol><li>2025–26년 나노바나나 프로에 쓰인 문장 하나가 어음으로 도착한다. 이미지를 약속했지만 아직 결제되지 않았다.<span class="en">A prompt written for Nano Banana Pro in 2025–26 arrives. It is still unpaid.</span></li><li>같은 시기에 찍은 사진 네 장 중 그 어음을 결제할 사진 한 장을 고른다. 시간 제한은 없다.<span class="en">Pick the one of four photographs from the same months that can pay it. No time limit.</span></li><li>기계(YOLO)가 사진 속 사물에 이름을 붙인다.<span class="en">The machine (YOLO) names the objects it sees.</span></li><li>어음이 요구한 이름이 고른 사진에 있으면 결제, 당신의 승. 이름 붙은 조각만큼 배당(토큰)이 지급되고 조각은 아래 선으로 이어진다.<span class="en">If your photo has the required name, the prompt is paid: you win, tokens are paid and the fragment joins the line.</span></li><li>다른 사진에만 있었다면 하나만 더. 어디에도 없으면 기계의 승.<span class="en">If only another photo had it: one more. If none did: the machine wins.</span></li><li>타임라인과 시간 막대를 누르면 그때 발행된 어음만 나온다.<span class="en">Click the timeline or an hour to play only prompts written then.</span></li><li>결제할 수 있는 어음을 모두 결제하면 마지막 한 장이 지급된다.<span class="en">Pay every payable prompt and one last image is paid out.</span></li></ol></div><div class="btns"><button id="rgo">START</button></div></div></div>
+<div id="fpop" hidden><div class="card"><div class="doc"><canvas id="fcv" width="256" height="256"></canvas><div class="t1" id="ft1">지급 불가 — 이 이미지는 어떤 목록에도 없습니다</div><div class="t2" id="ft2"></div></div><div class="btns"><button id="fgo">다시 RESTART</button></div></div></div>
 <div id="npop" hidden><div class="card"><div class="meta" id="nmeta"></div><div class="ko" id="nko"></div><div class="en" id="nen"></div><div class="rq" id="nrq"></div><div class="btns"><button id="ngo">결제할 사진 고르기</button></div></div></div>
 <div id="gpop" hidden><div class="col" id="col"></div></div>
 <div id="tb"><div class="lights"><i></i><i></i><i></i></div><div class="ttl">RStudio</div></div>
@@ -812,6 +821,30 @@ function drawLine(c){
 }
 
 
+
+// ---------- the reward: Cantor's diagonal of every paid fragment ----------
+const paidFr=[]; let finalShown=false;
+function payableNotes(){ const labs=new Set(DATA.mine.flatMap(m=>m.boxes.map(b=>b[4]))); return P.map((p,i)=>i).filter(i=>P[i][6].some(l=>labs.has(l))); }
+function allPaid(){ return !finalShown && payableNotes().every(i=>settled.has(i)); }
+function showFinal(){
+  if(finalShown) return; finalShown=true;
+  const S=256, cv2=document.getElementById("fcv"), g=cv2.getContext("2d"), tmp=document.createElement("canvas"), tg=tmp.getContext("2d");
+  tmp.width=S; tmp.height=1; g.fillStyle="#000"; g.fillRect(0,0,S,S);
+  const fr=paidFr.length?paidFr:[[0,0,0,DATA.mine[0].w,DATA.mine[0].h]], n=fr.length;
+  document.getElementById("ft2").innerHTML=`결제된 조각 ${n}개의 n번째 조각에서 n번째 줄을 가져와 뒤집어 쌓았다. 모든 조각으로 만들었지만 어느 조각과도 같지 않다.<br>NOT PAYABLE — row n is row n of fragment n, inverted: an image made of every paid fragment, equal to none of them (Cantor, 1891).`;
+  document.getElementById("fpop").hidden=false;
+  let r=0;
+  (function row(){
+    for(let q=0;q<4&&r<S;q++,r++){
+      const [k,x,y,w,h]=fr[r%n], im=mineImgs[k];
+      // row r of fragment (r mod n), scaled to S wide
+      tg.clearRect(0,0,S,1); tg.drawImage(im,x,y+(h*(r/S)),w,Math.max(1,h/S),0,0,S,1);
+      const d=tg.getImageData(0,0,S,1); for(let i=0;i<d.data.length;i+=4){ d.data[i]=255-d.data[i]; d.data[i+1]=255-d.data[i+1]; d.data[i+2]=255-d.data[i+2]; }
+      g.putImageData(d,0,r);
+    }
+    if(r<S) requestAnimationFrame(row);
+  })();
+}
 // ---------- game popups ----------
 const gp=document.getElementById("gpop");
 let gpUntil=0, preShown=-1, roundSum=null;
@@ -967,10 +1000,11 @@ function frame(){
     { const s=ev.sum; s.note=ev.note; s.pick=ev.pick; s.ks=ev.ks.slice(); s.match=ev.match||[]; s.could=ev.could||[];
       if(s.match.length){ s.v="win"; youW++;
         const k=ev.ks[ev.pick], m=DATA.mine[k]; let pay=0;
-        for(const b of m.boxes){ if(!s.match.includes(b[4])) continue; pay+=val(b[4]); const [x1,y1,x2,y2]=b; s.res.push([k,x1,y1,x2-x1,y2-y1]); unroll(mineImgs[k],x1,y1,x2-x1,y2-y1); }
+        for(const b of m.boxes){ if(!s.match.includes(b[4])) continue; pay+=val(b[4]); const [x1,y1,x2,y2]=b; s.res.push([k,x1,y1,x2-x1,y2-y1]); unroll(mineImgs[k],x1,y1,x2-x1,y2-y1); paidFr.push([k,x1,y1,x2-x1,y2-y1]); }
         s.won=pay; won+=pay; rescued++;
         const html=`<div class="s paid"><span class="x">결제 완료</span> ${esc((m.meta.find(r=>r[0]==="FILE")||[,""])[1])} · ${esc(s.match.join(", "))}</div>`;
         settled.set(ev.note,html); const el=[...feed.querySelectorAll(".p")].find(e=>+e.dataset.i===ev.note); if(el){ el.querySelector(".s").outerHTML=html; const b=el.querySelector(".st"); if(b){b.className="st ok";b.textContent="PAID";} } drawCount();
+        if(allPaid()) setTimeout(showFinal,5600);
       } else if(ev.pick!==undefined && s.could.length){ s.v="one"; macW++; }
       else { s.v="lose"; macW++; }
     }
@@ -1023,6 +1057,8 @@ function showNote(){ if(!ev||ev.note===undefined) return; const p=P[ev.note], d=
 document.getElementById("ngo").onclick=()=>{ document.getElementById("npop").hidden=true; };
 document.getElementById("npop").addEventListener("click",e=>{ if(e.target.id==="npop") e.currentTarget.hidden=true; });
 function showRules(first){ const rp=document.getElementById("rpop"); rp.hidden=false;
+  document.getElementById("fgo").onclick=()=>location.reload();
+  if(location.hash==="#final"){ setTimeout(()=>{ for(let q=0;q<40;q++){ const k=Math.floor(Math.random()*DATA.mine.length), m=DATA.mine[k], b=m.boxes[0]; if(b) paidFr.push([k,b[0],b[1],b[2]-b[0],b[3]-b[1]]); } showFinal(); },1500); }
   document.getElementById("rgo").onclick=()=>{ rp.hidden=true; if(first){ nextEv=t+3; } };
 }
 document.getElementById("rules").addEventListener("click",()=>showRules(false));
