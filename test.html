@@ -460,12 +460,17 @@
 
   #fpop{position:fixed;inset:0;z-index:12;background:#fff;overflow:auto;display:flex;justify-content:center}
   #fpop[hidden]{display:none}
-  #fbox{width:min(720px,90vw);padding:9vh 0 6vh}
+  #fbox{width:min(1100px,92vw);padding:9vh 0 6vh}
   #fbox p{font-size:12px;line-height:1.75;word-break:keep-all;margin:0 0 10px;color:#000}
   #fbox .eb p{color:#ff00cc}
   #fbox .eb{margin-top:14px}
-  #fcv{display:block;width:min(420px,80vw);aspect-ratio:1;image-rendering:pixelated;background:#fff;margin:26px 0 8px;opacity:0;transition:opacity 1.2s}
-  #fcv.on{opacity:1}
+  #fcv{display:block;width:min(100%,105vh);aspect-ratio:6/4;height:auto;image-rendering:pixelated;background:#fff;margin:0 auto 8px}
+  @media (max-width:760px),(orientation:portrait){#fcv{width:auto;height:min(78vh,135vw);aspect-ratio:4/6}}
+  #fbox .txt{transition:opacity .8s;max-width:720px;margin:0 auto}
+  #fbox .txt.off{opacity:0;height:0;overflow:hidden;margin:0}
+  #fimg{display:none;text-align:center;opacity:0;transition:opacity 1.2s}
+  #fimg.on{display:block}#fimg.vis{opacity:1}
+  #fimg .t2{text-align:center}
   #fbox .t2{font-size:9px;color:#8a8a8a;margin-bottom:18px}
   #fgo{font-size:12px}
 </style>
@@ -484,7 +489,7 @@
 </div>
 </div>
 <div id="rpop" hidden><div class="card" data-t="규칙"><div class="lights"><i></i><i></i><i></i></div><div class="doc"><ol><li>2025–26년 나노바나나 프로에 쓰인 문장 하나가 어음으로 도착한다. 이미지를 약속했지만 아직 결제되지 않았다.<span class="en">A prompt written for Nano Banana Pro in 2025–26 arrives. It is still unpaid.</span></li><li>같은 시기에 찍은 사진 네 장 중 그 어음을 결제할 사진 한 장을 고른다. 시간 제한은 없다.<span class="en">Pick the one of four photographs from the same months that can pay it. No time limit.</span></li><li>기계(YOLO)가 사진 속 사물에 이름을 붙인다.<span class="en">The machine (YOLO) names the objects it sees.</span></li><li>어음이 요구한 이름이 고른 사진에 있으면 결제, 당신의 승. 이름 붙은 조각만큼 배당(토큰)이 지급되고 조각은 아래 선으로 이어진다.<span class="en">If your photo has the required name, the prompt is paid: you win, tokens are paid and the fragment joins the line.</span></li><li>다른 사진에만 있었다면 하나만 더. 어디에도 없으면 기계의 승.<span class="en">If only another photo had it: one more. If none did: the machine wins.</span></li><li>타임라인과 시간 막대를 누르면 그때 발행된 어음만 나온다.<span class="en">Click the timeline or an hour to play only prompts written then.</span></li><li>결제할 수 있는 어음을 모두 결제하면 마지막 한 장이 지급된다.<span class="en">Pay every payable prompt and one last image is paid out.</span></li></ol></div><div class="btns"><button id="rgo">START</button></div></div></div>
-<div id="fpop" hidden><div id="fbox"><div class="kb"><p id="fko"></p></div><div class="eb"><p id="fen"></p></div><canvas id="fcv" width="256" height="256"></canvas><div class="t2" id="ft2">지급 불가 · NOT PAYABLE (Cantor, 1891)</div><button id="fgo">다시 RESTART</button></div></div>
+<div id="fpop" hidden><div id="fbox"><div class="txt" id="ftxt"><div class="kb"><p id="fko"></p></div><div class="eb"><p id="fen"></p></div><button id="fnx">이미지 보기 VIEW</button></div><div id="fimg"><canvas id="fcv" width="384" height="256"></canvas><div class="t2" id="ft2">지급 불가 · NOT PAYABLE (Cantor, 1891)</div><button id="fgo">다시 RESTART</button></div></div></div>
 <div id="npop" hidden><div class="card"><div class="meta" id="nmeta"></div><div class="ko" id="nko"></div><div class="en" id="nen"></div><div class="rq" id="nrq"></div><div class="btns"><button id="ngo">결제할 사진 고르기</button></div></div></div>
 <div id="gpop" hidden><div class="col" id="col"></div></div>
 <div id="tb"><div class="lights"><i></i><i></i><i></i></div><div class="ttl">RStudio</div></div>
@@ -840,18 +845,27 @@ function showFinal(){
   document.getElementById("fen").textContent=`Every payable note has been settled. From the ${n} fragments paid out as dividends, row n of fragment n is taken, inverted and stacked. Made of every fragment, the image equals none of them. As the rows are stacked the list is counted again and again, and the image never comes to rest in the same form. It is on no list, and so it cannot be paid.`;
   const fp=document.getElementById("fpop"), cvF=document.getElementById("fcv"); fp.hidden=false;
   const ap=(id,o)=>{ const el=document.getElementById(id); if(el&&o) Object.assign(el.style,o); };
-  ap("fko",FSTY.ko); ap("fen",FSTY.en); if(FSTY.en) document.getElementById("ft2").style.fontFamily=FSTY.en.fontFamily; ap("fgo",FSTY.btn); ap("fbox",FSTY.box);
+  ap("fko",FSTY.ko); ap("fen",FSTY.en); if(FSTY.en) document.getElementById("ft2").style.fontFamily=FSTY.en.fontFamily; ap("fgo",FSTY.btn); ap("fnx",FSTY.btn); ap("fbox",FSTY.box);
   // 조각마다 S×S로 펼쳐 둔다
-  const S=256, g=cvF.getContext("2d"), tmp=document.createElement("canvas"), tg=tmp.getContext("2d",{willReadFrequently:true});
-  tmp.width=S; tmp.height=S; const px=fr.map(([k,x,y,w,h])=>{ tg.clearRect(0,0,S,S); tg.drawImage(mineImgs[k],x,y,w,h,0,0,S,S); return tg.getImageData(0,0,S,S).data; });
-  const out=g.createImageData(S,S), o8=out.data; let off=0, run=false;
+  const PORT=matchMedia("(max-width:760px),(orientation:portrait)").matches, SW=PORT?256:384, SH=PORT?384:256; g=(cvF.width=SW,cvF.height=SH,cvF.getContext("2d")), tmp=document.createElement("canvas"), tg=tmp.getContext("2d",{willReadFrequently:true});
+  tmp.width=SW; tmp.height=SH; const px=fr.map(([k,x,y,w,h])=>{ tg.clearRect(0,0,SW,SH); tg.drawImage(mineImgs[k],x,y,w,h,0,0,SW,SH); return tg.getImageData(0,0,SW,SH).data; });
+  const out=g.createImageData(SW,SH), o8=out.data; let off=0, run=false, burst=0;
   function tick(){
-    for(let r=0;r<S;r++){ const src=px[(r+off)%n], sr=((r+off)%S)*S*4, dr=r*S*4;
-      for(let c=0;c<S*4;c+=4){ o8[dr+c]=255-src[sr+c]; o8[dr+c+1]=255-src[sr+c+1]; o8[dr+c+2]=255-src[sr+c+2]; o8[dr+c+3]=255; } }
-    g.putImageData(out,0,0); off++;
-    setTimeout(()=>requestAnimationFrame(tick),70);
+    const tm=performance.now()/1000; if(Math.random()<.06) burst=6+Math.floor(Math.random()*10);
+    for(let r=0;r<SH;r++){
+      const f=(r+off)%n, src=px[f], sr=((r*3+off*5)%SH)*SW*4, dr=r*SW*4;
+      // 줄마다 옆으로 밀림: 사인파 + 가끔 크게 튀는 줄
+      let sh=Math.round(Math.sin(r*.05+tm*2.3)*18+Math.sin(r*.013-tm*1.1)*40); if(burst&&Math.random()<.15) sh+=Math.floor((Math.random()-.5)*200);
+      const inv=!(burst&&Math.random()<.08);
+      for(let c=0;c<SW;c++){ const sc=(((c+sh)%SW)+SW)%SW, s=sr+sc*4, d=dr+c*4;
+        if(inv){ o8[d]=255-src[s]; o8[d+1]=255-src[s+1]; o8[d+2]=255-src[s+2]; } else { o8[d]=src[s]; o8[d+1]=src[s+1]; o8[d+2]=src[s+2]; } o8[d+3]=255; }
+    }
+    g.putImageData(out,0,0); off++; if(burst) burst--;
+    setTimeout(()=>requestAnimationFrame(tick),33);
   }
-  typeIn(document.getElementById("fbox"),12,()=>{ cvF.classList.add("on"); if(!run){run=true;tick();} });
+  const showImg=()=>{ document.getElementById("ftxt").classList.add("off"); const fi=document.getElementById("fimg"); fi.classList.add("on"); requestAnimationFrame(()=>fi.classList.add("vis")); if(!run){run=true;tick();} };
+  document.getElementById("fnx").onclick=showImg;
+  typeIn(document.getElementById("ftxt"),12,()=>setTimeout(showImg,3500));
 }
 // ---------- game popups ----------
 const gp=document.getElementById("gpop");
